@@ -8,7 +8,7 @@ public class GoldText : TextManager
 
     private void Update()
     {
-        Textarray[0].text = "╟Я╣Е: 000"; // ╟Я╣Е ╨╞╪Ж Ёж╬Наж╪╪©И
+        Textarray[0].text = $"╟Я╣Е: {(int)GameManager.instance.Gold}"; // ╟Я╣Е ╨╞╪Ж Ёж╬Наж╪╪©И
     }
 
 }
