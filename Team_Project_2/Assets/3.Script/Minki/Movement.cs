@@ -20,7 +20,7 @@ public class Movement : MonoBehaviour
         점프 상태인지 체크
     */
     Camera camera;
-    private Animator ani;
+    [SerializeField] private Animator ani;
     [SerializeField] private Rigidbody rb;
 
     [Header("이동")]
@@ -97,7 +97,7 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void Check_Ground()
+    public void Check_Ground()
     {
         if (!isLive)
         {
