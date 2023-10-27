@@ -6,8 +6,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
 
-    public float currentTime = 0;
-    public float Gold = 0;
+    public float currentTime = 0; // 게임이 시작하고 지난 시간
+
+    public float Gold = 0; // 골드량
+    private float Magnifi = 2f;  // 처음 골드 배율
 
     private void Awake()
     {
@@ -29,6 +31,6 @@ public class GameManager : MonoBehaviour
     {
         currentTime += Time.deltaTime;
 
-        Gold += Time.deltaTime; // 골드수급
+        Gold += Time.deltaTime * Magnifi; // 골드수급
     }
 }
