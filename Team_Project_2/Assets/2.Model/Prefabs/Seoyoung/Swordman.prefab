@@ -8218,11 +8218,12 @@ GameObject:
   m_Component:
   - component: {fileID: 551135944131291874}
   - component: {fileID: 551135944123745390}
+  - component: {fileID: -4682645574399453220}
   - component: {fileID: 551135944131069407}
   - component: {fileID: 551135944131069395}
   - component: {fileID: 551135944131069405}
-  - component: {fileID: 551135944131069394}
   - component: {fileID: 551135944131069404}
+  - component: {fileID: -3616050399448818161}
   m_Layer: 0
   m_Name: Swordman
   m_TagString: Untagged
@@ -8265,6 +8266,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-4682645574399453220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551135944131069392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1796dbcb3bd656b45af4cfb720f26fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &551135944131069407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8307,22 +8320,6 @@ CapsuleCollider:
   m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 0.8, z: 0}
---- !u!54 &551135944131069394
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 551135944131069392}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!195 &551135944131069404
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8345,6 +8342,22 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!54 &-3616050399448818161
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551135944131069392}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &551135944131070266
 GameObject:
   m_ObjectHideFlags: 0

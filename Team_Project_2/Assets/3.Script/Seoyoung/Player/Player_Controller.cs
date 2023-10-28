@@ -45,8 +45,8 @@ public class Player_Controller : MonoBehaviour
     [SerializeField]
     private GameObject Archer_Prefab;
 
-
-    public LinkedList<GameObject> Minions_List = new LinkedList<GameObject>();
+    public List<GameObject> Minions_List = new List<GameObject>();
+    //public LinkedList<GameObject> Minions_List = new LinkedList<GameObject>();
 
    
 
@@ -74,9 +74,9 @@ public class Player_Controller : MonoBehaviour
         CurrentTransform = this.transform;
         Max_MinionCount = 19;
 
-        GameObject Minion = Instantiate(SwordMan_Prefab, transform.position + Vector3.back, Quaternion.identity);
-        Minion.transform.SetParent(this.transform);
-        Minions_List.AddLast(Minion);
+        //GameObject Minion = Instantiate(SwordMan_Prefab, transform.position + Vector3.back, Quaternion.identity);
+        //Minion.transform.SetParent(this.transform);
+        //Minions_List.Add(Minion);
         //미니언 생성 위치는 나중에 점령지(Spawner)위치로 바꾸기 
     }
 
@@ -90,7 +90,7 @@ public class Player_Controller : MonoBehaviour
             Human_num = 1;
             GameObject Minion = Instantiate(SwordMan_Prefab, Spawner.transform.position, Quaternion.identity);
             Minion.transform.SetParent(this.transform);
-            Minions_List.AddLast(Minion);
+            Minions_List.Add(Minion);
             //미니언 생성 위치는 나중에 점령지(Spawner)위치로 바꾸기 
 
             Gold -= 15;
@@ -102,7 +102,7 @@ public class Player_Controller : MonoBehaviour
             Human_num = 2;
             GameObject Minion = Instantiate(SwordMan_Prefab, transform.position + Vector3.back, Quaternion.identity);
             Minion.transform.SetParent(this.transform);
-            Minions_List.AddLast(Minion);
+            Minions_List.Add(Minion);
             Gold -= (int)minionController.Human_type;
         }
 
@@ -112,7 +112,7 @@ public class Player_Controller : MonoBehaviour
             Human_num = 3;
             GameObject Minion = Instantiate(SwordMan_Prefab, transform.position + Vector3.back, Quaternion.identity);
             Minion.transform.SetParent(this.transform);
-            Minions_List.AddLast(Minion);
+            Minions_List.Add(Minion);
             Gold -= (int)minionController.Human_type;
         }
 

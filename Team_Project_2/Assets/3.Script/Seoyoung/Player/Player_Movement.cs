@@ -20,7 +20,7 @@ public class Player_Movement : MonoBehaviour
               점프 상태인지 체크
           */
     Camera camera;
-    private Animator ani;
+   // private Animator ani;
     [SerializeField] private Rigidbody rb;
 
     [Header("이동")]
@@ -31,9 +31,12 @@ public class Player_Movement : MonoBehaviour
     [SerializeField] private bool isGrounded = true;
     [SerializeField] private bool isLive = true;
 
+    public Vector3 playerRotate { get; private set; } = new Vector3();
+
+
     private void Start()
     {
-        ani = GetComponent<Animator>();
+        //ani = GetComponent<Animator>();
         camera = Camera.main;
     }
 
@@ -45,7 +48,7 @@ public class Player_Movement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            ani.SetTrigger("Hit");
+           // ani.SetTrigger("Hit");
             // isLive = false;
         }
     }
@@ -61,7 +64,7 @@ public class Player_Movement : MonoBehaviour
 
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        Vector3 playerRotate = Vector3.Scale(camera.transform.forward, new Vector3(1, 0, 1));
+         playerRotate = Vector3.Scale(camera.transform.forward, new Vector3(1, 0, 1));
 
         Vector3 moveDirection = playerRotate * Input.GetAxis("Vertical") + camera.transform.right * Input.GetAxis("Horizontal");
 
@@ -74,14 +77,9 @@ public class Player_Movement : MonoBehaviour
             // 이동
             transform.position += (moveDirection.normalized * MoveSpeed * Time.deltaTime);
 
-            ani.SetBool("Move", true);
-            ani.SetBool("Idle", false);
+           
         }
-        else
-        {
-            ani.SetBool("Idle", true);
-            ani.SetBool("Move", false);
-        }
+    
     }
 
     private void Jump()

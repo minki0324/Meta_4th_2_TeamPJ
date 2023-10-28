@@ -8,6 +8,8 @@ public class Follow_Player : MonoBehaviour
 
     private Minion_Controller minionController;
 
+    private Player_Movement playerMovement;
+
     private UnityEngine.AI.NavMeshAgent agent;
 
    
@@ -25,9 +27,12 @@ public class Follow_Player : MonoBehaviour
         playerController = FindObjectOfType<Player_Controller>();
         minionController = GetComponent<Minion_Controller>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        playerMovement = FindObjectOfType<Player_Movement>();
     }
     void Start()
     {
+        agent.velocity = Vector3.zero;
+        agent.avoidancePriority = 1;
         StartCoroutine(Mode_Follow_co());
     }
 
@@ -56,44 +61,45 @@ public class Follow_Player : MonoBehaviour
             {
                 agent.isStopped = false;
 
-                agent.SetDestination(playerController.transform.position + Vector3.back);
-                Debug.Log(playerController.transform.position);
+                //  agent.SetDestination(playerController.transform.position + Vector3.back);
+                //Debug.Log(playerController.transform.position);
+                //for (int i = 0; i < playerController.Minions_List.Count; i++)
+                //{
+                float ShortDis = Vector3.Distance(playerController.gameObject.transform.position, playerController.Minions_List[0].transform.localPosition);
+                for (int j = 1; j < playerController.Minions_List.Count; j++)
+                {
+                    float Distance = Vector3.Distance(playerController.gameObject.transform.position, playerController.Minions_List[j].transform.localPosition);
+                    if (ShortDis >= Distance)
+                    {
+                        nearestMinion_List.Add(playerController.Minions_List[j]);
+                        ShortDis = Distance;
+                    }
+
+
+                }
+
+                for (int j = 0; j < nearestMinion_List.Count; j++)
+                {
+                    if (j == 0)
+                    {
+                        agent.SetDestination(playerController.transform.position + Vector3.back);
+                        //nearestMinion_List[0].transform.position = playerController.transform.position + Vector3.back;
+                    }
+                    else
+                    {
+                        agent.SetDestination(nearestMinion_List[j - 1].transform.position + Vector3.back);
+                        // nearestMinion_List[i].transform.position = nearestMinion_List[i - 1].transform.position + Vector3.back;
+                    }
+                }
+                
+
+
+                //}
+
+
             }
             else
             {
-                
-
-                for(int i = 0; i<playerController.Minions_List.Count; i++)
-                {
-                    for (var node = playerController.Minions_List.First; node != null; node = node.Next)
-                    {
-                        float ob1_distance = Vector3.Magnitude(node.Value.transform.position);
-                        float ob2_distance = Vector3.Magnitude(node.Next.Value.transform.position);
-
-                        if (ob1_distance < ob2_distance)
-                        {
-                            nearestMinion_List.Add(node.Value);
-                        }
-                        else
-                        {
-                            nearestMinion_List.Add(node.Next.Value);
-                            // nearestMinion = node.Next.Value;
-                        }
-
-                        // node.Value.transform.position = node.Next.Value.transform.position + Vector3.back;
-
-                    }
-                    if (i > 0)
-                    {
-                        nearestMinion_List[i].transform.position = nearestMinion_List[i - 1].transform.position + Vector3.back;
-                    }
-                   
-                }
-
-             
-
-                
-              
 
                 agent.isStopped = true;
                 Collider[] cols = Physics.OverlapSphere(transform.position, 20f, TargetLayer);
