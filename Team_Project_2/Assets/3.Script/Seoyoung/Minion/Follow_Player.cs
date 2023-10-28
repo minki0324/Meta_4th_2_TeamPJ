@@ -60,38 +60,43 @@ public class Follow_Player : MonoBehaviour
             if (isTarget)
             {
                 agent.isStopped = false;
+                //¼öÁ¤Áß..
 
                 //  agent.SetDestination(playerController.transform.position + Vector3.back);
                 //Debug.Log(playerController.transform.position);
                 //for (int i = 0; i < playerController.Minions_List.Count; i++)
                 //{
-                float ShortDis = Vector3.Distance(playerController.gameObject.transform.position, playerController.Minions_List[0].transform.localPosition);
-                for (int j = 1; j < playerController.Minions_List.Count; j++)
-                {
-                    float Distance = Vector3.Distance(playerController.gameObject.transform.position, playerController.Minions_List[j].transform.localPosition);
-                    if (ShortDis >= Distance)
-                    {
-                        nearestMinion_List.Add(playerController.Minions_List[j]);
-                        ShortDis = Distance;
-                    }
 
 
-                }
+                //float ShortDis = Vector3.Distance(playerController.gameObject.transform.position, playerController.Minions_List[0].transform.localPosition);
+                //for (int j = 1; j < playerController.Minions_List.Count; j++)
+                //{
+                //    float Distance = Vector3.Distance(playerController.gameObject.transform.position, playerController.Minions_List[j].transform.localPosition);
+                //    if (ShortDis >= Distance)
+                //    {
+                //        nearestMinion_List.Add(playerController.Minions_List[j]);
+                //        ShortDis = Distance;
+                //    }
 
-                for (int j = 0; j < nearestMinion_List.Count; j++)
-                {
-                    if (j == 0)
-                    {
-                        agent.SetDestination(playerController.transform.position + Vector3.back);
-                        //nearestMinion_List[0].transform.position = playerController.transform.position + Vector3.back;
-                    }
-                    else
-                    {
-                        agent.SetDestination(nearestMinion_List[j - 1].transform.position + Vector3.back);
-                        // nearestMinion_List[i].transform.position = nearestMinion_List[i - 1].transform.position + Vector3.back;
-                    }
-                }
+
+                //}
+
+                //for (int j = 0; j < nearestMinion_List.Count; j++)
+                //{
+                //    if (j == 0)
+                //    {
+                //        agent.SetDestination(playerController.transform.position + Vector3.back);
+                //        //nearestMinion_List[0].transform.position = playerController.transform.position + Vector3.back;
+                //    }
+                //    else
+                //    {
+                //        agent.SetDestination(nearestMinion_List[j - 1].transform.position + Vector3.back);
+                //        // nearestMinion_List[i].transform.position = nearestMinion_List[i - 1].transform.position + Vector3.back;
+                //    }
+                //}
                 
+
+
 
 
                 //}
