@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class Ply_Movement : MonoBehaviour
 {
     /*
         1. 이동 구현
