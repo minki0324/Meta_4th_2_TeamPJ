@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 3de550976956fcb4bb580da7d4929a87
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - 210 Manyeosoop
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 995a09069585f614c91d11b9fd7f0398, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
