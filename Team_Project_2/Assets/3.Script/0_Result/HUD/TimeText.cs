@@ -12,7 +12,8 @@ public class TimeText : TextManager
 
     private void Awake()
     {
-        Textarray[1].text = $"30:00"; // 나중에 설정시간 변수명 넣기   
+        Textarray[1].text = string.Format("{0}:{1:00}", ((int)GameManager.instance.EndTime / 60),
+            ((int)GameManager.instance.EndTime) % 60); // 분 / 초  
     }
     void Update()
     {

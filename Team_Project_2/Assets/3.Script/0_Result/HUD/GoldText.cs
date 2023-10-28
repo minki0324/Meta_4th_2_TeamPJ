@@ -8,7 +8,7 @@ public class GoldText : TextManager
 
     private void Update()
     {
-        Textarray[0].text = $"°ñµå: {(int)GameManager.instance.Gold}"; // °ñµå º¯¼ö ³Ö¾îÁÖ¼¼¿é
+        Textarray[0].text = $"°ñµå: {(int)GameManager.instance.Gold}";
     }
 
 }

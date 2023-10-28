@@ -6284,6 +6284,7 @@ GameObject:
   - component: {fileID: 6252542309972467562}
   - component: {fileID: 6252542309981855442}
   - component: {fileID: 6252542309981855441}
+  - component: {fileID: 4791130784378383415}
   m_Layer: 0
   m_Name: Infantry
   m_TagString: Untagged
@@ -6298,7 +6299,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6252542309981855444}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6355,6 +6356,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 1.5, z: 0.5}
   m_Center: {x: 0, y: 0.7, z: 0}
+--- !u!114 &4791130784378383415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6252542309981855444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e49248fff41efe34daa6abbfb855b2e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color_Texture: []
+  player: {fileID: 0}
+  Color_Index: 0
 --- !u!1 &6252542309981855496
 GameObject:
   m_ObjectHideFlags: 0
