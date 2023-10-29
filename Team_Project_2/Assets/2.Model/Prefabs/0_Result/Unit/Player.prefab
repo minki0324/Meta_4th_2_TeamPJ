@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &324839428
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 324839429}
+  m_Layer: 0
+  m_Name: FollowCam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &324839429
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324839428}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: -5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7994817937136460435}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &377209040282265561
 GameObject:
   m_ObjectHideFlags: 0
@@ -6927,9 +6957,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7994817937136460435}
   - component: {fileID: 7994817937127428253}
-  - component: {fileID: 7994817937136791332}
   - component: {fileID: 7994817937136791333}
   - component: {fileID: 7994817937136791334}
+  - component: {fileID: 7994817937136791332}
+  - component: {fileID: 6552830460655700004}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -6944,12 +6975,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7994817937136791335}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7994817937136461993}
   - {fileID: 4129486149211310230}
+  - {fileID: 324839429}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6972,24 +7004,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7994817937136791332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7994817937136791335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce80930c9dfc9f14fa16ced94b83c1c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ani: {fileID: 0}
-  rb: {fileID: 7994817937136791333}
-  MoveSpeed: 5
-  JumpForce: 300
-  isGrounded: 1
-  isLive: 1
 --- !u!54 &7994817937136791333
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7019,6 +7033,43 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 1.5, z: 0.5}
   m_Center: {x: 0, y: 0.75, z: 0}
+--- !u!114 &7994817937136791332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7994817937136791335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce80930c9dfc9f14fa16ced94b83c1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ani: {fileID: 0}
+  rb: {fileID: 7994817937136791333}
+  MoveSpeed: 5
+  JumpForce: 300
+  isGrounded: 1
+--- !u!114 &6552830460655700004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7994817937136791335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06bec546004c26047bdf5b2860647bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentMode: 0
+  Minion_Prefabs:
+  - {fileID: 4239812368246995255, guid: a23f289f202db4f44960db0c252df524, type: 3}
+  - {fileID: 6006503084427101158, guid: 7b2c5439dcdaff14682d91ecbec50354, type: 3}
+  - {fileID: 4483072135592897270, guid: 688bb76400d688d40a0027c72be0d35e, type: 3}
+  Minions_List: []
+  Human_num: 0
+  Spawner: {fileID: 0}
 --- !u!1 &7994817937136791779
 GameObject:
   m_ObjectHideFlags: 0

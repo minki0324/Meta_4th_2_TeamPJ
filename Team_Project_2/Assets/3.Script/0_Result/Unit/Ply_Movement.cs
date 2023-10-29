@@ -29,7 +29,6 @@ public class Ply_Movement : MonoBehaviour
     [Header("มกวม")]
     [SerializeField] private float JumpForce = 10f;
     [SerializeField] private bool isGrounded = true;
-    [SerializeField] private bool isLive = true;
 
     private void Start()
     {
@@ -52,7 +51,7 @@ public class Ply_Movement : MonoBehaviour
 
     private void InputMovment()
     {
-        if(!isLive)
+        if(!GameManager.instance.isLive)
         {
             return;
         }
@@ -86,7 +85,7 @@ public class Ply_Movement : MonoBehaviour
 
     private void Jump()
     {
-        if (!isLive)
+        if (!GameManager.instance.isLive)
         {
             return;
         }
@@ -99,7 +98,7 @@ public class Ply_Movement : MonoBehaviour
 
     public void Check_Ground()
     {
-        if (!isLive)
+        if (!GameManager.instance.isLive)
         {
             return;
         }
