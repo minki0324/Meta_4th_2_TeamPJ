@@ -13,12 +13,19 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance = null;
 
+    [Header("게임 플레이")]
     public float currentTime = 0f; // 게임이 시작하고 지난 시간
     public float EndTime = 1800f; // 게임 시간은 30분
 
+    [Header("골드 관련")]
     public float Gold = 0; // 골드량
     private float Magnifi = 2f;  // 기본 골드 배율 (업데이트문 프레임 60 x 2f로 기본 획득 골드량은 분당 120)
+    
+    [Header("플레이어 관련")]
     public bool isLive = true;
+    public float Current_HP = 150f;
+    public float Max_Hp = 150f;
+    public float Regeneration = 0.5f;
 
     private void Awake()
     {
@@ -41,5 +48,17 @@ public class GameManager : MonoBehaviour
         currentTime += Time.deltaTime;
 
         Gold += Time.deltaTime * Magnifi; // 골드수급
+    }
+
+    public void Stop()
+    {
+        isLive = false;
+        Time.timeScale = 0;
+    }
+    
+    public void Resume()
+    {
+        isLive = true;
+        Time.timeScale = 1;
     }
 }

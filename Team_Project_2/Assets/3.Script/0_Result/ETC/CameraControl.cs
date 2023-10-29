@@ -34,7 +34,7 @@ public class CameraControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rotX += (Input.GetAxis("Mouse Y")) * sensitivity * Time.deltaTime;
+        rotX -= Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
         rotY += Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
 
         rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);

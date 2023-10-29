@@ -14,8 +14,8 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.3962264, g: 0.37566748, b: 0.37566748, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
   m_LinearFogStart: 0
@@ -26,8 +26,8 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
-  m_HaloStrength: 0.5
+  m_SkyboxMaterial: {fileID: 2100000, guid: a59fe87939f259d40a7ee37624c9568b, type: 2}
+  m_HaloStrength: 0.501
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.6610563, g: 0.45940274, b: 0.4546926, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -221,6 +221,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &705523478 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6552830460655700004, guid: 34d10df18e1c14a48aef4c5b868bf36d, type: 3}
+  m_PrefabInstance: {fileID: 887297702}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06bec546004c26047bdf5b2860647bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &853156378
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +315,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 324839429, guid: 34d10df18e1c14a48aef4c5b868bf36d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 324839429, guid: 34d10df18e1c14a48aef4c5b868bf36d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6
+      objectReference: {fileID: 0}
     - target: {fileID: 7994817937136460435, guid: 34d10df18e1c14a48aef4c5b868bf36d, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -601,6 +620,9 @@ MonoBehaviour:
   EndTime: 1800
   Gold: 0
   isLive: 1
+  Current_HP: 150
+  Max_Hp: 150
+  Regeneration: 0.5
 --- !u!4 &1503504437
 Transform:
   m_ObjectHideFlags: 0
@@ -2754,12 +2776,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfb3c6f3134b3a46b65dd966fd036e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Textarray:
-  - {fileID: 2788426881910526107}
-  - {fileID: 2788426882623930811}
   slider:
   - {fileID: 2788426882591639792}
   - {fileID: 2788426881570363136}
+  Textarray:
+  - {fileID: 2788426881910526107}
+  - {fileID: 2788426882623930811}
 --- !u!224 &2788426882841411676
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3129,20 +3151,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5832384638849182914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5832384638849182915}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beca1f6dd7460b14aa3b7110e317ac49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Textarray:
-  - {fileID: 5832384640675240120}
 --- !u!1 &5832384638849182915
 GameObject:
   m_ObjectHideFlags: 0
@@ -3152,7 +3160,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5832384638849182916}
-  - component: {fileID: 5832384638849182914}
+  - component: {fileID: 5832384638849182917}
   m_Layer: 5
   m_Name: Goldui
   m_TagString: Untagged
@@ -3180,6 +3188,53 @@ RectTransform:
   m_AnchoredPosition: {x: 960, y: -290}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5832384638849182917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5832384638849182915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 445eca7031281cb4bb47995800312299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 3
+  textarray:
+  - {fileID: 5832384640675240120}
+  ply: {fileID: 0}
+  HP_Slider: {fileID: 0}
+  SliderImg: {fileID: 0}
+  HP_gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &5832384638864359028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4526,7 +4581,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5832384639325628613
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6080,7 +6135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5832384640259213011}
-  - component: {fileID: 5832384640259213021}
+  - component: {fileID: 5832384640259213012}
   m_Layer: 5
   m_Name: Soldierui
   m_TagString: Untagged
@@ -6109,7 +6164,7 @@ RectTransform:
   m_AnchoredPosition: {x: 745, y: -455}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5832384640259213021
+--- !u!114 &5832384640259213012
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6118,12 +6173,45 @@ MonoBehaviour:
   m_GameObject: {fileID: 5832384640259213010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2274904ff68bd5649bce45627f793753, type: 3}
+  m_Script: {fileID: 11500000, guid: 445eca7031281cb4bb47995800312299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Textarray:
+  type: 1
+  textarray:
   - {fileID: 5832384639251062334}
   - {fileID: 5832384640675396111}
+  ply: {fileID: 705523478}
+  HP_Slider: {fileID: 0}
+  SliderImg: {fileID: 0}
+  HP_gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &5832384640267519225
 GameObject:
   m_ObjectHideFlags: 0
@@ -6283,35 +6371,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 5832384640401062593}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ca17ad1e6334f14fb1a4031257af940, type: 3}
+  m_Script: {fileID: 11500000, guid: 445eca7031281cb4bb47995800312299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Textarray:
+  type: 2
+  textarray:
   - {fileID: 5832384639655624317}
   - {fileID: 5832384638970763504}
-  Current_HP: 150
-  gradient:
+  ply: {fileID: 0}
+  HP_Slider: {fileID: 2788426882505131059}
+  SliderImg: {fileID: 2788426881788606549}
+  HP_gradient:
     serializedVersion: 2
-    key0: {r: 1, g: 0.052130222, b: 0, a: 1}
-    key1: {r: 1, g: 1, b: 0, a: 1}
-    key2: {r: 0.19607843, g: 0.654902, b: 0.19607843, a: 1}
-    key3: {r: 0.19215688, g: 0.654902, b: 0.18823531, a: 1}
-    key4: {r: 0.19215688, g: 0.654902, b: 0.18823531, a: 0}
-    key5: {r: 0.19215688, g: 0.654902, b: 0.18823531, a: 0}
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 0.88801384, g: 0.9056604, b: 0.14097545, a: 1}
+    key2: {r: 0.08600901, g: 0.9716981, b: 0.022917405, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 31804
+    ctime1: 32382
     ctime2: 65535
-    ctime3: 65535
-    ctime4: 65535
-    ctime5: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
     ctime6: 0
     ctime7: 0
     atime0: 0
     atime1: 65535
-    atime2: 65535
-    atime3: 65535
+    atime2: 0
+    atime3: 0
     atime4: 0
     atime5: 0
     atime6: 0
@@ -6319,7 +6410,6 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
-  HPBar: {fileID: 2788426882505131059}
 --- !u!1 &5832384640413529031
 GameObject:
   m_ObjectHideFlags: 0
@@ -6522,7 +6612,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5832384640535868461}
-  - component: {fileID: 5832384640535868463}
+  - component: {fileID: 5832384640535868462}
   m_Layer: 5
   m_Name: TimeUI
   m_TagString: Untagged
@@ -6551,7 +6641,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 450}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5832384640535868463
+--- !u!114 &5832384640535868462
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6560,12 +6650,45 @@ MonoBehaviour:
   m_GameObject: {fileID: 5832384640535868460}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c548c8bc6c8517f4fbd116dbe46c7445, type: 3}
+  m_Script: {fileID: 11500000, guid: 445eca7031281cb4bb47995800312299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Textarray:
+  type: 0
+  textarray:
   - {fileID: 5832384640413529081}
   - {fileID: 5832384639191825510}
+  ply: {fileID: 0}
+  HP_Slider: {fileID: 0}
+  SliderImg: {fileID: 0}
+  HP_gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &5832384640568466547
 GameObject:
   m_ObjectHideFlags: 0
@@ -6645,23 +6768,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5832384640568466547}
   m_CullTransparentMesh: 1
---- !u!114 &5832384640588733162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5832384640588733163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba733d2a975ea0b4ca773124efe933fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Textarray:
-  - {fileID: 5832384639071004762}
-  - {fileID: 5832384640176340109}
-  - {fileID: 5832384640659329155}
-  - {fileID: 5832384638982118442}
 --- !u!1 &5832384640588733163
 GameObject:
   m_ObjectHideFlags: 0
@@ -6671,7 +6777,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5832384640588733164}
-  - component: {fileID: 5832384640588733162}
+  - component: {fileID: 5832384640588733165}
   m_Layer: 5
   m_Name: Employ
   m_TagString: Untagged
@@ -6704,6 +6810,56 @@ RectTransform:
   m_AnchoredPosition: {x: 745, y: 20}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5832384640588733165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5832384640588733163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 445eca7031281cb4bb47995800312299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 4
+  textarray:
+  - {fileID: 5832384639071004762}
+  - {fileID: 5832384640176340109}
+  - {fileID: 5832384640659329155}
+  - {fileID: 5832384638982118442}
+  ply: {fileID: 0}
+  HP_Slider: {fileID: 0}
+  SliderImg: {fileID: 0}
+  HP_gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &5832384640608997835
 GameObject:
   m_ObjectHideFlags: 0

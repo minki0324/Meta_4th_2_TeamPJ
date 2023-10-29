@@ -22,8 +22,8 @@ public class Ply_Controller : MonoBehaviour
     private Minion_Controller minionController;
 
     //플레이어 정보========================
-    private int Max_MinionCount = 25;
-    private int Current_MinionCount;
+    public int Max_MinionCount = 25;
+    public int Current_MinionCount;
 
     //미니언 프리팹=========================
     [Header("인덱스 - 0 : 보병 / 1 : 기사 / 2 : 궁수")]
@@ -156,5 +156,6 @@ public class Ply_Controller : MonoBehaviour
         GameManager.instance.Gold -= (15 + (Human_num * 5));
         Minion.transform.SetParent(transform);
         Minions_List.Add(Minion);
+        Current_MinionCount++;
     }
 }
