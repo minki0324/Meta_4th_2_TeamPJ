@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Option : TextManager
+public class Option : MonoBehaviour
 {
     [SerializeField] private Slider[] slider;
+    [SerializeField] private Text[] Textarray;
 
     private void Update()
     {

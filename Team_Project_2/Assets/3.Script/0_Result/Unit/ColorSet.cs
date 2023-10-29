@@ -21,6 +21,7 @@ public class ColorSet : MonoBehaviour
 
     //배열 인덱스
     [Header("적용시킬 컬러배열의 인덱스")]
+    [TextArea()] public string Color_Num;
     [SerializeField] private int Color_Index;
 
     private void Start()
