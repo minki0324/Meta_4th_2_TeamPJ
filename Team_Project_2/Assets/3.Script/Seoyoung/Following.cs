@@ -227,6 +227,22 @@ public class Following : MonoBehaviour
     }
 
 
+
+    public IEnumerator Mode_Stop_co()
+    {
+        //멈추기 모드
+        //아직 안만들었어용 :)
+        /*
+         1.PlayerController에서 멈춰라 명령하는 순간의 Player의 위치를 저장하는 변수 만들기 및 가져오기
+        2. 그 위치 기준 0번을 플레이어 위치
+        3. nearestMinion 리스트의 순서대로 0번에 가깝게 세우기
+         
+         */
+
+
+        yield return null;
+    }
+
     public void Swap(ref float a ,ref float b)
     {
         float temp = a;
