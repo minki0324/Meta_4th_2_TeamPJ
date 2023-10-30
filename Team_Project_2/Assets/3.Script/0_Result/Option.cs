@@ -16,4 +16,12 @@ public class Option : MonoBehaviour
         Textarray[1].text = "1.00";  // 마스터 음량 변수        
     }
 
+    public void ToTitle()
+    {
+
+    }
+    public void EndGame()
+    {
+
+    }
 }
