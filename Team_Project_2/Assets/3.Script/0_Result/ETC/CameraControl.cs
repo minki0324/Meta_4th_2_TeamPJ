@@ -32,7 +32,7 @@ public class CameraControl : MonoBehaviour
         Yaixs += Input.GetAxis("Mouse X") * RotSen;  // 카메라 좌우
         Xaixs += -Input.GetAxis("Mouse Y") * RotSen; // 카메라 상하
 
-        if (Input.GetKey(KeyCode.B)) // 나중에 ALT 로 바꾸기 (지금은 .. 탭선택돼서..)
+        if (Input.GetKey(KeyCode.B)) // 옵션창에서로 재활용하는걸루,,,
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
