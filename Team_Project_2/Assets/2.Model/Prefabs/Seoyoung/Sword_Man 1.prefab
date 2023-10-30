@@ -8154,7 +8154,6 @@ GameObject:
   - component: {fileID: 3345660950030388180}
   - component: {fileID: 3432355695288861000}
   - component: {fileID: 6961402278990281379}
-  - component: {fileID: 1706648460860486825}
   m_Layer: 6
   m_Name: Sword_Man 1
   m_TagString: Untagged
@@ -8270,6 +8269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Human_type: 15
+  isClose: 0
 --- !u!195 &6961402278990281379
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8292,18 +8292,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1706648460860486825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4239812368246995255}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a8b50ec8e1719d459a5070158aa6c0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4239812368246995373
 GameObject:
   m_ObjectHideFlags: 0

@@ -32,6 +32,12 @@ public class Player_Movment : MonoBehaviour
     [SerializeField] private bool isGrounded = true;
     [SerializeField] private bool isLive = true;
 
+    //추가한 변수
+    public bool isPlayerMove { get; private set; }
+
+    public Vector3 CurrentPos { get; private set; }
+
+
     private void Start()
     {
         ani = GetComponent<Animator>();
@@ -40,6 +46,7 @@ public class Player_Movment : MonoBehaviour
 
     private void Update()
     {
+        CurrentPos = transform.position;
         InputMovment();
         Jump();
         Check_Ground();
@@ -77,11 +84,13 @@ public class Player_Movment : MonoBehaviour
 
             ani.SetBool("Move", true);
             ani.SetBool("Idle", false);
+            isPlayerMove = true;
         }
         else
         {
             ani.SetBool("Idle", true);
             ani.SetBool("Move", false);
+            isPlayerMove = false;
         }
     }
 

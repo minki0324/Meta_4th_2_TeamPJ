@@ -29,6 +29,7 @@ public class Player_Controller : MonoBehaviour
     //다른 클래스 객체=====================
     private Minion_Controller[] minionController;
 
+    private Following following;
 
     //플레이어 정보========================
     private int Max_MinionCount;
@@ -50,7 +51,7 @@ public class Player_Controller : MonoBehaviour
     private GameObject Archer_Prefab;
 
     public List<GameObject> Minions_List = new List<GameObject>();
-    private List<GameObject> nearestMinion_List = new List<GameObject>();
+
     //public LinkedList<GameObject> Minions_List = new LinkedList<GameObject>();
 
 
@@ -65,12 +66,16 @@ public class Player_Controller : MonoBehaviour
     private bool isPossible_HeavyInfantry = false;
     private bool isPossible_Archer = false;
 
+
+    //추가된 변수 - 이서영
+    private List<GameObject> nearestMinion_List = new List<GameObject>();
     public LayerMask TargetLayer;
 
     private UnityEngine.AI.NavMeshAgent[] agents;
 
     private void Awake()
     {
+        following = GetComponent<Following>();
 
         MyTeam = TeamColor.Red;
         CurrentMode = Mode.Follow;
@@ -131,6 +136,8 @@ public class Player_Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("나를 따르라~~");
+            StopCoroutine(following.Mode_Follow_co());
+            StartCoroutine(following.Mode_Follow_co());
             CurrentMode = Mode.Follow;
            
 
