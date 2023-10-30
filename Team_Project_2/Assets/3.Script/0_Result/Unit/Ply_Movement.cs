@@ -104,10 +104,11 @@ public class Ply_Movement : MonoBehaviour
         }
 
         RaycastHit hit;
+        Vector3 HitPos = new Vector3(transform.position.x, transform.position.y - 1, transform.position.z);
 
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 0.1f))
+        if (Physics.Raycast(HitPos, Vector3.down, out hit, 1.1f))
         {
-            Debug.DrawRay(transform.position, Vector3.down, Color.red, 0.1f);
+            Debug.DrawRay(HitPos, Vector3.down, Color.red, 1.1f);
             if (hit.transform.CompareTag("Ground"))
             {
                 isGrounded = true;
