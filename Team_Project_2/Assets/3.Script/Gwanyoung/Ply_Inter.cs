@@ -6,6 +6,7 @@ public class Ply_Inter : MonoBehaviour
 {
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject OpenDoorui;
+
     private void FixedUpdate()
     {
         gameObject.transform.position = Player.transform.position;
