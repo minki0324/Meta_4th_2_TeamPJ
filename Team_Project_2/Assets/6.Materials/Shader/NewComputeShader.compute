@@ -1,0 +1,12 @@
+#pragma kernel CSMain
+
+// RWTexture2D<float>는 쓰기 가능한 2D 텍스처를 의미합니다.
+RWTexture2D<float> Result;
+
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID) {
+    // id.xy는 스레드의 x, y 위치를 나타냅니다.
+    // 이 값을 사용하여 각 스레드마다 고유한 값을 계산합니다.
+    float value = (sin(id.x * 0.1) + cos(id.y * 0.1)) * 0.5 + 0.5;
+    Result[id.xy] = value;
+}

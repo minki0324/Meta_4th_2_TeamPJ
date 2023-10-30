@@ -22,6 +22,7 @@ public class Ply_Movement : MonoBehaviour
     Camera camera;
     [SerializeField] private Animator ani;
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private Rigidbody Ply_rb;
 
     [Header("¿Ãµø")]
     [SerializeField] private float MoveSpeed = 5f;
@@ -32,7 +33,6 @@ public class Ply_Movement : MonoBehaviour
 
     private void Start()
     {
-        ani = GetComponent<Animator>();
         camera = Camera.main;
     }
 
@@ -93,6 +93,7 @@ public class Ply_Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(Vector3.up * JumpForce);
+            Ply_rb.AddForce(Vector3.up * JumpForce);
         }
     }
 
@@ -104,11 +105,11 @@ public class Ply_Movement : MonoBehaviour
         }
 
         RaycastHit hit;
-        Vector3 HitPos = new Vector3(transform.position.x, transform.position.y - 1, transform.position.z);
+        Vector3 HitPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
+            Debug.DrawRay(HitPos, Vector3.down, Color.red, 1.1f);
         if (Physics.Raycast(HitPos, Vector3.down, out hit, 1.1f))
         {
-            Debug.DrawRay(HitPos, Vector3.down, Color.red, 1.1f);
             if (hit.transform.CompareTag("Ground"))
             {
                 isGrounded = true;

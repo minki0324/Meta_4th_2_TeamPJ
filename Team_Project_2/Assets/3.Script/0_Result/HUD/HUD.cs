@@ -52,10 +52,9 @@ public class HUD : MonoBehaviour
                 textarray[0].text = $"골드: {(int)GameManager.instance.Gold}";
                 break;
             case InfoType.Employ:
-                textarray[0].text = $"♥80 /20\n고용 키: <color=#FF3E3E>1</color>\n비용: <color=#B7AF3D>15</color>"; // 민병
-                textarray[1].text = $"♥90 /20\n고용 키: <color=#FF3E3E>2</color>\n비용: <color=#B7AF3D>16</color>"; // 창병
-                textarray[2].text = $"♥100 /25\n고용 키: <color=#FF3E3E>3</color>\n비용: <color=#B7AF3D>20</color>"; // 군단
-                textarray[3].text = $"♥80 /20\n고용 키: <color=#FF3E3E>0</color>\n비용: <color=#B7AF3D>20</color>"; // 방어군
+                textarray[0].text = $"♥80 /20\n고용 키: <color=#FF3E3E>1</color>\n비용: <color=#B7AF3D>15</color>"; // 검사
+                textarray[1].text = $"♥90 /20\n고용 키: <color=#FF3E3E>2</color>\n비용: <color=#B7AF3D>20</color>"; // 기사
+                textarray[2].text = $"♥100 /25\n고용 키: <color=#FF3E3E>3</color>\n비용: <color=#B7AF3D>25</color>"; // 궁수
                 break;
             case InfoType.TeamPoint:
                 // 추후 사용 할지 안할지 생각해봐야함
