@@ -69,6 +69,7 @@ public class Player_Controller : MonoBehaviour
 
     //추가된 변수 - 이서영
     private List<GameObject> nearestMinion_List = new List<GameObject>();
+
     public LayerMask TargetLayer;
 
     private UnityEngine.AI.NavMeshAgent[] agents;

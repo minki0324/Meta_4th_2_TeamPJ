@@ -103,11 +103,11 @@ public class Minion_Controller : MonoBehaviour
                 if(isClose == true)
                 {  
                     ani.SetBool("Move", false);
-                   // ani.SetBool("Walk", true);
+                  
                 }
                 else
                 {
-                    //ani.SetBool("Walk", false);
+                    
                     ani.SetBool("Move", true);
                 }
                 
