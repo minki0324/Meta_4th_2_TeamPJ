@@ -19,7 +19,7 @@ public class Ply_Controller : MonoBehaviour
     public Mode CurrentMode;
 
     //다른 클래스 객체=====================
-    private Minion_Controller minionController;
+    private Minion_Controller[] minionController;
 
     //플레이어 정보========================
     public int Max_MinionCount = 25;
@@ -42,6 +42,15 @@ public class Ply_Controller : MonoBehaviour
     private bool isPossible_Archer = false;
 
 
+    public bool isDead { get; private set; } = false;
+
+    public LayerMask TargetLayer;
+
+    private UnityEngine.AI.NavMeshAgent[] agents;
+
+    private List<GameObject> nearestMinion_List = new List<GameObject>();
+
+
     private void Awake()
     {
         CurrentMode = Mode.Follow;
@@ -54,9 +63,10 @@ public class Ply_Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("나를 따르라~~");
+            StartCoroutine(Mode_Follow_co());
             CurrentMode = Mode.Follow;
         }
-
+            
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("돌격하라~~");
@@ -148,7 +158,7 @@ public class Ply_Controller : MonoBehaviour
         // 나중에 인트로 씬에서 컬러셋 스크립트에서 컬러번호 넘겨 받은거로 소환할 때 컬러 적용 시켜야함
 
         GameObject Minion = null;
-        Minion = Instantiate(Minion_Prefabs[Human_num], transform.position + Vector3.back, Quaternion.identity);
+        Minion = Instantiate(Minion_Prefabs[Human_num], Spawner.position, Quaternion.identity);
         //미니언 생성 위치는 나중에 점령지(Spawner)위치로 바꾸기 
 
         Minion_Controller minionController = Minion.AddComponent<Minion_Controller>();
@@ -158,4 +168,112 @@ public class Ply_Controller : MonoBehaviour
         Minions_List.Add(Minion);
         Current_MinionCount++;
     }
+
+
+
+
+
+    private bool isTarget
+    {
+        get
+        {
+            if (!isDead)
+            {
+                return true;
+            }
+            return false;
+        }
+
+    }
+
+
+
+    public IEnumerator Mode_Follow_co()
+    {
+
+        minionController = GetComponentsInChildren<Minion_Controller>();
+        agents = GetComponentsInChildren<UnityEngine.AI.NavMeshAgent>();
+
+
+        if (isTarget)
+        {
+            for (int i = 0; i < Minions_List.Count; i++)
+            {
+                agents[i].isStopped = false;
+            }
+            //agent.isStopped = false;
+            //수정중..이 망할놈들이 추가될 때도 작동하도록 변경..
+
+            
+
+            GameObject FollowObj = this.gameObject;
+
+            for (int i = 0; i < Minions_List.Count; i++)
+            {
+
+                float ShortDis = Vector3.Distance(FollowObj.transform.position, Minions_List[0].transform.position);
+                for (int j = 0; j < Minions_List.Count; j++)
+                {
+                    float Distance = Vector3.Distance(FollowObj.transform.position, Minions_List[j].transform.position);
+                    if (ShortDis >= Distance)
+                    {
+                        nearestMinion_List.Add(Minions_List[j]);
+
+
+
+                        //FollowObj = nearestMinion_List[j];
+                        //ShortDis = Distance;
+                    }
+
+                    if (j == 0)
+                    {
+                        agents[j].SetDestination(this.transform.position + Vector3.back);
+                    }
+                    else
+                    {
+                        agents[j].SetDestination(nearestMinion_List[j - 1].transform.position + Vector3.back);
+                    }
+                }
+
+            }
+        }
+        //else
+        //{
+
+        //    for (int i = 0; i < Minions_List.Count; i++)
+        //    {
+        //        agents[i].isStopped = true;
+        //    }
+        //    Collider[] cols = Physics.OverlapSphere(transform.position, 20f, TargetLayer);
+        //    for (int i = 0; i < cols.Length; i++)
+        //    {
+        //        if (cols[i].TryGetComponent(out Ply_Controller p))
+        //        {
+        //            if (!p.isDead)
+        //            {
+        //                p = this.GetComponent<Ply_Controller>();
+        //                break;
+        //            }
+        //        }
+
+        //    }
+        //}
+
+
+        yield return null;
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }
