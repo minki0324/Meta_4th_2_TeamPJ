@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 17be57cc769b9a243b648c59a2831f73
+guid: c404d19ebdd6bb54eb3e81cba07314a5
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
@@ -8,7 +8,7 @@ ModelImporter:
     second: mixamo.com
   externalObjects: {}
   materials:
-    materialImportMode: 0
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -18,8 +18,7 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
-    rigImportErrors: "Copied Avatar Rig Configuration mis-match. Transform hierarchy
-      does not match:\n\tTransform 'Bip001 Pelvis' for human bone 'Hips' not found\n"
+    rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -35,7 +34,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -43,10 +42,10 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
-    importVisibility: 0
-    importBlendShapes: 0
-    importCameras: 0
-    importLights: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -59,7 +58,7 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     meshOptimizationFlags: -1
-    indexFormat: 1
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -72,8 +71,8 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-    normalCalculationMode: 0
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
@@ -91,9 +90,9 @@ ModelImporter:
     feetSpacing: 0
     globalScale: 1
     rootMotionBoneName: 
-    hasTranslationDoF: 1
-    hasExtraRoot: 0
-    skeletonHasParents: 0
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3

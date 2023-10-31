@@ -90,7 +90,7 @@ public class Following : MonoBehaviour
     {
         nearestMinion_List.Clear();
 
-        minionController = GetComponentsInChildren<Minion_Controller>();
+        //minionController = GetComponentsInChildren<Minion_Controller>();
       
         if (isTarget)
         {
@@ -150,7 +150,7 @@ public class Following : MonoBehaviour
     //ÇÃ·¹ÀÌ¾î ¸Ø­ŸÀ» ¶§ : 5¿­ Á¾´ë..?·Î ¼­´Â ÄÚ·çÆ¾
     public IEnumerator Mode_Stop_Follow_co()
     {
-        minionController = GetComponentsInChildren<Minion_Controller>();
+        //minionController = GetComponentsInChildren<Minion_Controller>();
         for (int i = 0; i<nearestMinion_List.Count; i++)
         {
             if(i <= 4)

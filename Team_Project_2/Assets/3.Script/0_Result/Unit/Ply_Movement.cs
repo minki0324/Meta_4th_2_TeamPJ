@@ -35,8 +35,9 @@ public class Ply_Movement : MonoBehaviour
 
     public Vector3 CurrentPos { get; private set; }
 
+    //추가된 변수-이서영
 
-
+    public bool isAttacking_1 = false;
 
     private void Start()
     {
@@ -52,13 +53,28 @@ public class Ply_Movement : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.H))
         {
-            ani.SetTrigger("Attack");
+            if(!isAttacking_1)
+            {
+                ani.SetTrigger("Attack");
+                isAttacking_1 = true;
+            }
+            else
+            {
+                ani.SetBool("ContinualAttack", true);
+            }
+
+          
+                
+            
+            
             // isLive = false;
         }
 
-
-
     }
+
+ 
+
+
 
     private void InputMovment()
     {

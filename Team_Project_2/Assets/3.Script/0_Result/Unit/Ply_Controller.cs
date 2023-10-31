@@ -198,7 +198,7 @@ public class Ply_Controller : MonoBehaviour
         Minion_Controller minionController = Minion.AddComponent<Minion_Controller>();
 
         GameManager.instance.Gold -= (15 + (Human_num * 5));
-        Minion.transform.SetParent(transform);
+        //Minion.transform.SetParent(transform);
         Minions_List.Add(Minion);
         Current_MinionCount++;
     }
