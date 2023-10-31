@@ -35,6 +35,9 @@ public class Ply_Movement : MonoBehaviour
 
     public Vector3 CurrentPos { get; private set; }
 
+
+
+
     private void Start()
     {
         camera = Camera.main;
@@ -52,6 +55,9 @@ public class Ply_Movement : MonoBehaviour
             ani.SetTrigger("Attack");
             // isLive = false;
         }
+
+
+
     }
 
     private void InputMovment()

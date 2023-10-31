@@ -13,13 +13,15 @@ public class Ply_Controller : MonoBehaviour
     {
         Follow = 1,      //나를 따르라~
         Attack,    //돌격하라~
-        Assemble    //그자리에 멈추기 & 적이 다가오면 방어모드
+        Assemble,    //그자리에 멈추기 & 적이 다가오면 방어모드
+        Stop    //멈춰라~~
     }
 
     public Mode CurrentMode;
 
     //다른 클래스 객체=====================
     private Minion_Controller[] minionController;
+
     private Following following;
 
     //플레이어 정보========================
@@ -50,6 +52,15 @@ public class Ply_Controller : MonoBehaviour
     private List<GameObject> nearestMinion_List = new List<GameObject>();
 
 
+    //변수추가 이서영
+
+    public bool isOperateStop = false;
+
+    public bool isOperateFollow = true;
+
+
+    public bool isDead { get; private set; }
+
     private void Awake()
     {
         following = GetComponent<Following>();
@@ -65,6 +76,7 @@ public class Ply_Controller : MonoBehaviour
             Debug.Log("나를 따르라~~");
             
             CurrentMode = Mode.Follow;
+            isOperateFollow = true;
         }
             
         if (Input.GetKeyDown(KeyCode.E))
@@ -78,6 +90,24 @@ public class Ply_Controller : MonoBehaviour
             Debug.Log("모여라~~");
             CurrentMode = Mode.Assemble;
         }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Debug.Log("멈춰라~~");
+
+            CurrentMode = Mode.Stop;
+            isOperateStop = true;
+
+            isOperateFollow = false;
+     
+          
+            
+        }
+
+
+
+     
+
     }
 
     private void Spawn_Solider()
@@ -104,6 +134,7 @@ public class Ply_Controller : MonoBehaviour
 
                 if(selectedNumber != -1)
                 {
+                    
                     switch (selectedNumber)
                     {
                         case 1:
@@ -148,6 +179,9 @@ public class Ply_Controller : MonoBehaviour
                             }
                             break;
                     }
+
+
+                    StartCoroutine(following.Mode_Follow_co());
                 }
             }
         }
