@@ -6961,9 +6961,10 @@ GameObject:
   - component: {fileID: 7994817937136791334}
   - component: {fileID: 7994817937136791332}
   - component: {fileID: 6552830460655700004}
+  - component: {fileID: 2081302208993108797}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7047,6 +7048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ani: {fileID: 0}
   rb: {fileID: 7994817937136791333}
+  Ply_rb: {fileID: 0}
   MoveSpeed: 5
   JumpForce: 300
   isGrounded: 1
@@ -7063,6 +7065,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentMode: 0
+  Max_MinionCount: 25
+  Current_MinionCount: 0
   Minion_Prefabs:
   - {fileID: 4239812368246995255, guid: a23f289f202db4f44960db0c252df524, type: 3}
   - {fileID: 6006503084427101158, guid: 7b2c5439dcdaff14682d91ecbec50354, type: 3}
@@ -7070,6 +7074,25 @@ MonoBehaviour:
   Minions_List: []
   Human_num: 0
   Spawner: {fileID: 0}
+  TargetLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &2081302208993108797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7994817937136791335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58f40d976cd9e6448a420ad82ef3bd54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nearestMinion_List: []
+  TargetLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &7994817937136791779
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Minion_Controller : MonoBehaviour
 {
@@ -32,6 +33,18 @@ public class Minion_Controller : MonoBehaviour
     public bool isDead { get; private set; } = false;
 
     public Type Human_type;
+
+
+
+
+    //추가된 변수 - 이서영
+    public bool isClose = false;
+
+
+
+
+
+
 
     private void Awake()
     {
@@ -86,7 +99,18 @@ public class Minion_Controller : MonoBehaviour
         switch (playerController.CurrentMode)
         {
             case Ply_Controller.Mode.Follow:
-                ani.SetBool("Move", true);
+
+                if(isClose == true)
+                {  
+                    ani.SetBool("Move", false);
+                  
+                }
+                else
+                {
+                    
+                    ani.SetBool("Move", true);
+                }
+                
                 // 플레이어or대열의 앞 병사와 가까워졌을 때 체크하는 메소드 넣어서 가까워지면 Bool값 false로 변경, 멀어지면 다시 true로 변경해서 따라가기
                 break;
 

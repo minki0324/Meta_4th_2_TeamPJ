@@ -19,10 +19,11 @@ public class Ply_Controller : MonoBehaviour
     public Mode CurrentMode;
 
     //다른 클래스 객체=====================
-    private Minion_Controller minionController;
+    private Minion_Controller[] minionController;
+    private Following following;
 
     //플레이어 정보========================
-    public int Max_MinionCount = 25;
+    public int Max_MinionCount = 19;
     public int Current_MinionCount;
 
     //미니언 프리팹=========================
@@ -42,8 +43,16 @@ public class Ply_Controller : MonoBehaviour
     private bool isPossible_Archer = false;
 
 
+    public LayerMask TargetLayer;
+
+    private UnityEngine.AI.NavMeshAgent[] agents;
+
+    private List<GameObject> nearestMinion_List = new List<GameObject>();
+
+
     private void Awake()
     {
+        following = GetComponent<Following>();
         CurrentMode = Mode.Follow;
     }
 
@@ -54,9 +63,10 @@ public class Ply_Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("나를 따르라~~");
+            
             CurrentMode = Mode.Follow;
         }
-
+            
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("돌격하라~~");
@@ -148,7 +158,7 @@ public class Ply_Controller : MonoBehaviour
         // 나중에 인트로 씬에서 컬러셋 스크립트에서 컬러번호 넘겨 받은거로 소환할 때 컬러 적용 시켜야함
 
         GameObject Minion = null;
-        Minion = Instantiate(Minion_Prefabs[Human_num], transform.position + Vector3.back, Quaternion.identity);
+        Minion = Instantiate(Minion_Prefabs[Human_num], Spawner.position, Quaternion.identity);
         //미니언 생성 위치는 나중에 점령지(Spawner)위치로 바꾸기 
 
         Minion_Controller minionController = Minion.AddComponent<Minion_Controller>();
