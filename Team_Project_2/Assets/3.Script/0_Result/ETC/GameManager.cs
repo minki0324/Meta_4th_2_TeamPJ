@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance = null;
 
+    [SerializeField] private GameObject Option;
+    private bool isEnableOp = false;
+
     [Header("게임 플레이")]
     public float currentTime = 0f; // 게임이 시작하고 지난 시간
     public float EndTime = 1800f; // 게임 시간은 30분
@@ -45,6 +48,22 @@ public class GameManager : MonoBehaviour
     
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(!isEnableOp)
+            {
+                isEnableOp = true;
+                Time.timeScale = 0;
+                Option.SetActive(true);
+            }
+            else
+            {
+                isEnableOp = false;
+                Time.timeScale = 1;
+                Option.SetActive(false);
+            }
+        }
+        
         currentTime += Time.deltaTime;
 
         Gold += Time.deltaTime * Magnifi; // 골드수급
