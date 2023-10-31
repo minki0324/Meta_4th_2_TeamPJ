@@ -20,6 +20,7 @@ public class Minion_Controller : MonoBehaviour
         Archer = 25,
     }
 
+
     private Ply_Controller playerController;
     private Animator ani;
 
@@ -100,16 +101,16 @@ public class Minion_Controller : MonoBehaviour
         {
             case Ply_Controller.Mode.Follow:
 
-                if(isClose == true)
-                {  
-                    ani.SetBool("Move", false);
+                //if(isClose == true)
+                //{  
+                //    ani.SetBool("Move", false);
                   
-                }
-                else
-                {
+                //}
+                //else
+                //{
                     
-                    ani.SetBool("Move", true);
-                }
+                //    ani.SetBool("Move", true);
+                //}
                 
                 // 플레이어or대열의 앞 병사와 가까워졌을 때 체크하는 메소드 넣어서 가까워지면 Bool값 false로 변경, 멀어지면 다시 true로 변경해서 따라가기
                 break;

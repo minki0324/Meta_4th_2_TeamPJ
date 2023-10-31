@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - Door
+  - Weapon
   layers:
   - Default
   - TransparentFX
@@ -13,10 +14,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Enemy
+  - Team
   - Target
-  - 
+  - Die
   - 
   - 
   - 
