@@ -11,16 +11,16 @@ public class Following : MonoBehaviour
 
    // private UnityEngine.AI.NavMeshAgent[] agents;
 
-    private Player_Controller pc;
-    private Player_Movment pm;
+    private Ply_Controller pc;
+    private Ply_Movement pm;
 
     private Minion_Controller[] minionController;
-    GameObject shortobj = new GameObject();
+    GameObject shortobj;
     GameObject FollowObj;
     private void Awake()
     {
-        pc = FindObjectOfType<Player_Controller>();
-        pm = FindObjectOfType<Player_Movment>();
+        pc = FindObjectOfType<Ply_Controller>();
+        pm = FindObjectOfType<Ply_Movement>();
     }
 
     private void Start()
@@ -53,7 +53,7 @@ public class Following : MonoBehaviour
     {
         get
         {
-            if (!pc.isDead)
+            if (!GameManager.instance.isLive)
             {
                 return true;
             }
@@ -72,8 +72,6 @@ public class Following : MonoBehaviour
 
         minionController = GetComponentsInChildren<Minion_Controller>();
       
-
-
         if (isTarget)
         {
             if(pm.isPlayerMove)
@@ -83,14 +81,6 @@ public class Following : MonoBehaviour
                     pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().isStopped = false;
                 }
             }
-           
-         
-
-            //¼öÁ¤Áß..ÀÌ ¸ÁÇÒ³ðµéÀÌ Ãß°¡µÉ ¶§µµ ÀÛµ¿ÇÏµµ·Ï º¯°æ..
-
-          
-
-
 
             for (int i = 0; i < pc.Minions_List.Count; i++)
             {
@@ -120,8 +110,6 @@ public class Following : MonoBehaviour
 
                 nearestMinion_List.Add(shortobj);
 
-
-
                 if (i == 0)
                 {
                     nearestMinion_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position);  
@@ -135,25 +123,13 @@ public class Following : MonoBehaviour
                 FollowObj = nearestMinion_List[i];
 
             }
-
-
         }
-
-
-
         yield return null;
-
-
-
     }
-
-
-
 
     //ÇÃ·¹ÀÌ¾î ¸Ø­ŸÀ» ¶§ : 5¿­ Á¾´ë..?·Î ¼­´Â ÄÚ·çÆ¾
     public IEnumerator Mode_Stop_Follow_co()
     {
-
         minionController = GetComponentsInChildren<Minion_Controller>();
         for (int i = 0; i<nearestMinion_List.Count; i++)
         {
@@ -169,8 +145,6 @@ public class Following : MonoBehaviour
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
                             //nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
                         }
-                        
-
                     }
                     else
                     {
@@ -217,13 +191,8 @@ public class Following : MonoBehaviour
                     nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
                 }   
             }
-
-
-           
         }
         yield return null;
-  
-       
     }
 
 
@@ -238,8 +207,6 @@ public class Following : MonoBehaviour
         3. nearestMinion ¸®½ºÆ®ÀÇ ¼ø¼­´ë·Î 0¹ø¿¡ °¡±õ°Ô ¼¼¿ì±â
          
          */
-
-
         yield return null;
     }
 

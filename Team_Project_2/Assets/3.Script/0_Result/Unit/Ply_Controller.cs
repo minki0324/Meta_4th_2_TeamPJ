@@ -20,9 +20,10 @@ public class Ply_Controller : MonoBehaviour
 
     //다른 클래스 객체=====================
     private Minion_Controller[] minionController;
+    private Following following;
 
     //플레이어 정보========================
-    public int Max_MinionCount = 25;
+    public int Max_MinionCount = 19;
     public int Current_MinionCount;
 
     //미니언 프리팹=========================
@@ -42,8 +43,6 @@ public class Ply_Controller : MonoBehaviour
     private bool isPossible_Archer = false;
 
 
-    public bool isDead { get; private set; } = false;
-
     public LayerMask TargetLayer;
 
     private UnityEngine.AI.NavMeshAgent[] agents;
@@ -53,6 +52,7 @@ public class Ply_Controller : MonoBehaviour
 
     private void Awake()
     {
+        following = GetComponent<Following>();
         CurrentMode = Mode.Follow;
     }
 
@@ -63,7 +63,7 @@ public class Ply_Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("나를 따르라~~");
-            StartCoroutine(Mode_Follow_co());
+            
             CurrentMode = Mode.Follow;
         }
             
@@ -168,112 +168,4 @@ public class Ply_Controller : MonoBehaviour
         Minions_List.Add(Minion);
         Current_MinionCount++;
     }
-
-
-
-
-
-    private bool isTarget
-    {
-        get
-        {
-            if (!isDead)
-            {
-                return true;
-            }
-            return false;
-        }
-
-    }
-
-
-
-    public IEnumerator Mode_Follow_co()
-    {
-
-        minionController = GetComponentsInChildren<Minion_Controller>();
-        agents = GetComponentsInChildren<UnityEngine.AI.NavMeshAgent>();
-
-
-        if (isTarget)
-        {
-            for (int i = 0; i < Minions_List.Count; i++)
-            {
-                agents[i].isStopped = false;
-            }
-            //agent.isStopped = false;
-            //수정중..이 망할놈들이 추가될 때도 작동하도록 변경..
-
-            
-
-            GameObject FollowObj = this.gameObject;
-
-            for (int i = 0; i < Minions_List.Count; i++)
-            {
-
-                float ShortDis = Vector3.Distance(FollowObj.transform.position, Minions_List[0].transform.position);
-                for (int j = 0; j < Minions_List.Count; j++)
-                {
-                    float Distance = Vector3.Distance(FollowObj.transform.position, Minions_List[j].transform.position);
-                    if (ShortDis >= Distance)
-                    {
-                        nearestMinion_List.Add(Minions_List[j]);
-
-
-
-                        //FollowObj = nearestMinion_List[j];
-                        //ShortDis = Distance;
-                    }
-
-                    if (j == 0)
-                    {
-                        agents[j].SetDestination(this.transform.position + Vector3.back);
-                    }
-                    else
-                    {
-                        agents[j].SetDestination(nearestMinion_List[j - 1].transform.position + Vector3.back);
-                    }
-                }
-
-            }
-        }
-        //else
-        //{
-
-        //    for (int i = 0; i < Minions_List.Count; i++)
-        //    {
-        //        agents[i].isStopped = true;
-        //    }
-        //    Collider[] cols = Physics.OverlapSphere(transform.position, 20f, TargetLayer);
-        //    for (int i = 0; i < cols.Length; i++)
-        //    {
-        //        if (cols[i].TryGetComponent(out Ply_Controller p))
-        //        {
-        //            if (!p.isDead)
-        //            {
-        //                p = this.GetComponent<Ply_Controller>();
-        //                break;
-        //            }
-        //        }
-
-        //    }
-        //}
-
-
-        yield return null;
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
 }

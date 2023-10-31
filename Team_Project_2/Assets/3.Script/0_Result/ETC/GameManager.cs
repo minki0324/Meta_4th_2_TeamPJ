@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public float EndTime = 1800f; // 게임 시간은 30분
 
     [Header("골드 관련")]
-    public float Gold = 0; // 골드량
+    public float Gold = 1000; // 골드량
     private float Magnifi = 2f;  // 기본 골드 배율 (업데이트문 프레임 60 x 2f로 기본 획득 골드량은 분당 120)
     
     [Header("플레이어 관련")]

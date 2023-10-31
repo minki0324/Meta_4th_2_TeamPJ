@@ -23,8 +23,8 @@ public class CameraControl : MonoBehaviour
 
     private void Awake()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
         
     }
     private void LateUpdate()
