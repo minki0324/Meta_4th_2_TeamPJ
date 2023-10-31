@@ -16,7 +16,7 @@ public class HUD : MonoBehaviour
 
     public enum InfoType
     {
-        Time, Soldier, Health, Gold, Employ, TeamPoint
+        Time, Soldier, Health, Gold, Employ, TeamPoint, Occupation
     }
 
     public InfoType type;
@@ -63,6 +63,7 @@ public class HUD : MonoBehaviour
                 textarray[2].text = $"{(int)GameManager.instance.currentTime * 3}";
                 textarray[3].text = $"{(int)GameManager.instance.currentTime * 4}";
                 break;
+
         }
     }
 }
