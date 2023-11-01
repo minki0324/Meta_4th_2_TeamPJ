@@ -18,7 +18,7 @@ public class UnitAttack : Minion_Controller
     //임시 미니언체력
     private int HP = 3;
     private bool isDie;
-
+    [SerializeField] private Ply_Controller player;
 
 
     // 유닛 공격감지범위
@@ -50,7 +50,7 @@ public class UnitAttack : Minion_Controller
     private void Start()
     {
         //공격딜레이 랜덤
-
+        TryGetComponent(out player);
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
@@ -73,61 +73,17 @@ public class UnitAttack : Minion_Controller
 
     private void Update()
     {
-        //if(player.CurrentMode == Ply_Controller.Mode.Attack) { 
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, targetLayer);
-        nearestTarget = GetNearestTarget(hits);
-        if(nearestTarget == null)
-        {
 
-        }
+       
+           
       
-
-      
-        if (nearestTarget != null && !isDie)
-        {
-            float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
-            if (attackDistance <= AttackRange)
-            {
-                isdetecting = true;
-            }
-            else
-            {
-                isdetecting = false;
-            }
-            //타겟감지시 타겟쪽으로 바라보기
-            LookatTarget(nearestTarget);
-            // 유닛의 공격범위에 들어갈때까지 타겟에게 이동
-            if (!isdetecting )
-            {
-                AttackMoving(nearestTarget);
-            }
-            // 타겟이 공격범위에 들어왔을때 공격
-            else
-            {
-                navMeshAgent.isStopped = true;
-                ani.SetBool("Move", false);
-
-                // 
-                if (!isAttacking)
-                {
-                    attackCoroutine = StartCoroutine(Attack_co());
-                    //StartCoroutine(Attack_co());
-                }
-
-            }
-        }
-        //}
 
         if (HP <= 0)
         {
             //공격정지 ,이동정지 
             if (!isDie)
             {
-                ani.SetTrigger("Dead");
-                gameObject.layer = 9;
-                HitBox_col.enabled = false;
-                StopCoroutine(attackCoroutine);
-                Destroy(gameObject, 3f);
+                Die();
             }
             isDie = true;
         }
@@ -179,26 +135,26 @@ public class UnitAttack : Minion_Controller
     //    Gizmos.color = Color.green;
     //    Gizmos.DrawWireSphere(transform.position, AttackRange);
     //}
- 
+
     private void OnTriggerEnter(Collider other)
     {
-       
+
         if (other.CompareTag("Weapon") && other.gameObject.layer == targetLayer_Index && !isHitting)
         {
             StartCoroutine(Hit_co());
         }
 
     }
-   
+
     private IEnumerator Attack_co()
     {
         //공격쿨타임
         float d = Random.Range(2f, 2.1f);
         attackDelay = new WaitForSeconds(d);
-        
+
         //상태 공격중으로 변경
         isAttacking = true;
-        
+
         isSuccessAtk = false;
         ani.SetTrigger("Attack");
         yield return attackDelay;
@@ -241,5 +197,52 @@ public class UnitAttack : Minion_Controller
     {
         Ob_Weapon_col.enabled = false;
     }
-  
+    public void Die()
+    {
+        ani.SetTrigger("Dead");  // 죽는모션재생
+        gameObject.layer = 9;   // 레이어 DIe로 변경해서 타겟으로 안되게
+        HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
+        //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
+        Destroy(gameObject, 3f);  // 죽고나서 3초후 디스트로이
+    }
+    public void MinionAttack()
+    {
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, targetLayer);
+        nearestTarget = GetNearestTarget(hits);
+
+
+        if (nearestTarget != null && !isDie)
+        {
+            float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
+            if (attackDistance <= AttackRange)
+            {
+                isdetecting = true;
+            }
+            else
+            {
+                isdetecting = false;
+            }
+            //타겟감지시 타겟쪽으로 바라보기
+            LookatTarget(nearestTarget);
+            // 유닛의 공격범위에 들어갈때까지 타겟에게 이동
+            if (!isdetecting)
+            {
+                AttackMoving(nearestTarget);
+            }
+            // 타겟이 공격범위에 들어왔을때 공격
+            else
+            {
+                navMeshAgent.isStopped = true;
+                ani.SetBool("Move", false);
+
+                // 
+                if (!isAttacking)
+                {
+                    attackCoroutine = StartCoroutine(Attack_co());
+                    //StartCoroutine(Attack_co());
+                }
+
+            }
+        }
+    }
 }
