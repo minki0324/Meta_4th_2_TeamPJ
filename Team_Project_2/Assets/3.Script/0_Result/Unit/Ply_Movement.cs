@@ -59,7 +59,7 @@ public class Ply_Movement : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.H))
         {
-          
+            
             if (isPossible_Attack_1)
             {
                 //모션 1 실행 시작
@@ -70,7 +70,7 @@ public class Ply_Movement : MonoBehaviour
                 isAttacking_1 = true;   //실행중
 
                 isAttacking_2 = false;
-                isPossible_Attack_1 = false; 
+                isPossible_Attack_1 = false;
                 isPossible_Attack_2 = false;
 
             }
