@@ -17,6 +17,8 @@ public class Occupation : MonoBehaviour
     [Header("색 변경")]
     [SerializeField] private Material[] Flag_Color; // 깃발 색바꿀 Marterial
     [SerializeField] private Image[] Occu_Back; // 점령 중인 팀 색
+    [SerializeField] private ColorSet color;
+    [SerializeField] private Transform player;
 
     public Slider OccuValue; // 점령 게이지
 
@@ -26,7 +28,7 @@ public class Occupation : MonoBehaviour
     private float Current_Gauge = 0;  // 현재 점령 게이지
 
     public bool isOccupating = false; // 점령 중인지
-    private bool isOccupied = false; // 점령이 끝났는지
+    [SerializeField] private bool isOccupied = false; // 점령이 끝났는지
 
     private Ply_Controller ply_Con;
     private void Awake()
@@ -63,7 +65,10 @@ public class Occupation : MonoBehaviour
 
     private void Change_Color()
     {
+        // 나중에 컬러별로 수정
         skinnedmesh.material = Flag_Color[1];
+        color.Color_Index = 8;
+        color.RecursiveSearchAndSetTexture(player);
         Occu_Back[0].color = new Color32(255, 0, 0, 110);
         Occu_Back[1].color = new Color32(255, 0, 0, 110);
     }

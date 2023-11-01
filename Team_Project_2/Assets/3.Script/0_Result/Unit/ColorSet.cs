@@ -22,7 +22,7 @@ public class ColorSet : MonoBehaviour
     //배열 인덱스
     [Header("적용시킬 컬러배열의 인덱스")]
     [TextArea()] public string Color_Num;
-    [SerializeField] private int Color_Index;    
+    [SerializeField] public int Color_Index;    
 
     private void Start()
     {
@@ -34,7 +34,7 @@ public class ColorSet : MonoBehaviour
         RecursiveSearchAndSetTexture(player);
     }
 
-    private void RecursiveSearchAndSetTexture(Transform currentTransform)
+    public void RecursiveSearchAndSetTexture(Transform currentTransform)
     {
         foreach (Transform child in currentTransform)
         {
