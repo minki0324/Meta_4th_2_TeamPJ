@@ -219,6 +219,7 @@ public class Ply_Controller : MonoBehaviour
         //미니언 생성 위치는 나중에 점령지(Spawner)위치로 바꾸기 
 
         Minion_Controller minionController = Minion.GetComponent<Minion_Controller>();
+        Minion.layer = 7;
 
         GameManager.instance.Gold -= (15 + (Human_num * 5));
         //Minion.transform.SetParent(transform);

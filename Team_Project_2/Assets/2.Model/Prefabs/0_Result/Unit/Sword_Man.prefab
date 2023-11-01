@@ -1955,7 +1955,7 @@ GameObject:
   - component: {fileID: 4239812368246828348}
   m_Layer: 0
   m_Name: w_short_sword
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8154,6 +8154,7 @@ GameObject:
   - component: {fileID: 3345660950030388180}
   - component: {fileID: 3432355695288861000}
   - component: {fileID: 6937031202658005056}
+  - component: {fileID: 1259696877}
   m_Layer: 0
   m_Name: Sword_Man
   m_TagString: Untagged
@@ -8268,7 +8269,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f602dc01e4bc104b9eb5254f10cd8eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnitAtk: {fileID: 0}
   Human_type: 15
+  isClose: 0
 --- !u!195 &6937031202658005056
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8291,6 +8294,31 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1259696877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4239812368246995255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebe386389b0b6484e93bb17b1524c0f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnitAtk: {fileID: 0}
+  Human_type: 0
+  isClose: 0
+  player: {fileID: 0}
+  scanRange: 13
+  AttackRange: 1.5
+  isdetecting: 0
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  HitBox_col: {fileID: 4239812368246995250}
+  Ob_Weapon_col: {fileID: 4239812368246828348}
+  nearestTarget: {fileID: 0}
 --- !u!1 &4239812368246995373
 GameObject:
   m_ObjectHideFlags: 0
