@@ -17,7 +17,8 @@ public class CameraControl : MonoBehaviour
     private float RotMin = 10f;  // 회전각도 최소 
     private float RotMax = 45f;  // 회전각도 최대
     private float smoothTime = 0f; // 카메라 이동에 걸리는 시간
-
+    
+    
     private Vector3 targetRot; 
     private Vector3 currentVel; // 현재 Velocity
 
