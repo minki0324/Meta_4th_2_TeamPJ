@@ -16,17 +16,17 @@ public class UnitAttack : Minion_Controller
      
      */
     //임시 미니언체력
-    private int HP = 10;
+    private int HP = 3;
     private bool isDie;
 
 
 
     // 유닛 공격감지범위
     public float scanRange = 13f;
-    //감지후 유닛 이동속도 -> 플레이어 이동속도랑 맞추기
-    private float moveSpeed = 1f;
+    public float AttackRange = 1.5f;
+
     //이동중 적군유닛이 공격범위콜라이더에 닿았는가?
-    private bool isdetecting = false;
+    [SerializeField] private bool isdetecting = false;
     //공격중인가?
     private bool isAttacking = false;
     private bool isHitting = false;
@@ -35,16 +35,17 @@ public class UnitAttack : Minion_Controller
     private Coroutine attackCoroutine;
     // 공격 대상 레이어
     [SerializeField] private LayerMask targetLayer;
-    [SerializeField] private GameObject weapon;
-    [SerializeField] private BoxCollider boxCollider;
-    [SerializeField] private BoxCollider boxCollider1;
-    private BoxCollider weapon_col;
-    private int layerIndex;
+    //죽었을때 박스콜라이더 Enable하기위해 직접참조 
+    [SerializeField] private BoxCollider HitBox_col;
+    [SerializeField] private BoxCollider Ob_Weapon_col;
+    //타겟레이어
+    private int targetLayer_Index;
+    //최종타겟
     public Transform nearestTarget;
-
+    //어택, 히트 딜레이
     private WaitForSeconds attackDelay;
-    private WaitForSeconds hitDelay = new WaitForSeconds(0.5f);
-
+    private WaitForSeconds hitDelay = new WaitForSeconds(0.2f);
+    //네비게이션
     private NavMeshAgent navMeshAgent;
     private void Start()
     {
@@ -53,39 +54,50 @@ public class UnitAttack : Minion_Controller
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
-        weapon_col = weapon.GetComponent<BoxCollider>();
 
 
 
         //GameObject.FindGameObjectWithTag("Player").TryGetComponent<Ply_Controller>(out player);
         if (gameObject.layer == LayerMask.NameToLayer("Team"))
         {
-            layerIndex = LayerMask.NameToLayer("Enemy");
+            targetLayer_Index = LayerMask.NameToLayer("Enemy");
         }
         else if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            layerIndex = LayerMask.NameToLayer("Team");
+            targetLayer_Index = LayerMask.NameToLayer("Team");
         }
-        targetLayer = 1 << layerIndex;
+        targetLayer = 1 << targetLayer_Index;
 
     }
 
+
     private void Update()
     {
-
         //if(player.CurrentMode == Ply_Controller.Mode.Attack) { 
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, targetLayer);
         nearestTarget = GetNearestTarget(hits);
+        if(nearestTarget == null)
+        {
 
+        }
+      
 
-
+      
         if (nearestTarget != null && !isDie)
         {
+            float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
+            if (attackDistance <= AttackRange)
+            {
+                isdetecting = true;
+            }
+            else
+            {
+                isdetecting = false;
+            }
             //타겟감지시 타겟쪽으로 바라보기
             LookatTarget(nearestTarget);
             // 유닛의 공격범위에 들어갈때까지 타겟에게 이동
-            Debug.Log(isdetecting);
-            if (!isdetecting && !isAttacking)
+            if (!isdetecting )
             {
                 AttackMoving(nearestTarget);
             }
@@ -113,8 +125,8 @@ public class UnitAttack : Minion_Controller
             {
                 ani.SetTrigger("Dead");
                 gameObject.layer = 9;
-                boxCollider.enabled = false;
-                boxCollider1.enabled = false;
+                HitBox_col.enabled = false;
+                StopCoroutine(attackCoroutine);
                 Destroy(gameObject, 3f);
             }
             isDie = true;
@@ -159,97 +171,39 @@ public class UnitAttack : Minion_Controller
 
     }
     //감지범위 그리는메소드
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, scanRange);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(transform.position, scanRange);
+
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawWireSphere(transform.position, AttackRange);
+    //}
+ 
     private void OnTriggerEnter(Collider other)
     {
-        if (gameObject.layer == LayerMask.NameToLayer("Team"))
+       
+        if (other.CompareTag("Weapon") && other.gameObject.layer == targetLayer_Index && !isHitting)
         {
-            if (other.CompareTag("Weapon") && other.gameObject.layer == LayerMask.NameToLayer("Enemy") && !isHitting)
-            {
-                StartCoroutine(Hit_co());
-            }
-
+            StartCoroutine(Hit_co());
         }
-        if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            if (other.CompareTag("Weapon") && other.gameObject.layer == LayerMask.NameToLayer("Team") && !isHitting)
-            {
-                StartCoroutine(Hit_co());
-            }
-        }
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        if (gameObject.layer == LayerMask.NameToLayer("Team"))
-        {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-            {
-
-                isdetecting = true;
-                //적이 감지콜라이더에 닿았을때 이동을 멈추고 공격 애니메이션 진행
-            }
-            else
-            {
-                isdetecting = false;
-            }
-
-        }
-        else if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Team"))
-            {
-
-                isdetecting = true;
-                //적이 감지콜라이더에 닿았을때 이동을 멈추고 공격 애니메이션 진행
-            }
-            else
-            {
-                isdetecting = false;
-            }
-
-        }
-
 
     }
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (gameObject.layer == LayerMask.NameToLayer("Team"))
-    //    {
-    //        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-    //        {
-    //            Debug.Log("1111");
-    //            isdetecting = false;
-    //            //적이 감지콜라이더에 닿았을때 이동을 멈추고 공격 애니메이션 진행
-    //        }
-
-    //    }
-    //    else if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
-    //    {
-    //        if (other.gameObject.layer == LayerMask.NameToLayer("Team"))
-    //        {
-    //            Debug.Log("2222");
-    //            isdetecting = false;
-    //            //적이 감지콜라이더에 닿았을때 이동을 멈추고 공격 애니메이션 진행
-    //        }
-    //    }
-    //}
+   
     private IEnumerator Attack_co()
     {
+        //공격쿨타임
         float d = Random.Range(2f, 2.1f);
         attackDelay = new WaitForSeconds(d);
-        //공격시간동안 이동불가
-        //
-        Debug.Log("몇번들어오냐");
+        
+        //상태 공격중으로 변경
         isAttacking = true;
+        
         isSuccessAtk = false;
         ani.SetTrigger("Attack");
         yield return attackDelay;
 
-        Debug.Log("여긴들어오냐");
+
         isAttacking = false;
     }
 
@@ -264,7 +218,7 @@ public class UnitAttack : Minion_Controller
         if (!isSuccessAtk)
         {
 
-            Debug.Log("공격도중 맞았음 쿨초기화");
+
             StopCoroutine(attackCoroutine);
             isAttacking = false;
         }
@@ -279,12 +233,13 @@ public class UnitAttack : Minion_Controller
     public void WeaponActive()
     {
         isSuccessAtk = true;
-        weapon_col.enabled = true;
+        Ob_Weapon_col.enabled = true;
         Invoke("WeaponFalse", 0.1f);
 
     }
     private void WeaponFalse()
     {
-        weapon_col.enabled = false;
+        Ob_Weapon_col.enabled = false;
     }
+  
 }
