@@ -35,9 +35,19 @@ public class Ply_Movement : MonoBehaviour
 
     public Vector3 CurrentPos { get; private set; }
 
+    //추가된 변수-이서영
+
+    public bool isAttacking_1 = false;  //공격모션 1이 실행중인가 판단
+    public bool isPossible_Attack_2 = false;    //공격모션 2가 실행가능한 상태인가 (모션 1이 중간이상 실행되었는가) 판단
+
+    public bool isAttacking_2 = false;   //공격모션 2이 실행중인가 판단
+    public bool isPossible_Attack_1 = true;     //공격모션 1가 실행가능한 상태인가 (모션 1이 중간이상 실행되었는가) 판단
+
+
     private void Start()
     {
         camera = Camera.main;
+        isPossible_Attack_1 = true;
     }
 
     private void Update()
@@ -47,16 +57,64 @@ public class Ply_Movement : MonoBehaviour
         Jump();
         Check_Ground();
 
-        if(Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKeyDown(KeyCode.H))
         {
-            ani.SetTrigger("Attack");
+
+            if (isPossible_Attack_1)
+            {
+                //모션 1 실행 시작
+
+                ani.SetTrigger("Attack");
+                //ani.SetBool("Attack1", true);
+
+                isAttacking_1 = true;   //실행중
+
+                isAttacking_2 = false;
+                isPossible_Attack_1 = false;
+                isPossible_Attack_2 = false;
+
+            }
+
+            if (isPossible_Attack_2)
+            {
+
+                //ani.SetBool("ContinualAttack", true);
+                ani.SetTrigger("Continual_Attack");
+
+                isAttacking_2 = true;
+                isPossible_Attack_2 = false;
+
+                isAttacking_1 = false;
+                isPossible_Attack_1 = false;
+
+            }
             // isLive = false;
         }
+
+
+        if (Input.GetMouseButton(1))
+        {
+            ani.SetBool("Shield", true);
+            ani.SetFloat("MoveSpeed", 0.5f);
+            MoveSpeed = 2f;
+        }
+        else
+        {
+            ani.SetBool("Shield", false);
+            ani.SetFloat("MoveSpeed", 1f);
+            MoveSpeed = 5f;
+        }
+
+
     }
+
+
+
+
 
     private void InputMovment()
     {
-        if(!GameManager.instance.isLive)
+        if (!GameManager.instance.isLive)
         {
             return;
         }
@@ -68,7 +126,7 @@ public class Ply_Movement : MonoBehaviour
         Vector3 playerRotate = Vector3.Scale(camera.transform.forward, new Vector3(1, 0, 1));
 
         Vector3 moveDirection = playerRotate * Input.GetAxis("Vertical") + camera.transform.right * Input.GetAxis("Horizontal");
-        
+
 
         if (moveDirection != Vector3.zero)
         {
@@ -114,7 +172,7 @@ public class Ply_Movement : MonoBehaviour
         RaycastHit hit;
         Vector3 HitPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
-            Debug.DrawRay(HitPos, Vector3.down, Color.red, 1.1f);
+        Debug.DrawRay(HitPos, Vector3.down, Color.red, 1.1f);
         if (Physics.Raycast(HitPos, Vector3.down, out hit, 1.1f))
         {
             if (hit.transform.CompareTag("Ground"))
