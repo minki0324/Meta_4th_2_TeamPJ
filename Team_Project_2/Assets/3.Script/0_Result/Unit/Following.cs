@@ -38,33 +38,47 @@ public class Following : MonoBehaviour
     private void Update()
     {
 
-       // StartCoroutine(Mode_Follow_co());
+        StartCoroutine(Mode_Follow_co());
 
-        if(pc.isOperateFollow)
+        if (!pm.isPlayerMove)
         {
-            if (!pm.isPlayerMove)
-            {
-                StopCoroutine(Mode_Follow_co());
-                StopCoroutine(Mode_Stop_co());
-                StartCoroutine(Mode_Stop_Follow_co());
-            }
-            else
-            {
-                StopCoroutine(Mode_Stop_Follow_co());
-                StopCoroutine(Mode_Stop_co());
-                StartCoroutine(Mode_Follow_co());
-            }
+            StopCoroutine(Mode_Follow_co());
+            //StopCoroutine(Mode_Stop_co());
+            StartCoroutine(Mode_Stop_Follow_co());
+        }
+        else
+        {
+            StopCoroutine(Mode_Stop_Follow_co());
+            //StopCoroutine(Mode_Stop_co());
+            StartCoroutine(Mode_Follow_co());
         }
 
-        if(pc.isOperateStop)
-        {
-            StopPos = pc.gameObject.transform.position;
-            StartCoroutine(Mode_Stop_co());
-            pc.isOperateStop = false;
-        }
-     
-       
-      
+
+        //if(pc.isOperateFollow)
+        //{
+        //    if (!pm.isPlayerMove)
+        //    {
+        //        StopCoroutine(Mode_Follow_co());
+        //        StopCoroutine(Mode_Stop_co());
+        //        StartCoroutine(Mode_Stop_Follow_co());
+        //    }
+        //    else
+        //    {
+        //        StopCoroutine(Mode_Stop_Follow_co());
+        //        StopCoroutine(Mode_Stop_co());
+        //        StartCoroutine(Mode_Follow_co());
+        //    }
+        //}
+
+        //if(pc.isOperateStop)
+        //{
+        //    StopPos = pc.gameObject.transform.position;
+        //    StartCoroutine(Mode_Stop_co());
+        //    pc.isOperateStop = false;
+        //}
+
+
+
 
 
     }
@@ -89,9 +103,14 @@ public class Following : MonoBehaviour
     public IEnumerator Mode_Follow_co()
     {
         nearestMinion_List.Clear();
-
+        for (int i = 0; i < nearestMinion_List.Count; i++)
+        {
+           // minionController[i] = GetComponent<Minion_Controller>();
+            nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = false;
+        }
         //minionController = GetComponentsInChildren<Minion_Controller>();
-      
+        // minionController = FindObjectsOfType<Minion_Controller>();
+
         if (isTarget)
         {
             if(pm.isPlayerMove)
@@ -150,9 +169,16 @@ public class Following : MonoBehaviour
     //ÇÃ·¹ÀÌ¾î ¸Ø­ŸÀ» ¶§ : 5¿­ Á¾´ë..?·Î ¼­´Â ÄÚ·çÆ¾
     public IEnumerator Mode_Stop_Follow_co()
     {
-        //minionController = GetComponentsInChildren<Minion_Controller>();
-        for (int i = 0; i<nearestMinion_List.Count; i++)
-        {
+    
+
+        //for (int i = 0; i < nearestMinion_List.Count; i++)
+        //{
+        //    minionController[i] = GetComponent<Minion_Controller>();            
+        //}
+
+
+            for (int i = 0; i<nearestMinion_List.Count; i++)
+            {
             if(i <= 4)
             {
                 if (i % 2 == 0)
@@ -160,21 +186,26 @@ public class Following : MonoBehaviour
                     if (i == 0)
                     {
                         nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.left);
-                        if (Vector3.Distance(nearestMinion_List[i].transform.position, pm.CurrentPos) <= 2f)
+
+                        if (Vector3.Distance(nearestMinion_List[i].GetComponent<Minion_Controller>().transform.position, pm.CurrentPos) <= 1f)
                         {
+                            Debug.Log("¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾");
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
-                            //nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
                         }
+                     
+                     
+
                     }
                     else
                     {
                         nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(nearestMinion_List[i - 2].transform.position + Vector3.left);
-                        if (Vector3.Distance(nearestMinion_List[i].transform.position, nearestMinion_List[i - 2].transform.position) <= 2f)
+                        if (Vector3.Distance(nearestMinion_List[i].GetComponent<Minion_Controller>().transform.position, nearestMinion_List[i - 2].GetComponent<Minion_Controller>().transform.position) <= 1f)
                         {
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
-                        }
-                    }
 
+                        }
+                     
+                    }
                 }
                 else
                 {
@@ -183,20 +214,22 @@ public class Following : MonoBehaviour
                     if (i == 1)
                     {
                         nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.right);
-                        if (Vector3.Distance(nearestMinion_List[i].transform.position, pm.CurrentPos) <= 2f)
+                        if (Vector3.Distance(nearestMinion_List[i].GetComponent<Minion_Controller>().transform.position, pm.CurrentPos) <= 1f)
                         {
-                           
+
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
                         }
+                     
 
                     }
                     else
                     {
                         nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(nearestMinion_List[i - 2].transform.position + Vector3.right);
-                        if (Vector3.Distance(nearestMinion_List[i].transform.position, nearestMinion_List[i - 2].transform.position) <= 2f)
+                        if (Vector3.Distance(nearestMinion_List[i].GetComponent<Minion_Controller>().transform.position, nearestMinion_List[i - 2].GetComponent<Minion_Controller>().transform.position) <= 1f)
                         {
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
                         }
+                     
                     }
                 }
 
@@ -206,11 +239,15 @@ public class Following : MonoBehaviour
                 //nearestMinion ÀÇ index 5¹øÂ°ºÎÅÍ
 
                 nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(nearestMinion_List[i - 5].transform.position + Vector3.back);
-                if (Vector3.Distance(nearestMinion_List[i].transform.position, nearestMinion_List[i - 5].transform.position) <= 2f)
+                if (Vector3.Distance(nearestMinion_List[i].GetComponent<Minion_Controller>().transform.position, nearestMinion_List[i - 5].GetComponent<Minion_Controller>().transform.position) <= 2f)
                 {
                     nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
-                }   
+                }
+             
             }
+            
+
+           // nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
         }
         yield return null;
     }

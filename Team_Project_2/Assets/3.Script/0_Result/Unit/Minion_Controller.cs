@@ -40,7 +40,7 @@ public class Minion_Controller : MonoBehaviour
     //추가된 변수 - 이서영
     public bool isClose = false;
 
-
+    private Following following;
 
 
 
@@ -51,17 +51,48 @@ public class Minion_Controller : MonoBehaviour
         playerController = FindObjectOfType<Ply_Controller>();
         MeshCollider = GetComponent<CapsuleCollider>();
         DetectCollider = transform.GetChild(0).GetComponent<CapsuleCollider>();
+        following = FindObjectOfType<Following>();
         TryGetComponent(out ani);
     }
 
     private void Start()
     {
+
+        
+
         Get_HumanType();
+        
+ 
     }
 
     private void Update()
     {
         Behavior_Mode();
+        
+        //if(Vector3.Distance(transform.position, playerController.transform.position)<=2f)
+        //{
+        //    isClose = true;
+        //    ani.SetBool("Move", false);
+        //}
+        //else
+        //{
+        //    isClose = false;
+            
+        //}
+
+
+        if (isClose)
+        {
+            Debug.Log("zzzzzzzzzz");
+            ani.SetBool("Move", false);
+
+        }
+        else
+        {
+            Debug.Log("qqqqqqqqqqqqqqqqqqqq");
+            ani.SetBool("Move", true);
+        }
+
     }
 
     public void Get_HumanType()
@@ -100,16 +131,7 @@ public class Minion_Controller : MonoBehaviour
         {
             case Ply_Controller.Mode.Follow:
 
-                if(isClose == true)
-                {  
-                    ani.SetBool("Move", false);
-                  
-                }
-                else
-                {
-                    
-                    ani.SetBool("Move", true);
-                }
+              
                 
                 // 플레이어or대열의 앞 병사와 가까워졌을 때 체크하는 메소드 넣어서 가까워지면 Bool값 false로 변경, 멀어지면 다시 true로 변경해서 따라가기
                 break;
@@ -124,13 +146,7 @@ public class Minion_Controller : MonoBehaviour
                 break;
 
 
-            case Ply_Controller.Mode.Assemble:
-                // 상태에 따라서 애니메이션 구현해야함.
-                /*
-                    1. 진열에 합류하기 전까지는 Move를 True로 바꿔서 대열에 합류할때까지 뛰어가는 모션
-                    2. 대열에 합류하고 나서는 Walk를 True로 바꾸고 상체는 Idle을 기본 모션으로 하게끔 변경
-                */
-                break;
+  
 
         }
     }

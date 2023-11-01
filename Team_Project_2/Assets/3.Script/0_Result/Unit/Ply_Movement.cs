@@ -37,11 +37,17 @@ public class Ply_Movement : MonoBehaviour
 
     //추가된 변수-이서영
 
-    public bool isAttacking_1 = false;
+    public bool isAttacking_1 = false;  //공격모션 1이 실행중인가 판단
+    public bool isPossible_Attack_2 = false;    //공격모션 2가 실행가능한 상태인가 (모션 1이 중간이상 실행되었는가) 판단
+
+    public bool isAttacking_2 = false;   //공격모션 2이 실행중인가 판단
+    public bool isPossible_Attack_1 = true;     //공격모션 1가 실행가능한 상태인가 (모션 1이 중간이상 실행되었는가) 판단
+
 
     private void Start()
     {
         camera = Camera.main;
+        isPossible_Attack_1 = true;
     }
 
     private void Update()
@@ -53,22 +59,52 @@ public class Ply_Movement : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.H))
         {
-            if(!isAttacking_1)
+          
+            if (isPossible_Attack_1)
             {
+                //모션 1 실행 시작
+
                 ani.SetTrigger("Attack");
-                isAttacking_1 = true;
-            }
-            else
-            {
-                ani.SetBool("ContinualAttack", true);
+                //ani.SetBool("Attack1", true);
+
+                isAttacking_1 = true;   //실행중
+
+                isAttacking_2 = false;
+                isPossible_Attack_1 = false; 
+                isPossible_Attack_2 = false;
+
             }
 
-          
-                
-            
-            
+            if (isPossible_Attack_2)
+            {
+
+                //ani.SetBool("ContinualAttack", true);
+                ani.SetTrigger("Continual_Attack");
+
+                isAttacking_2 = true;
+                isPossible_Attack_2 = false;
+
+                isAttacking_1 = false;
+                isPossible_Attack_1 = false;
+
+            }
             // isLive = false;
         }
+
+
+        if(Input.GetMouseButton(1))
+        {
+            ani.SetBool("Shield", true);
+            ani.SetFloat("MoveSpeed", 0.5f);
+            MoveSpeed = 2f;
+        }
+        else
+        {
+            ani.SetBool("Shield", false);
+            ani.SetFloat("MoveSpeed", 1f);
+            MoveSpeed = 5f;
+        }
+
 
     }
 
