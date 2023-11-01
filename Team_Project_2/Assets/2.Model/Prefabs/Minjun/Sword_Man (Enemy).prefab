@@ -564,7 +564,7 @@ GameObject:
   - component: {fileID: 2010473850863940707}
   m_Layer: 6
   m_Name: w_short_sword
-  m_TagString: Weapon
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1203,6 +1203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Human_type: 0
   isClose: 0
+  player: {fileID: 0}
   scanRange: 13
   AttackRange: 1.5
   isdetecting: 0

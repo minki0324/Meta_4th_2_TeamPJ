@@ -9916,6 +9916,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Human_type: 20
+  isClose: 0
 --- !u!1 &6006503084427101526
 GameObject:
   m_ObjectHideFlags: 0
