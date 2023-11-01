@@ -40,7 +40,7 @@ public class Minion_Controller : MonoBehaviour
     //추가된 변수 - 이서영
     public bool isClose = false;
 
-    private Following following;
+
 
 
 
@@ -51,48 +51,17 @@ public class Minion_Controller : MonoBehaviour
         playerController = FindObjectOfType<Ply_Controller>();
         MeshCollider = GetComponent<CapsuleCollider>();
         DetectCollider = transform.GetChild(0).GetComponent<CapsuleCollider>();
-        following = FindObjectOfType<Following>();
         TryGetComponent(out ani);
     }
 
     private void Start()
     {
-
-        
-
         Get_HumanType();
-        
- 
     }
 
     private void Update()
     {
         Behavior_Mode();
-        
-        //if(Vector3.Distance(transform.position, playerController.transform.position)<=2f)
-        //{
-        //    isClose = true;
-        //    ani.SetBool("Move", false);
-        //}
-        //else
-        //{
-        //    isClose = false;
-            
-        //}
-
-
-        if (isClose)
-        {
-            Debug.Log("zzzzzzzzzz");
-            ani.SetBool("Move", false);
-
-        }
-        else
-        {
-            Debug.Log("qqqqqqqqqqqqqqqqqqqq");
-            ani.SetBool("Move", true);
-        }
-
     }
 
     public void Get_HumanType()
@@ -131,7 +100,16 @@ public class Minion_Controller : MonoBehaviour
         {
             case Ply_Controller.Mode.Follow:
 
-              
+                if(isClose == true)
+                {  
+                    ani.SetBool("Move", false);
+                  
+                }
+                else
+                {
+                    
+                    ani.SetBool("Move", true);
+                }
                 
                 // 플레이어or대열의 앞 병사와 가까워졌을 때 체크하는 메소드 넣어서 가까워지면 Bool값 false로 변경, 멀어지면 다시 true로 변경해서 따라가기
                 break;
@@ -144,10 +122,6 @@ public class Minion_Controller : MonoBehaviour
                     2. 적군이 사정거리 내에 들어왔을 때는 Move를 false로 바꾸고 하체는 Idle상태 상체는 쿨타임에따라 Attack Trigger를 켜서 공격 모션 취하도록
                 */
                 break;
-
-
-  
-
         }
     }
 

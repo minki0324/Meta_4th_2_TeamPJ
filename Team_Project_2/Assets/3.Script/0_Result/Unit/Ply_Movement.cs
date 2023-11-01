@@ -57,9 +57,9 @@ public class Ply_Movement : MonoBehaviour
         Jump();
         Check_Ground();
 
-        if(Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKeyDown(KeyCode.H))
         {
-            
+
             if (isPossible_Attack_1)
             {
                 //모션 1 실행 시작
@@ -92,7 +92,7 @@ public class Ply_Movement : MonoBehaviour
         }
 
 
-        if(Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1))
         {
             ani.SetBool("Shield", true);
             ani.SetFloat("MoveSpeed", 0.5f);
@@ -108,13 +108,13 @@ public class Ply_Movement : MonoBehaviour
 
     }
 
- 
+
 
 
 
     private void InputMovment()
     {
-        if(!GameManager.instance.isLive)
+        if (!GameManager.instance.isLive)
         {
             return;
         }
@@ -126,7 +126,7 @@ public class Ply_Movement : MonoBehaviour
         Vector3 playerRotate = Vector3.Scale(camera.transform.forward, new Vector3(1, 0, 1));
 
         Vector3 moveDirection = playerRotate * Input.GetAxis("Vertical") + camera.transform.right * Input.GetAxis("Horizontal");
-        
+
 
         if (moveDirection != Vector3.zero)
         {
@@ -172,7 +172,7 @@ public class Ply_Movement : MonoBehaviour
         RaycastHit hit;
         Vector3 HitPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
-            Debug.DrawRay(HitPos, Vector3.down, Color.red, 1.1f);
+        Debug.DrawRay(HitPos, Vector3.down, Color.red, 1.1f);
         if (Physics.Raycast(HitPos, Vector3.down, out hit, 1.1f))
         {
             if (hit.transform.CompareTag("Ground"))

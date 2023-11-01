@@ -8,7 +8,7 @@ public class Ply_Controller : MonoBehaviour
         1. 숫자키 입력으로 병사 소환
         2. 단축키 입력으로 병사들 진영 배치
     */
-    
+
     public enum Mode
     {
         Follow = 1,      //나를 따르라~ (플레이어가 멈추면 대열갖추기)
@@ -74,7 +74,7 @@ public class Ply_Controller : MonoBehaviour
     {
         following = GetComponent<Following>();
         CurrentMode = Mode.Follow;
-        
+
     }
 
     private void Update()
@@ -84,8 +84,8 @@ public class Ply_Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("나를 따르라~~");
-          
-           if(!isPlay_FollowOrder)
+
+            if (!isPlay_FollowOrder)
             {
                 animator.SetTrigger("FollowOrder");
                 isPlay_FollowOrder = true;
@@ -93,7 +93,7 @@ public class Ply_Controller : MonoBehaviour
             CurrentMode = Mode.Follow;
             isOperateFollow = true;
         }
-            
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("돌격하라~~");
@@ -105,13 +105,13 @@ public class Ply_Controller : MonoBehaviour
             CurrentMode = Mode.Attack;
         }
 
- 
+
 
         if (Input.GetKeyDown(KeyCode.R))
         {
             Debug.Log("멈춰라~~");
 
-            if(!isPlay_StopOrder)
+            if (!isPlay_StopOrder)
             {
                 animator.SetTrigger("StopOrder");
                 isPlay_StopOrder = true;
@@ -122,25 +122,25 @@ public class Ply_Controller : MonoBehaviour
             isOperateStop = true;
 
             isOperateFollow = false;
-     
-          
-            
+
+
+
         }
 
 
 
-     
+
 
     }
 
     private void Spawn_Solider()
     {
-        if(Current_MinionCount < Max_MinionCount)
+        if (Current_MinionCount < Max_MinionCount)
         {
-            if(Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
+            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
             {
                 int selectedNumber = -1; // 기본값 설정
-                
+
 
                 if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
@@ -155,15 +155,15 @@ public class Ply_Controller : MonoBehaviour
                     selectedNumber = 3;
                 }
 
-                if(selectedNumber != -1)
+                if (selectedNumber != -1)
                 {
-                    
+
                     switch (selectedNumber)
                     {
                         case 1:
                             Debug.Log("1눌림");
                             Human_num = 0;
-                            if(GameManager.instance.Gold > 15)
+                            if (GameManager.instance.Gold > 15)
                             {
                                 Init_Solider(Human_num);
                             }
