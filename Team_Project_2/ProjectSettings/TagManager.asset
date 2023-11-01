@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Ground
   - Door
-  - Weapon
   layers:
   - Default
   - TransparentFX
