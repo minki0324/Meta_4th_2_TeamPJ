@@ -136,6 +136,10 @@ MonoBehaviour:
   MoveSpeed: 5
   JumpForce: 300
   isGrounded: 1
+  isAttacking_1: 0
+  isPossible_Attack_2: 0
+  isAttacking_2: 0
+  isPossible_Attack_1: 1
 --- !u!54 &35983966523953269
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -968,6 +972,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 7994817937136791332, guid: 34d10df18e1c14a48aef4c5b868bf36d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 34d10df18e1c14a48aef4c5b868bf36d, type: 3}
+--- !u!1 &7965913038687191717 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7994817937136791335, guid: 34d10df18e1c14a48aef4c5b868bf36d, type: 3}
+  m_PrefabInstance: {fileID: 35983966761643394}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7965913038687522577 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7994817937136460435, guid: 34d10df18e1c14a48aef4c5b868bf36d, type: 3}
@@ -983,3 +992,15 @@ Rigidbody:
   m_CorrespondingSourceObject: {fileID: 7994817937136791333, guid: 34d10df18e1c14a48aef4c5b868bf36d, type: 3}
   m_PrefabInstance: {fileID: 35983966761643394}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &196771248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7965913038687191717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5321ae0278706d749bf2e18b9efa371c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
