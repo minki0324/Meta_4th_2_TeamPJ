@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class UpdatableDataEditor : MonoBehaviour
+[CustomEditor(typeof(UpdatableData), true)]
+public class UpdatableDataEditor : Editor
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void OnInspectorGUI()
     {
-        
-    }
+        base.OnInspectorGUI();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        UpdatableData data = (UpdatableData)target;
+
+        if(GUILayout.Button("Update"))
+        {
+            data.NotifyOfUpdatedValues();
+        }
     }
 }
