@@ -12,32 +12,92 @@ public class Occupation : MonoBehaviour
 
 
     [Header("깃발")]
-    [SerializeField] GameObject Flag; // 깃발의 문양 오브젝트
+    [SerializeField] SkinnedMeshRenderer skinnedmesh;
 
-
-    SkinnedMeshRenderer skinnedmesh;
-
-    [Header("적용할 컬러배열(Material)")]
+    [Header("색 변경")]
     [SerializeField] private Material[] Flag_Color; // 깃발 색바꿀 Marterial
+    [SerializeField] private Image[] Occu_Back; // 점령 중인 팀 색
 
-    public float Num_Person = 1.03f; // 사람 수에 따른 배율
-    public float occu_Speed = 5f; // 점령 속도
+    public Slider OccuValue; // 점령 게이지
 
-    public float Total_Gauge = 100f;
-    public float Current_Gauge = 0;
+    private float Num_Soldier = 1.03f; // 사람 수에 따른 배율
+    public float occu_Speed = 15f; // 점령 속도
+    private float Total_Gauge = 100f; // 전체 점령 게이지
+    private float Current_Gauge = 0;  // 현재 점령 게이지
 
+    public bool isOccupating = false; // 점령 중인지
+    private bool isOccupied = false; // 점령이 끝났는지
 
-    private void Start()
+    private Ply_Controller ply_Con;
+    private void Awake()
     {
-        skinnedmesh = Flag.GetComponent<SkinnedMeshRenderer>();
+        Occu_Back = GetComponentsInChildren<Image>();
+        ply_Con = FindObjectOfType<Ply_Controller>();
+        for (int i = 0; i < Occu_Back.Length * 0.5f; i++) 
+        {
+            Occu_Back[i * 2 + 1].transform.parent.gameObject.SetActive(false);
+
+        }
     }
 
     private void Update()
     {
-      //  OccuValue.value = Current_Gauge / Total_Gauge;
-        //skinnedmesh.material = Flag_Color[0];
+        if (OccuValue.value >= 1 && !isOccupied) 
+        {
+            Change_Color();
+            GameManager.instance.Occupied_Area++;
+            isOccupied = true;
+        }
+      
     }
- 
+
+    public void ObjEnable(bool act)
+    {
+        Occu_Back[1].transform.parent.gameObject.SetActive(act);
+        OccuValue.gameObject.SetActive(act);
+        isOccupating = act;
+    }
+    
+      
+    
+
+    private void Change_Color()
+    {
+        skinnedmesh.material = Flag_Color[1];
+        Occu_Back[0].color = new Color32(255, 0, 0, 110);
+        Occu_Back[1].color = new Color32(255, 0, 0, 110);
+    }
+    
+
+
+    public IEnumerator Occu_co()
+    {
+
+        // 점령 중
+        while (isOccupating && Current_Gauge <= 100f)
+        {
+            Current_Gauge += Time.deltaTime * occu_Speed * Num_Soldier * (ply_Con.Current_MinionCount + 1); // 나중에 인원수에 따른 배율 넣어야해용
+            Debug.Log(Current_Gauge);
+            OccuValue.value = Current_Gauge / Total_Gauge;
+            yield return null;
+        }
+
+    }
+    public IEnumerator UnOccu_co()
+    {
+        //OccuValue.gameObject.SetActive(false);
+        yield return new WaitForSeconds(3.0f);
+        while (!isOccupied && !isOccupating && Current_Gauge >= 0f)
+        {
+            Current_Gauge -= Time.deltaTime * occu_Speed;
+            OccuValue.value = Current_Gauge / Total_Gauge;
+
+
+
+            yield return null;
+        }
+    }
+
 
 
 }

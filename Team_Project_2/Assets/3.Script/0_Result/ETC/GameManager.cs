@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [Header("게임 플레이")]
     public float currentTime = 0f; // 게임이 시작하고 지난 시간
     public float EndTime = 1800f; // 게임 시간은 30분
+    public int Occupied_Area = 1; // 점령한 지역 Default값 1
 
     [Header("골드 관련")]
     public float Gold = 1000; // 골드량
@@ -66,7 +67,7 @@ public class GameManager : MonoBehaviour
         
         currentTime += Time.deltaTime;
 
-        Gold += Time.deltaTime * Magnifi; // 골드수급
+        Gold += Time.deltaTime * Magnifi * Occupied_Area; // 골드수급 = 분당 120 * 점령한 지역 개수
     }
 
     public void Stop()

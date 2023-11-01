@@ -63,6 +63,8 @@ public class HUD : MonoBehaviour
                 textarray[2].text = $"{(int)GameManager.instance.currentTime * 3}";
                 textarray[3].text = $"{(int)GameManager.instance.currentTime * 4}";
                 break;
+            case InfoType.Occupation:
+                break;
 
         }
     }
