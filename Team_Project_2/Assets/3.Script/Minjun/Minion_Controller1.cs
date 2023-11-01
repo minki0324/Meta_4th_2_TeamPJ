@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Minion_Controller : MonoBehaviour
+public class Minion_Controller1 : MonoBehaviour
 {
     /*
       미니언 컨트롤러
@@ -26,7 +26,7 @@ public class Minion_Controller : MonoBehaviour
 
     private CapsuleCollider MeshCollider;  //맞으면 피까이는 판정용 콜라이더
     private CapsuleCollider DetectCollider; //공격 판정용 콜라이더
-
+    private UnitAttack UnitAtk;
     private float MaxHP;
     public float CurrentHP { get; private set; }
 
@@ -49,6 +49,7 @@ public class Minion_Controller : MonoBehaviour
 
     private void Awake()
     {
+        UnitAtk = GetComponent<UnitAttack>();
         playerController = FindObjectOfType<Ply_Controller>();
         MeshCollider = GetComponent<CapsuleCollider>();
         DetectCollider = transform.GetChild(0).GetComponent<CapsuleCollider>();
@@ -122,7 +123,18 @@ public class Minion_Controller : MonoBehaviour
                     1. 플레이어의 앞으로 이동할때는 Move를 true바꿔서 달려가는 모션
                     2. 적군이 사정거리 내에 들어왔을 때는 Move를 false로 바꾸고 하체는 Idle상태 상체는 쿨타임에따라 Attack Trigger를 켜서 공격 모션 취하도록
                 */
+                UnitAtk.MinionAttack();
                 break;
+
+
+            case Ply_Controller.Mode.Assemble:
+                // 상태에 따라서 애니메이션 구현해야함.
+                /*
+                    1. 진열에 합류하기 전까지는 Move를 True로 바꿔서 대열에 합류할때까지 뛰어가는 모션
+                    2. 대열에 합류하고 나서는 Walk를 True로 바꾸고 상체는 Idle을 기본 모션으로 하게끔 변경
+                */
+                break;
+
         }
     }
 
