@@ -73,89 +73,6 @@ namespace SimpleProceduralTerrainProject
 
         void Start()
         {
-            /*m_groundNoise = new FractalNoise(new PerlinNoise(m_seed, m_groundFrq), 6, 1.0f, 0.1f);
-            m_treeNoise = new FractalNoise(new PerlinNoise(m_seed + 1, m_treeFrq), 6, 1.0f);
-            m_detailNoise = new FractalNoise(new PerlinNoise(m_seed + 2, m_detailFrq), 6, 1.0f);
-
-            m_heightMapSize = Mathf.ClosestPowerOfTwo(m_heightMapSize) + 1;
-            m_alphaMapSize = Mathf.ClosestPowerOfTwo(m_alphaMapSize);
-            m_detailMapSize = Mathf.ClosestPowerOfTwo(m_detailMapSize);
-
-            if (m_detailResolutionPerPatch < 8)
-                m_detailResolutionPerPatch = 8;
-
-            float[,] htmap = new float[m_heightMapSize, m_heightMapSize];
-
-            m_terrain = new Terrain[m_tilesX, m_tilesZ];
-
-            //this will center terrain at origin
-            m_offset = new Vector2(-m_terrainSize * m_tilesX * 0.5f, -m_terrainSize * m_tilesZ * 0.5f);
-
-            CreateProtoTypes();
-
-            for (int x = 0; x < m_tilesX; x++)
-            {
-                for (int z = 0; z < m_tilesZ; z++)
-                {
-                    FillHeights(htmap, x, z);
-
-                    TerrainData terrainData = new TerrainData();
-
-                    terrainData.heightmapResolution = m_heightMapSize;
-                    terrainData.SetHeights(0, 0, htmap);
-                    terrainData.size = new Vector3(m_terrainSize, m_terrainHeight, m_terrainSize);
-                    terrainData.splatPrototypes = m_splatPrototypes;
-                    terrainData.treePrototypes = m_treeProtoTypes;
-                    terrainData.detailPrototypes = m_detailProtoTypes;
-
-                    FillAlphaMap(terrainData);
-
-                    m_terrain[x, z] = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
-                    m_terrain[x, z].transform.position = new Vector3(m_terrainSize * x + m_offset.x, 0, m_terrainSize * z + m_offset.y);
-                    m_terrain[x, z].heightmapPixelError = m_pixelMapError;
-                    m_terrain[x, z].basemapDistance = m_baseMapDist;
-                    m_terrain[x, z].castShadows = false;
-
-
-                    FillTreeInstances(m_terrain[x, z], x, z);
-                    FillDetailMap(m_terrain[x, z], x, z);
-
-                    float minHeight = 10.0f; // 최소 높이
-                    float maxHeight = 20.0f; // 최대 높이
-                    bool isFlatTerrain = CheckIfTerrainIsFlat(htmap, minHeight, maxHeight);
-
-                    if (isFlatTerrain && Base_Num <= Ply_Num)
-                    {
-                        int treeLayerIndex = 0; // 나무 레이어 인덱스, 나무 레이어가 0번째 레이어인 경우.
-                        TreeInstance[] trees = m_terrain[x, z].terrainData.treeInstances;
-                        List<TreeInstance> newTreeList = new List<TreeInstance>();
-
-                        foreach (TreeInstance tree in trees)
-                        {
-                            // 나무의 위치가 현재 타일 내에 있는지 확인합니다.
-                            Vector3 treeWorldPosition = Vector3.Scale(tree.position, m_terrain[x, z].terrainData.size) + m_terrain[x, z].transform.position;
-                            if (treeWorldPosition.x >= 0 && treeWorldPosition.x <= m_terrainSize &&
-                                treeWorldPosition.z >= 0 && treeWorldPosition.z <= m_terrainSize)
-                            {
-                                // 현재 타일 내에 있는 나무는 제거하지 않고 다른 타일로 이동시키려면 위치를 조정합니다.
-                                // 예를 들어, 현재 타일 중앙에서 왼쪽 타일 중앙으로 이동하려면 다음과 같이 조정합니다.
-                                tree.position = new Vector3(tree.position.x + m_terrainSize, tree.position.y, tree.position.z);
-                                // 나무 리스트에 추가합니다.
-                                newTreeList.Add(tree);
-                            }
-                        }
-
-                        // 새 나무 목록을 할당합니다.
-                        m_terrain[x, z].terrainData.treeInstances = newTreeList.ToArray();
-
-                        // 베이스 캠프 프리팹을 생성하고 배치합니다.
-                        GameObject baseCampPrefab = Instantiate(Base_PreFabs[0], new Vector3(x * m_terrainSize, 0, z * m_terrainSize), Quaternion.identity);
-                        Base_Num++;
-                    }
-
-                }
-            }*/
-
             InitializeTerrain();
 
             //Set the neighbours of terrain to remove seams.
@@ -266,42 +183,6 @@ namespace SimpleProceduralTerrainProject
 
         void SpawnBaseCamps()
         {
-            /*int numPlayers = 4; // 플레이어 수
-            for (int i = 0; i < numPlayers; i++)
-            {
-                // 중앙에서 200x200 범위 내의 랜덤한 위치 생성
-                float posX = Random.Range(-200f, 200f);
-                float posZ = Random.Range(-200f, 200f);
-
-                // 월드 좌표계를 테레인 배열 인덱스로 변환
-                int terrainIndexX = Mathf.FloorToInt((posX + m_tilesX * m_terrainSize * 0.5f) / m_terrainSize);
-                int terrainIndexZ = Mathf.FloorToInt((posZ + m_tilesZ * m_terrainSize * 0.5f) / m_terrainSize);
-
-                // 위치가 테레인 배열 내에 있는지 확인
-                if (terrainIndexX >= 0 && terrainIndexX < m_tilesX && terrainIndexZ >= 0 && terrainIndexZ < m_tilesZ)
-                {
-                    Terrain terrain = m_terrain[terrainIndexX, terrainIndexZ];
-                    float posY = terrain.SampleHeight(new Vector3(posX, 0, posZ)) + terrain.GetPosition().y;
-
-                    // 평평한 지형인지 확인
-                    if (IsTerrainFlat(terrain, posX, posZ, 10, 0.1f))
-                    {
-                        // 베이스 캠프 소환
-                        Vector3 baseCampPosition = new Vector3(posX, posY, posZ);
-                        Instantiate(Base_PreFabs[i % Base_PreFabs.Length], baseCampPosition, Quaternion.identity);
-
-                        baseCampPositions.Add(baseCampPosition);
-                    }
-                    else
-                    {
-                        Debug.Log("Terrain is not flat. Base camp spawning failed.");
-                    }
-                }
-                else
-                {
-                    Debug.Log("Position is out of terrain array bounds. Base camp spawning failed.");
-                }
-            }*/
             int numPlayers = 4; // 플레이어 수
             int maxAttempts = 100; // 최대 시도 횟수, 무한 루프 방지를 위해 설정
 
@@ -359,7 +240,6 @@ namespace SimpleProceduralTerrainProject
                 else
                 {
                     Debug.Log("Failed to find a valid position for base camp. Base camp spawning failed.");
-                    SpawnBaseCamps();
                 }
             }
         }
