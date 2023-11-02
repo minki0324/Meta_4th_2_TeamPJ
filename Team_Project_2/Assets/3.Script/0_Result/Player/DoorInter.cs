@@ -18,12 +18,14 @@ public class DoorInter : MonoBehaviour
             {
                 if(isOpen)
                 {
+                    Debug.Log("´Ý¾î");
                     Door_Ani.SetTrigger("CloseDoor");
                     isOpen = false;
                     boxcol.enabled = true;
                 }
                 else
                 {
+                    Debug.Log("¿­¾î");
                     Door_Ani.SetTrigger("OpenDoor");
                     isOpen = true;
                     boxcol.enabled = false;
