@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ply_Controller : MonoBehaviour
+public class Ply_Controller_S : MonoBehaviour
 {
+
     /*
         1. 숫자키 입력으로 병사 소환
         2. 단축키 입력으로 병사들 진영 배치
@@ -48,7 +49,8 @@ public class Ply_Controller : MonoBehaviour
 
     private UnityEngine.AI.NavMeshAgent[] agents;
 
-  
+    private List<GameObject> nearestMinion_List = new List<GameObject>();
+
 
     //변수추가 이서영
 
@@ -61,19 +63,13 @@ public class Ply_Controller : MonoBehaviour
 
 
 
+    //추가 이서영
     [SerializeField]
     private Animator animator;
 
     public bool isPlay_AttackOrder = false;
     public bool isPlay_FollowOrder = false;
     public bool isPlay_StopOrder = false;
-
-
-
-    //추가
-    public bool ischeckPosition = false;
-    public Vector3 StopPos;
-
 
     private void Awake()
     {
@@ -89,28 +85,25 @@ public class Ply_Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("나를 따르라~~");
-            CurrentMode = Mode.Follow;
+
             if (!isPlay_FollowOrder)
             {
-                following.nearestMinion_List.Clear();
                 animator.SetTrigger("FollowOrder");
                 isPlay_FollowOrder = true;
             }
-
-            
+            CurrentMode = Mode.Follow;
             isOperateFollow = true;
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("돌격하라~~");
-            CurrentMode = Mode.Attack;
             if (!isPlay_AttackOrder)
             {
                 animator.SetTrigger("AttackOrder");
                 isPlay_AttackOrder = true;
             }
-            
+            CurrentMode = Mode.Attack;
         }
 
 
@@ -118,21 +111,19 @@ public class Ply_Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             Debug.Log("멈춰라~~");
-            CurrentMode = Mode.Stop;
+
             if (!isPlay_StopOrder)
             {
                 animator.SetTrigger("StopOrder");
                 isPlay_StopOrder = true;
             }
 
+
+            CurrentMode = Mode.Stop;
             isOperateStop = true;
+
             isOperateFollow = false;
 
-
-            ischeckPosition = true;
-
-
-           
 
 
         }
@@ -167,9 +158,6 @@ public class Ply_Controller : MonoBehaviour
 
                 if (selectedNumber != -1)
                 {
-                    following.isa = true;
-                   // following.nearestMinion_List.Clear();
-
 
                     switch (selectedNumber)
                     {
@@ -217,7 +205,7 @@ public class Ply_Controller : MonoBehaviour
                     }
 
 
-                    
+                   // StartCoroutine(following.Mode_Follow_co());
                 }
             }
         }

@@ -6,10 +6,10 @@ using UnityEngine.AI;
 public class Following : MonoBehaviour
 {
     [SerializeField]
-    private List<GameObject> nearestMinion_List = new List<GameObject>();
+    public List<GameObject> nearestMinion_List = new List<GameObject>();
     public LayerMask TargetLayer;
 
-   // private UnityEngine.AI.NavMeshAgent[] agents;
+    // private UnityEngine.AI.NavMeshAgent[] agents;
 
     private Ply_Controller pc;
     private Ply_Movement pm;
@@ -20,7 +20,7 @@ public class Following : MonoBehaviour
 
 
 
-
+    public bool isa = false;
 
     public Vector3 StopPos;
 
@@ -32,50 +32,30 @@ public class Following : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Mode_Follow_co());
+        //StartCoroutine(Mode_Follow_co());
     }
 
     private void Update()
     {
 
-        StartCoroutine(Mode_Follow_co());
 
-        if (!pm.isPlayerMove)
+        if (pc.CurrentMode == Ply_Controller.Mode.Follow)
         {
-            StopCoroutine(Mode_Follow_co());
-            //StopCoroutine(Mode_Stop_co());
-            StartCoroutine(Mode_Stop_Follow_co());
-        }
-        else
-        {
-            StopCoroutine(Mode_Stop_Follow_co());
-            //StopCoroutine(Mode_Stop_co());
+            StopCoroutine(Mode_Stop_co());
             StartCoroutine(Mode_Follow_co());
         }
+        if (pc.CurrentMode == Ply_Controller.Mode.Stop)
+        {
+            if (pc.ischeckPosition)
+            {
+                StopPos = pc.transform.position;
+                pc.ischeckPosition = false;
+            }
+            StopCoroutine(Mode_Follow_co());
+            StartCoroutine(Mode_Stop_co());
 
+        }
 
-        //if(pc.isOperateFollow)
-        //{
-        //    if (!pm.isPlayerMove)
-        //    {
-        //        StopCoroutine(Mode_Follow_co());
-        //        StopCoroutine(Mode_Stop_co());
-        //        StartCoroutine(Mode_Stop_Follow_co());
-        //    }
-        //    else
-        //    {
-        //        StopCoroutine(Mode_Stop_Follow_co());
-        //        StopCoroutine(Mode_Stop_co());
-        //        StartCoroutine(Mode_Follow_co());
-        //    }
-        //}
-
-        //if(pc.isOperateStop)
-        //{
-        //    StopPos = pc.gameObject.transform.position;
-        //    StartCoroutine(Mode_Stop_co());
-        //    pc.isOperateStop = false;
-        //}
 
 
 
@@ -84,7 +64,7 @@ public class Following : MonoBehaviour
     }
     private bool isTarget
     {
-    
+
         get
         {
             if (GameManager.instance.isLive)
@@ -97,23 +77,19 @@ public class Following : MonoBehaviour
     }
 
 
-  
+
 
     // ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÏ ¶§ : ÇÑÁÙ·Î ÁÙ¼¼¿ì´Â ÄÚ·çÆ¾
     public IEnumerator Mode_Follow_co()
     {
+
         nearestMinion_List.Clear();
-        for (int i = 0; i < nearestMinion_List.Count; i++)
-        {
-           // minionController[i] = GetComponent<Minion_Controller>();
-            nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = false;
-        }
         //minionController = GetComponentsInChildren<Minion_Controller>();
         // minionController = FindObjectsOfType<Minion_Controller>();
-
+        #region »ðÀÔÁ¤·Ä¾Ë°í¸®Áò
         if (isTarget)
         {
-            if(pm.isPlayerMove)
+            if (pm.isPlayerMove)
             {
                 for (int i = 0; i < pc.Minions_List.Count; i++)
                 {
@@ -121,79 +97,341 @@ public class Following : MonoBehaviour
                 }
             }
 
+            Vector3 PlayerPos = pm.CurrentPos;
+           
+
+
+            for (int i = 0; i < pc.Minions_List.Count; i++)
+            {
+                if( i == 0)
+                {
+                    FollowObj = pc.gameObject;
+                }
+                else
+                {
+                    FollowObj = pc.Minions_List[i];
+                }
+
+                float shortDis = Vector3.Distance(pc.Minions_List[i].transform.position, FollowObj.transform.position);
+                for (int j = 0; j<pc.Minions_List.Count; j++)
+                {
+                    float newDis = Vector3.Distance(pc.Minions_List[j].transform.position, FollowObj.transform.position);
+
+                    if (shortDis > newDis)
+                    {
+                        shortobj = pc.Minions_List[j];
+                        pc.Minions_List[j] = pc.Minions_List[i];
+                        pc.Minions_List[i] = shortobj;
+
+
+                        shortDis = newDis;
+                    }
+                    else break;
+                }//end of j
+
+
+            }//end of i
+
+
+
+                //for (int a = 0; a < pc.Minions_List.Count; a++)
+                //{
+                //    FollowObj = pc.Minions_List[a];
+                //}
+
+
+
+
             for (int i = 0; i < pc.Minions_List.Count; i++)
             {
                 if (i == 0)
                 {
-                    FollowObj = pc.gameObject;
-                }
-
-                float ShortDis = Vector3.Distance(FollowObj.transform.position, pc.Minions_List[i].transform.position);
-                for (int j = 0; j < pc.Minions_List.Count; j++)
-                {
-                    float Distance = Vector3.Distance(FollowObj.transform.position, pc.Minions_List[j].transform.position);
-
-                    if (ShortDis >= Distance)
-                    {
-                        // nearestMinion_List.Add(pc.Minions_List[j]);
-
-
-                        ShortDis = Distance;
-                        shortobj = pc.Minions_List[j];
-                    }
-                    else
-                    {
-                        shortobj = pc.Minions_List[i];
-                    }
-                }
-
-                nearestMinion_List.Add(shortobj);
-
-                if (i == 0)
-                {
-                    nearestMinion_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);  
+                    pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pm.transform.position + Vector3.back);
                 }
                 else
                 {
 
-                    nearestMinion_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(nearestMinion_List[i - 1].transform.position + Vector3.back);
+                    pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.Minions_List[i - 1].transform.position + Vector3.back);
                 }
 
-                FollowObj = nearestMinion_List[i];
+            }
+
+
+
+            for (int i = 0; i < pc.Minions_List.Count; i++)
+            {
+
+                pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = false;
 
             }
+
+
+            #endregion
+
+
+
+
+            #region µû¶ó¿È
+
+            //if (isTarget)
+            //{
+            //    if (pm.isPlayerMove)
+            //    {
+            //        for (int i = 0; i < pc.Minions_List.Count; i++)
+            //        {
+            //            pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().isStopped = false;
+            //        }
+            //    }
+
+            //    for (int i = 0; i < pc.Minions_List.Count; i++)
+            //    {
+            //        if (i == 0)
+            //        {
+            //            FollowObj = pc.gameObject;
+            //        }
+
+            //        float ShortDis = Vector3.Distance(FollowObj.transform.position, pc.Minions_List[i].transform.position);
+            //        for (int j = 0; j < pc.Minions_List.Count; j++)
+            //        {
+            //            float Distance = Vector3.Distance(FollowObj.transform.position, pc.Minions_List[j].transform.position);
+
+            //            if (ShortDis >= Distance)
+            //            {
+            //                // nearestMinion_List.Add(pc.Minions_List[j]);
+
+
+            //                ShortDis = Distance;
+            //                shortobj = pc.Minions_List[j];
+            //            }
+            //            else
+            //            {
+            //                shortobj = pc.Minions_List[i];
+            //            }
+            //        }
+
+            //        nearestMinion_List.Add(shortobj);
+
+
+            //        FollowObj = nearestMinion_List[i];
+
+            //    }
+            //}
+
+            //for (int i = 0; i < nearestMinion_List.Count; i++)
+            //{
+            //    if (i == 0)
+            //    {
+            //        nearestMinion_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);
+            //    }
+            //    else
+            //    {
+
+            //        nearestMinion_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(nearestMinion_List[i - 1].transform.position + Vector3.back);
+            //    }
+
+            //}
+
+
+
+            //for (int i = 0; i < nearestMinion_List.Count; i++)
+            //{
+
+            //    nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = false;
+
+            //}
+
+            #endregion
+
+
+
+
+
+            #region ÀÏ´Ü ÇÑ¸¶¸®¸¸ À¯µ¿ÀûÀ¸·Î µû¶ó¿À´Â ÄÚµå
+
+
+            /*if (isTarget)
+            {
+
+
+                if (pm.isPlayerMove)
+                {
+                    Vector3 PlayerPos = pm.CurrentPos;
+                    FollowObj = pc.gameObject;
+
+                    for (int i = 0; i < pc.Minions_List.Count; i++)
+                    {
+                        pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().isStopped = false;
+                    }
+
+
+
+                    for (int i = 0; i < pc.Minions_List.Count; i++)
+                    {
+                        float shortDis = Vector3.Distance(pc.Minions_List[i].transform.position, FollowObj.transform.position);
+                        for (int j = i; j >= 0; j--)
+                        {
+                            float newDis = Vector3.Distance(pc.Minions_List[j].transform.position, FollowObj.transform.position);
+
+                            if (shortDis >= newDis)
+                            {
+                                shortobj = pc.Minions_List[j];
+                                shortDis = newDis;
+                            }
+                            else break;
+                        }//end of j
+
+                    }//end of i     - °¡Àå ±æÀÌ ÂªÀº ÇÏ³ª¸¦ Ã£´Â ÄÚµå ºí·Ï
+
+                    nearestMinion_List.Add(shortobj);
+
+                    pc.Minions_List.Remove(shortobj);
+
+
+                    for (int a = 0; a < nearestMinion_List.Count; a++)
+                    {
+
+                        FollowObj = nearestMinion_List[a];
+                    }
+
+                }
+
+
+
+
+
+
+                for (int i = 0; i < nearestMinion_List.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        nearestMinion_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);
+                    }
+                    else
+                    {
+
+                        nearestMinion_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(nearestMinion_List[i - 1].transform.position + Vector3.back);
+                    }
+
+                }
+
+
+
+                for (int i = 0; i < nearestMinion_List.Count; i++)
+                {
+
+                    nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = false;
+
+                }
+
+
+
+
+            }*/
+
+
+
+
+
+
+
+
+            #endregion
+
+
+
+
+            if (!pm.isPlayerMove)
+            {
+                #region ¸ØÃã
+
+                for (int i = 0; i < nearestMinion_List.Count; i++)
+                {
+                    if (i <= 4)
+                    {
+                        if (i % 2 == 0)
+                        {
+                            if (i == 0)
+                            {
+                                nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.left);
+                            }
+                            else
+                            {
+                                nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(nearestMinion_List[i - 2].transform.position + Vector3.left);
+                            }
+                        }
+                        else
+                        {
+                            nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.right);
+
+                            if (i == 1)
+                            {
+                                nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.right);
+                            }
+                            else
+                            {
+                                nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(nearestMinion_List[i - 2].transform.position + Vector3.right);
+
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        //nearestMinion ÀÇ index 5¹øÂ°ºÎÅÍ
+
+                        nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(nearestMinion_List[i - 5].transform.position + Vector3.back);
+                        //if (Vector3.Distance(nearestMinion_List[i].GetComponent<Minion_Controller>().transform.position, nearestMinion_List[i - 5].GetComponent<Minion_Controller>().transform.position) <= 2f)
+                        //{
+                        //    nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
+                        //}
+
+                    }
+
+
+                    if (nearestMinion_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.3f)
+                    {
+                        nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
+                        nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
+                    }
+                }
+                #endregion
+            }
+
+
+            yield return new WaitForSeconds(0.1f);
+
         }
-        yield return null;
+
     }
 
-    //ÇÃ·¹ÀÌ¾î ¸Ø­ŸÀ» ¶§ : 5¿­ Á¾´ë..?·Î ¼­´Â ÄÚ·çÆ¾
+//works when Player Stop. -> included in Mode_Follow_co()
     public IEnumerator Mode_Stop_Follow_co()
     {
-    
+
 
         //for (int i = 0; i < nearestMinion_List.Count; i++)
         //{
         //    minionController[i] = GetComponent<Minion_Controller>();            
         //}
+        #region ¸ØÃã
 
-
-            for (int i = 0; i<nearestMinion_List.Count; i++)
-            {
-            if(i <= 4)
+        for (int i = 0; i < nearestMinion_List.Count; i++)
+        {
+            if (i <= 4)
             {
                 if (i % 2 == 0)
                 {
                     if (i == 0)
                     {
                         nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.left);
-
-                        if (Vector3.Distance(nearestMinion_List[i].GetComponent<Minion_Controller>().transform.position, pm.CurrentPos) <= 1f)
+                        //(nearestMinion_List[i].GetComponent<NavMeshAgent>().velocity.sqrMagnitude >= 0.2f * 0.2f && nearestMinion_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.3f
+                        if (nearestMinion_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.3f)
                         {
                             Debug.Log("¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾");
-                            nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
+                            nearestMinion_List[i].GetComponent<Animator>().SetBool("Move", false);
                         }
-                     
-                     
+
+
 
                     }
                     else
@@ -204,7 +442,7 @@ public class Following : MonoBehaviour
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
 
                         }
-                     
+
                     }
                 }
                 else
@@ -219,7 +457,7 @@ public class Following : MonoBehaviour
 
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
                         }
-                     
+
 
                     }
                     else
@@ -229,7 +467,7 @@ public class Following : MonoBehaviour
                         {
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
                         }
-                     
+
                     }
                 }
 
@@ -243,12 +481,13 @@ public class Following : MonoBehaviour
                 {
                     nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
                 }
-             
-            }
-            
 
-           // nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
+            }
+
+
+            // nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
         }
+        #endregion 
         yield return null;
     }
 
@@ -256,20 +495,6 @@ public class Following : MonoBehaviour
 
     public IEnumerator Mode_Stop_co()
     {
-       
-
-
-        //¸ØÃß±â ¸ðµå
-        //¾ÆÁ÷ ¾È¸¸µé¾ú¾î¿ë :)
-        /*
-         1.PlayerController¿¡¼­ ¸ØÃç¶ó ¸í·ÉÇÏ´Â ¼ø°£ÀÇ PlayerÀÇ À§Ä¡¸¦ ÀúÀåÇÏ´Â º¯¼ö ¸¸µé±â ¹× °¡Á®¿À±â
-        2. ±× À§Ä¡ ±âÁØ 0¹øÀ» ÇÃ·¹ÀÌ¾î À§Ä¡
-        3. nearestMinion ¸®½ºÆ®ÀÇ ¼ø¼­´ë·Î 0¹ø¿¡ °¡±õ°Ô ¼¼¿ì±â
-         
-         */
-
-        //pc.StopPos;
-
 
         for (int i = 0; i < nearestMinion_List.Count; i++)
         {
@@ -280,44 +505,24 @@ public class Following : MonoBehaviour
                     if (i == 0)
                     {
                         nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(StopPos);
-                        //if (Vector3.Distance(nearestMinion_List[i].transform.position, pc.StopPos) <= 1f)
-                        //{
-                        //    nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
-                        //    //nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
-                        //}
                     }
                     else
                     {
                         nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(nearestMinion_List[i - 2].transform.position + Vector3.left);
-                        //if (Vector3.Distance(nearestMinion_List[i].transform.position, nearestMinion_List[i - 2].transform.position) <= 1f)
-                        //{
-                        //    nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
-                        //}
                     }
 
                 }
                 else
                 {
-                    nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(StopPos + Vector3.right);
-
                     if (i == 1)
                     {
                         nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(StopPos + Vector3.right);
-                        //if (Vector3.Distance(nearestMinion_List[i].transform.position, pc.StopPos) <= 2f)
-                        //{
-
-                        //    nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
-                        //}
-
                     }
                     else
                     {
                         nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(nearestMinion_List[i - 2].transform.position + Vector3.right);
-                        //if (Vector3.Distance(nearestMinion_List[i].transform.position, nearestMinion_List[i - 2].transform.position) <= 2f)
-                        //{
-                        //    nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
-                        //}
                     }
+
                 }
 
             }
@@ -326,13 +531,19 @@ public class Following : MonoBehaviour
                 //nearestMinion ÀÇ index 5¹øÂ°ºÎÅÍ
 
                 nearestMinion_List[i].GetComponent<NavMeshAgent>().SetDestination(nearestMinion_List[i - 5].transform.position + Vector3.back);
-                //if (Vector3.Distance(nearestMinion_List[i].transform.position, nearestMinion_List[i - 5].transform.position) <= 2f)
-                //{
-                //    nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
-                //}
-            }
-        }
 
+            }
+
+
+            if (nearestMinion_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.5f)
+            {
+
+                nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
+                Debug.Log(nearestMinion_List[i].GetComponent<Minion_Controller>().isClose);
+                //nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
+            }
+
+        }
 
 
 
@@ -343,11 +554,13 @@ public class Following : MonoBehaviour
 
 
 
-    public void Swap(ref float a ,ref float b)
+
+    public void Swap(ref float a, ref float b)
     {
         float temp = a;
         a = b;
         b = temp;
 
     }
+
 }

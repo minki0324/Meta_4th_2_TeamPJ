@@ -8156,7 +8156,7 @@ GameObject:
   - component: {fileID: 6937031202658005056}
   - component: {fileID: 1259696877}
   m_Layer: 0
-  m_Name: Sword_Man
+  m_Name: Sword_Man 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
