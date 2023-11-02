@@ -26,7 +26,7 @@ public class Minion_Controller : MonoBehaviour
 
     private CapsuleCollider MeshCollider;  //맞으면 피까이는 판정용 콜라이더
     private CapsuleCollider DetectCollider; //공격 판정용 콜라이더
-    [SerializeField] private UnitAttack UnitAtk;
+    [SerializeField] private UnitAttack1 UnitAtk;
 
     private float MaxHP;
     public float CurrentHP { get; private set; }
@@ -50,7 +50,7 @@ public class Minion_Controller : MonoBehaviour
 
     private void Awake()
     {
-        UnitAtk = GetComponent<UnitAttack>();
+        UnitAtk = GetComponent<UnitAttack1>();
         playerController = FindObjectOfType<Ply_Controller>();
         MeshCollider = GetComponent<CapsuleCollider>();
         DetectCollider = transform.GetChild(0).GetComponent<CapsuleCollider>();
@@ -124,7 +124,7 @@ public class Minion_Controller : MonoBehaviour
                     1. 플레이어의 앞으로 이동할때는 Move를 true바꿔서 달려가는 모션
                     2. 적군이 사정거리 내에 들어왔을 때는 Move를 false로 바꾸고 하체는 Idle상태 상체는 쿨타임에따라 Attack Trigger를 켜서 공격 모션 취하도록
                 */
-                UnitAtk.MinionAttack();
+                //UnitAtk.MinionAttack();
                 break;
         }
     }

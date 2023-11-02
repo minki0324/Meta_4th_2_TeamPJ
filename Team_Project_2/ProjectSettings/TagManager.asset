@@ -8,6 +8,7 @@ TagManager:
   - Door
   - Flag
   - Weapon
+  - Leader
   layers:
   - Default
   - TransparentFX
@@ -15,13 +16,13 @@ TagManager:
   - 
   - Water
   - UI
-  - Enemy
+  - Enemy1
   - Team
-  - Target
+  - Enemy2
   - Die
   - 
   - 
-  - 
+  - Enemy3
   - 
   - 
   - 

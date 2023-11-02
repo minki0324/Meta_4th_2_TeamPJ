@@ -16,7 +16,7 @@ public class Ply_Controller : MonoBehaviour
         Stop    //∏ÿ√Á∂Û~~
     }
 
-    public Mode CurrentMode;
+    public Mode CurrentMode = Mode.Follow;
 
     //¥Ÿ∏• ≈¨∑°Ω∫ ∞¥√º=====================
     private Minion_Controller[] minionController;
