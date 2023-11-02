@@ -345,7 +345,7 @@ MonoBehaviour:
   m_grassHealthyColor: {r: 0.7169812, g: 0.5681366, b: 0.41598436, a: 1}
   m_grassDryColor: {r: 0.6792453, g: 0.5572473, b: 0.43253827, a: 1}
   Base_PreFabs:
-  - {fileID: 547628648517307451, guid: 582ef2bab3c113347a1be016cbc22a4f, type: 3}
+  - {fileID: 3041171786662448779, guid: 7f537d2cd7fe6fa479af058c857751ad, type: 3}
   Ply_Num: 3
   Base_Num: 0
 --- !u!1 &1419268901
@@ -523,6 +523,10 @@ MonoBehaviour:
   MoveSpeed: 5
   JumpForce: 300
   isGrounded: 1
+  isAttacking_1: 0
+  isPossible_Attack_2: 0
+  isAttacking_2: 0
+  isPossible_Attack_1: 1
 --- !u!1 &35983966569407757
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,6 +871,7 @@ MonoBehaviour:
   TargetLayer:
     serializedVersion: 2
     m_Bits: 0
+  StopPos: {x: 0, y: 0, z: 0}
 --- !u!1 &2495100705757769291
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,6 +972,12 @@ MonoBehaviour:
   TargetLayer:
     serializedVersion: 2
     m_Bits: 0
+  isOperateStop: 0
+  isOperateFollow: 1
+  animator: {fileID: 0}
+  isPlay_AttackOrder: 0
+  isPlay_FollowOrder: 0
+  isPlay_StopOrder: 0
 --- !u!95 &7965913038526501539
 Animator:
   serializedVersion: 3
