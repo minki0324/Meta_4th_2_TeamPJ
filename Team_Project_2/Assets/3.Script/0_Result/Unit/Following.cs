@@ -103,13 +103,13 @@ public class Following : MonoBehaviour
 
             for (int i = 0; i < pc.Minions_List.Count; i++)
             {
-                if( i == 0)
+                if(i==0)
                 {
                     FollowObj = pc.gameObject;
                 }
                 else
                 {
-                    FollowObj = pc.Minions_List[i];
+                    FollowObj = pc.Minions_List[i - 1];
                 }
 
                 float shortDis = Vector3.Distance(pc.Minions_List[i].transform.position, FollowObj.transform.position);
@@ -133,25 +133,26 @@ public class Following : MonoBehaviour
             }//end of i
 
 
-
-                //for (int a = 0; a < pc.Minions_List.Count; a++)
-                //{
-                //    FollowObj = pc.Minions_List[a];
-                //}
-
+            for(int i = 0; i<pc.Minions_List.Count; i++)
+            {
+                nearestMinion_List.Add(pc.Minions_List[i]);
+            }
 
 
 
-            for (int i = 0; i < pc.Minions_List.Count; i++)
+
+
+
+            for (int i = 0; i < nearestMinion_List.Count; i++)
             {
                 if (i == 0)
                 {
-                    pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pm.transform.position + Vector3.back);
+                    nearestMinion_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pm.transform.position + Vector3.back);
                 }
                 else
                 {
 
-                    pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.Minions_List[i - 1].transform.position + Vector3.back);
+                    nearestMinion_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination( nearestMinion_List[i - 1].transform.position + Vector3.back);
                 }
 
             }
@@ -161,7 +162,7 @@ public class Following : MonoBehaviour
             for (int i = 0; i < pc.Minions_List.Count; i++)
             {
 
-                pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = false;
+                nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = false;
 
             }
 
