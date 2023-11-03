@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaderState : MonoBehaviour
+public class LeaderState : Unit
 {
 
     public enum BattleState {

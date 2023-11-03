@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
-public class UnitAttack1 : Minion_Controller
+public class UnitAttack1 : MonoBehaviour
 {
     //[SerializeField] private Ply_Controller player;
     /*
@@ -19,13 +19,13 @@ public class UnitAttack1 : Minion_Controller
     //임시 미니언체력
     private int HP = 3;
     private bool isDie;
-    [SerializeField] private Ply_Controller player;
+   private Ply_Controller player;
     //팀의 리더가 누군지
     private LeaderState leaderState;
     private GameObject leader;
     // 유닛 공격감지범위
-    public float scanRange = 13f;
-    public float AttackRange = 1.5f;
+    [SerializeField] private float scanRange = 13f;
+    [SerializeField] private float AttackRange = 1.5f;
 
     //이동중 적군유닛이 공격범위콜라이더에 닿았는가?
     [SerializeField] private bool isdetecting = false;
@@ -116,7 +116,7 @@ public class UnitAttack1 : Minion_Controller
             }
             else
             {
-                Debug.Log( $" {myLayer} : 리더찾지못함");
+                Debug.Log( $" {myLayer}번레이어 : 리더찾지못함");
             }
         }
 
@@ -268,7 +268,7 @@ public class UnitAttack1 : Minion_Controller
 
         
         nearestTarget = GetNearestTarget(allHits);
-        target = nearestTarget.gameObject.layer;
+        target =1 << nearestTarget.gameObject.layer;
         if (nearestTarget != null && !isDie)
         {
             float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
@@ -281,7 +281,6 @@ public class UnitAttack1 : Minion_Controller
                 isdetecting = false;
             }
             //타겟감지시 타겟쪽으로 바라보기
-            Debug.Log(nearestTarget);
             LookatTarget(nearestTarget);
             // 유닛의 공격범위에 들어갈때까지 타겟에게 이동
             if (!isdetecting)
