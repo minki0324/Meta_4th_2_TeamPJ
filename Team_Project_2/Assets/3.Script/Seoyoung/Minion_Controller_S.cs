@@ -5,10 +5,10 @@ using UnityEngine;
 public class Minion_Controller_S : MonoBehaviour
 {
     /*
-        미니언 컨트롤러
-          1. 플레이어의 키 입력에 따른 모드변경
-          2. 상태에 따라서 애니메이션 변경
-      */
+    미니언 컨트롤러
+      1. 플레이어의 키 입력에 따른 모드변경
+      2. 상태에 따라서 애니메이션 변경
+  */
 
     public enum Type
     {
@@ -38,7 +38,7 @@ public class Minion_Controller_S : MonoBehaviour
 
 
 
-    //추가된 변수 - 이서영
+
     public bool isClose = false;
 
 
@@ -67,9 +67,11 @@ public class Minion_Controller_S : MonoBehaviour
         if (isClose == true)
         {
             ani.SetBool("Move", false);
+
         }
         else
         {
+
             ani.SetBool("Move", true);
         }
     }
@@ -110,7 +112,7 @@ public class Minion_Controller_S : MonoBehaviour
         {
             case Ply_Controller.Mode.Follow:
 
-                
+
 
                 // 플레이어or대열의 앞 병사와 가까워졌을 때 체크하는 메소드 넣어서 가까워지면 Bool값 false로 변경, 멀어지면 다시 true로 변경해서 따라가기
                 break;
@@ -126,6 +128,7 @@ public class Minion_Controller_S : MonoBehaviour
                 break;
         }
     }
+
 
 
 
