@@ -89,10 +89,10 @@ public class Following : MonoBehaviour
         #region 자연스러운 이동
 
 
-        for (int i = 0; i < pc.Minions_List.Count; i++)
+        for (int i = 0; i < pc.UnitList_List.Count; i++)
         {
-            pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = false;
-            pc.Minions_List[i].GetComponent<NavMeshAgent>().isStopped = false;
+            pc.UnitList_List[i].GetComponent<Minion_Controller>().isClose = false;
+            pc.UnitList_List[i].GetComponent<NavMeshAgent>().isStopped = false;
         }
 
 
@@ -101,38 +101,38 @@ public class Following : MonoBehaviour
         {
 
 
-            for (int i = 0; i < pc.Minions_List.Count; i++)
+            for (int i = 0; i < pc.UnitList_List.Count; i++)
             {
-                listVetor.Add(pc.Minions_List[i].transform.position);
+                listVetor.Add(pc.UnitList_List[i].transform.position);
 
             }
 
-            pc.Minions_List.Sort(delegate (GameObject a, GameObject b)
+            pc.UnitList_List.Sort(delegate (GameObject a, GameObject b)
             {
                 return Compare2(a, b, pc.gameObject);
             });
 
 
-            for (int i = 0; i < pc.Minions_List.Count; i++)
+            for (int i = 0; i < pc.UnitList_List.Count; i++)
             {
                 if (i == 0)
                 {
-                    pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);
+                    pc.UnitList_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);
                 }
                 else
                 {
 
-                    pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.Minions_List[i - 1].transform.position + Vector3.back);
+                    pc.UnitList_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.UnitList_List[i - 1].transform.position + Vector3.back);
                 }
 
             }
 
 
 
-            for (int i = 0; i < pc.Minions_List.Count; i++)
+            for (int i = 0; i < pc.UnitList_List.Count; i++)
             {
 
-                pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = false;
+                pc.UnitList_List[i].GetComponent<Minion_Controller>().isClose = false;
 
             }
         }
@@ -151,7 +151,7 @@ public class Following : MonoBehaviour
         {
             #region 멈춤
 
-            for (int i = 0; i < pc.Minions_List.Count; i++)
+            for (int i = 0; i < pc.UnitList_List.Count; i++)
             {
                 if (i <= 4)
                 {
@@ -159,24 +159,24 @@ public class Following : MonoBehaviour
                     {
                         if (i == 0)
                         {
-                            pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.left);
+                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.left);
                         }
                         else
                         {
-                            pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.Minions_List[i - 2].transform.position + Vector3.left);
+                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.left);
                         }
                     }
                     else
                     {
-                        pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.right);
+                        pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.right);
 
                         if (i == 1)
                         {
-                            pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.right);
+                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.CurrentPos + Vector3.right);
                         }
                         else
                         {
-                            pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.Minions_List[i - 2].transform.position + Vector3.right);
+                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.right);
 
                         }
                     }
@@ -186,15 +186,15 @@ public class Following : MonoBehaviour
                 {
                     //nearestMinion 의 index 5번째부터
 
-                    pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.Minions_List[i - 5].transform.position + Vector3.back);
+                    pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 5].transform.position + Vector3.back);
 
                 }
 
 
-                if (pc.Minions_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.3f)
+                if (pc.UnitList_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.3f)
                 {
-                    pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = true;
-                    pc.Minions_List[i].GetComponent<NavMeshAgent>().isStopped = true;
+                    pc.UnitList_List[i].GetComponent<Minion_Controller>().isClose = true;
+                    pc.UnitList_List[i].GetComponent<NavMeshAgent>().isStopped = true;
                 }
             }
             #endregion
@@ -213,7 +213,7 @@ public class Following : MonoBehaviour
     public IEnumerator Mode_Stop_co()
     {
 
-        for (int i = 0; i < pc.Minions_List.Count; i++)
+        for (int i = 0; i < pc.UnitList_List.Count; i++)
         {
             if (i <= 4)
             {
@@ -221,11 +221,11 @@ public class Following : MonoBehaviour
                 {
                     if (i == 0)
                     {
-                        pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(StopPos);
+                        pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(StopPos);
                     }
                     else
                     {
-                        pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.Minions_List[i - 2].transform.position + Vector3.left);
+                        pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.left);
                     }
 
                 }
@@ -233,11 +233,11 @@ public class Following : MonoBehaviour
                 {
                     if (i == 1)
                     {
-                        pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(StopPos + Vector3.right);
+                        pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(StopPos + Vector3.right);
                     }
                     else
                     {
-                        pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.Minions_List[i - 2].transform.position + Vector3.right);
+                        pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.right);
                     }
 
                 }
@@ -247,7 +247,7 @@ public class Following : MonoBehaviour
             {
                 //nearestMinion 의 index 5번째부터
 
-                pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.Minions_List[i - 5].transform.position + Vector3.back);
+                pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 5].transform.position + Vector3.back);
 
             }
 
@@ -255,7 +255,7 @@ public class Following : MonoBehaviour
             if (nearestMinion_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.5f)
             {
 
-                pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = true;
+                pc.UnitList_List[i].GetComponent<Minion_Controller>().isClose = true;
                 Debug.Log(nearestMinion_List[i].GetComponent<Minion_Controller>().isClose);
                 //nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
             }

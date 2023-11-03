@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Unit : MonoBehaviour
+public class Unit : LeaderState
 {
    
     private bool isDie;
@@ -29,7 +29,7 @@ public class Unit : MonoBehaviour
     protected NavMeshAgent navMeshAgent;
 
     [Header("ÇöÀçÅ¸°Ù Transform")]
-    [SerializeField] protected Transform nearestTarget;
+    [SerializeField] public Transform nearestTarget;
     [Header("ÇöÀçÅ¸°Ù Layer")]
     [SerializeField] LayerMask target;
 

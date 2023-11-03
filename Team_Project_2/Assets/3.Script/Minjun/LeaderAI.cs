@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class LeaderAI : LeaderState
+public class LeaderAI : Unit
 {
     private float scanRange = 10f;
     private LayerMask targetLayer;
     private int invertedLayerMask;
     private NavMeshAgent navMesh;
     private Animator ani;
+
     //public Transform nearestTarget;
     private float AttackRange = 5f;
     private void Awake()
@@ -26,9 +27,11 @@ public class LeaderAI : LeaderState
         switch (bat_State)
         {
             case BattleState.Follow:
+                Debug.Log("AI Follow상태");
                 //navMesh.isStopped = true;
                 break;
             case BattleState.Attack:
+                Debug.Log("AI Attack상태");
               
                 break;
         }
@@ -41,6 +44,7 @@ public class LeaderAI : LeaderState
             case JudgmentState.wait:
                 break;
             case JudgmentState.Detect:
+                Debug.Log("AI 적감지후 접근중");
                 //애니메이션 방패들기
                 ani_State = AniState.shild;
                 //천천히 적에게 접근
