@@ -62,6 +62,8 @@ namespace SimpleProceduralTerrainProject
         public int Ply_Num;
         public int Base_Num = 0;
         List<Vector3> baseCampPositions = new List<Vector3>();
+        private ColorSet color;
+        [SerializeField] private int Color_index;
 
         //Private
         private FractalNoise m_groundNoise, m_mountainNoise, m_treeNoise, m_detailNoise;
@@ -73,28 +75,11 @@ namespace SimpleProceduralTerrainProject
 
         void Start()
         {
+            int seed = (int)System.DateTime.Now.Ticks;
+            Random.InitState(seed);
+
+            m_seed = Random.Range(0, 100);
             InitializeTerrain();
-
-            //Set the neighbours of terrain to remove seams.
-            for (int x = 0; x < m_tilesX; x++)
-            {
-                for (int z = 0; z < m_tilesZ; z++)
-                {
-                    Terrain right = null;
-                    Terrain left = null;
-                    Terrain bottom = null;
-                    Terrain top = null;
-
-                    if (x > 0) left = m_terrain[(x - 1), z];
-                    if (x < m_tilesX - 1) right = m_terrain[(x + 1), z];
-
-                    if (z > 0) bottom = m_terrain[x, (z - 1)];
-                    if (z < m_tilesZ - 1) top = m_terrain[x, (z + 1)];
-
-                    m_terrain[x, z].SetNeighbors(left, top, right, bottom);
-
-                }
-            }
         }
 
         void InitializeTerrain()
@@ -148,13 +133,36 @@ namespace SimpleProceduralTerrainProject
             }
             SpawnBaseCamps();
             RemoveTreesFromBases();
+
+            //Set the neighbours of terrain to remove seams.
+            for (int x = 0; x < m_tilesX; x++)
+            {
+                for (int z = 0; z < m_tilesZ; z++)
+                {
+                    Terrain right = null;
+                    Terrain left = null;
+                    Terrain bottom = null;
+                    Terrain top = null;
+
+                    if (x > 0) left = m_terrain[(x - 1), z];
+                    if (x < m_tilesX - 1) right = m_terrain[(x + 1), z];
+
+                    if (z > 0) bottom = m_terrain[x, (z - 1)];
+                    if (z < m_tilesZ - 1) top = m_terrain[x, (z + 1)];
+
+                    m_terrain[x, z].SetNeighbors(left, top, right, bottom);
+
+                }
+            }
         }
 
         void SpawnBaseCamps()
         {
             int numPlayers = Ply_Num; // 플레이어 수
             int maxAttempts = 100; // 최대 시도 횟수, 무한 루프 방지를 위해 설정
+            List<GameObject> baseCamps = new List<GameObject>();
 
+           
             for (int i = 0; i < numPlayers; i++)
             {
                 bool validPositionFound = false;
@@ -162,9 +170,9 @@ namespace SimpleProceduralTerrainProject
 
                 for (int attempt = 0; attempt < maxAttempts; attempt++)
                 {
-                    // 중앙에서 200x200 범위 내의 랜덤한 위치 생성
-                    float posX = Random.Range(-250f, 250f);
-                    float posZ = Random.Range(-250f, 250f);
+                    // 중앙에서 250x250 범위 내의 랜덤한 위치 생성
+                    float posX = Random.Range(-200f, 200f);
+                    float posZ = Random.Range(-200f, 200f);
 
                     // 월드 좌표계를 테레인 배열 인덱스로 변환
                     int terrainIndexX = Mathf.FloorToInt((posX + m_tilesX * m_terrainSize * 0.5f) / m_terrainSize);
@@ -193,23 +201,49 @@ namespace SimpleProceduralTerrainProject
                             validPositionFound = true;
                             break;
                         }
-                    
                     }
                 }
 
                 if (validPositionFound)
                 {
                     // 베이스 캠프 소환
-                    Instantiate(Base_PreFabs[i % Base_PreFabs.Length], baseCampPosition, Quaternion.identity);
+                    GameObject baseCamp =  Instantiate(Base_PreFabs[i % Base_PreFabs.Length], baseCampPosition, Quaternion.identity);
+                    baseCamps.Add(baseCamp);
                     baseCampPositions.Add(baseCampPosition);
+                    // 베이스 캠프를 원점을 바라보도록 회전 설정
+                    Vector3 lookDirection = Vector3.zero - baseCamp.transform.position;
+                    lookDirection.y = 0f; // 오브젝트를 수평으로 회전시키려면 y 값을 0으로 설정
+                    Quaternion rotation = Quaternion.LookRotation(lookDirection.normalized);
+                    baseCamp.transform.rotation = rotation;
+
+                    // ColorSet 스크립트의 RecursiveSearchAndSetTexture 메서드 호출하여 컬러 설정
+                    ColorSet1 colorSet = baseCamp.GetComponent<ColorSet1>();
+                    if (colorSet != null)
+                    {
+                        colorSet.RecursiveSearchAndSetTexture(baseCamp.transform, Color_index);
+                    }
                 }
                 else
                 {
                     Debug.Log("Failed to find a valid position for base camp. Base camp spawning failed.");
+                    // 기존 베이스 캠프 제거
+                    RemoveBaseCamps(baseCamps);
+                    SpawnBaseCamps();
                 }
             }
         }
-    
+
+        void RemoveBaseCamps(List<GameObject> baseCamps)
+        {
+            foreach (GameObject baseCamp in baseCamps)
+            {
+                Destroy(baseCamp);
+            }
+
+            baseCamps.Clear(); // 베이스 캠프 목록 초기화
+            baseCampPositions.Clear(); // 베이스 캠프 위치 목록 초기화
+        }
+
         void RemoveTreesFromBases()
         {
             // 소환된 베이스 캠프 위치에서 나무 제거
