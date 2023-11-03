@@ -12,6 +12,11 @@ public class LeaderAI : LeaderState
     private Animator ani;
     //public Transform nearestTarget;
     private float AttackRange = 5f;
+
+
+    public bool isEnermyChecked = false;
+
+
     private void Awake()
     {
         ani = GetComponent<Animator>();
@@ -62,9 +67,12 @@ public class LeaderAI : LeaderState
     private void EnemyDitect()
     {
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, combinedMask);
+      
         nearestTarget = GetNearestTarget(hits);
-        if(nearestTarget != null) { 
-        float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
+
+        if(nearestTarget)
+        {          
+            float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
             jud_State = JudgmentState.Ditect;
            
             //DItect 상태일때 방패를 들며 천천히 접근
@@ -72,11 +80,17 @@ public class LeaderAI : LeaderState
             {
                 bat_State = BattleState.Attack;
             }
+
+           
+            isEnermyChecked = true;
         }
         else
-        {
+        {         
             jud_State = JudgmentState.Ready;
             bat_State = BattleState.Follow;
+
+
+            isEnermyChecked = false;   
         }
 
        

@@ -37,6 +37,10 @@ public class Minion_Controller : MonoBehaviour
     public Type Human_type;
 
     public bool isClose = false;
+    public bool isDetect = false;
+
+    private LeaderAI la;
+
 
     private void Awake()
     {
@@ -46,6 +50,9 @@ public class Minion_Controller : MonoBehaviour
         MeshCollider = GetComponent<CapsuleCollider>();
         DetectCollider = transform.GetChild(0).GetComponent<CapsuleCollider>();
         TryGetComponent(out ani);
+
+        la = FindObjectOfType<LeaderAI>();
+
     }
 
     private void Start()
@@ -56,15 +63,30 @@ public class Minion_Controller : MonoBehaviour
     private void Update()
     {
         Behavior_Mode();
-        if (isClose == true)
+
+ 
+
+        if (isClose)
         {
             ani.SetBool("Move", false);
+            ani.SetBool("UpperMove", false);
 
         }
         else
         {
+            if(la.isEnermyChecked)
+            {
+                ani.SetBool("UpperMove", false);
+                ani.SetFloat("MoveSpeed", 0.5f);
+            }
+            else
+            {
+                ani.SetBool("UpperMove", true);
+                ani.SetFloat("MoveSpeed", 1f);
+            }
 
             ani.SetBool("Move", true);
+          
         }
     }
 

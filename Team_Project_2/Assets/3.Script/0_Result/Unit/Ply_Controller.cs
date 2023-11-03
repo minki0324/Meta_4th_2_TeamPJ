@@ -168,7 +168,7 @@ public class Ply_Controller : MonoBehaviour
 
                 if (selectedNumber != -1)
                 {
-                    following.isa = true;
+                    
                     // following.nearestMinion_List.Clear();
 
 

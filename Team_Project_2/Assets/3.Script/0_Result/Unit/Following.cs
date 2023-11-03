@@ -13,6 +13,8 @@ public class Following : MonoBehaviour
 
     private Ply_Controller pc;
     private Ply_Movement pm;
+    private LeaderAI la;
+
 
     private Minion_Controller[] minionController;
     GameObject shortobj;
@@ -20,14 +22,18 @@ public class Following : MonoBehaviour
 
     List<Vector3> listVetor = new List<Vector3>();
 
-    public bool isa = false;
+    
 
     public Vector3 StopPos;
+
+
+    
 
     private void Awake()
     {
         pc = FindObjectOfType<Ply_Controller>();
         pm = FindObjectOfType<Ply_Movement>();
+        la = FindObjectOfType<LeaderAI>();
     }
 
     private void Start()
@@ -77,13 +83,16 @@ public class Following : MonoBehaviour
     }
 
 
+    
+
+
 
 
     // 플레이어 움직일 때 : 한줄로 줄세우는 코루틴
     public IEnumerator Mode_Follow_co()
     {
 
-
+   
 
         #region 자연스러운 이동
 
@@ -98,9 +107,6 @@ public class Following : MonoBehaviour
         {
             if (isTarget)
             {
-
-
-
                 for (int i = 0; i < pc.Minions_List.Count; i++)
                 {
                     listVetor.Add(pc.Minions_List[i].transform.position);
@@ -121,35 +127,96 @@ public class Following : MonoBehaviour
                 //}
 
 
-                for (int i = 0; i < pc.Minions_List.Count; i++)
-                {
-                    if (i == 0)
-                    {
-                        pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);
-                    }
-                    else
-                    {
-
-                        pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.Minions_List[i - 1].transform.position + Vector3.back);
-                    }
-
-                }
 
 
-
-                for (int i = 0; i < pc.Minions_List.Count; i++)
+                if (!la.isEnermyChecked)
                 {
 
-                    pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = false;
 
+                    for (int i = 0; i < pc.Minions_List.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);
+                        }
+                        else
+                        {
+
+                            pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.Minions_List[i - 1].transform.position + Vector3.back);
+                        }
+
+                    }
+                    for (int i = 0; i < pc.Minions_List.Count; i++)
+                    {
+                        pc.Minions_List[i].GetComponent<Minion_Controller>().isDetect = false;
+                        pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = false;
+
+                    }
                 }
-            }
+                else
+                {
+                    for (int i = 0; i < pc.Minions_List.Count; i++)
+                    {
+                        if (i <= 4)
+                        {
+                            if (i % 2 == 0)
+                            {
+                                if (i == 0)
+                                {
+                                    pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(StopPos);
+                                }
+                                else
+                                {
+                                    pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.Minions_List[i - 2].transform.position + Vector3.left);
+                                }
+
+                            }
+                            else
+                            {
+                                if (i == 1)
+                                {
+                                    pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(StopPos + Vector3.right);
+                                }
+                                else
+                                {
+                                    pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.Minions_List[i - 2].transform.position + Vector3.right);
+                                }
+
+                            }
+
+                        }
+                        else
+                        {
+                            //nearestMinion 의 index 5번째부터
+
+                            pc.Minions_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.Minions_List[i - 5].transform.position + Vector3.back);
+
+                        }
+
+                    }
+
+
+                    for (int i = 0; i < pc.Minions_List.Count; i++)
+                    {
+                        if (pc.Minions_List[i].GetComponent<NavMeshAgent>().remainingDistance < 3f)
+                        {
+                            pc.Minions_List[i].GetComponent<Minion_Controller>().isDetect = true;
+
+                            Debug.Log("Enermy Detection Animation Playing");
+                        }
+                    }
+                        
+                }
+                
+
+
+            }//end of isTarget
+
 
 
             #endregion
 
-        }
-
+        }//end of PlayerMove
 
         else
         {
@@ -257,11 +324,11 @@ public class Following : MonoBehaviour
             }
 
 
-            if (nearestMinion_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.5f)
+            if (nearestMinion_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.8f)
             {
 
                 pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = true;
-                Debug.Log(nearestMinion_List[i].GetComponent<Minion_Controller>().isClose);
+               
                 //nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
             }
 
@@ -272,6 +339,23 @@ public class Following : MonoBehaviour
         yield return null;
     }
 
+
+
+
+
+    public IEnumerator Mode_Detect_co()
+    {
+        //적 감지 시 방패 들고 느릿느릿 모드
+        //LeaderAI 클래스 내부에 가장 가까운 적군 탐지하는 Sphere Ray 존재 - nearestTarget
+        
+        
+        
+
+
+
+        yield return null;
+
+    }
 
 
 
