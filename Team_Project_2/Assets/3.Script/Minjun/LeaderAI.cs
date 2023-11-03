@@ -40,7 +40,7 @@ public class LeaderAI : LeaderState
                 break;
             case JudgmentState.wait:
                 break;
-            case JudgmentState.Ditect:
+            case JudgmentState.Detect:
                 //애니메이션 방패들기
                 ani_State = AniState.shild;
                 //천천히 적에게 접근
@@ -65,7 +65,7 @@ public class LeaderAI : LeaderState
         nearestTarget = GetNearestTarget(hits);
         if(nearestTarget != null) { 
         float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
-            jud_State = JudgmentState.Ditect;
+            jud_State = JudgmentState.Detect;
            
             //DItect 상태일때 방패를 들며 천천히 접근
             if (attackDistance <= AttackRange)

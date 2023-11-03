@@ -14,7 +14,7 @@ public class LeaderState : Unit
     {
         Ready, //평균 전투력보다 높으면 점령지 이동
         wait, //평균전투력보다 낮을때 기지에서 대기하며 애들뽑기
-        Ditect,
+        Detect,
 
 
     }
@@ -40,6 +40,12 @@ public class LeaderState : Unit
     public float Current_HP = 150f;
     public float Max_Hp = 150f;
     public float Regeneration = 0.5f;
+    public int maxUnitCount = 19;
+    public int unitValue = 1;
+    public int currentUnitCount = 0;
+    public float unitCost;
+    public bool canSpawn;
+    public bool isDead;
     public BattleState bat_State;
     public JudgmentState jud_State;
     public AniState ani_State;

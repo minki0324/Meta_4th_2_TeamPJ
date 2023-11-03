@@ -63,8 +63,13 @@ public class Unit : MonoBehaviour
         Transform nearest = null;
         float closestDistance = float.MaxValue;
 
+        
         foreach (RaycastHit hit in hits)
         {
+            if (hit.transform.CompareTag("SpawnPoint"))
+            {
+                continue;
+            }
             float distance = Vector3.Distance(transform.position, hit.transform.position);
             if (distance < closestDistance)
             {

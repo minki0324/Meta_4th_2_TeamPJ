@@ -141,8 +141,13 @@ public class UnitAttack1 : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
+            if (hit.transform.CompareTag("SpawnPoint")) {
+                continue;
+            }
             float distance = Vector3.Distance(transform.position, hit.transform.position);
-            if (distance < closestDistance)
+            
+           
+            if (distance < closestDistance && !hit.transform.CompareTag("SpawnPoint"))
             {
                 closestDistance = distance;
                 nearest = hit.transform;
@@ -269,7 +274,7 @@ public class UnitAttack1 : MonoBehaviour
         
         nearestTarget = GetNearestTarget(allHits);
         target =1 << nearestTarget.gameObject.layer;
-        if (nearestTarget != null && !isDie)
+        if (nearestTarget != null && !isDie )
         {
             float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
             if (attackDistance <= AttackRange)
