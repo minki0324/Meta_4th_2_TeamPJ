@@ -1,9 +1,9 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Following : MonoBehaviour
+public class Following_S : MonoBehaviour
 {
 
     [SerializeField]
@@ -295,3 +295,4 @@ public class Following : MonoBehaviour
         Debug.Log(text);
     }
 }
+*/

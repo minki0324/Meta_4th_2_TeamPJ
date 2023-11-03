@@ -1,15 +1,14 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class Minion_Controller : MonoBehaviour
+public class Minion_Controller_S : MonoBehaviour
 {
-    /*
+    *//*
     미니언 컨트롤러
       1. 플레이어의 키 입력에 따른 모드변경
       2. 상태에 따라서 애니메이션 변경
-    */
+  *//*
 
     public enum Type
     {
@@ -19,6 +18,7 @@ public class Minion_Controller : MonoBehaviour
         HeavyInfantry = 20,
         Archer = 25,
     }
+
 
     private Ply_Controller playerController;
     private Animator ani;
@@ -35,7 +35,17 @@ public class Minion_Controller : MonoBehaviour
 
     public Type Human_type;
 
+
+
+
+
     public bool isClose = false;
+
+
+
+
+
+
 
     private void Awake()
     {
@@ -110,14 +120,17 @@ public class Minion_Controller : MonoBehaviour
 
             case Ply_Controller.Mode.Attack:
                 // 상태에 따라서 애니메이션 구현해야함.
-                /*
+                *//*
                     1. 플레이어의 앞으로 이동할때는 Move를 true바꿔서 달려가는 모션
                     2. 적군이 사정거리 내에 들어왔을 때는 Move를 false로 바꾸고 하체는 Idle상태 상체는 쿨타임에따라 Attack Trigger를 켜서 공격 모션 취하도록
-                */
+                *//*
                 UnitAtk.MinionAttack();
                 break;
         }
     }
 
 
+
+
 }
+*/

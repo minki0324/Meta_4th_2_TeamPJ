@@ -1,10 +1,10 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ply_Movement : MonoBehaviour
+public class Ply_Movemet_S : MonoBehaviour
 {
-    /*
+    *//*
         1. 이동 구현
         2. 점프 구현
         3. 애니메이션 동작 구현
@@ -18,8 +18,8 @@ public class Ply_Movement : MonoBehaviour
         점프힘
         생사 유무 체크
         점프 상태인지 체크
-    */
-    Camera camera_;
+    *//*
+    Camera camera;
     [SerializeField] private Animator ani;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Rigidbody Ply_rb;
@@ -46,7 +46,7 @@ public class Ply_Movement : MonoBehaviour
 
     private void Start()
     {
-        camera_ = Camera.main;
+        camera = Camera.main;
         isPossible_Attack_1 = true;
     }
 
@@ -57,7 +57,7 @@ public class Ply_Movement : MonoBehaviour
         Jump();
         Check_Ground();
 
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetMouseButton(0))
         {
 
             if (isPossible_Attack_1)
@@ -66,7 +66,6 @@ public class Ply_Movement : MonoBehaviour
 
                 ani.SetTrigger("Attack");
                 //ani.SetBool("Attack1", true);
-
                 isAttacking_1 = true;   //실행중
 
                 isAttacking_2 = false;
@@ -123,9 +122,9 @@ public class Ply_Movement : MonoBehaviour
 
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        Vector3 playerRotate = Vector3.Scale(camera_.transform.forward, new Vector3(1, 0, 1));
+        Vector3 playerRotate = Vector3.Scale(camera.transform.forward, new Vector3(1, 0, 1));
 
-        Vector3 moveDirection = playerRotate * Input.GetAxis("Vertical") + camera_.transform.right * Input.GetAxis("Horizontal");
+        Vector3 moveDirection = playerRotate * Input.GetAxis("Vertical") + camera.transform.right * Input.GetAxis("Horizontal");
 
 
         if (moveDirection != Vector3.zero)
@@ -158,7 +157,7 @@ public class Ply_Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(Vector3.up * JumpForce);
-            // Ply_rb.AddForce(Vector3.up * JumpForce);
+            Ply_rb.AddForce(Vector3.up * JumpForce);
         }
     }
 
@@ -184,3 +183,4 @@ public class Ply_Movement : MonoBehaviour
         isGrounded = false;
     }
 }
+*/

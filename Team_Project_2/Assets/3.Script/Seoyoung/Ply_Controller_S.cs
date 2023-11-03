@@ -1,14 +1,14 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ply_Controller : MonoBehaviour
+public class Ply_Controller_S : MonoBehaviour
 {
 
-    /*
+    *//*
         1. 숫자키 입력으로 병사 소환
         2. 단축키 입력으로 병사들 진영 배치
-    */
+    *//*
 
     public enum Mode
     {
@@ -41,8 +41,8 @@ public class Ply_Controller : MonoBehaviour
     private Transform Spawner;
 
     //보병 & 궁수 뽑을 수 있는가 판단하는 변수 -> 추후에 업그레이드 기능과 할때 사용해주세여
-    //private bool isPossible_HeavyInfantry = false;
-    //private bool isPossible_Archer = false;
+    private bool isPossible_HeavyInfantry = false;
+    private bool isPossible_Archer = false;
 
 
     public LayerMask TargetLayer;
@@ -241,3 +241,4 @@ public class Ply_Controller : MonoBehaviour
         Current_MinionCount++;
     }
 }
+*/
