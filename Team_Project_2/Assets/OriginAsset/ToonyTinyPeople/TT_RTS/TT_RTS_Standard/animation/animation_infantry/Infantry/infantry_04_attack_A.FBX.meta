@@ -227,7 +227,7 @@ ModelImporter:
       - time: 0.30824372
         functionName: WeaponActive
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d1f3c9e2fb1466e469a8cdef6de29e82, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: ebe386389b0b6484e93bb17b1524c0f1, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
