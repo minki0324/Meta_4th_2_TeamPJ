@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class Following : MonoBehaviour
 {
-
     [SerializeField]
     public List<GameObject> nearestMinion_List = new List<GameObject>();
     public LayerMask TargetLayer;
@@ -95,59 +94,64 @@ public class Following : MonoBehaviour
             pc.Minions_List[i].GetComponent<NavMeshAgent>().isStopped = false;
         }
 
-
-
-        if (isTarget)
+        if (pm.isPlayerMove)
         {
-
-
-            for (int i = 0; i < pc.Minions_List.Count; i++)
+            if (isTarget)
             {
-                listVetor.Add(pc.Minions_List[i].transform.position);
-
-            }
-
-            pc.Minions_List.Sort(delegate (GameObject a, GameObject b)
-            {
-                return Compare2(a, b, pc.gameObject);
-            });
 
 
-            for (int i = 0; i < pc.Minions_List.Count; i++)
-            {
-                if (i == 0)
+
+                for (int i = 0; i < pc.Minions_List.Count; i++)
                 {
-                    pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);
-                }
-                else
-                {
+                    listVetor.Add(pc.Minions_List[i].transform.position);
 
-                    pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.Minions_List[i - 1].transform.position + Vector3.back);
                 }
 
+                pc.Minions_List.Sort(delegate (GameObject a, GameObject b)
+                {
+                    return Compare2(a, b, pc.gameObject);
+                });
+
+
+                //int priority = 1;
+                //for (int i = 0; i < pc.Minions_List.Count; i++)
+                //{
+                //    pc.Minions_List[i].GetComponent<NavMeshAgent>().avoidancePriority = priority;
+                //    priority++;
+                //}
+
+
+                for (int i = 0; i < pc.Minions_List.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);
+                    }
+                    else
+                    {
+
+                        pc.Minions_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.Minions_List[i - 1].transform.position + Vector3.back);
+                    }
+
+                }
+
+
+
+                for (int i = 0; i < pc.Minions_List.Count; i++)
+                {
+
+                    pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = false;
+
+                }
             }
 
 
+            #endregion
 
-            for (int i = 0; i < pc.Minions_List.Count; i++)
-            {
-
-                pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = false;
-
-            }
         }
 
 
-
-
-
-
-
-
-
-        #endregion
-
-        if (!pm.isPlayerMove)
+        else
         {
             #region ∏ÿ√„
 
@@ -191,10 +195,11 @@ public class Following : MonoBehaviour
                 }
 
 
-                if (pc.Minions_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.3f)
+                if (pc.Minions_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 1f)
                 {
                     pc.Minions_List[i].GetComponent<Minion_Controller>().isClose = true;
                     pc.Minions_List[i].GetComponent<NavMeshAgent>().isStopped = true;
+                    pc.Minions_List[i].GetComponent<Rigidbody>().velocity = Vector3.zero;
                 }
             }
             #endregion
