@@ -1,14 +1,14 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Ply_Controller_S : MonoBehaviour
 {
 
-    /*
+    *//*
         1. 숫자키 입력으로 병사 소환
         2. 단축키 입력으로 병사들 진영 배치
-    */
+    *//*
 
     public enum Mode
     {
@@ -241,3 +241,4 @@ public class Ply_Controller_S : MonoBehaviour
         Current_MinionCount++;
     }
 }
+*/

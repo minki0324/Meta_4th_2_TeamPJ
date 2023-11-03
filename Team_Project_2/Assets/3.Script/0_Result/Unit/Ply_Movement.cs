@@ -19,7 +19,7 @@ public class Ply_Movement : MonoBehaviour
         생사 유무 체크
         점프 상태인지 체크
     */
-    Camera camera;
+    Camera camera_;
     [SerializeField] private Animator ani;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Rigidbody Ply_rb;
@@ -46,7 +46,7 @@ public class Ply_Movement : MonoBehaviour
 
     private void Start()
     {
-        camera = Camera.main;
+        camera_ = Camera.main;
         isPossible_Attack_1 = true;
     }
 
@@ -123,9 +123,9 @@ public class Ply_Movement : MonoBehaviour
 
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        Vector3 playerRotate = Vector3.Scale(camera.transform.forward, new Vector3(1, 0, 1));
+        Vector3 playerRotate = Vector3.Scale(camera_.transform.forward, new Vector3(1, 0, 1));
 
-        Vector3 moveDirection = playerRotate * Input.GetAxis("Vertical") + camera.transform.right * Input.GetAxis("Horizontal");
+        Vector3 moveDirection = playerRotate * Input.GetAxis("Vertical") + camera_.transform.right * Input.GetAxis("Horizontal");
 
 
         if (moveDirection != Vector3.zero)
@@ -158,7 +158,7 @@ public class Ply_Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(Vector3.up * JumpForce);
-            Ply_rb.AddForce(Vector3.up * JumpForce);
+            // Ply_rb.AddForce(Vector3.up * JumpForce);
         }
     }
 

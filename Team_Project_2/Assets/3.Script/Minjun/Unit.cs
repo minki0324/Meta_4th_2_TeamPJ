@@ -5,17 +5,11 @@ using UnityEngine.AI;
 
 public class Unit : MonoBehaviour
 {
-    private int HP = 3;
+   
     private bool isDie;
     private Ply_Controller player;
     //팀의 리더가 누군지
 
-    // 유닛 공격감지범위
-    [SerializeField] private float scanRange = 13f;
-    [SerializeField] private float AttackRange = 1.5f;
-
-    //이동중 적군유닛이 공격범위콜라이더에 닿았는가?
-    [SerializeField] private bool isdetecting = false;
     //공격중인가?
 
   

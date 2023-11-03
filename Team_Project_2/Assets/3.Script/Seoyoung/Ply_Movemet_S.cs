@@ -1,10 +1,10 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Ply_Movemet_S : MonoBehaviour
 {
-    /*
+    *//*
         1. 이동 구현
         2. 점프 구현
         3. 애니메이션 동작 구현
@@ -18,7 +18,7 @@ public class Ply_Movemet_S : MonoBehaviour
         점프힘
         생사 유무 체크
         점프 상태인지 체크
-    */
+    *//*
     Camera camera;
     [SerializeField] private Animator ani;
     [SerializeField] private Rigidbody rb;
@@ -183,3 +183,4 @@ public class Ply_Movemet_S : MonoBehaviour
         isGrounded = false;
     }
 }
+*/

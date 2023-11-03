@@ -32,11 +32,11 @@ public class LeaderState : Unit
 
     [Header("골드 관련")]
     public float Gold = 500; // 골드량
-    private float Magnifi = 2f;  // 기본 골드 배율 (업데이트문 프레임 60 x 2f로 기본 획득 골드량은 분당 120)
+    // private float Magnifi = 2f;  // 기본 골드 배율 (업데이트문 프레임 60 x 2f로 기본 획득 골드량은 분당 120)
 
     [Header("AI 관련")]
     public bool isLive = true;
-    private bool Ready =true;
+    // private bool Ready =true;
     public float Current_HP = 150f;
     public float Max_Hp = 150f;
     public float Regeneration = 0.5f;
