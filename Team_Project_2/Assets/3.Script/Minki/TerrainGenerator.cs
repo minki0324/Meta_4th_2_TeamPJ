@@ -17,25 +17,25 @@ namespace SimpleProceduralTerrainProject
         //noise settings
         [Header("Noise 셋팅")]
         public int m_seed = 0;
-        public float m_groundFrq = 0.001f;
-        public float m_treeFrq = 0.005f;
+        public float m_groundFrq = 0.02f;
+        public float m_treeFrq = 0.01f;
         public float m_detailFrq = 0.01f;
 
         //Terrain settings
         [Header("Terrain 셋팅")]
         public int m_tilesX = 2; // x축에 있는 테레인 타일의 개수
         public int m_tilesZ = 2; // z축에 있는 테레인 타일의 개수
-        public float m_pixelMapError = 6.0f; // 숫자 낮아질수록 디테일 상승하지만 속도 느려짐
-        public float m_baseMapDist = 1000.0f; // 저해상도 기본 맵이 그려질 거리. 성능을 향상시키려면 이 값을 줄이세요.
+        public float m_pixelMapError = 5f; // 숫자 낮아질수록 디테일 상승하지만 속도 느려짐
+        public float m_baseMapDist = 100f; // 저해상도 기본 맵이 그려질 거리. 성능을 향상시키려면 이 값을 줄이세요.
 
         //Terrain data settings
         [Header("TerrainData 셋팅")]
         public AnimationCurve animationCurve;
-        public int m_heightMapSize = 513; // 더 높은 숫자는 더 디테일한 높이 맵을 생성할 것입니다
-        public int m_alphaMapSize = 1024; // 이것은 스플랫 텍스처가 어떻게 혼합될지를 제어하는 컨트롤 맵입니다
+        public int m_heightMapSize = 50; // 더 높은 숫자는 더 디테일한 높이 맵을 생성할 것입니다
+        public int m_alphaMapSize = 50; // 이것은 스플랫 텍스처가 어떻게 혼합될지를 제어하는 컨트롤 맵입니다
         public int m_terrainSize = 512;
-        public int m_terrainHeight = 512;
-        public int m_detailMapSize = 512; // 디테일(풀) 레이어의 해상도
+        public int m_terrainHeight = 256;
+        public int m_detailMapSize = 128; // 디테일(풀) 레이어의 해상도
 
         //Tree settings
         [Header("Tree 셋팅")]
@@ -150,40 +150,9 @@ namespace SimpleProceduralTerrainProject
             RemoveTreesFromBases();
         }
 
-        bool IsTerrainFlat(Terrain terrain, float posX, float posZ, float size, float maxSlope)
-        {
-            // 베이스 캠프 크기에 해당하는 지형의 높이맵을 가져옵니다.
-            int heightmapRes = terrain.terrainData.heightmapResolution;
-            int xBase = (int)(posX / m_terrainSize * heightmapRes);
-            int zBase = (int)(posZ / m_terrainSize * heightmapRes);
-            int sizeInHeightmap = (int)(size / m_terrainSize * heightmapRes);
-
-            sizeInHeightmap = Mathf.Clamp(sizeInHeightmap, 1, heightmapRes - Mathf.Max(xBase, zBase));
-            xBase = Mathf.Clamp(xBase, 0, heightmapRes - sizeInHeightmap);
-            zBase = Mathf.Clamp(zBase, 0, heightmapRes - sizeInHeightmap);
-
-            float[,] heights = terrain.terrainData.GetHeights(xBase, zBase, sizeInHeightmap, sizeInHeightmap);
-
-            // 높이맵의 최대와 최소 높이 차이를 계산합니다.
-            float minH = float.MaxValue, maxH = float.MinValue;
-            for (int x = 0; x < sizeInHeightmap; x++)
-            {
-                for (int z = 0; z < sizeInHeightmap; z++)
-                {
-                    float h = heights[x, z];
-                    if (h < minH) minH = h;
-                    if (h > maxH) maxH = h;
-                }
-            }
-
-            // 최대 기울기를 계산합니다.
-            float slope = (maxH - minH) * m_terrainHeight / size;
-            return slope <= maxSlope;
-        }
-
         void SpawnBaseCamps()
         {
-            int numPlayers = 4; // 플레이어 수
+            int numPlayers = Ply_Num; // 플레이어 수
             int maxAttempts = 100; // 최대 시도 횟수, 무한 루프 방지를 위해 설정
 
             for (int i = 0; i < numPlayers; i++)
@@ -194,8 +163,8 @@ namespace SimpleProceduralTerrainProject
                 for (int attempt = 0; attempt < maxAttempts; attempt++)
                 {
                     // 중앙에서 200x200 범위 내의 랜덤한 위치 생성
-                    float posX = Random.Range(-200f, 200f);
-                    float posZ = Random.Range(-200f, 200f);
+                    float posX = Random.Range(-250f, 250f);
+                    float posZ = Random.Range(-250f, 250f);
 
                     // 월드 좌표계를 테레인 배열 인덱스로 변환
                     int terrainIndexX = Mathf.FloorToInt((posX + m_tilesX * m_terrainSize * 0.5f) / m_terrainSize);
@@ -205,29 +174,26 @@ namespace SimpleProceduralTerrainProject
                     if (terrainIndexX >= 0 && terrainIndexX < m_tilesX && terrainIndexZ >= 0 && terrainIndexZ < m_tilesZ)
                     {
                         Terrain terrain = m_terrain[terrainIndexX, terrainIndexZ];
-                        float posY = terrain.SampleHeight(new Vector3(posX, 0, posZ)) + terrain.GetPosition().y;
+                        
+                    
+                        baseCampPosition = new Vector3(posX, 10, posZ);
+                        bool tooCloseToOtherBases = false;
 
-                        // 평평한 지형인지 확인
-                        if (IsTerrainFlat(terrain, posX, posZ, 10, 0.1f))
+                        foreach (Vector3 otherBasePosition in baseCampPositions)
                         {
-                            baseCampPosition = new Vector3(posX, posY, posZ);
-                            bool tooCloseToOtherBases = false;
-
-                            foreach (Vector3 otherBasePosition in baseCampPositions)
+                            if (Vector3.Distance(baseCampPosition, otherBasePosition) < 170f)
                             {
-                                if (Vector3.Distance(baseCampPosition, otherBasePosition) < 200f)
-                                {
-                                    tooCloseToOtherBases = true;
-                                    break;
-                                }
-                            }
-
-                            if (!tooCloseToOtherBases)
-                            {
-                                validPositionFound = true;
+                                tooCloseToOtherBases = true;
                                 break;
                             }
                         }
+
+                        if (!tooCloseToOtherBases)
+                        {
+                            validPositionFound = true;
+                            break;
+                        }
+                    
                     }
                 }
 
@@ -244,8 +210,6 @@ namespace SimpleProceduralTerrainProject
             }
         }
     
-
-
         void RemoveTreesFromBases()
         {
             // 소환된 베이스 캠프 위치에서 나무 제거
