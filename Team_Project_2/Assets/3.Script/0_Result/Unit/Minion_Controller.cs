@@ -22,6 +22,7 @@ public class Minion_Controller : MonoBehaviour
 
     private Ply_Controller playerController;
     private Animator ani;
+    private NavMeshAgent agent;
 
     private CapsuleCollider MeshCollider;  //맞으면 피까이는 판정용 콜라이더
     private CapsuleCollider DetectCollider; //공격 판정용 콜라이더
@@ -39,6 +40,7 @@ public class Minion_Controller : MonoBehaviour
 
     private void Awake()
     {
+        agent = GetComponent<NavMeshAgent>();
         UnitAtk = GetComponent<UnitAttack>();
         playerController = FindObjectOfType<Ply_Controller>();
         MeshCollider = GetComponent<CapsuleCollider>();
@@ -118,6 +120,16 @@ public class Minion_Controller : MonoBehaviour
                 break;
         }
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+        }
+        if (collision.gameObject.CompareTag("Door"))
+        {
+            agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+        }
+    }
 
 }
