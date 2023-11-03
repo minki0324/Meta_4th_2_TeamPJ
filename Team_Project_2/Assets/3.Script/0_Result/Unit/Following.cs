@@ -9,7 +9,7 @@ public class Following : MonoBehaviour
     private List<GameObject> nearestMinion_List = new List<GameObject>();
     public LayerMask TargetLayer;
 
-   // private UnityEngine.AI.NavMeshAgent[] agents;
+    // private UnityEngine.AI.NavMeshAgent[] agents;
 
     private Ply_Controller pc;
     private Ply_Movement pm;
@@ -84,7 +84,7 @@ public class Following : MonoBehaviour
     }
     private bool isTarget
     {
-    
+
         get
         {
             if (GameManager.instance.isLive)
@@ -97,7 +97,7 @@ public class Following : MonoBehaviour
     }
 
 
-  
+
 
     // ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÏ ¶§ : ÇÑÁÙ·Î ÁÙ¼¼¿ì´Â ÄÚ·çÆ¾
     public IEnumerator Mode_Follow_co()
@@ -105,7 +105,7 @@ public class Following : MonoBehaviour
         nearestMinion_List.Clear();
         for (int i = 0; i < nearestMinion_List.Count; i++)
         {
-           // minionController[i] = GetComponent<Minion_Controller>();
+            // minionController[i] = GetComponent<Minion_Controller>();
             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = false;
         }
         //minionController = GetComponentsInChildren<Minion_Controller>();
@@ -113,7 +113,7 @@ public class Following : MonoBehaviour
 
         if (isTarget)
         {
-            if(pm.isPlayerMove)
+            if (pm.isPlayerMove)
             {
                 for (int i = 0; i < pc.Minions_List.Count; i++)
                 {
@@ -151,7 +151,7 @@ public class Following : MonoBehaviour
 
                 if (i == 0)
                 {
-                    nearestMinion_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);  
+                    nearestMinion_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);
                 }
                 else
                 {
@@ -169,7 +169,7 @@ public class Following : MonoBehaviour
     //ÇÃ·¹ÀÌ¾î ¸Ø­ŸÀ» ¶§ : 5¿­ Á¾´ë..?·Î ¼­´Â ÄÚ·çÆ¾
     public IEnumerator Mode_Stop_Follow_co()
     {
-    
+
 
         //for (int i = 0; i < nearestMinion_List.Count; i++)
         //{
@@ -177,9 +177,9 @@ public class Following : MonoBehaviour
         //}
 
 
-            for (int i = 0; i<nearestMinion_List.Count; i++)
-            {
-            if(i <= 4)
+        for (int i = 0; i < nearestMinion_List.Count; i++)
+        {
+            if (i <= 4)
             {
                 if (i % 2 == 0)
                 {
@@ -192,8 +192,8 @@ public class Following : MonoBehaviour
                             Debug.Log("¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾¤¾");
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
                         }
-                     
-                     
+
+
 
                     }
                     else
@@ -204,7 +204,7 @@ public class Following : MonoBehaviour
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
 
                         }
-                     
+
                     }
                 }
                 else
@@ -219,7 +219,7 @@ public class Following : MonoBehaviour
 
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
                         }
-                     
+
 
                     }
                     else
@@ -229,7 +229,7 @@ public class Following : MonoBehaviour
                         {
                             nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
                         }
-                     
+
                     }
                 }
 
@@ -243,11 +243,11 @@ public class Following : MonoBehaviour
                 {
                     nearestMinion_List[i].GetComponent<Minion_Controller>().isClose = true;
                 }
-             
-            }
-            
 
-           // nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
+            }
+
+
+            // nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
         }
         yield return null;
     }
@@ -256,7 +256,7 @@ public class Following : MonoBehaviour
 
     public IEnumerator Mode_Stop_co()
     {
-       
+
 
 
         //¸ØÃß±â ¸ðµå
@@ -343,7 +343,7 @@ public class Following : MonoBehaviour
 
 
 
-    public void Swap(ref float a ,ref float b)
+    public void Swap(ref float a, ref float b)
     {
         float temp = a;
         a = b;
