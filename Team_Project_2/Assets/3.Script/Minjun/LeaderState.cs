@@ -41,8 +41,8 @@ public class LeaderState : Unit
     public float Max_Hp = 150f;
     public float Regeneration = 0.5f;
     public int maxUnitCount = 19;
-    public int unitValue = 1;
     public int currentUnitCount = 0;
+    public int unitValue = 1;
     public float unitCost;
     public bool canSpawn;
     public bool isDead;
