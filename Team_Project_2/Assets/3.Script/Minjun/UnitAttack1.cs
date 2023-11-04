@@ -57,7 +57,7 @@ public class UnitAttack1 : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Ply_Controller>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Ply_Controller>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
     }
@@ -141,8 +141,13 @@ public class UnitAttack1 : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
+            if (hit.transform.CompareTag("SpawnPoint")) {
+                continue;
+            }
             float distance = Vector3.Distance(transform.position, hit.transform.position);
-            if (distance < closestDistance)
+            
+           
+            if (distance < closestDistance && !hit.transform.CompareTag("SpawnPoint"))
             {
                 closestDistance = distance;
                 nearest = hit.transform;
@@ -257,7 +262,7 @@ public class UnitAttack1 : MonoBehaviour
         gameObject.layer = 9;   // 레이어 DIe로 변경해서 타겟으로 안되게
         HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
         //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
-        player.Minions_List.Remove(gameObject);
+        player.UnitList_List.Remove(gameObject);
         Destroy(gameObject, 3f);  // 죽고나서 3초후 디스트로이
     }
     public void MinionAttack()
@@ -268,7 +273,7 @@ public class UnitAttack1 : MonoBehaviour
 
         
         nearestTarget = GetNearestTarget(allHits);
-        target =1 << nearestTarget.gameObject.layer;
+        //target =1 << nearestTarget.gameObject.layer;
         if (nearestTarget != null && !isDie)
         {
             float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
@@ -290,6 +295,7 @@ public class UnitAttack1 : MonoBehaviour
             // 타겟이 공격범위에 들어왔을때 공격
             else
             {
+               
                 navMeshAgent.isStopped = true;
                 ani.SetBool("Move", false);
 
@@ -300,6 +306,16 @@ public class UnitAttack1 : MonoBehaviour
                     //StartCoroutine(Attack_co());
                 }
 
+            }
+        }
+        else if (nearestTarget == null)
+        {
+
+            LeaderAI leaderAI = leaderState.GetComponent<LeaderAI>();
+            nearestTarget = leaderAI.GetNearestTarget();
+            if (!isdetecting)
+            {
+                AttackMoving(nearestTarget);
             }
         }
         

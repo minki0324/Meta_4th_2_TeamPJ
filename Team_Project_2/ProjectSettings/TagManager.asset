@@ -9,6 +9,7 @@ TagManager:
   - Flag
   - Weapon
   - Leader
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX
