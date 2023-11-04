@@ -26,14 +26,16 @@ public class EnemySpawn : MonoBehaviour
     {
         if (leaderState.isDead)
         {
+            leaderState.canSpawn = false;
+
             return;
         }
 
-       
-     
+
+
 
         //유닛카운트가 맥스가 됬거나 , 유닛비용보다 가진 골드가 적을때 false;
-        if(leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost)
+        if (leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost /*|| leaderState.isDead*/)
         {
             leaderState.canSpawn = false;
         }
@@ -53,14 +55,14 @@ public class EnemySpawn : MonoBehaviour
     {
         if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderState.canSpawn)
         {
-            Debug.Log("유닛스폰 시작");
+          
             InvokeRepeating("UnitSpawn", 0f, Spawninterval);
 
 
         }
         else if(!leaderState.canSpawn)  
         {
-            Debug.Log("canSPawn false로 스폰중지");
+       
             CancelInvoke("UnitSpawn");
         }
 
@@ -69,18 +71,25 @@ public class EnemySpawn : MonoBehaviour
     {
         if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer)
         {
-            Debug.Log("리더가 나가서 중지");
+          
             CancelInvoke("UnitSpawn");
         }
        
     }
     private void UnitSpawn()
     {
+        if(leaderState.currentUnitCount > 19)
+        {
+            return;
+        }
         GameObject newUnit = Instantiate(unit[leaderState.unitValue], SpawnPoint[SpawnIndex].position, Quaternion.identity);
         SetLayerRecursively(newUnit, leaderState.gameObject.layer);
+        SetColar(newUnit);
+
 
         leaderState.UnitList.Add(newUnit);
         leaderState.Gold -= leaderState.unitCost;
+        Debug.Log(leaderState.Gold);
         SpawnIndex++;
         
         leaderState.currentUnitCount++;
@@ -126,6 +135,16 @@ public class EnemySpawn : MonoBehaviour
         {
             SetLayerRecursively(child.gameObject, newLayer); // 하위 오브젝트에 대해 재귀 호출
         }
-    }
 
+        
+    }
+    private void SetColar(GameObject newUnit)
+    {
+        ColorSet unitColorSet = newUnit.gameObject.GetComponent<ColorSet>();
+
+        ColorSet leaderColorSet = leaderState.gameObject.GetComponent<ColorSet>();
+        unitColorSet.Color_Index = leaderColorSet.Color_Index;
+
+
+    }
 }
