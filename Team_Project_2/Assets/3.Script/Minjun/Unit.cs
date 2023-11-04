@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Unit : MonoBehaviour
+public class Unit : LeaderState
 {
    
     private bool isDie;
@@ -29,7 +29,12 @@ public class Unit : MonoBehaviour
     protected NavMeshAgent navMeshAgent;
 
     [Header("ÇöÀçÅ¸°Ù Transform")]
-    [SerializeField] protected Transform nearestTarget;
+    [SerializeField] protected Transform NearestTarget;
+    public Transform GetNearestTarget()
+    {
+        return NearestTarget;
+    }
+
     [Header("ÇöÀçÅ¸°Ù Layer")]
     [SerializeField] LayerMask target;
 
@@ -63,8 +68,13 @@ public class Unit : MonoBehaviour
         Transform nearest = null;
         float closestDistance = float.MaxValue;
 
+        
         foreach (RaycastHit hit in hits)
         {
+            if (hit.transform.CompareTag("SpawnPoint"))
+            {
+                continue;
+            }
             float distance = Vector3.Distance(transform.position, hit.transform.position);
             if (distance < closestDistance)
             {
