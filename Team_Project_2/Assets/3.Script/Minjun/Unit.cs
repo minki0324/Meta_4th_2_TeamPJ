@@ -29,7 +29,12 @@ public class Unit : LeaderState
     protected NavMeshAgent navMeshAgent;
 
     [Header("ÇöÀçÅ¸°Ù Transform")]
-    [SerializeField] public Transform nearestTarget;
+    [SerializeField] protected Transform NearestTarget;
+    public Transform GetNearestTarget()
+    {
+        return NearestTarget;
+    }
+
     [Header("ÇöÀçÅ¸°Ù Layer")]
     [SerializeField] LayerMask target;
 

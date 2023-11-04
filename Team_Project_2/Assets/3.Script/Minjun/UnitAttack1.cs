@@ -295,6 +295,7 @@ public class UnitAttack1 : MonoBehaviour
             // 타겟이 공격범위에 들어왔을때 공격
             else
             {
+               
                 navMeshAgent.isStopped = true;
                 ani.SetBool("Move", false);
 
@@ -311,7 +312,7 @@ public class UnitAttack1 : MonoBehaviour
         {
 
             LeaderAI leaderAI = leaderState.GetComponent<LeaderAI>();
-            nearestTarget = leaderAI.nearestTarget;
+            nearestTarget = leaderAI.GetNearestTarget();
             if (!isdetecting)
             {
                 AttackMoving(nearestTarget);

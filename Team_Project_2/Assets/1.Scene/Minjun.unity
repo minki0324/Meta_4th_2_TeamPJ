@@ -20725,7 +20725,7 @@ MonoBehaviour:
   UnitList: []
   HitBox_col: {fileID: 0}
   Ob_Weapon_col: {fileID: 7606167978622398034}
-  nearestTarget: {fileID: 0}
+  NearestTarget: {fileID: 0}
   target:
     serializedVersion: 2
     m_Bits: 0
@@ -20841,7 +20841,6 @@ GameObject:
   - component: {fileID: 7606167978613044597}
   - component: {fileID: 7606167978622388941}
   - component: {fileID: 7606167978622388942}
-  - component: {fileID: 7606167978622388944}
   - component: {fileID: 504986784973534682}
   - component: {fileID: 7606167978622388931}
   - component: {fileID: 7606167978622388928}
@@ -20854,24 +20853,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &7606167978622388944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7606167978622388943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bda1b663e2d9ce047a0c08f3f29c1a02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nearestMinion_List: []
-  TargetLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  isa: 0
-  StopPos: {x: 0, y: 0, z: 0}
 --- !u!1 &7606167978622389665
 GameObject:
   m_ObjectHideFlags: 0

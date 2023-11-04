@@ -9,13 +9,13 @@ public class LeaderState : MonoBehaviour
     
         Follow, //점령지 이동할때 
         Attack,  // AI가 적을 인지하고 일정시간 또는 거리가됬을때 
-       
+        Detect,
     }
     public enum JudgmentState
     {
         Ready, //평균 전투력보다 높으면 점령지 이동
         wait, //평균전투력보다 낮을때 기지에서 대기하며 애들뽑기
-        Detect,
+       
 
 
     }

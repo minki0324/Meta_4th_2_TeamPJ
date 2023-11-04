@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Following1 : MonoBehaviour
+public class EnemyFollowing : MonoBehaviour
 {
 
     [SerializeField]
@@ -43,6 +43,10 @@ public class Following1 : MonoBehaviour
         {
             StopCoroutine(Mode_Stop_co());
             StartCoroutine(Mode_Follow_co());
+        }
+        else
+        {
+            StopAllCoroutines();
         }
        
 
