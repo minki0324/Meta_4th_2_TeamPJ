@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 using System.Collections.Generic;
 
 using ProceduralNoiseProject;
@@ -125,11 +126,11 @@ namespace SimpleProceduralTerrainProject
                     terrainData.detailPrototypes = m_detailProtoTypes;
 
                     FillAlphaMap(terrainData);
-
                     m_terrain[x, z] = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
                     m_terrain[x, z].transform.position = new Vector3(m_terrainSize * x + m_offset.x, 0, m_terrainSize * z + m_offset.y);
                     m_terrain[x, z].heightmapPixelError = m_pixelMapError;
                     m_terrain[x, z].basemapDistance = m_baseMapDist;
+                    m_terrain[x, z].gameObject.tag = "Ground";
                     m_terrain[x, z].castShadows = false;
 
                     FillTreeInstances(m_terrain[x, z], x, z);
@@ -213,6 +214,7 @@ namespace SimpleProceduralTerrainProject
                 {
                     // 베이스 캠프 소환
                     GameObject baseCamp =  Instantiate(Base_PreFabs[i % Base_PreFabs.Length], baseCampPosition, Quaternion.identity);
+                                       
                     baseCamps.Add(baseCamp);
                     baseCampPositions.Add(baseCampPosition);
                     // 베이스 캠프를 원점을 바라보도록 회전 설정

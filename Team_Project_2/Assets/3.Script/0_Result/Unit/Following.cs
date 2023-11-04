@@ -88,23 +88,17 @@ public class Following : MonoBehaviour
 
         #region 자연스러운 이동
 
-
         for (int i = 0; i < pc.UnitList_List.Count; i++)
         {
             pc.UnitList_List[i].GetComponent<Minion_Controller>().isClose = false;
             pc.UnitList_List[i].GetComponent<NavMeshAgent>().isStopped = false;
         }
 
-
-
         if (isTarget)
         {
-
-
             for (int i = 0; i < pc.UnitList_List.Count; i++)
             {
                 listVetor.Add(pc.UnitList_List[i].transform.position);
-
             }
 
             pc.UnitList_List.Sort(delegate (GameObject a, GameObject b)
