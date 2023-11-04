@@ -62,8 +62,7 @@ namespace SimpleProceduralTerrainProject
         public int Ply_Num;
         public int Base_Num = 0;
         List<Vector3> baseCampPositions = new List<Vector3>();
-        private ColorSet color;
-        [SerializeField] private int Color_index;
+        private ColorSet1 color;
 
         //Private
         private FractalNoise m_groundNoise, m_mountainNoise, m_treeNoise, m_detailNoise;
@@ -79,7 +78,14 @@ namespace SimpleProceduralTerrainProject
             Random.InitState(seed);
 
             m_seed = Random.Range(0, 100);
-            InitializeTerrain();
+        }
+
+        private void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.G))
+            {
+                InitializeTerrain();
+            }
         }
 
         void InitializeTerrain()
@@ -217,10 +223,14 @@ namespace SimpleProceduralTerrainProject
                     baseCamp.transform.rotation = rotation;
 
                     // ColorSet 스크립트의 RecursiveSearchAndSetTexture 메서드 호출하여 컬러 설정
-                    ColorSet1 colorSet = baseCamp.GetComponent<ColorSet1>();
+                    ColorSet1 colorSet = baseCamp.GetComponentInChildren<ColorSet1>();
                     if (colorSet != null)
                     {
-                        colorSet.RecursiveSearchAndSetTexture(baseCamp.transform, Color_index);
+                        colorSet.RecursiveSearchAndSetTexture(baseCamp.transform, GameManager1.instance.Color_Index);
+                    }
+                    else
+                    {
+                        Debug.Log("널");
                     }
                 }
                 else

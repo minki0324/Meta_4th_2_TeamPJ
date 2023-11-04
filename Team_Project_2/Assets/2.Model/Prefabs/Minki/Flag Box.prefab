@@ -3744,7 +3744,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6465441892902171374}
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 9.09, y: 10, z: -9.150002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3752,7 +3752,7 @@ Transform:
   - {fileID: 6465441892911019580}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!65 &6465441892902171372
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3791,7 +3791,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6465441892911019580}
-  - component: {fileID: 6465441892911019582}
+  - component: {fileID: 2223935980977680535}
   m_Layer: 0
   m_Name: Base1
   m_TagString: Untagged
@@ -3819,7 +3819,7 @@ Transform:
   m_Father: {fileID: 6465441892902171373}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6465441892911019582
+--- !u!114 &2223935980977680535
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3828,7 +3828,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6465441892911019581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e49248fff41efe34daa6abbfb855b2e0, type: 3}
+  m_Script: {fileID: 11500000, guid: 813343cf11f396744a9acefed33a7e88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Color_Texture:
@@ -3849,7 +3849,6 @@ MonoBehaviour:
 
     7
     : PP / 8 : RE / 9 : TAN / 10 : WH / 11 : YE'
-  Color_Index: 4
 --- !u!1 &6731256931222608553
 GameObject:
   m_ObjectHideFlags: 0
@@ -3973,6 +3972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4478146637683553969}
   - component: {fileID: 70387703035384353}
+  - component: {fileID: 2822954644187887258}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -4002,11 +4002,27 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7079631227048414373}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &2822954644187887258
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7079631227048414373}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &7587428568095646786
 GameObject:
   m_ObjectHideFlags: 0
@@ -4713,7 +4729,7 @@ GameObject:
   - component: {fileID: 8326509773055131656}
   m_Layer: 0
   m_Name: Flag_A
-  m_TagString: Untagged
+  m_TagString: Flag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4800,7 +4816,7 @@ GameObject:
   - component: {fileID: 8326509773055131658}
   m_Layer: 0
   m_Name: Banner_Pole_C
-  m_TagString: Untagged
+  m_TagString: Flag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4884,7 +4900,7 @@ GameObject:
   - component: {fileID: 8326509773055131660}
   m_Layer: 0
   m_Name: Banner_Pole_B
-  m_TagString: Untagged
+  m_TagString: Flag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4968,7 +4984,7 @@ GameObject:
   - component: {fileID: 8326509773055131662}
   m_Layer: 0
   m_Name: Banner_Pole_A
-  m_TagString: Untagged
+  m_TagString: Flag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5051,7 +5067,7 @@ GameObject:
   - component: {fileID: 8326509773043405096}
   m_Layer: 0
   m_Name: Bone_Pole
-  m_TagString: Untagged
+  m_TagString: Flag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

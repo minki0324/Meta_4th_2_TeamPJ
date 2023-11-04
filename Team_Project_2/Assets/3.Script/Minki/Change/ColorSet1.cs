@@ -40,7 +40,7 @@ public class ColorSet1 : MonoBehaviour
             {
                 Renderer renderer = child.GetComponent<Renderer>();
 
-                if (renderer != null)
+                if (renderer != null && child.tag != "Flag")
                 {
                     Material material = renderer.material;
                     material.SetTexture("_BaseMap", Color_Texture[index]);
