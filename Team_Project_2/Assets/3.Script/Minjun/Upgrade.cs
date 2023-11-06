@@ -49,7 +49,7 @@ public class Upgrade : MonoBehaviour
         Debug.Log("1번째 업그레이드 완료");
         }
         //첫번째 업그레이드 되있을때 
-        if (GameManager.instance.isPossible_Upgrade_1)
+        if (GameManager.instance.isPossible_Upgrade_1 && !GameManager.instance.isPossible_Upgrade_2)
         {
             GameManager.instance.isPossible_Upgrade_2 = true;
             Debug.Log("2번째 업그레이드 완료");
