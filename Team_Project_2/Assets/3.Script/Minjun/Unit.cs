@@ -29,7 +29,7 @@ public class Unit : MonoBehaviour
     protected NavMeshAgent navMeshAgent;
 
     [Header("ÇöÀçÅ¸°Ù Transform")]
-    [SerializeField] protected Transform nearestTarget;
+    public Transform nearestTarget;
     [Header("ÇöÀçÅ¸°Ù Layer")]
     [SerializeField] LayerMask target;
 

@@ -1,23 +1,43 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Archer_Attack : MonoBehaviour
+public class Archer_attack : MonoBehaviour
 {
-    // 궁수가 쏜 화살 구현
-
+    public Transform Target;
     [SerializeField] GameObject Arrow; // 화살 프리팹
-    
+    private Animator ani;
+    public Transform Bow;
 
+    LeaderAI leaderai;
+
+    private bool isAttack = false;
+
+
+    private void Start()
+    {
+        leaderai = GetComponent<LeaderAI>();
+        ani = GetComponent<Animator>();
+        Bow.transform.position += new Vector3(0, 0.2f, 0);
+       
+    }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        Target = leaderai.nearestTarget;
+        if (Target!=null && !isAttack) 
         {
-            GameObject Arrow_ob = Instantiate(Arrow, transform.position + transform.forward, transform.rotation); // 두번째 매개변수에 아바타 활 넣어주십숑
+            StartCoroutine(Archer_atc());
         }
     }
-
-
-
-
-
+    IEnumerator Archer_atc()
+    {
+        isAttack = true;
+        
+        ani.SetTrigger("Attack");
+        GameObject Arrow_ob = Instantiate(Arrow, Bow.position, transform.rotation);
+        Arrow_ob.transform.parent = this.transform; 
+        yield return new WaitForSeconds(1.5f);
+        isAttack = false;
+        yield return null;
+    }
 }
