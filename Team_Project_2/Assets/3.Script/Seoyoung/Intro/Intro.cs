@@ -44,8 +44,9 @@ public class Intro : MonoBehaviour
 
     private void Start()
     {
-        DropDown_Selection();
-        
+        SetDropdownOption();
+
+
 
         Title_Panel.SetActive(true);
         Avatar_Panel.SetActive(false);
