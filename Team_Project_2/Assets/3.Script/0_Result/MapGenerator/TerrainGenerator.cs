@@ -133,7 +133,9 @@ namespace SimpleProceduralTerrainProject
 
                     FillAlphaMap(terrainData);
                     m_terrain[x, z] = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
+
                     m_terrain[x, z].transform.SetParent(Terra.transform);
+
                     m_terrain[x, z].transform.position = new Vector3(m_terrainSize * x + m_offset.x, 0, m_terrainSize * z + m_offset.y);
                     m_terrain[x, z].heightmapPixelError = m_pixelMapError;
                     m_terrain[x, z].basemapDistance = m_baseMapDist;

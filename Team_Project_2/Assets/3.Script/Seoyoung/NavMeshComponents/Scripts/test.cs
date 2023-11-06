@@ -1,19 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class test : MonoBehaviour
 {
-    private void GenerateNavmesh()
-    {
+	[SerializeField]
+	private GameObject Plane1;
 
-        NavMeshSurface[] surfaces = gameObject.GetComponentsInChildren<NavMeshSurface>();
+	[SerializeField]
+	NavMeshSurface[] surfaces;
 
-        foreach (var s in surfaces)
-        {
-            s.RemoveData();
-            s.BuildNavMesh();
-        }
 
-    }
+	private void Awake()
+	{
+		// GenerateNavmesh();
+	}
+
+	private void GenerateNavmesh()
+	{
+
+		surfaces = gameObject.GetComponentsInChildren<NavMeshSurface>();
+
+		foreach (var s in surfaces)
+		{
+			s.RemoveData();
+			s.BuildNavMesh();
+		}
+
+	}
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.P))
+		{
+			GenerateNavmesh();
+		}
+	}
 }
