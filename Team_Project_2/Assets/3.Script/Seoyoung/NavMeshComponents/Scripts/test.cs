@@ -8,7 +8,10 @@ public class test : MonoBehaviour
 	[SerializeField]
 	private GameObject Plane1;
 
-	
+	[SerializeField]
+	NavMeshSurface[] surfaces;
+
+
 	private void Awake()
     {
        // GenerateNavmesh();
@@ -17,7 +20,7 @@ public class test : MonoBehaviour
 	private void GenerateNavmesh()
 	{
 
-		NavMeshSurface[] surfaces = gameObject.GetComponentsInChildren<NavMeshSurface>();
+		surfaces = gameObject.GetComponentsInChildren<NavMeshSurface>();
 
 		foreach (var s in surfaces)
 		{

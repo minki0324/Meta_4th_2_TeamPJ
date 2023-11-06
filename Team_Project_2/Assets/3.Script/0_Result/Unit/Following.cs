@@ -38,7 +38,7 @@ public class Following : MonoBehaviour
 
     private void Update()
     {
-
+        
 
         if (pc.CurrentMode == Ply_Controller.Mode.Follow)
         {
