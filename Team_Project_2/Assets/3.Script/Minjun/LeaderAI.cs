@@ -12,7 +12,9 @@ public class LeaderAI : Unit
     private Animator ani;
     private GameObject[] flag;
     [SerializeField] private GameObject targetFlag;
-   
+
+    public bool isEnermyChecked = false;
+
     //public Transform nearestTarget;
     private float AttackRange = 5f;
     private void Awake()
@@ -100,7 +102,9 @@ public class LeaderAI : Unit
             {
                 bat_State = BattleState.Attack;
             }
-        }
+
+            isEnermyChecked = true;
+}
         else
         {
             if(bat_State == BattleState.Attack) { 
@@ -115,6 +119,7 @@ public class LeaderAI : Unit
            
             bat_State = BattleState.Follow;
             }
+            isEnermyChecked = false;
         }
 
 
