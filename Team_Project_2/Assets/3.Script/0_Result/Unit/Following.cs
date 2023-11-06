@@ -116,7 +116,7 @@ public class Following : MonoBehaviour
                 else
                 {
 
-                    pc.UnitList_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.UnitList_List[i - 1].transform.position + Vector3.back);
+                    pc.UnitList_List[i].GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(pc.transform.position + Vector3.back);
                 }
 
             }

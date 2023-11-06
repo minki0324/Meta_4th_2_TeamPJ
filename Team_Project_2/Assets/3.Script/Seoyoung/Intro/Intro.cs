@@ -320,7 +320,7 @@ public class Intro : MonoBehaviour
     {
         //추후에 로그인 파일 만들어서 비교할 것
         //임시 아이디 sunny
-        if(inputField.text == "sunny")
+        if(inputField.text == id)
         {
             isLogined = true;
         }
