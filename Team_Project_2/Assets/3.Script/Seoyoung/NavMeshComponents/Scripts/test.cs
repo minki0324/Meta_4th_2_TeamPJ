@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class test : MonoBehaviour
 {
 	[SerializeField]
-	private GameObject _mapPrefab;
+	private GameObject Plane1;
 
 	
 	private void Awake()
