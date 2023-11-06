@@ -46,7 +46,7 @@ public class LeaderAI : LeaderState
                 //천천히 적에게 접근
                 //Debug.Log()
                 ani.SetBool("Move" , true);
-                navMesh.SetDestination(nearestTarget.position);
+                navMesh.SetDestination(NearestTarget.position);
 
                 //float originalSpeed = navMeshAgent.speed; // 현재 속도 저장
                 //navMeshAgent.speed = originalSpeed / 4; // 1/4로 줄인 속도 설정
@@ -62,9 +62,9 @@ public class LeaderAI : LeaderState
     private void EnemyDitect()
     {
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, combinedMask);
-        nearestTarget = GetNearestTarget(hits);
-        if(nearestTarget != null) { 
-        float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
+        NearestTarget = GetNearestTarget(hits);
+        if(NearestTarget != null) { 
+        float attackDistance = Vector3.Distance(transform.position, NearestTarget.position);
             jud_State = JudgmentState.Ditect;
            
             //DItect 상태일때 방패를 들며 천천히 접근

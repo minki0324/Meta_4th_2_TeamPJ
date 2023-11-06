@@ -23,7 +23,7 @@ public class Archer_attack : MonoBehaviour
     }
     private void Update()
     {
-        Target = leaderai.nearestTarget;
+        //Target = leaderai.nearestTarget;
         if (Target!=null && !isAttack) 
         {
             StartCoroutine(Archer_atc());
