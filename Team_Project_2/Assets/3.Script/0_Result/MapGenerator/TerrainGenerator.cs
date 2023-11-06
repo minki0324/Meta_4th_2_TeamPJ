@@ -9,6 +9,10 @@ namespace SimpleProceduralTerrainProject
 
     public class TerrainGenerator : MonoBehaviour
     {
+
+        [SerializeField]
+        private GameObject Terra;
+
         //Prototypes
         public Texture2D[] m_splat; // 텍스춰 배열
         public float[] m_splatTileSizes; // 타일 사이즈 값들을 저장할 배열
@@ -117,6 +121,8 @@ namespace SimpleProceduralTerrainProject
                     FillHeights(htmap, x, z);
 
                     TerrainData terrainData = new TerrainData();
+                    
+
 
                     terrainData.heightmapResolution = m_heightMapSize;
                     terrainData.SetHeights(0, 0, htmap);
@@ -127,14 +133,19 @@ namespace SimpleProceduralTerrainProject
 
                     FillAlphaMap(terrainData);
                     m_terrain[x, z] = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
+                    m_terrain[x, z].transform.SetParent(Terra.transform);
                     m_terrain[x, z].transform.position = new Vector3(m_terrainSize * x + m_offset.x, 0, m_terrainSize * z + m_offset.y);
                     m_terrain[x, z].heightmapPixelError = m_pixelMapError;
                     m_terrain[x, z].basemapDistance = m_baseMapDist;
                     m_terrain[x, z].gameObject.tag = "Ground";
                     m_terrain[x, z].castShadows = false;
 
+                   
+
                     FillTreeInstances(m_terrain[x, z], x, z);
                     FillDetailMap(m_terrain[x, z], x, z);
+
+                    
                 }
             }
             SpawnBaseCamps();
