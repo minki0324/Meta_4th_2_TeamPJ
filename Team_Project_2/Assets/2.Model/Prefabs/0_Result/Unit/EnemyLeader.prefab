@@ -9866,6 +9866,7 @@ GameObject:
   - component: {fileID: 7938536280297226551}
   - component: {fileID: 7938536280297226548}
   - component: {fileID: 47220845374537248}
+  - component: {fileID: 5756381750043042730}
   - component: {fileID: 7938536280297226553}
   - component: {fileID: 7938536280297226554}
   - component: {fileID: 7938536280297226555}
@@ -9954,6 +9955,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5321ae0278706d749bf2e18b9efa371c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5756381750043042730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938536280297226549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bda1b663e2d9ce047a0c08f3f29c1a02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nearestMinion_List: []
+  TargetLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  isa: 0
+  StopPos: {x: 0, y: 0, z: 0}
 --- !u!114 &7938536280297226553
 MonoBehaviour:
   m_ObjectHideFlags: 0
