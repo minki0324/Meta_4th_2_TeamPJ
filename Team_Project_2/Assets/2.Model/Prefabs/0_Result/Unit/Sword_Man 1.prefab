@@ -8238,16 +8238,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888bee5eaf59b0f4eba425efdde6db31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitAtk: {fileID: 0}
-  Human_type: 0
-  isClose: 0
-  player: {fileID: 0}
   scanRange: 13
   AttackRange: 1.5
   isdetecting: 0
   HitBox_col: {fileID: 4239812368246995250}
   Ob_Weapon_col: {fileID: 4239812368246828348}
   nearestTarget: {fileID: 0}
+  target:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &3345660950030388180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8273,7 +8272,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 568b7c2a9f6f2c746b39e0c5001e0656, type: 3}
   - {fileID: 2800000, guid: e8a048a6204b7924eb9a01fce96135e9, type: 3}
   - {fileID: 2800000, guid: 298a25a451b74f64992ed5fc4293acb6, type: 3}
-  player: {fileID: 4239812368247264773}
+  target: {fileID: 0}
   Color_Num: '0 : BK / 1 : BL / 2 : DB / 3 : BR / 4 : GR / 5 : GR_BL / 6 : PK
 
     7

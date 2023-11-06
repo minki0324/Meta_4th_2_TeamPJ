@@ -22,14 +22,14 @@ public class ColorSet : MonoBehaviour
     //배열 인덱스
     [Header("적용시킬 컬러배열의 인덱스")]
     [TextArea()] public string Color_Num;
-    [SerializeField] public int Color_Index;    
+    [SerializeField] public int Color_Index;
 
     private void Start()
     {
         //참조안하고 스크립트가지고있는오브젝트한테 적용시킬거면 이거 적용하기
-        //RecursiveSearchAndSetTexture(transform);
+        RecursiveSearchAndSetTexture(transform, Color_Index);
         //if(player.TryGetComponent<Material>(out 
-                
+
         // player 참조 걸땐 이거사용하기 
     }
 

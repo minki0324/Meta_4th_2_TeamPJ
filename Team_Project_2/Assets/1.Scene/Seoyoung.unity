@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 9081605e23b22e44d9824d7bb20f65cf, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 6979f406c8949634ab6c21b19abe3bdd, type: 2}
 --- !u!1 &8679361
 GameObject:
   m_ObjectHideFlags: 0
@@ -3456,6 +3456,7 @@ MonoBehaviour:
   currentTime: 0
   EndTime: 1800
   Occupied_Area: 1
+  Color_Index: 0
   Gold: 1000
   isLive: 1
   Current_HP: 150
@@ -7491,7 +7492,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 9ea9018a7ec6d4543924782cd00d1f4f, type: 3}
   - {fileID: 2800000, guid: cb080ba6f8e73bf4e9d76bcbf55ae4f2, type: 3}
   - {fileID: 2800000, guid: 7085117599da88643bf1a4ce3865666a, type: 3}
-  player: {fileID: 936085593}
+  target: {fileID: 0}
   Color_Num: 
   Color_Index: 7
 --- !u!1 &950883241
@@ -8187,6 +8188,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   occupation: {fileID: 1408170571}
+  Doorinter: {fileID: 0}
+  Doorui: {fileID: 0}
 --- !u!1 &999538834
 GameObject:
   m_ObjectHideFlags: 0
@@ -17419,7 +17422,7 @@ MonoBehaviour:
   - {fileID: 4239812368246995255, guid: a06e30ab0bece734c82004f761b4b8ab, type: 3}
   - {fileID: 6006503084427101158, guid: 7b2c5439dcdaff14682d91ecbec50354, type: 3}
   - {fileID: 4483072135592897270, guid: 688bb76400d688d40a0027c72be0d35e, type: 3}
-  Minions_List: []
+  UnitList_List: []
   Human_num: 0
   Spawner: {fileID: 987944027}
   TargetLayer:

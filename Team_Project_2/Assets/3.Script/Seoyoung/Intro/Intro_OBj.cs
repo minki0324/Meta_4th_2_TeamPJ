@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawn : MonoBehaviour
+public class Intro_OBj : MonoBehaviour
 {
     //unitValue에 따라 소환되는 unit
     [SerializeField] private GameObject[] unit;
@@ -43,42 +43,35 @@ public class EnemySpawn : MonoBehaviour
         {
             leaderState.canSpawn = true;
         }
-       
 
 
 
 
 
-        }
+
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderState.canSpawn)
-        {
-            
-            InvokeRepeating("UnitSpawn", 0f, Spawninterval);
-            
-
-        }
-        else if(!leaderState.canSpawn)  
-        {
        
-            CancelInvoke("UnitSpawn");
-        }
 
+            InvokeRepeating("UnitSpawn", 0f, Spawninterval);
+
+
+     
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer)
         {
-          
+
             CancelInvoke("UnitSpawn");
         }
-       
+
     }
     private void UnitSpawn()
     {
-        if(leaderState.currentUnitCount > 19)
+        if (leaderState.currentUnitCount > 40)
         {
             return;
         }
@@ -88,10 +81,10 @@ public class EnemySpawn : MonoBehaviour
 
 
         leaderState.UnitList.Add(newUnit);
-        leaderState.Gold -= leaderState.unitCost;
-        Debug.Log(leaderState.Gold);
-        SpawnIndex++;
+        //leaderState.Gold -= leaderState.unitCost;
         
+        SpawnIndex++;
+
         leaderState.currentUnitCount++;
         //스폰위치를 차례대로 나오게하기위한 메소드 
         if (SpawnIndex > 2)
@@ -136,7 +129,7 @@ public class EnemySpawn : MonoBehaviour
             SetLayerRecursively(child.gameObject, newLayer); // 하위 오브젝트에 대해 재귀 호출
         }
 
-        
+
     }
     private void SetColar(GameObject newUnit)
     {
