@@ -80,7 +80,7 @@ public class Occupation : MonoBehaviour
         // 점령 중
         while (isOccupating && Current_Gauge <= 100f)
         {
-            Current_Gauge += Time.deltaTime * occu_Speed * Num_Soldier * (ply_Con.Current_MinionCount + 1); // 나중에 인원수에 따른 배율 넣어야해용
+            Current_Gauge += Time.deltaTime * occu_Speed * Num_Soldier * (GameManager.instance.Current_MinionCount + 1); // 나중에 인원수에 따른 배율 넣어야해용
             Debug.Log(Current_Gauge);
             OccuValue.value = Current_Gauge / Total_Gauge;
             yield return null;

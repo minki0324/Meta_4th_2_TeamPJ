@@ -30,8 +30,16 @@ public class GameManager : MonoBehaviour
     public bool isLive = true;
     public float Current_HP = 150f;
     public float Max_Hp = 150f;
+    
+    public float Damage = 20f; 
     public float Regeneration = 0.5f;
-
+    public float respawnTime = 10f;
+    //병사인구 
+    public int Max_MinionCount = 19;
+    public int Current_MinionCount;
+    //병종 업그레이드
+    public bool isPossible_Upgrade_1 = false;
+    public bool isPossible_Upgrade_2 = false;
     private void Awake()
     {
         if(instance == null)

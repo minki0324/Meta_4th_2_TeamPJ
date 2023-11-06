@@ -38,8 +38,8 @@ public class HUD : MonoBehaviour
                 textarray[1].text = string.Format("{0}:{1:00}", ((int)GameManager.instance.EndTime / 60), ((int)GameManager.instance.EndTime) % 60); // 게임 종료 시간
                 break;
             case InfoType.Soldier:
-                textarray[0].text = ply.Max_MinionCount.ToString();         // 최대 병사수
-                textarray[1].text = ply.Current_MinionCount.ToString();     // 현재 병사수
+                textarray[0].text = GameManager.instance.Max_MinionCount.ToString();         // 최대 병사수
+                textarray[1].text = GameManager.instance.Current_MinionCount.ToString();     // 현재 병사수
                 break;
             case InfoType.Health:
                 HP_Slider.value = GameManager.instance.Current_HP / GameManager.instance.Max_Hp;

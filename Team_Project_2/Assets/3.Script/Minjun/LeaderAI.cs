@@ -63,11 +63,11 @@ public class LeaderAI : Unit
         switch (jud_State)
         {
             case JudgmentState.Ready:
-                ani_State = AniState.Idle;
-                Debug.Log("Å¸°Ù±ê¹ßÁ¤ÇÔ");
-                targetFlag= TargetFlag();
-                navMesh.SetDestination(targetFlag.transform.position);
-                jud_State = JudgmentState.Going;
+                //ani_State = AniState.Idle;
+                //Debug.Log("Å¸°Ù±ê¹ßÁ¤ÇÔ");
+                //targetFlag= TargetFlag();
+                //navMesh.SetDestination(targetFlag.transform.position);
+                //jud_State = JudgmentState.Going;
                 //navMesh.SetDestination()
                 break;
             case JudgmentState.Wait:
