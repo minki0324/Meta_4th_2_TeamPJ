@@ -9,10 +9,6 @@ namespace SimpleProceduralTerrainProject
 
     public class TerrainGenerator : MonoBehaviour
     {
-        [SerializeField]
-        NavMeshSurface[] surfaces;
-
-
         //Prototypes
         public Texture2D[] m_splat; // 텍스춰 배열
         public float[] m_splatTileSizes; // 타일 사이즈 값들을 저장할 배열
@@ -90,26 +86,7 @@ namespace SimpleProceduralTerrainProject
             {
                 InitializeTerrain();
             }
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                GenerateNavmesh();
-            }
         }
-
-        private void GenerateNavmesh()
-        {
-
-            surfaces = gameObject.GetComponentsInChildren<NavMeshSurface>();
-
-            foreach (var s in surfaces)
-            {
-                s.RemoveData();
-                s.BuildNavMesh();
-            }
-
-        }
-
-
 
         void InitializeTerrain()
         {
@@ -156,7 +133,6 @@ namespace SimpleProceduralTerrainProject
                     m_terrain[x, z].gameObject.tag = "Ground";
                     m_terrain[x, z].castShadows = false;
 
-                  
                     FillTreeInstances(m_terrain[x, z], x, z);
                     FillDetailMap(m_terrain[x, z], x, z);
                 }
