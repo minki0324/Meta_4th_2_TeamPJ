@@ -148,7 +148,6 @@ public class Ply_Movement_Fix : MonoBehaviour
 Mathf.Clamp(transform.position.x, Min, Max),
 transform.position.y,
 Mathf.Clamp(transform.position.z, Min, Max));
-            Debug.Log(transform.position);
             ani.SetBool("Move", true);
             ani.SetBool("Idle", false);
             isPlayerMove = true;
