@@ -11,7 +11,7 @@ public class test : MonoBehaviour
 	
 	private void Awake()
     {
-        GenerateNavmesh();
+       // GenerateNavmesh();
     }
 
 	private void GenerateNavmesh()
@@ -26,6 +26,12 @@ public class test : MonoBehaviour
 		}
 
 	}
-
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.P))
+		{
+			GenerateNavmesh();
+		}
+	}
 
 }
