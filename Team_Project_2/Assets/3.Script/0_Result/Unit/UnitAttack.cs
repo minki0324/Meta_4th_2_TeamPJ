@@ -90,7 +90,7 @@ public class UnitAttack : Minion_Controller
         }
     }
     //레이어 감지후
-    Transform GetNearestTarget(RaycastHit[] hits)
+    public Transform GetNearestTarget(RaycastHit[] hits) //리턴함수
     {
         Transform nearest = null;
         float closestDistance = float.MaxValue;
