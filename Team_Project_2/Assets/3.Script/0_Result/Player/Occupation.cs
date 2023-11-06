@@ -66,9 +66,8 @@ public class Occupation : MonoBehaviour
     private void Change_Color()
     {
         // 나중에 컬러별로 수정
-        skinnedmesh.material = Flag_Color[1];
-        color.Color_Index = 8;
-        color.RecursiveSearchAndSetTexture(player);
+        skinnedmesh.material = Flag_Color[GameManager.instance.Color_Index];
+        color.RecursiveSearchAndSetTexture(player, GameManager.instance.Color_Index);
         Occu_Back[0].color = new Color32(255, 0, 0, 110);
         Occu_Back[1].color = new Color32(255, 0, 0, 110);
     }

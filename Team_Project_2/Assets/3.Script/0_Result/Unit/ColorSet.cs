@@ -17,7 +17,7 @@ public class ColorSet : MonoBehaviour
 
     //바꿀오브젝트 ->  혹시몰라서 넣어둠 필요없으면 빼도될듯 
     [Header("색깔을 바꿀 오브젝트")]
-    [SerializeField] private Transform player;
+    [SerializeField] private Transform target;
 
     //배열 인덱스
     [Header("적용시킬 컬러배열의 인덱스")]
@@ -27,14 +27,13 @@ public class ColorSet : MonoBehaviour
     private void Start()
     {
         //참조안하고 스크립트가지고있는오브젝트한테 적용시킬거면 이거 적용하기
-        //RecursiveSearchAndSetTexture(transform);
+        RecursiveSearchAndSetTexture(transform , Color_Index);
         //if(player.TryGetComponent<Material>(out 
-                
+
         // player 참조 걸땐 이거사용하기 
-        RecursiveSearchAndSetTexture(player);
     }
 
-    public void RecursiveSearchAndSetTexture(Transform currentTransform)
+    public void RecursiveSearchAndSetTexture(Transform currentTransform, int index)
     {
         foreach (Transform child in currentTransform)
         {
@@ -42,14 +41,15 @@ public class ColorSet : MonoBehaviour
             {
                 Renderer renderer = child.GetComponent<Renderer>();
 
-                if (renderer != null)
+                if (renderer != null && child.tag != "Flag")
                 {
                     Material material = renderer.material;
-                    material.SetTexture("_BaseMap", Color_Texture[Color_Index]);
+                    material.SetTexture("_BaseMap", Color_Texture[index]);
                 }
 
                 // 현재 자식 오브젝트의 하위 자식 오브젝트를 재귀적으로 검사
-                RecursiveSearchAndSetTexture(child);
+
+                RecursiveSearchAndSetTexture(child, index);
             }
         }
     }

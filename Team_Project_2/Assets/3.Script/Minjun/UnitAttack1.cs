@@ -57,7 +57,7 @@ public class UnitAttack1 : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Ply_Controller>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Ply_Controller>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
     }
@@ -117,6 +117,8 @@ public class UnitAttack1 : MonoBehaviour
             else
             {
                 Debug.Log( $" {myLayer}번레이어 : 리더찾지못함");
+                //리더없으면 그냥 어택상태
+                MinionAttack();
             }
         }
 
@@ -141,8 +143,13 @@ public class UnitAttack1 : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
+            if (hit.transform.CompareTag("SpawnPoint")) {
+                continue;
+            }
             float distance = Vector3.Distance(transform.position, hit.transform.position);
-            if (distance < closestDistance)
+            
+           
+            if (distance < closestDistance && !hit.transform.CompareTag("SpawnPoint"))
             {
                 closestDistance = distance;
                 nearest = hit.transform;
@@ -174,14 +181,14 @@ public class UnitAttack1 : MonoBehaviour
 
     }
     //감지범위 그리는메소드
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(transform.position, scanRange);
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, scanRange);
 
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawWireSphere(transform.position, AttackRange);
-    //}
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, AttackRange);
+    }
 
 
     //닿은 콜라이더와 오브젝트가 레이어가 다르고
@@ -257,8 +264,24 @@ public class UnitAttack1 : MonoBehaviour
         gameObject.layer = 9;   // 레이어 DIe로 변경해서 타겟으로 안되게
         HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
         //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
-        player.Minions_List.Remove(gameObject);
+        if(gameObject.layer == TeamLayer) { 
+        player.UnitList_List.Remove(gameObject);
+        }
+        else
+        {
+            leaderState.UnitList.Remove(gameObject);
+        }
+        
+        leaderState.currentUnitCount--;
         Destroy(gameObject, 3f);  // 죽고나서 3초후 디스트로이
+
+
+
+
+       
+        
+       
+
     }
     public void MinionAttack()
     {
@@ -268,9 +291,10 @@ public class UnitAttack1 : MonoBehaviour
 
         
         nearestTarget = GetNearestTarget(allHits);
-        target =1 << nearestTarget.gameObject.layer;
+        //target =1 << nearestTarget.gameObject.layer;
         if (nearestTarget != null && !isDie)
         {
+            //leaderState.
             float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
             if (attackDistance <= AttackRange)
             {
@@ -290,6 +314,7 @@ public class UnitAttack1 : MonoBehaviour
             // 타겟이 공격범위에 들어왔을때 공격
             else
             {
+               
                 navMeshAgent.isStopped = true;
                 ani.SetBool("Move", false);
 
@@ -300,6 +325,21 @@ public class UnitAttack1 : MonoBehaviour
                     //StartCoroutine(Attack_co());
                 }
 
+            }
+        }
+        else if (nearestTarget == null)
+        {
+            if(leaderState != null) { 
+            LeaderAI leaderAI = leaderState.GetComponent<LeaderAI>();
+            nearestTarget = leaderAI.GetNearestTarget();
+            }
+            else
+            {
+                return;
+            }
+            if (!isdetecting)
+            {
+                AttackMoving(nearestTarget);
             }
         }
         

@@ -32,7 +32,7 @@ public class Ply_Controller : MonoBehaviour
     [Header("ÀÎµ¦½º - 0 : º¸º´ / 1 : ±â»ç / 2 : ±Ã¼ö")]
     [SerializeField] private GameObject[] Minion_Prefabs;
 
-    public List<GameObject> Minions_List = new List<GameObject>();
+    public List<GameObject> UnitList_List = new List<GameObject>();
     //public LinkedList<GameObject> Minions_List = new LinkedList<GameObject>();
 
     public int Human_num;
@@ -168,10 +168,7 @@ public class Ply_Controller : MonoBehaviour
 
                 if (selectedNumber != -1)
                 {
-                    following.isa = true;
                     // following.nearestMinion_List.Clear();
-
-
                     switch (selectedNumber)
                     {
                         case 1:
@@ -237,7 +234,7 @@ public class Ply_Controller : MonoBehaviour
 
         GameManager.instance.Gold -= (15 + (Human_num * 5));
         //Minion.transform.SetParent(transform);
-        Minions_List.Add(Minion);
+        UnitList_List.Add(Minion);
         Current_MinionCount++;
     }
 }

@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaderState : Unit
+public class LeaderState : MonoBehaviour
 {
 
     public enum BattleState {
     
         Follow, //점령지 이동할때 
-        Attack  // AI가 적을 인지하고 일정시간 또는 거리가됬을때 
+        Attack,  // AI가 적을 인지하고 일정시간 또는 거리가됬을때 
+        Detect,
+        
     }
     public enum JudgmentState
     {
         Ready, //평균 전투력보다 높으면 점령지 이동
-        wait, //평균전투력보다 낮을때 기지에서 대기하며 애들뽑기
-        Ditect,
-
+        Wait, //평균전투력보다 낮을때 기지에서 대기하며 애들뽑기
+        Going
 
     }
     public enum AniState 
@@ -40,9 +41,20 @@ public class LeaderState : Unit
     public float Current_HP = 150f;
     public float Max_Hp = 150f;
     public float Regeneration = 0.5f;
+    public int maxUnitCount = 19;
+    public int currentUnitCount = 0;
+    public int unitValue = 0;
+    public float unitCost =16f;
+    public bool canSpawn;
+    public bool isDead;
+    public bool isMoving;
     public BattleState bat_State;
     public JudgmentState jud_State;
     public AniState ani_State;
+
+    public List<GameObject> UnitList = new List<GameObject>();
+
+  
     //AI 행동 우선순위
     /*
      1. 중립지역이 있을때

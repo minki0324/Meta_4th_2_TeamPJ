@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ply_Movement : MonoBehaviour
+public class Ply_Movement_Fix : MonoBehaviour
 {
     /*
         1. 이동 구현
@@ -22,7 +22,6 @@ public class Ply_Movement : MonoBehaviour
     Camera camera_;
     [SerializeField] private Animator ani;
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private Rigidbody Ply_rb;
 
     [Header("이동")]
     [SerializeField] private float MoveSpeed = 5f;
@@ -43,19 +42,29 @@ public class Ply_Movement : MonoBehaviour
     public bool isAttacking_2 = false;   //공격모션 2이 실행중인가 판단
     public bool isPossible_Attack_1 = true;     //공격모션 1가 실행가능한 상태인가 (모션 1이 중간이상 실행되었는가) 판단
 
+    public float groundCheckRadius = 0.2f;  // OverlapSphere 반지름
+    public string groundTag = "Ground";  // 땅의 태그
+
+    private Vector3 playerPosition;
+
+    private float Min = -210f;
+    private float Max = 210f;
 
     private void Start()
     {
         camera_ = Camera.main;
         isPossible_Attack_1 = true;
+        playerPosition = gameObject.transform.position;
     }
 
     private void Update()
     {
+
+   
         CurrentPos = transform.position;
         InputMovment();
         Jump();
-        Check_Ground();
+        Ground_Check();
 
         if (Input.GetKeyDown(KeyCode.H))
         {
@@ -104,7 +113,7 @@ public class Ply_Movement : MonoBehaviour
             ani.SetFloat("MoveSpeed", 1f);
             MoveSpeed = 5f;
         }
-
+    
 
     }
 
@@ -135,7 +144,10 @@ public class Ply_Movement : MonoBehaviour
 
             // 이동
             transform.position += (moveDirection.normalized * MoveSpeed * Time.deltaTime);
-
+            transform.position = new Vector3(
+Mathf.Clamp(transform.position.x, Min, Max),
+transform.position.y,
+Mathf.Clamp(transform.position.z, Min, Max));
             ani.SetBool("Move", true);
             ani.SetBool("Idle", false);
             isPlayerMove = true;
@@ -146,6 +158,9 @@ public class Ply_Movement : MonoBehaviour
             ani.SetBool("Move", false);
             isPlayerMove = false;
         }
+     
+
+       
     }
 
     private void Jump()
@@ -182,5 +197,29 @@ public class Ply_Movement : MonoBehaviour
             }
         }
         isGrounded = false;
+    }
+    private void Ground_Check()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, groundCheckRadius);
+
+        foreach (Collider col in colliders)
+        {
+            if (col.CompareTag(groundTag))
+            {
+                // 땅 태그를 가진 오브젝트와 충돌한 경우
+                isGrounded = true;
+                break;
+            }
+            else
+            {
+                isGrounded = false;
+            }
+        }
+
+        if (isGrounded)
+        {
+            // 캐릭터는 땅에 닿아 있음
+            // 여기에서 점프를 허용하거나 다른 동작을 수행할 수 있음
+        }
     }
 }
