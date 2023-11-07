@@ -14,20 +14,30 @@ public class Ply_Interaction : MonoBehaviour
 
     [SerializeField] private Occupation occupation; // Á¡·É ½ºÅ©¸³Æ®
     [SerializeField] private DoorInter Doorinter;   // ¹® ¿­±â ½ºÅ©¸³Æ®
-    [SerializeField] private Text Doorui; 
+    [SerializeField] private Text Doorui;
+
 
     private void OnTriggerEnter(Collider other)
     {
+        occupation = other.gameObject.GetComponentInChildren<Occupation>();
+        Debug.Log("ºÎµúÇû³ª?1");
         if (other.gameObject.CompareTag("Flag"))
         {
-            occupation.ObjEnable(true);
-
+        Debug.Log("ºÎµúÇû³ª?2");
+            if (gameObject.CompareTag("Player"))
+            {
+                occupation.ObjEnable(true);
+            }
+            occupation.isOccupating = true;
             StopCoroutine(occupation.UnOccu_co());
             StartCoroutine(occupation.Occu_co());
         }
         if (other.gameObject.CompareTag("Door"))
         {
-            Doorui.gameObject.SetActive(true);
+            if (gameObject.CompareTag("Player"))
+            {
+                Doorui.gameObject.SetActive(true);
+            }
             StartCoroutine(Doorinter.OpenDoor_co());
         }
     }
@@ -35,14 +45,19 @@ public class Ply_Interaction : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Flag"))
         {
-
-            occupation.ObjEnable(false);
+            if (gameObject.CompareTag("Player"))
+            {
+                occupation.ObjEnable(false);
+            }
             StopCoroutine(occupation.Occu_co());
             StartCoroutine(occupation.UnOccu_co());
         }
         if (other.gameObject.CompareTag("Door"))
         {
-            Doorui.gameObject.SetActive(false); 
+            if (gameObject.CompareTag("Player"))
+            {
+                Doorui.gameObject.SetActive(false);
+            }
             StopCoroutine(Doorinter.OpenDoor_co());
         }
     }

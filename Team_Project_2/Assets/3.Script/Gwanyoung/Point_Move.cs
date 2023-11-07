@@ -18,24 +18,27 @@ public class Point_Move : MonoBehaviour
     {
         FlagPoint = GameObject.FindGameObjectsWithTag("Flag");
         navMesh = GetComponent<NavMeshAgent>();
+        
     }
     private void Update()
     {
 
         if (!isMove)
         {
-            isMove = true;
             Flag_Num = Random.Range(0, FlagPoint.Length);
-            if (FlagPoint[Flag_Num].layer != gameObject.layer)
+
+            if (FlagPoint[Flag_Num].layer != gameObject.layer) 
             {
+                isMove = true;
                 navMesh.SetDestination(FlagPoint[Flag_Num].transform.position);   // 랜덤으로 Flag를 향해 이동
             }
+            
         }
-        if (isMove)
+        else
         {
             currentPos = FlagPoint[Flag_Num].transform.position - transform.position;  // 두 포지션의 차이
-            if (Mathf.Abs(currentPos.x) <= 1.5f && Mathf.Abs(currentPos.z) <= 1.5f
-                && FlagPoint[Flag_Num].layer == gameObject.layer) // Flag 좌표와 리더 좌표가 1.5씩 차이날 때
+            // Flag 좌표와 리더 좌표가 1.5씩 차이날 때
+            if (Mathf.Abs(currentPos.x) <= 1.5f && Mathf.Abs(currentPos.z) <= 1.5f && FlagPoint[Flag_Num].layer == gameObject.layer) 
             {
                 isMove = false;               
             }

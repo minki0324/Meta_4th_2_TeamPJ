@@ -23,12 +23,12 @@ public class Occupation : MonoBehaviour
     public Slider OccuValue; // 점령 게이지
 
     private float Num_Soldier = 1.03f; // 사람 수에 따른 배율
-    public float occu_Speed = 15f; // 점령 속도
+    public float occu_Speed = 12f; // 점령 속도
     private float Total_Gauge = 100f; // 전체 점령 게이지
     private float Current_Gauge = 0;  // 현재 점령 게이지
 
     public bool isOccupating = false; // 점령 중인지
-    [SerializeField] private bool isOccupied = false; // 점령이 끝났는지
+    public bool isOccupied = false; // 점령이 끝났는지
 
     private Ply_Controller ply_Con;
 
@@ -47,8 +47,9 @@ public class Occupation : MonoBehaviour
 
     private void Update()
     {
-        if (OccuValue.value >= 1 && !isOccupied) 
+        if (Current_Gauge / Total_Gauge >= 1 && !isOccupied) 
         {
+            Debug.Log(Current_Gauge / Total_Gauge);
             Change_Color();
             isOccupied = true;
         }
@@ -59,16 +60,15 @@ public class Occupation : MonoBehaviour
     {
         Occu_Img_Color[1].transform.parent.gameObject.SetActive(act);
         OccuValue.gameObject.SetActive(act);
-        isOccupating = act;
     }
 
     private void Change_Color()
     {
         // 나중에 컬러별로 수정
-        skinnedmesh.material = Flag_Color[GameManager.instance.Color_Index];
-        color.RecursiveSearchAndSetTexture(player, GameManager.instance.Color_Index);
-        Occu_Img_Color[0].color = new Color32(255, 0, 0, 110);
-        Occu_Img_Color[1].color = new Color32(255, 0, 0, 110);
+        skinnedmesh.material = Flag_Color[(int)Team.Team2];
+        // color.RecursiveSearchAndSetTexture(player, GameManager.instance.Color_Index);
+       // Occu_Img_Color[0].color = new Color32(255, 0, 0, 110);
+       // Occu_Img_Color[1].color = new Color32(255, 0, 0, 110);
     }
 
     public IEnumerator Occu_co()

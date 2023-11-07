@@ -7,7 +7,6 @@ public class Archer_Attack : MonoBehaviour
     // 아처 공격 구현
     // 1. 애니메이션 구현
     // 2. 활에서 화살 생성
-    // 3. 
 
     public Transform Target;
     [SerializeField] private GameObject Arrow; // 화살 프리팹
