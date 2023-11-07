@@ -33,17 +33,19 @@ public class LeaderAI : Unit
         switch (bat_State)
         {
             case BattleState.Follow:
-                //if(targetFlag.transform.position != null) { 
-                //navMesh.SetDestination(targetFlag.transform.position);
-                //}
-                //else
-                //{
-                //    return;
-                //}
-                //navMesh.isStopped = true;
+                if (targetFlag.transform.position != null)
+                {
+                    navMesh.SetDestination(targetFlag.transform.position);
+                }
+                else
+                {
+                    return;
+                }
+                navMesh.isStopped = true;
                 break;
             case BattleState.Attack:
                 break;
+                navMesh.isStopped = true;
             case BattleState.Detect:
 
                 //æ÷¥œ∏ﬁ¿Ãº« πÊ∆–µÈ±‚
@@ -59,11 +61,11 @@ public class LeaderAI : Unit
         switch (jud_State)
         {
             case JudgmentState.Ready:
-                //ani_State = AniState.Idle;
-                //Debug.Log("≈∏∞Ÿ±Íπﬂ¡§«‘");
-                //targetFlag= TargetFlag();
-                //navMesh.SetDestination(targetFlag.transform.position);
-                //jud_State = JudgmentState.Going;
+                ani_State = AniState.Idle;
+                Debug.Log("≈∏∞Ÿ±Íπﬂ¡§«‘");
+                targetFlag = TargetFlag();
+                navMesh.SetDestination(targetFlag.transform.position);
+                jud_State = JudgmentState.Going;
                 //navMesh.SetDestination()
                 break;
             case JudgmentState.Wait:

@@ -335,6 +335,8 @@ public class UnitAttack1 : MonoBehaviour
             }
             else
             {
+                navMeshAgent.isStopped = true;
+                ani.SetBool("Move", false);
                 return;
             }
             if (!isdetecting)
