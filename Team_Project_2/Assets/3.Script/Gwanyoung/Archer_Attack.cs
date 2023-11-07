@@ -9,6 +9,8 @@ public class Archer_attack : MonoBehaviour
     private Animator ani;
     public Transform Bow;
 
+    WaitForSeconds Cooltime = new WaitForSeconds(1.5f);
+
     LeaderAI leaderai;
 
     private bool isAttack = false;
@@ -35,8 +37,8 @@ public class Archer_attack : MonoBehaviour
         
         ani.SetTrigger("Attack");
         GameObject Arrow_ob = Instantiate(Arrow, Bow.position, transform.rotation);
-        Arrow_ob.transform.parent = this.transform; 
-        yield return new WaitForSeconds(1.5f);
+        Arrow_ob.transform.parent = this.transform;
+        yield return Cooltime;
         isAttack = false;
         yield return null;
     }

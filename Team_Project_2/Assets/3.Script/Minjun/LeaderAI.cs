@@ -55,7 +55,7 @@ public class LeaderAI : Unit
                 //천천히 적에게 접근
                 //Debug.Log()
                 ani.SetBool("Move", true);
-                navMesh.SetDestination(NearestTarget.position);
+                navMesh.SetDestination(nearestTarget.position);
                 break;
 
         }
@@ -91,10 +91,10 @@ public class LeaderAI : Unit
     private void EnemyDitect()
     {
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, combinedMask);
-        NearestTarget = GetNearestTarget(hits);
-        if (NearestTarget != null)
+        nearestTarget = GetNearestTarget(hits);
+        if (nearestTarget != null)
         {
-            float attackDistance = Vector3.Distance(transform.position, NearestTarget.position);
+            float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
             bat_State = BattleState.Detect;
 
             //DItect 상태일때 방패를 들며 천천히 접근
