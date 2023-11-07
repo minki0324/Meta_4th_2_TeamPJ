@@ -387,11 +387,13 @@ public class Following : MonoBehaviour
 
     public IEnumerator Timer()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         for (int i = 0; i < Stop_List.Count; i++)
         { 
             Stop_List[i].GetComponent<Minion_Controller>().isClose = true;
             Stop_List[i].GetComponent<NavMeshAgent>().isStopped = true;
+            Stop_A_List[i].GetComponent<Minion_Controller>().isClose = true;
+            Stop_A_List[i].GetComponent<NavMeshAgent>().isStopped = true;
         }
        
     }
