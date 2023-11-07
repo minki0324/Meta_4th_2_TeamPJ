@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyFollowing : MonoBehaviour
+public class EnemyFollowing1 : MonoBehaviour
 {
 
     [SerializeField]
@@ -15,7 +15,7 @@ public class EnemyFollowing : MonoBehaviour
 
 
     private LeaderState leaderState;
-    private Minion_Controller[] minionController;
+    private Minion_Controller1[] minionController;
     GameObject shortobj;
     GameObject FollowObj;
 
@@ -84,7 +84,7 @@ public class EnemyFollowing : MonoBehaviour
 
         for (int i = 0; i < leaderState.UnitList.Count; i++)
         {
-            leaderState.UnitList[i].GetComponent<Minion_Controller>().isClose = false;
+            leaderState.UnitList[i].GetComponent<Minion_Controller1>().isClose = false;
             leaderState.UnitList[i].GetComponent<NavMeshAgent>().isStopped = false;
         }
 
@@ -125,7 +125,7 @@ public class EnemyFollowing : MonoBehaviour
             for (int i = 0; i < leaderState.UnitList.Count; i++)
             {
 
-                leaderState.UnitList[i].GetComponent<Minion_Controller>().isClose = false;
+                leaderState.UnitList[i].GetComponent<Minion_Controller1>().isClose = false;
 
             }
         }
@@ -186,7 +186,7 @@ public class EnemyFollowing : MonoBehaviour
 
                 if (leaderState.UnitList[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.3f)
                 {
-                    leaderState.UnitList[i].GetComponent<Minion_Controller>().isClose = true;
+                    leaderState.UnitList[i].GetComponent<Minion_Controller1>().isClose = true;
                     leaderState.UnitList[i].GetComponent<NavMeshAgent>().isStopped = true;
                 }
             }
@@ -248,8 +248,8 @@ public class EnemyFollowing : MonoBehaviour
             if (nearestMinion_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.5f)
             {
 
-                leaderState.UnitList[i].GetComponent<Minion_Controller>().isClose = true;
-                Debug.Log(nearestMinion_List[i].GetComponent<Minion_Controller>().isClose);
+                leaderState.UnitList[i].GetComponent<Minion_Controller1>().isClose = true;
+                Debug.Log(nearestMinion_List[i].GetComponent<Minion_Controller1>().isClose);
                 //nearestMinion_List[i].GetComponent<NavMeshAgent>().isStopped = true;
             }
 

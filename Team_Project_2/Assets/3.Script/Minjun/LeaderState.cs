@@ -7,29 +7,15 @@ public class LeaderState : MonoBehaviour
 
     public enum BattleState {
     
-        Follow, //점령지 이동할때 
+        //Follow, //점령지 이동할때 
         Attack,  // AI가 적을 인지하고 일정시간 또는 거리가됬을때 
-        Detect,
-        
-    }
-    public enum JudgmentState
-    {
-        Ready, //평균 전투력보다 높으면 점령지 이동
-        Wait, //평균전투력보다 낮을때 기지에서 대기하며 애들뽑기
-        Going
+        Search,
+        Move,
+        Defense,
+        Detect
+     
 
     }
-    public enum AniState 
-    {
-        Idle,
-        Attack,
-        shild,
-        Order
-    }
-
-
-
-
 
     [Header("골드 관련")]
     public float Gold = 500; // 골드량
@@ -49,8 +35,6 @@ public class LeaderState : MonoBehaviour
     public bool isDead;
     public bool isMoving;
     public BattleState bat_State;
-    public JudgmentState jud_State;
-    public AniState ani_State;
 
     public List<GameObject> UnitList = new List<GameObject>();
 

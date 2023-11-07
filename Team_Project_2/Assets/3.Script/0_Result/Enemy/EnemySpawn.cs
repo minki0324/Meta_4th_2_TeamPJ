@@ -37,7 +37,7 @@ public class EnemySpawn : MonoBehaviour
         //유닛카운트가 맥스가 됬거나 , 유닛비용보다 가진 골드가 적을때 false;
         if (leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost /*|| leaderState.isDead*/)
         {
-            leaderState.canSpawn = false;
+            //leaderState.canSpawn = false;
         }
         else
         {
@@ -78,10 +78,10 @@ public class EnemySpawn : MonoBehaviour
     }
     private void UnitSpawn()
     {
-        if (leaderState.currentUnitCount > 19)
-        {
-            return;
-        }
+        //if (leaderState.currentUnitCount > 19)
+        //{
+        //    return;
+        //}
         GameObject newUnit = Instantiate(unit[leaderState.unitValue], SpawnPoint[SpawnIndex].position, Quaternion.identity);
         SetLayerRecursively(newUnit, leaderState.gameObject.layer);
         SetColar(newUnit);
@@ -89,7 +89,6 @@ public class EnemySpawn : MonoBehaviour
 
         leaderState.UnitList.Add(newUnit);
         leaderState.Gold -= leaderState.unitCost;
-        Debug.Log(leaderState.Gold);
         SpawnIndex++;
 
         leaderState.currentUnitCount++;

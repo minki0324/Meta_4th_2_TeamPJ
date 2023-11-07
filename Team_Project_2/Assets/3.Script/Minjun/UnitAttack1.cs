@@ -23,6 +23,11 @@ public class UnitAttack1 : MonoBehaviour
     //팀의 리더가 누군지
     private LeaderState leaderState;
     private GameObject leader;
+
+    public GameObject GetLeader()
+    {
+        return leader;
+    }
     // 유닛 공격감지범위
     [SerializeField] private float scanRange = 13f;
     [SerializeField] private float AttackRange = 1.5f;
@@ -116,7 +121,7 @@ public class UnitAttack1 : MonoBehaviour
             }
             else
             {
-                Debug.Log( $" {myLayer}번레이어 : 리더찾지못함");
+                //Debug.Log( $" {myLayer}번레이어 : 리더찾지못함");
                 //리더없으면 그냥 어택상태
                 MinionAttack();
             }
@@ -168,14 +173,15 @@ public class UnitAttack1 : MonoBehaviour
     //적을감지했을때 공격하기위해 적에게 이동하는메소드
     private void AttackMoving(Transform target)
     {
+        ani.SetBool("Move", true);
+        //int moveSpeed = 3;
+        navMeshAgent.SetDestination(target.transform.position);
+
         //추후 미니언컨트롤러에서 제어할예정.(애니메이션)
         // 공격 로직을 구현
         //Debug.Log("공격타겟 : " + target.name);
-        ani.SetBool("Move", true);
-        navMeshAgent.isStopped = false;
         //추후 네비게이션으로 이동변경 
-        navMeshAgent.SetDestination(target.transform.position);
-        //transform.position = Vector3.Lerp(transform.position, target.position, moveSpeed * Time.deltaTime);
+        //transform.position = Vector3.Lerp(transform.position, target.position, Time.deltaTime);
 
 
 
@@ -337,7 +343,7 @@ public class UnitAttack1 : MonoBehaviour
             {
                 navMeshAgent.isStopped = true;
                 ani.SetBool("Move", false);
-                return;
+                
             }
             if (!isdetecting)
             {

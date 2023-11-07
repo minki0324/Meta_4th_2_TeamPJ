@@ -16,72 +16,57 @@ public class LeaderAI : Unit
     public bool isEnermyChecked = false;
 
     //public Transform nearestTarget;
-    private float AttackRange = 5f;
+    private float AttackRange = 10f;
     private void Awake()
     {
         ani = GetComponent<Animator>();
         combinedMask = TargetLayers();
         navMesh = GetComponent<NavMeshAgent>();
-        bat_State = BattleState.Follow;
         flag = GameObject.FindGameObjectsWithTag("Flag");
+        targetFlag = TargetFlag();
+        bat_State = BattleState.Move;
     }
     private void Update()
     {
 
         // 항상 주변에 적이있는지 탐지
         EnemyDitect();
+  
         switch (bat_State)
         {
-            case BattleState.Follow:
+  
+            case BattleState.Attack:
+                break;
+            case BattleState.Search:
+                
+                Debug.Log("타겟깃발정함");
+                targetFlag = TargetFlag();
+                if(targetFlag != null) {
+                    bat_State = BattleState.Move;
+                }
+               
+             
+                break;
+            case BattleState.Move:
                 if (targetFlag.transform.position != null)
                 {
+                    ani.SetBool("Move", true);
+                    Debug.Log("목적지 깃발");
                     navMesh.SetDestination(targetFlag.transform.position);
                 }
                 else
                 {
-                    return;
+                    bat_State = BattleState.Search;
                 }
-                navMesh.isStopped = true;
                 break;
-            case BattleState.Attack:
+            case BattleState.Defense:
                 break;
-                navMesh.isStopped = true;
             case BattleState.Detect:
-
-                //애니메이션 방패들기
-                ani_State = AniState.shild;
-                //천천히 적에게 접근
-                //Debug.Log()
-                ani.SetBool("Move", true);
-                navMesh.SetDestination(NearestTarget.position);
+                //ani.SetBool("Move", true);
+                //navMesh.SetDestination(NearestTarget.position);
                 break;
 
         }
-
-        switch (jud_State)
-        {
-            case JudgmentState.Ready:
-                ani_State = AniState.Idle;
-                Debug.Log("타겟깃발정함");
-                targetFlag = TargetFlag();
-                navMesh.SetDestination(targetFlag.transform.position);
-                jud_State = JudgmentState.Going;
-                //navMesh.SetDestination()
-                break;
-            case JudgmentState.Wait:
-                break;
-            case JudgmentState.Going:
-                //죽거나 
-                break;
-           
-
-                //float originalSpeed = navMeshAgent.speed; // 현재 속도 저장
-                //navMeshAgent.speed = originalSpeed / 4; // 1/4로 줄인 속도 설정
-
-
-
-        }
-
 
 
     }
@@ -90,6 +75,7 @@ public class LeaderAI : Unit
     {
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, combinedMask);
         NearestTarget = GetNearestTarget(hits);
+
         if (NearestTarget != null)
         {
             float attackDistance = Vector3.Distance(transform.position, NearestTarget.position);
@@ -102,21 +88,23 @@ public class LeaderAI : Unit
             }
 
             isEnermyChecked = true;
-}
+        }
         else
         {
-            if(bat_State == BattleState.Attack) { 
-            if(targetFlag == null)
+            if (bat_State == BattleState.Attack)
             {
-                jud_State = JudgmentState.Ready;
+                if (targetFlag == null)
+                {
+                    bat_State = BattleState.Search;
+                }
+                else
+                {
+                    bat_State = BattleState.Move;
+                }
+
+
             }
-            else
-            {
-                jud_State = JudgmentState.Going;
-            }
-           
-            bat_State = BattleState.Follow;
-            }
+            bat_State = BattleState.Move;
             isEnermyChecked = false;
         }
 

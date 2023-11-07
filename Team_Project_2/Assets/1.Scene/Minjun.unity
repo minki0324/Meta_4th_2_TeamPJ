@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -807,7 +807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit:
-  - {fileID: 4239812368246995255, guid: 90345139ca52d394c8f1c4e71bc7bc22, type: 3}
+  - {fileID: 4239812368246995255, guid: 09b9465ebbaafa24aa000dbaacaa6095, type: 3}
   - {fileID: 6006503084427101158, guid: 7b2c5439dcdaff14682d91ecbec50354, type: 3}
   - {fileID: 4483072135592897270, guid: 688bb76400d688d40a0027c72be0d35e, type: 3}
 --- !u!135 &158223201
@@ -2852,7 +2852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit:
-  - {fileID: 4239812368246995255, guid: 90345139ca52d394c8f1c4e71bc7bc22, type: 3}
+  - {fileID: 4239812368246995255, guid: 09b9465ebbaafa24aa000dbaacaa6095, type: 3}
   - {fileID: 6006503084427101158, guid: 7b2c5439dcdaff14682d91ecbec50354, type: 3}
   - {fileID: 4483072135592897270, guid: 688bb76400d688d40a0027c72be0d35e, type: 3}
 --- !u!1 &557512886
@@ -13307,7 +13307,7 @@ GameObject:
   - component: {fileID: 5060844583554990796}
   - component: {fileID: 5060844583554990797}
   - component: {fileID: 5060844583554990798}
-  - component: {fileID: 5060844583554990788}
+  - component: {fileID: 5060844583554990789}
   m_Layer: 8
   m_Name: EnemyLeader (1)
   m_TagString: Leader
@@ -13315,7 +13315,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &5060844583554990788
+--- !u!114 &5060844583554990789
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13324,7 +13324,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5060844583554990787}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bda1b663e2d9ce047a0c08f3f29c1a02, type: 3}
+  m_Script: {fileID: 11500000, guid: 146c2cbd8f51d28429ee57b1f00bf9cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   nearestMinion_List: []
@@ -13340,7 +13340,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5060844583554990787}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c59f0d7f888654b448d7f19fcaa25db6, type: 3}
   m_Name: 
@@ -13358,8 +13358,6 @@ MonoBehaviour:
   isDead: 0
   isMoving: 0
   bat_State: 0
-  jud_State: 0
-  ani_State: 0
   UnitList: []
   HitBox_col: {fileID: 0}
   Ob_Weapon_col: {fileID: 5060844583554999902}
@@ -35633,7 +35631,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7606167978622388943}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c59f0d7f888654b448d7f19fcaa25db6, type: 3}
   m_Name: 
@@ -35651,8 +35649,6 @@ MonoBehaviour:
   isDead: 0
   isMoving: 0
   bat_State: 0
-  jud_State: 0
-  ani_State: 0
   UnitList: []
   HitBox_col: {fileID: 0}
   Ob_Weapon_col: {fileID: 7606167978622398034}
@@ -35775,11 +35771,11 @@ GameObject:
   - component: {fileID: 7606167978622388941}
   - component: {fileID: 7606167978622388942}
   - component: {fileID: 504986784973534682}
-  - component: {fileID: 7606167978622388944}
   - component: {fileID: 7606167978622388931}
   - component: {fileID: 7606167978622388928}
   - component: {fileID: 7606167978622388929}
   - component: {fileID: 7606167978622388930}
+  - component: {fileID: 7606167978622388944}
   m_Layer: 6
   m_Name: EnemyLeader
   m_TagString: Leader
@@ -35796,7 +35792,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7606167978622388943}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bda1b663e2d9ce047a0c08f3f29c1a02, type: 3}
+  m_Script: {fileID: 11500000, guid: 146c2cbd8f51d28429ee57b1f00bf9cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   nearestMinion_List: []
@@ -51755,7 +51751,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7734058830211148195}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 0.7, y: 1, z: 0.7}

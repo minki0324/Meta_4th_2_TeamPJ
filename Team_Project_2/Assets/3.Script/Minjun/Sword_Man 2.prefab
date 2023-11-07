@@ -8151,12 +8151,12 @@ GameObject:
   - component: {fileID: 4239812368239474825}
   - component: {fileID: 4239812368246995249}
   - component: {fileID: 4239812368246995250}
+  - component: {fileID: 2598928399112099378}
   - component: {fileID: -7649125189604675890}
   - component: {fileID: 3345660950030388180}
-  - component: {fileID: 3432355695288861000}
   - component: {fileID: 6937031202658005056}
   m_Layer: 7
-  m_Name: Sword_Man 1
+  m_Name: Sword_Man 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8226,6 +8226,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 1.5, z: 0.5}
   m_Center: {x: 0, y: 0.7, z: 0}
+--- !u!114 &2598928399112099378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4239812368246995255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ab9abe2f06d994b9a1bb98688a8b40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnitAtk: {fileID: 0}
+  Human_type: 0
+  isDetect: 0
+  isClose: 0
 --- !u!114 &-7649125189604675890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8278,22 +8294,6 @@ MonoBehaviour:
     7
     : PP / 8 : RE / 9 : TAN / 10 : WH / 11 : YE'
   Color_Index: 1
---- !u!114 &3432355695288861000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4239812368246995255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f602dc01e4bc104b9eb5254f10cd8eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UnitAtk: {fileID: 0}
-  Human_type: 15
-  isDetect: 0
-  isClose: 0
 --- !u!195 &6937031202658005056
 NavMeshAgent:
   m_ObjectHideFlags: 0
