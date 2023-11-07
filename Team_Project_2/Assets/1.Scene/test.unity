@@ -687,12 +687,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stop_List: []
+  Stop_A_List: []
   TargetLayer:
     serializedVersion: 2
     m_Bits: 0
   isa: 0
   StopPos: {x: 0, y: 0, z: 0}
-  Timertime: 3
+  isStop: 0
   Standard: {x: 0, y: 0, z: 0}
   Foward: {fileID: 758684796}
 --- !u!114 &1513936099

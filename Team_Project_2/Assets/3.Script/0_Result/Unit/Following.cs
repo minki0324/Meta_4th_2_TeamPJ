@@ -213,7 +213,7 @@ public class Following : MonoBehaviour
                 {
                     Debug.Log("플레이어는 0번이 아니야.." + i + "번이야..");
 
-                    Stop_A_List.Clear();
+                    Stop_List.Clear();
                     Stop_A_List.Add(pc.gameObject);
                     for (int j = 0; j < Stop_List.Count; j++)
                     {
