@@ -82,6 +82,7 @@ namespace SimpleProceduralTerrainProject
             Random.InitState(seed);
 
             m_seed = Random.Range(0, 100);
+            InitializeTerrain();
         }
 
         private void Update()
@@ -91,6 +92,10 @@ namespace SimpleProceduralTerrainProject
                 InitializeTerrain();
             }
         }
+
+
+
+
 
         void InitializeTerrain()
         {

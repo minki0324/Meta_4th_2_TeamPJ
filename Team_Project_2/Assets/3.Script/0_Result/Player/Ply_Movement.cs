@@ -34,8 +34,6 @@ public class Ply_Movement : MonoBehaviour
 
     public Vector3 CurrentPos { get; private set; }
 
-    //추가된 변수-이서영
-
     public bool isAttacking_1 = false;  //공격모션 1이 실행중인가 판단
     public bool isPossible_Attack_2 = false;    //공격모션 2가 실행가능한 상태인가 (모션 1이 중간이상 실행되었는가) 판단
 
@@ -49,6 +47,11 @@ public class Ply_Movement : MonoBehaviour
 
     private float Min = -210f;
     private float Max = 210f;
+
+
+ 
+    public Quaternion playerRotation { get; private set; }   //added
+
 
     private void Start()
     {
@@ -142,11 +145,13 @@ public class Ply_Movement : MonoBehaviour
             // 회전
             transform.rotation = Quaternion.LookRotation(moveDirection);
 
+            playerRotation = transform.rotation;    //added
+
             // 이동
             transform.position += (moveDirection.normalized * MoveSpeed * Time.deltaTime);
             transform.position = new Vector3(
             Mathf.Clamp(transform.position.x, Min, Max), transform.position.y, Mathf.Clamp(transform.position.z, Min, Max));
-            Debug.Log(transform.position);
+            //Debug.Log(transform.position);
             ani.SetBool("Move", true);
             ani.SetBool("Idle", false);
             isPlayerMove = true;

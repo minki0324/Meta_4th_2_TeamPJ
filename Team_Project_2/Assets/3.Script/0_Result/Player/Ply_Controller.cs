@@ -93,7 +93,7 @@ public class Ply_Controller : MonoBehaviour
             CurrentMode = Mode.Follow;
             if (!isPlay_FollowOrder)
             {
-                following.nearestMinion_List.Clear();
+              
                 animator.SetTrigger("FollowOrder");
                 isPlay_FollowOrder = true;
             }
@@ -131,11 +131,6 @@ public class Ply_Controller : MonoBehaviour
 
 
             ischeckPosition = true;
-
-
-
-
-
         }
 
 
