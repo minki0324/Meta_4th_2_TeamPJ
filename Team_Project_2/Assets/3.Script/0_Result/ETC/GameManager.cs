@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum Team
+{
+    neutrality = 0, // 중립
+    Team1,   
+    Team2,
+    Team3,
+    Team4
+}
+
 public class GameManager : MonoBehaviour
 {
     /*
@@ -10,7 +20,6 @@ public class GameManager : MonoBehaviour
         2. 플레이어 체력
         3. 점령지 (골드와 연동)
     */
-
     public static GameManager instance = null;
 
     [SerializeField] private GameObject Option;
