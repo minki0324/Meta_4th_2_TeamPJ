@@ -5,28 +5,28 @@ using UnityEngine;
 public class Ply_Movement : MonoBehaviour
 {
     /*
-         1. ÀÌµ¿ ±¸Çö
-         2. Á¡ÇÁ ±¸Çö
-         3. ¾Ö´Ï¸ŞÀÌ¼Ç µ¿ÀÛ ±¸Çö
+         1. ì´ë™ êµ¬í˜„
+         2. ì í”„ êµ¬í˜„
+         3. ì• ë‹ˆë©”ì´ì…˜ ë™ì‘ êµ¬í˜„
 
-         º¯¼ö
+         ë³€ìˆ˜
 
-         Ä«¸Ş¶ó
-         ¾Ö´Ï¸ŞÀÌ¼Ç
-         ¸®Áöµå¹Ùµğ
-         ¼Óµµ
-         Á¡ÇÁÈû
-         »ı»ç À¯¹« Ã¼Å©
-         Á¡ÇÁ »óÅÂÀÎÁö Ã¼Å©
+         ì¹´ë©”ë¼
+         ì• ë‹ˆë©”ì´ì…˜
+         ë¦¬ì§€ë“œë°”ë””
+         ì†ë„
+         ì í”„í˜
+         ìƒì‚¬ ìœ ë¬´ ì²´í¬
+         ì í”„ ìƒíƒœì¸ì§€ ì²´í¬
      */
     Camera camera_;
     [SerializeField] private Animator ani;
     [SerializeField] private Rigidbody rb;
 
-    [Header("ÀÌµ¿")]
+    [Header("ì´ë™")]
     [SerializeField] private float MoveSpeed = 5f;
 
-    [Header("Á¡ÇÁ")]
+    [Header("ì í”„")]
     [SerializeField] private float JumpForce = 10f;
     [SerializeField] private bool isGrounded = true;
 
@@ -34,14 +34,14 @@ public class Ply_Movement : MonoBehaviour
 
     public Vector3 CurrentPos { get; private set; }
 
-    public bool isAttacking_1 = false;  //°ø°İ¸ğ¼Ç 1ÀÌ ½ÇÇàÁßÀÎ°¡ ÆÇ´Ü
-    public bool isPossible_Attack_2 = false;    //°ø°İ¸ğ¼Ç 2°¡ ½ÇÇà°¡´ÉÇÑ »óÅÂÀÎ°¡ (¸ğ¼Ç 1ÀÌ Áß°£ÀÌ»ó ½ÇÇàµÇ¾ú´Â°¡) ÆÇ´Ü
+    public bool isAttacking_1 = false;  //ê³µê²©ëª¨ì…˜ 1ì´ ì‹¤í–‰ì¤‘ì¸ê°€ íŒë‹¨
+    public bool isPossible_Attack_2 = false;    //ê³µê²©ëª¨ì…˜ 2ê°€ ì‹¤í–‰ê°€ëŠ¥í•œ ìƒíƒœì¸ê°€ (ëª¨ì…˜ 1ì´ ì¤‘ê°„ì´ìƒ ì‹¤í–‰ë˜ì—ˆëŠ”ê°€) íŒë‹¨
 
-    public bool isAttacking_2 = false;   //°ø°İ¸ğ¼Ç 2ÀÌ ½ÇÇàÁßÀÎ°¡ ÆÇ´Ü
-    public bool isPossible_Attack_1 = true;     //°ø°İ¸ğ¼Ç 1°¡ ½ÇÇà°¡´ÉÇÑ »óÅÂÀÎ°¡ (¸ğ¼Ç 1ÀÌ Áß°£ÀÌ»ó ½ÇÇàµÇ¾ú´Â°¡) ÆÇ´Ü
+    public bool isAttacking_2 = false;   //ê³µê²©ëª¨ì…˜ 2ì´ ì‹¤í–‰ì¤‘ì¸ê°€ íŒë‹¨
+    public bool isPossible_Attack_1 = true;     //ê³µê²©ëª¨ì…˜ 1ê°€ ì‹¤í–‰ê°€ëŠ¥í•œ ìƒíƒœì¸ê°€ (ëª¨ì…˜ 1ì´ ì¤‘ê°„ì´ìƒ ì‹¤í–‰ë˜ì—ˆëŠ”ê°€) íŒë‹¨
 
-    public float groundCheckRadius = 0.2f;  // OverlapSphere ¹İÁö¸§
-    public string groundTag = "Ground";  // ¶¥ÀÇ ÅÂ±×
+    public float groundCheckRadius = 0.2f;  // OverlapSphere ë°˜ì§€ë¦„
+    public string groundTag = "Ground";  // ë•…ì˜ íƒœê·¸
 
     private Vector3 playerPosition;
 
@@ -74,12 +74,12 @@ public class Ply_Movement : MonoBehaviour
 
             if (isPossible_Attack_1)
             {
-                //¸ğ¼Ç 1 ½ÇÇà ½ÃÀÛ
+                //ëª¨ì…˜ 1 ì‹¤í–‰ ì‹œì‘
 
                 ani.SetTrigger("Attack");
                 //ani.SetBool("Attack1", true);
 
-                isAttacking_1 = true;   //½ÇÇàÁß
+                isAttacking_1 = true;   //ì‹¤í–‰ì¤‘
 
                 isAttacking_2 = false;
                 isPossible_Attack_1 = false;
@@ -142,16 +142,15 @@ public class Ply_Movement : MonoBehaviour
 
         if (moveDirection != Vector3.zero)
         {
-            // È¸Àü
+            // íšŒì „
             transform.rotation = Quaternion.LookRotation(moveDirection);
 
             playerRotation = transform.rotation;    //added
 
-            // ÀÌµ¿
+            // ì´ë™
             transform.position += (moveDirection.normalized * MoveSpeed * Time.deltaTime);
             transform.position = new Vector3(
             Mathf.Clamp(transform.position.x, Min, Max), transform.position.y, Mathf.Clamp(transform.position.z, Min, Max));
-            //Debug.Log(transform.position);
             ani.SetBool("Move", true);
             ani.SetBool("Idle", false);
             isPlayerMove = true;
@@ -207,7 +206,7 @@ public class Ply_Movement : MonoBehaviour
         {
             if (col.CompareTag(groundTag))
             {
-                // ¶¥ ÅÂ±×¸¦ °¡Áø ¿ÀºêÁ§Æ®¿Í Ãæµ¹ÇÑ °æ¿ì
+                // ë•… íƒœê·¸ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ì™€ ì¶©ëŒí•œ ê²½ìš°
                 isGrounded = true;
                 break;
             }
@@ -219,8 +218,8 @@ public class Ply_Movement : MonoBehaviour
 
         if (isGrounded)
         {
-            // Ä³¸¯ÅÍ´Â ¶¥¿¡ ´ê¾Æ ÀÖÀ½
-            // ¿©±â¿¡¼­ Á¡ÇÁ¸¦ Çã¿ëÇÏ°Å³ª ´Ù¸¥ µ¿ÀÛÀ» ¼öÇàÇÒ ¼ö ÀÖÀ½
+            // ìºë¦­í„°ëŠ” ë•…ì— ë‹¿ì•„ ìˆìŒ
+            // ì—¬ê¸°ì—ì„œ ì í”„ë¥¼ í—ˆìš©í•˜ê±°ë‚˜ ë‹¤ë¥¸ ë™ì‘ì„ ìˆ˜í–‰í•  ìˆ˜ ìˆìŒ
         }
     }
 }

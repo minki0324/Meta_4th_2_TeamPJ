@@ -16,74 +16,59 @@ public class LeaderAI : Unit
     public bool isEnermyChecked = false;
 
     //public Transform nearestTarget;
-    private float AttackRange = 5f;
+    private float AttackRange = 10f;
     private void Awake()
     {
         ani = GetComponent<Animator>();
         combinedMask = TargetLayers();
         navMesh = GetComponent<NavMeshAgent>();
-        bat_State = BattleState.Follow;
         flag = GameObject.FindGameObjectsWithTag("Flag");
+        targetFlag = TargetFlag();
+        bat_State = BattleState.Move;
     }
     private void Update()
     {
-        for (int i = 0; i < flag.Length; i++)
-        {
-            Debug.Log(flag[i]);
-        }
 
-        // Ç×»ó ÁÖº¯¿¡ ÀûÀÌÀÖ´ÂÁö Å½Áö
+        // í•­ìƒ ì£¼ë³€ì— ì ì´ìžˆëŠ”ì§€ íƒì§€
         EnemyDitect();
+
+  
         switch (bat_State)
         {
-            case BattleState.Follow:
-                //if(targetFlag.transform.position != null) { 
-                //navMesh.SetDestination(targetFlag.transform.position);
-                //}
-                //else
-                //{
-                //    return;
-                //}
-                //navMesh.isStopped = true;
-                break;
+  
             case BattleState.Attack:
                 break;
+            case BattleState.Search:
+                
+                targetFlag = TargetFlag();
+                if(targetFlag != null) 
+                {
+                    bat_State = BattleState.Move;
+                }
+               
+             
+                break;
+            case BattleState.Move:
+                if (targetFlag.transform.position != null)
+                {
+                        ani.SetBool("Move", true);
+                        Debug.Log("ê¹ƒë°œì´ë™");
+                        navMesh.SetDestination(targetFlag.transform.position);
+                }
+                else
+                {
+                    bat_State = BattleState.Search;
+                }
+                break;
+            case BattleState.Defense:
+                break;
+
             case BattleState.Detect:
-
-                //¾Ö´Ï¸ÞÀÌ¼Ç ¹æÆÐµé±â
-                ani_State = AniState.shild;
-                //ÃµÃµÈ÷ Àû¿¡°Ô Á¢±Ù
-                //Debug.Log()
-                ani.SetBool("Move", true);
-                navMesh.SetDestination(NearestTarget.position);
+                //ani.SetBool("Move", true);
+                //navMesh.SetDestination(NearestTarget.position);
                 break;
 
         }
-
-        switch (jud_State)
-        {
-            case JudgmentState.Ready:
-                ani_State = AniState.Idle;
-                Debug.Log("Å¸°Ù±ê¹ßÁ¤ÇÔ");
-                targetFlag= TargetFlag();
-                navMesh.SetDestination(targetFlag.transform.position);
-                jud_State = JudgmentState.Going;
-                //navMesh.SetDestination()
-                break;
-            case JudgmentState.Wait:
-                break;
-            case JudgmentState.Going:
-                //Á×°Å³ª 
-                break;
-           
-
-                //float originalSpeed = navMeshAgent.speed; // ÇöÀç ¼Óµµ ÀúÀå
-                //navMeshAgent.speed = originalSpeed / 4; // 1/4·Î ÁÙÀÎ ¼Óµµ ¼³Á¤
-
-
-
-        }
-
 
 
     }
@@ -91,39 +76,42 @@ public class LeaderAI : Unit
     private void EnemyDitect()
     {
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, combinedMask);
-        NearestTarget = GetNearestTarget(hits);
-        if (NearestTarget != null)
+        nearestTarget = GetNearestTarget(hits);
+
+        if (nearestTarget != null)
         {
-            float attackDistance = Vector3.Distance(transform.position, NearestTarget.position);
+            float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
             bat_State = BattleState.Detect;
 
-            //DItect »óÅÂÀÏ¶§ ¹æÆÐ¸¦ µé¸ç ÃµÃµÈ÷ Á¢±Ù
+            //DItect ìƒíƒœì¼ë•Œ ë°©íŒ¨ë¥¼ ë“¤ë©° ì²œì²œížˆ ì ‘ê·¼
             if (attackDistance <= AttackRange)
             {
                 bat_State = BattleState.Attack;
             }
 
             isEnermyChecked = true;
-}
+        }
         else
         {
-            if(bat_State == BattleState.Attack) { 
-            if(targetFlag == null)
+            if (bat_State == BattleState.Attack)
             {
-                jud_State = JudgmentState.Ready;
+                if (targetFlag == null)
+                {
+                    bat_State = BattleState.Search;
+                }
+                else
+                {
+                    bat_State = BattleState.Move;
+                }
+
+
             }
-            else
-            {
-                jud_State = JudgmentState.Going;
-            }
-           
-            bat_State = BattleState.Follow;
-            }
+            bat_State = BattleState.Move;
             isEnermyChecked = false;
         }
 
 
-        //¹üÀ§³»¿¡ ÀûÄÝ¶óÀÌ´õ°¡ ÀÖÀ»½Ã Ditect »óÅÂ·Î º¯°æ
+        //ë²”ìœ„ë‚´ì— ì ì½œë¼ì´ë”ê°€ ìžˆì„ì‹œ Ditect ìƒíƒœë¡œ ë³€ê²½
     }
 
     private GameObject TargetFlag()
@@ -135,7 +123,7 @@ public class LeaderAI : Unit
             GameObject selected1Flag = defaultFlags[randomIndex];
 
             return selected1Flag;
-            // ¼±ÅÃµÈ °´Ã¼(selectedFlag)¸¦ »ç¿ëÇÏ¼¼¿ä.
+            // ì„ íƒëœ ê°ì²´(selectedFlag)ë¥¼ ì‚¬ìš©í•˜ì„¸ìš”.
         }
 
         GameObject selectedFlag = null;
@@ -144,10 +132,10 @@ public class LeaderAI : Unit
         int radius = 10;
         foreach (GameObject _flag in flag)
         {
-            // _flag ÁÖº¯¿¡¼­ trigger¿¡ ´ê¾Æ ÀÖ´Â °´Ã¼ °ËÃâ
+            // _flag ì£¼ë³€ì—ì„œ triggerì— ë‹¿ì•„ ìžˆëŠ” ê°ì²´ ê²€ì¶œ
             Collider[] colliders = Physics.OverlapSphere(_flag.transform.position, radius, layerMask, QueryTriggerInteraction.Collide);
 
-            // ÃÖ¼Ò Ä«¿îÆ® °»½Å
+            // ìµœì†Œ ì¹´ìš´íŠ¸ ê°±ì‹ 
             if (colliders.Length < minTouchingCount)
             {
                 minTouchingCount = colliders.Length;
@@ -161,11 +149,11 @@ public class LeaderAI : Unit
         }
         else
         {
-            Debug.Log("±ê¹ß¸øÃ£À½");
+            Debug.Log("ê¹ƒë°œëª»ì°¾ìŒ");
             return null;
 
         }
-       
+
 
     }
 }

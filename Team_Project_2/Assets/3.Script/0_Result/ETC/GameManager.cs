@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum Team
+{
+    neutrality = 0, // 중립
+    Team1,   
+    Team2,
+    Team3,
+    Team4
+}
+
 public class GameManager : MonoBehaviour
 {
     /*
@@ -10,7 +20,6 @@ public class GameManager : MonoBehaviour
         2. 플레이어 체력
         3. 점령지 (골드와 연동)
     */
-
     public static GameManager instance = null;
 
     [SerializeField] private GameObject Option;
@@ -30,8 +39,16 @@ public class GameManager : MonoBehaviour
     public bool isLive = true;
     public float Current_HP = 150f;
     public float Max_Hp = 150f;
+    
+    public float Damage = 20f; 
     public float Regeneration = 0.5f;
-
+    public float respawnTime = 10f;
+    //병사인구 
+    public int Max_MinionCount = 19;
+    public int Current_MinionCount;
+    //병종 업그레이드
+    public bool isPossible_Upgrade_1 = false;
+    public bool isPossible_Upgrade_2 = false;
     private void Awake()
     {
         if(instance == null)

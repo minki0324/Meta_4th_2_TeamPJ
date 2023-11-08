@@ -9871,6 +9871,7 @@ GameObject:
   - component: {fileID: 7938536280297226554}
   - component: {fileID: 7938536280297226555}
   - component: {fileID: 7938536280297226552}
+  - component: {fileID: 2873789103732132947}
   m_Layer: 6
   m_Name: EnemyLeader
   m_TagString: Leader
@@ -10031,10 +10032,12 @@ MonoBehaviour:
   UnitList: []
   HitBox_col: {fileID: 0}
   Ob_Weapon_col: {fileID: 7938536280297235880}
-  NearestTarget: {fileID: 0}
+  nearestTarget: {fileID: 0}
   target:
     serializedVersion: 2
     m_Bits: 0
+  targetFlag: {fileID: 0}
+  isEnermyChecked: 0
 --- !u!195 &7938536280297226555
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -10078,6 +10081,20 @@ MonoBehaviour:
   target:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &2873789103732132947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938536280297226549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83f57fa8d6242314891b7b62560d3d4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gate: {fileID: 0}
+  gateUI: {fileID: 0}
 --- !u!1 &7938536280297226775
 GameObject:
   m_ObjectHideFlags: 0

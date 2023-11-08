@@ -8,34 +8,34 @@ public class Unit : LeaderState
    
     private bool isDie;
     private Ply_Controller player;
-    //ÆÀÀÇ ¸®´õ°¡ ´©±ºÁö
+    //íŒ€ì˜ ë¦¬ë”ê°€ ëˆ„êµ°ì§€
 
-    //°ø°İÁßÀÎ°¡?
+    //ê³µê²©ì¤‘ì¸ê°€?
 
   
    
 
     private int myLayer;
     protected int combinedMask;
-    // °ø°İ ´ë»ó ·¹ÀÌ¾î
+    // ê³µê²© ëŒ€ìƒ ë ˆì´ì–´
     private LayerMask TeamLayer;
     private bool isSuccessAtk = true;
-    //Á×¾úÀ»¶§ ¹Ú½ºÄİ¶óÀÌ´õ EnableÇÏ±âÀ§ÇØ Á÷Á¢ÂüÁ¶ 
+    //ì£½ì—ˆì„ë•Œ ë°•ìŠ¤ì½œë¼ì´ë” Enableí•˜ê¸°ìœ„í•´ ì§ì ‘ì°¸ì¡° 
     [SerializeField] private BoxCollider HitBox_col;
     [SerializeField] private BoxCollider Ob_Weapon_col;
 
   
-    //³×ºñ°ÔÀÌ¼Ç
+    //ë„¤ë¹„ê²Œì´ì…˜
     protected NavMeshAgent navMeshAgent;
 
-    [Header("ÇöÀçÅ¸°Ù Transform")]
-    [SerializeField] protected Transform NearestTarget;
+    [Header("í˜„ì¬íƒ€ê²Ÿ Transform")]
+    [SerializeField] protected Transform nearestTarget;
     public Transform GetNearestTarget()
     {
-        return NearestTarget;
+        return nearestTarget;
     }
 
-    [Header("ÇöÀçÅ¸°Ù Layer")]
+    [Header("í˜„ì¬íƒ€ê²Ÿ Layer")]
     [SerializeField] LayerMask target;
 
     private void Awake()
@@ -47,7 +47,7 @@ public class Unit : LeaderState
 
     private void Start()
     {
-        //ÀÚ½ÅÀÇ ·¹ÀÌ¾î¸¦ Á¦¿ÜÇÑ ÀûÆÀ·¹ÀÌ¾î¸¦ ´ãÀº ¹è¿­ °è»êÇÏ´Â ¸Ş¼Òµå
+        //ìì‹ ì˜ ë ˆì´ì–´ë¥¼ ì œì™¸í•œ ì íŒ€ë ˆì´ì–´ë¥¼ ë‹´ì€ ë°°ì—´ ê³„ì‚°í•˜ëŠ” ë©”ì†Œë“œ
 
         myLayer = gameObject.layer;
         TeamLayer = LayerMask.NameToLayer("Team");
@@ -62,7 +62,7 @@ public class Unit : LeaderState
 
     }
 
-    //·¹ÀÌ¾î °¨ÁöÈÄ °¡±î¿î Å¸°Ù ¼³Á¤ÇÏ´Â¸Ş¼Òµå
+    //ë ˆì´ì–´ ê°ì§€í›„ ê°€ê¹Œìš´ íƒ€ê²Ÿ ì„¤ì •í•˜ëŠ”ë©”ì†Œë“œ
     public  Transform GetNearestTarget(RaycastHit[] hits)
     {
         Transform nearest = null;
@@ -85,22 +85,22 @@ public class Unit : LeaderState
 
         return nearest;
     }
-    //ÀûÀ»°¨ÁöÇßÀ»¶§ ÀûÀ»¹Ù¶óº¸´Â ¸Ş¼Òµå
+    //ì ì„ê°ì§€í–ˆì„ë•Œ ì ì„ë°”ë¼ë³´ëŠ” ë©”ì†Œë“œ
     public  void LookatTarget(Transform target)
     {
 
         Vector3 AttackDir = target.position - transform.position;
         transform.rotation = Quaternion.LookRotation(AttackDir);
     }
-    //ÀûÀ»°¨ÁöÇßÀ»¶§ °ø°İÇÏ±âÀ§ÇØ Àû¿¡°Ô ÀÌµ¿ÇÏ´Â¸Ş¼Òµå
+    //ì ì„ê°ì§€í–ˆì„ë•Œ ê³µê²©í•˜ê¸°ìœ„í•´ ì ì—ê²Œ ì´ë™í•˜ëŠ”ë©”ì†Œë“œ
 
 
-    //°ø°İÄÚ·çÆ¾¸Ş¼Òµå
+    //ê³µê²©ì½”ë£¨í‹´ë©”ì†Œë“œ
  
-    //È÷Æ® ÄÚ·çÆ¾¸Ş¼Òµå
+    //íˆíŠ¸ ì½”ë£¨í‹´ë©”ì†Œë“œ
 
 
-    //ÀÌº¥Æ®¿¡¼­ ¹«±â ²¯´ÙÅ°´Â ¸Ş¼Òµå
+    //ì´ë²¤íŠ¸ì—ì„œ ë¬´ê¸° ê»ë‹¤í‚¤ëŠ” ë©”ì†Œë“œ
     public void WeaponActive()
     {
         isSuccessAtk = true;
@@ -112,7 +112,7 @@ public class Unit : LeaderState
     {
         Ob_Weapon_col.enabled = false;
     }
-    //Á×À»¶§ ¸Ş¼Òµå
+    //ì£½ì„ë•Œ ë©”ì†Œë“œ
    
     
    
@@ -120,9 +120,9 @@ public class Unit : LeaderState
     {
         int[] combinedLayerMask;
         int myLayer = gameObject.layer;
-        //ÃÑ 4°³ÆÀÀÇ ·¹ÀÌ¾î 
+        //ì´ 4ê°œíŒ€ì˜ ë ˆì´ì–´ 
         int[] layerArray = new int[] { LayerMask.NameToLayer("Team"), LayerMask.NameToLayer("Enemy1"), LayerMask.NameToLayer("Enemy2"), LayerMask.NameToLayer("Enemy3") };
-        //¿ì¸®ÆÀÀÇ ·¹ÀÌ¾î¸¦ Á¦¿ÜÇÑ ³ª¸ÓÁö ·¹ÀÌ¾î¸¦ ´ãÀ» ¹è¿­
+        //ìš°ë¦¬íŒ€ì˜ ë ˆì´ì–´ë¥¼ ì œì™¸í•œ ë‚˜ë¨¸ì§€ ë ˆì´ì–´ë¥¼ ë‹´ì„ ë°°ì—´
         combinedLayerMask = new int[3];
         int combinedIndex = 0;
 
@@ -142,6 +142,6 @@ public class Unit : LeaderState
         combinedMask = layerMask0 | layerMask1 | layerMask2;
         return combinedMask;
     }
-    //ÀÚ½ÅÀÇ ¸®´õ°¡ ¿À´õ¸¦³»·ÈÀ»¶§ ¸»À»µè°ÔÇÏ±âÀ§ÇÑ¸Ş¼Òµå
+    //ìì‹ ì˜ ë¦¬ë”ê°€ ì˜¤ë”ë¥¼ë‚´ë ¸ì„ë•Œ ë§ì„ë“£ê²Œí•˜ê¸°ìœ„í•œë©”ì†Œë“œ
 
 }

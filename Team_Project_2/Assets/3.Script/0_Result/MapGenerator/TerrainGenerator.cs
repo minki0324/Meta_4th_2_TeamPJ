@@ -1,12 +1,18 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
-
+using System.Linq;
+using Pathfinding;
 using ProceduralNoiseProject;
+using Pathfinding.Util;
 
 namespace SimpleProceduralTerrainProject
 {
-
+    /*
+        1. ëœë¤ í„°ë ˆì¸ ìƒì„± (ê°ì¢… ë…¸ì´ì¦ˆ ë¡œì§ë“¤ ê¸°ë°˜ìœ¼ë¡œ ëœë¤í•œ ë†’ì´ì˜ ì–¸ë• ìƒì„±)
+        2. ëœë¤ ì§€í˜•ìœ¼ë¡œ ìƒì„±ëœ í„°ë ˆì¸ì— ëœë¤í•œ ìœ„ì¹˜ì— ë² ì´ìŠ¤, í”Œë˜ê·¸ ìƒì„±
+        3. ë² ì´ìŠ¤ > í”Œë˜ê·¸ë¡œ ê°€ëŠ” ê¸¸ ì—ì´ìŠ¤íƒ€ ì•Œê³ ë¦¬ì¦˜ì„ í†µí•´ ê²½ë¡œë¥¼ íŒŒì•…í•˜ì—¬ í•´ë‹¹ ìœ„ì¹˜ì— ë„ë¡œ í…ìŠ¤ì¶° ì…íˆê¸°
+    */
     public class TerrainGenerator : MonoBehaviour
     {
 
@@ -14,47 +20,48 @@ namespace SimpleProceduralTerrainProject
         private GameObject Terra;
 
         //Prototypes
-        public Texture2D[] m_splat; // ÅØ½ºÃç ¹è¿­
-        public float[] m_splatTileSizes; // Å¸ÀÏ »çÀÌÁî °ªµéÀ» ÀúÀåÇÒ ¹è¿­
+        public Texture2D[] m_splat; // í…ìŠ¤ì¶° ë°°ì—´
+        public float[] m_splatTileSizes; // íƒ€ì¼ ì‚¬ì´ì¦ˆ ê°’ë“¤ì„ ì €ì¥í•  ë°°ì—´
         public Texture2D[] m_detail;
         public GameObject[] m_tree;
 
         //noise settings
-        [Header("Noise ¼ÂÆÃ")]
+        [Header("Noise ì…‹íŒ…")]
         public int m_seed = 0;
         public float m_groundFrq = 0.02f;
         public float m_treeFrq = 0.01f;
         public float m_detailFrq = 0.01f;
 
         //Terrain settings
-        [Header("Terrain ¼ÂÆÃ")]
-        public int m_tilesX = 2; // xÃà¿¡ ÀÖ´Â Å×·¹ÀÎ Å¸ÀÏÀÇ °³¼ö
-        public int m_tilesZ = 2; // zÃà¿¡ ÀÖ´Â Å×·¹ÀÎ Å¸ÀÏÀÇ °³¼ö
-        public float m_pixelMapError = 5f; // ¼ıÀÚ ³·¾ÆÁú¼ö·Ï µğÅ×ÀÏ »ó½ÂÇÏÁö¸¸ ¼Óµµ ´À·ÁÁü
-        public float m_baseMapDist = 100f; // ÀúÇØ»óµµ ±âº» ¸ÊÀÌ ±×·ÁÁú °Å¸®. ¼º´ÉÀ» Çâ»ó½ÃÅ°·Á¸é ÀÌ °ªÀ» ÁÙÀÌ¼¼¿ä.
+        [Header("Terrain ì…‹íŒ…")]
+        public int m_tilesX = 2; // xì¶•ì— ìˆëŠ” í…Œë ˆì¸ íƒ€ì¼ì˜ ê°œìˆ˜
+        public int m_tilesZ = 2; // zì¶•ì— ìˆëŠ” í…Œë ˆì¸ íƒ€ì¼ì˜ ê°œìˆ˜
+        public float m_pixelMapError = 5f; // ìˆ«ì ë‚®ì•„ì§ˆìˆ˜ë¡ ë””í…Œì¼ ìƒìŠ¹í•˜ì§€ë§Œ ì†ë„ ëŠë ¤ì§
+        public float m_baseMapDist = 100f; // ì €í•´ìƒë„ ê¸°ë³¸ ë§µì´ ê·¸ë ¤ì§ˆ ê±°ë¦¬. ì„±ëŠ¥ì„ í–¥ìƒì‹œí‚¤ë ¤ë©´ ì´ ê°’ì„ ì¤„ì´ì„¸ìš”.
+        private List<Terrain> terrainList;
 
         //Terrain data settings
-        [Header("TerrainData ¼ÂÆÃ")]
+        [Header("TerrainData ì…‹íŒ…")]
         public AnimationCurve animationCurve;
-        public int m_heightMapSize = 50; // ´õ ³ôÀº ¼ıÀÚ´Â ´õ µğÅ×ÀÏÇÑ ³ôÀÌ ¸ÊÀ» »ı¼ºÇÒ °ÍÀÔ´Ï´Ù
-        public int m_alphaMapSize = 50; // ÀÌ°ÍÀº ½ºÇÃ·§ ÅØ½ºÃ³°¡ ¾î¶»°Ô È¥ÇÕµÉÁö¸¦ Á¦¾îÇÏ´Â ÄÁÆ®·Ñ ¸ÊÀÔ´Ï´Ù
+        public int m_heightMapSize = 50; // ë” ë†’ì€ ìˆ«ìëŠ” ë” ë””í…Œì¼í•œ ë†’ì´ ë§µì„ ìƒì„±í•  ê²ƒì…ë‹ˆë‹¤
+        public int m_alphaMapSize = 512; // ì´ê²ƒì€ ìŠ¤í”Œë« í…ìŠ¤ì²˜ê°€ ì–´ë–»ê²Œ í˜¼í•©ë ì§€ë¥¼ ì œì–´í•˜ëŠ” ì»¨íŠ¸ë¡¤ ë§µì…ë‹ˆë‹¤
         public int m_terrainSize = 512;
         public int m_terrainHeight = 256;
-        public int m_detailMapSize = 128; // µğÅ×ÀÏ(Ç®) ·¹ÀÌ¾îÀÇ ÇØ»óµµ
+        public int m_detailMapSize = 128; // ë””í…Œì¼(í’€) ë ˆì´ì–´ì˜ í•´ìƒë„
 
         //Tree settings
-        [Header("Tree ¼ÂÆÃ")]
-        public int m_treeSpacing = 32; // ³ª¹« °£ÀÇ °£°İ
-        public float m_treeDistance = 2000.0f; // ³ª¹«°¡ ±×·ÁÁöÁö ¾ÊÀ» °Å¸®
-        public float m_treeBillboardDistance = 400.0f; // ³ª¹« ¸Ş½Ã°¡ ³ª¹« ºôº¸µå·Î º¯ÇÒ °Å¸®
-        public float m_treeCrossFadeLength = 20.0f; // ³ª¹«°¡ ºôº¸µå·Î º¯ÇÏ¸é¼­ º¯ÇüÀÌ ¸Ş½Ã¿Í ÀÏÄ¡ÇÏµµ·Ï È¸ÀüÇÕ´Ï´Ù. ³ôÀº ¼ıÀÚ´Â ÀÌ ÀüÈ¯À» ´õ ºÎµå·´°Ô ¸¸µì´Ï´Ù.
-        public int m_treeMaximumFullLODCount = 400; // Æ¯Á¤ ¿µ¿ª¿¡¼­ ±×·ÁÁú ÃÖ´ë ³ª¹« ¼ö
+        [Header("Tree ì…‹íŒ…")]
+        public int m_treeSpacing = 32; // ë‚˜ë¬´ ê°„ì˜ ê°„ê²©
+        public float m_treeDistance = 2000.0f; // ë‚˜ë¬´ê°€ ê·¸ë ¤ì§€ì§€ ì•Šì„ ê±°ë¦¬
+        public float m_treeBillboardDistance = 400.0f; // ë‚˜ë¬´ ë©”ì‹œê°€ ë‚˜ë¬´ ë¹Œë³´ë“œë¡œ ë³€í•  ê±°ë¦¬
+        public float m_treeCrossFadeLength = 20.0f; // ë‚˜ë¬´ê°€ ë¹Œë³´ë“œë¡œ ë³€í•˜ë©´ì„œ ë³€í˜•ì´ ë©”ì‹œì™€ ì¼ì¹˜í•˜ë„ë¡ íšŒì „í•©ë‹ˆë‹¤. ë†’ì€ ìˆ«ìëŠ” ì´ ì „í™˜ì„ ë” ë¶€ë“œëŸ½ê²Œ ë§Œë“­ë‹ˆë‹¤.
+        public int m_treeMaximumFullLODCount = 400; // íŠ¹ì • ì˜ì—­ì—ì„œ ê·¸ë ¤ì§ˆ ìµœëŒ€ ë‚˜ë¬´ ìˆ˜
 
         //Detail settings
-        [Header("Detail ¼ÂÆÃ")]
-        public int m_detailObjectDistance = 400; // µğÅ×ÀÏÀÌ ´õÀÌ»ó ±×·ÁÁöÁö ¾ÊÀ» °Å¸®
-        public float m_detailObjectDensity = 4.0f; // ÆĞÄ¡ ³»¿¡¼­ ´õ ¹Ğµµ ³ôÀº ¼¼ºÎ»çÇ×À» »ı¼º
-        public int m_detailResolutionPerPatch = 32; // ¼¼ºÎ ÆĞÄ¡ÀÇ Å©±â ³ô¾ÆÁú¼ö·Ï ÇØ»óµµ »ó½Â ´Ü ¹èÄ¡, µå·Î¿ìÄİµµ »ó½Â 
+        [Header("Detail ì…‹íŒ…")]
+        public int m_detailObjectDistance = 400; // ë””í…Œì¼ì´ ë”ì´ìƒ ê·¸ë ¤ì§€ì§€ ì•Šì„ ê±°ë¦¬
+        public float m_detailObjectDensity = 4.0f; // íŒ¨ì¹˜ ë‚´ì—ì„œ ë” ë°€ë„ ë†’ì€ ì„¸ë¶€ì‚¬í•­ì„ ìƒì„±
+        public int m_detailResolutionPerPatch = 32; // ì„¸ë¶€ íŒ¨ì¹˜ì˜ í¬ê¸° ë†’ì•„ì§ˆìˆ˜ë¡ í•´ìƒë„ ìƒìŠ¹ ë‹¨ ë°°ì¹˜, ë“œë¡œìš°ì½œë„ ìƒìŠ¹ 
         public float m_wavingGrassStrength = 0.4f;
         public float m_wavingGrassAmount = 0.2f;
         public float m_wavingGrassSpeed = 0.4f;
@@ -62,11 +69,20 @@ namespace SimpleProceduralTerrainProject
         public Color m_grassHealthyColor = Color.white;
         public Color m_grassDryColor = Color.white;
 
+        [Header("Road ì…‹íŒ…")]
+        private NNInfo[] positionNode;
+
         //Base Settings
+        [Header("Base ì…‹íŒ…")]
         public GameObject[] Base_PreFabs;
         public int Ply_Num;
         public int Base_Num = 0;
-        List<Vector3> baseCampPositions = new List<Vector3>();
+        List<GameObject> baseCampPositions = new List<GameObject>();
+
+        public GameObject[] flag;
+        public int flag_Num;
+        List<GameObject> flagPositions_List = new List<GameObject>();
+        private Dictionary<string, List<Vector3>> cachedPaths = new Dictionary<string, List<Vector3>>();
 
         //Private
         private FractalNoise m_groundNoise, m_mountainNoise, m_treeNoise, m_detailNoise;
@@ -76,27 +92,175 @@ namespace SimpleProceduralTerrainProject
         private DetailPrototype[] m_detailProtoTypes;
         private Vector2 m_offset;
 
-        void Start()
+        private void Awake()
         {
             int seed = (int)System.DateTime.Now.Ticks;
             Random.InitState(seed);
-
             m_seed = Random.Range(0, 100);
+            terrainList = new List<Terrain>();
             InitializeTerrain();
         }
-
-        private void Update()
+        #region ë² ì´ìŠ¤ë¶€í„° ê¹ƒë°œê¹Œì§€ ë„ë¡œ ê¹ŒëŠ” ë©”ì†Œë“œë“¤
+        // ê°€ì¥ ê°€ê¹Œìš´ ê¹ƒë°œ ì°¾ëŠ” ë©”ì†Œë“œ
+        private Vector3? FindNearestFlag(Vector3 position)
         {
-            if(Input.GetKeyDown(KeyCode.G))
+            Vector3? nearestFlag = null;
+            float minDistance = float.MaxValue;
+
+            foreach (var flagPos in flagPositions_List)
             {
-                InitializeTerrain();
+                float distance = Vector3.Distance(position, flagPos.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestFlag = flagPos.transform.position;
+                }
+            }
+
+            return nearestFlag;
+        }
+
+        // baseCampPositionsì—ì„œ ê° ë² ì´ìŠ¤ ìº í”„ ìœ„ì¹˜ì— ëŒ€í•´ ê°€ì¥ ê°€ê¹Œìš´ í”Œë˜ê·¸ë¥¼ ì°¾ì•„ ê²½ë¡œ ê³„ì‚°
+        private void FindPathsFromBasesToFlags()
+        {
+            foreach (var basePos in baseCampPositions)
+            {
+                var nearestFlag = FindNearestFlag(basePos.transform.position);
+                if (nearestFlag.HasValue)
+                {
+                    var path = Pathfinding(basePos.transform.position, nearestFlag.Value);
+                    DrawRoad(path);
+                }
             }
         }
 
+        // í”Œë˜ê·¸ ê°„ì˜ ê²½ë¡œë¥¼ ì°¾ëŠ” ë©”ì†Œë“œ
+        private void FindPathsBetweenFlags()
+        {
+            for (int i = 0; i < flagPositions_List.Count; i++)
+            {
+                // jë¥¼ i + 1ë¡œ ì‹œì‘í•˜ì—¬, iì™€ jê°€ ê°™ì§€ ì•Šê²Œ í•˜ê³ , ê° í”Œë˜ê·¸ ìŒì„ í•œ ë²ˆë§Œ ë¹„êµí•˜ë„ë¡ í•¨
+                for (int j = i + 1; j < flagPositions_List.Count; j++)
+                {
+                    //int j = (i + 1) % flagPositions_List.Count;
+                    Vector3 startFlag = flagPositions_List[i].transform.position + Vector3.forward;
+                    Vector3 endFlag = flagPositions_List[j].transform.position + Vector3.forward;
+                    
+                    string pathKey = i.ToString() + "-" + j.ToString();  // ê²½ë¡œë¥¼ ì‹ë³„í•˜ëŠ” ê³ ìœ í•œ í‚¤ ìƒì„±
 
+                    // ì´ë¯¸ íƒìƒ‰í•œ ê²½ë¡œì¸ì§€ í™•ì¸
+                    if (!cachedPaths.ContainsKey(pathKey))
+                    {
+                        var path = Pathfinding(startFlag, endFlag);
+                        if (path != null && path.Count > 0)
+                        {
+                            cachedPaths[pathKey] = path;  // ê²½ë¡œë¥¼ ìºì‹œì— ì €ì¥
+                            DrawRoad(path);
+                        }
+                        // ë°˜ëŒ€ ë°©í–¥ì˜ ê²½ë¡œë„ ì €ì¥í•´ì•¼ í•œë‹¤ë©´ ì—¬ê¸°ì— ì¶”ê°€
+                        string reversePathKey = j.ToString() + "-" + i.ToString();
+                        if (!cachedPaths.ContainsKey(reversePathKey))
+                        {
+                            cachedPaths[reversePathKey] = path;  // ê²½ë¡œë¥¼ ìºì‹œì— ì €ì¥
+                        }
+                    }
+                }
+            }
+            
+        }
 
+        private void DrawRoad(List<Vector3> pathPositions)
+        {
+            // ê° ì§€í˜•ì— ëŒ€í•´ ë°˜ë³µ
+            foreach (var terrain in terrainList)
+            {
+                TerrainData terrainData = terrain.terrainData;
+                // ì•ŒíŒŒë§µì˜ í•´ìƒë„ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
+                int alphaMapWidth = terrainData.alphamapWidth;
+                int alphaMapHeight = terrainData.alphamapHeight;
+                int alphaMapLayers = terrainData.alphamapLayers;
 
+                // í˜„ì¬ ì•ŒíŒŒë§µì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
+                float[,,] alphaMap = terrainData.GetAlphamaps(0, 0, alphaMapWidth, alphaMapHeight);
 
+                // ê²½ë¡œë¥¼ ë”°ë¼ ë°˜ë³µí•˜ë©´ì„œ ë„ë¡œ í…ìŠ¤ì²˜ë¥¼ ì ìš©í•©ë‹ˆë‹¤.
+                foreach (Vector3 position in pathPositions)
+                {
+                    // ì›”ë“œ ì¢Œí‘œë¥¼ ì•ŒíŒŒë§µ ì¢Œí‘œë¡œ ë³€í™˜í•©ë‹ˆë‹¤.
+                    int mapX = Mathf.FloorToInt((position.x - terrain.transform.position.x) / terrainData.size.x * alphaMapWidth);
+                    int mapZ = Mathf.FloorToInt((position.z - terrain.transform.position.z) / terrainData.size.z * alphaMapHeight);
+
+                    // ë„ë¡œ í­ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+                    int roadWidth = 5;  // ì´ ê°’ì€ ë„ë¡œì˜ í­ì— ë”°ë¼ ì¡°ì ˆí•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
+
+                    // ë„ë¡œì˜ í­ë§Œí¼ ì•ŒíŒŒë§µì„ ìˆ˜ì •í•©ë‹ˆë‹¤.
+                    for (int x = mapX - roadWidth / 2; x <= mapX + roadWidth / 2; x++)
+                    {
+                        for (int z = mapZ - roadWidth / 2; z <= mapZ + roadWidth / 2; z++)
+                        {
+                            if (x >= 0 && x < alphaMapWidth && z >= 0 && z < alphaMapHeight)
+                            {
+                                // ë„ë¡œ í…ìŠ¤ì²˜ ì´ì™¸ì˜ ëª¨ë“  ë ˆì´ì–´ë¥¼ ë¹„í™œì„±í™”í•©ë‹ˆë‹¤.
+                                for (int i = 0; i < alphaMapLayers; i++)
+                                {
+                                    alphaMap[z, x, i] = 0;
+                                }
+
+                                // ë„ë¡œ í…ìŠ¤ì²˜ë¥¼ í™œì„±í™”í•©ë‹ˆë‹¤.
+                                alphaMap[z, x, 0] = 1;  // ì—¬ê¸°ì„œ '0'ì€ ë„ë¡œ í…ìŠ¤ì²˜ ë ˆì´ì–´ë¥¼ ê°€ì •í•©ë‹ˆë‹¤.
+                            }
+                        }
+                    }
+                }
+
+                // ì•ŒíŒŒë§µì„ ì§€í˜• ë°ì´í„°ì— ì ìš©í•©ë‹ˆë‹¤.
+                terrainData.SetAlphamaps(0, 0, alphaMap);
+            }
+        }
+
+        public void initRoad()
+        {
+            AstarPath.active.Scan();
+            foreach (var terrain in terrainList)
+            {
+                FillAlphaMap(terrain.terrainData);
+            }
+
+            // ë„ë¡œ ê·¸ë¦¬ê¸° ë©”ì†Œë“œ í˜¸ì¶œ
+            // ì´ë¥¼ ìœ„í•´ì„  ë¨¼ì € Pathfinding ë©”ì†Œë“œì—ì„œ ë„ë¡œ ê²½ë¡œë¥¼ ìƒì„±í•´ì•¼ í•©ë‹ˆë‹¤.
+            FindPathsFromBasesToFlags();
+            FindPathsBetweenFlags();
+            for (int i = 0; i < terrainList.Count; i++)
+            {
+                terrainList[i].GetComponent<TerrainCollider>().enabled = false;
+                terrainList[i].GetComponent<TerrainCollider>().enabled = true;
+            }
+        }
+        #endregion
+        #region ê¸¸ì°¾ê¸° ì•Œê³ ë¦¬ì¦˜
+        private List<Vector3> Pathfinding(Vector3 start, Vector3 end)
+        {
+            NNInfo startNode = AstarPath.active.GetNearest(start);
+            NNInfo endNode = AstarPath.active.GetNearest(end);
+            
+            ABPath path = ABPath.Construct(startNode.position, endNode.position);
+
+            // ê²½ë¡œ ê³„ì‚° ì‹œì‘
+            AstarPath.StartPath(path);
+            Debug.Log(path.vectorPath.Count);
+
+            // ê²½ë¡œ ê³„ì‚°ì´ ëë‚  ë•Œê¹Œì§€ ê¸°ë‹¤ë¦½ë‹ˆë‹¤.
+            path.BlockUntilCalculated();
+
+            // ê²½ë¡œ ìƒì˜ ì ë“¤ì„ List<Vector3> í˜•íƒœë¡œ ë°˜í™˜í•©ë‹ˆë‹¤.
+            List<Vector3> pathPositions = path.vectorPath;
+
+            Draw.Debug.Polyline(pathPositions, Color.red);
+
+            return pathPositions;
+        }
+        #endregion
+        #region ëœë¤ í„°ë ˆì¸ ìƒì„±
         void InitializeTerrain()
         {
             m_groundNoise = new FractalNoise(new PerlinNoise(m_seed, m_groundFrq), 6, 1.0f, 0.1f);
@@ -114,7 +278,6 @@ namespace SimpleProceduralTerrainProject
 
             m_terrain = new Terrain[m_tilesX, m_tilesZ];
 
-            //this will center terrain at origin
             m_offset = new Vector2(-m_terrainSize * m_tilesX * 0.5f, -m_terrainSize * m_tilesZ * 0.5f);
 
             CreateProtoTypes();
@@ -135,8 +298,10 @@ namespace SimpleProceduralTerrainProject
                     terrainData.splatPrototypes = m_splatPrototypes;
                     terrainData.treePrototypes = m_treeProtoTypes;
                     terrainData.detailPrototypes = m_detailProtoTypes;
-
                     FillAlphaMap(terrainData);
+
+
+
                     m_terrain[x, z] = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
 
                     m_terrain[x, z].transform.SetParent(Terra.transform);
@@ -151,14 +316,12 @@ namespace SimpleProceduralTerrainProject
 
                     FillTreeInstances(m_terrain[x, z], x, z);
                     FillDetailMap(m_terrain[x, z], x, z);
-
-                    
+                    terrainList.Add(m_terrain[x, z]);
                 }
             }
-            SpawnBaseCamps();
-            RemoveTreesFromBases();
+            
+            SpawnBaseCamps(SpawnFlags(flag_Num, 75f, 45f));
 
-            //Set the neighbours of terrain to remove seams.
             for (int x = 0; x < m_tilesX; x++)
             {
                 for (int z = 0; z < m_tilesZ; z++)
@@ -180,134 +343,7 @@ namespace SimpleProceduralTerrainProject
             }
         }
 
-        void SpawnBaseCamps()
-        {
-            int numPlayers = Ply_Num; // ÇÃ·¹ÀÌ¾î ¼ö
-            int maxAttempts = 100; // ÃÖ´ë ½Ãµµ È½¼ö, ¹«ÇÑ ·çÇÁ ¹æÁö¸¦ À§ÇØ ¼³Á¤
-            List<GameObject> baseCamps = new List<GameObject>();
-
-           
-            for (int i = 0; i < numPlayers; i++)
-            {
-                bool validPositionFound = false;
-                Vector3 baseCampPosition = Vector3.zero;
-
-                for (int attempt = 0; attempt < maxAttempts; attempt++)
-                {
-                    // Áß¾Ó¿¡¼­ 250x250 ¹üÀ§ ³»ÀÇ ·£´ıÇÑ À§Ä¡ »ı¼º
-                    float posX = Random.Range(-200f, 200f);
-                    float posZ = Random.Range(-200f, 200f);
-
-                    // ¿ùµå ÁÂÇ¥°è¸¦ Å×·¹ÀÎ ¹è¿­ ÀÎµ¦½º·Î º¯È¯
-                    int terrainIndexX = Mathf.FloorToInt((posX + m_tilesX * m_terrainSize * 0.5f) / m_terrainSize);
-                    int terrainIndexZ = Mathf.FloorToInt((posZ + m_tilesZ * m_terrainSize * 0.5f) / m_terrainSize);
-
-                    // À§Ä¡°¡ Å×·¹ÀÎ ¹è¿­ ³»¿¡ ÀÖ´ÂÁö È®ÀÎ
-                    if (terrainIndexX >= 0 && terrainIndexX < m_tilesX && terrainIndexZ >= 0 && terrainIndexZ < m_tilesZ)
-                    {
-                        Terrain terrain = m_terrain[terrainIndexX, terrainIndexZ];
-                        
-                    
-                        baseCampPosition = new Vector3(posX, 10, posZ);
-                        bool tooCloseToOtherBases = false;
-
-                        foreach (Vector3 otherBasePosition in baseCampPositions)
-                        {
-                            if (Vector3.Distance(baseCampPosition, otherBasePosition) < 170f)
-                            {
-                                tooCloseToOtherBases = true;
-                                break;
-                            }
-                        }
-
-                        if (!tooCloseToOtherBases)
-                        {
-                            validPositionFound = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (validPositionFound)
-                {
-                    // º£ÀÌ½º Ä·ÇÁ ¼ÒÈ¯
-                    GameObject baseCamp =  Instantiate(Base_PreFabs[i % Base_PreFabs.Length], baseCampPosition, Quaternion.identity);
-                                       
-                    baseCamps.Add(baseCamp);
-                    baseCampPositions.Add(baseCampPosition);
-                    // º£ÀÌ½º Ä·ÇÁ¸¦ ¿øÁ¡À» ¹Ù¶óº¸µµ·Ï È¸Àü ¼³Á¤
-                    Vector3 lookDirection = Vector3.zero - baseCamp.transform.position;
-                    lookDirection.y = 0f; // ¿ÀºêÁ§Æ®¸¦ ¼öÆòÀ¸·Î È¸Àü½ÃÅ°·Á¸é y °ªÀ» 0À¸·Î ¼³Á¤
-                    Quaternion rotation = Quaternion.LookRotation(lookDirection.normalized);
-                    baseCamp.transform.rotation = rotation;
-
-                    // ColorSet ½ºÅ©¸³Æ®ÀÇ RecursiveSearchAndSetTexture ¸Ş¼­µå È£ÃâÇÏ¿© ÄÃ·¯ ¼³Á¤
-                    ColorSet colorSet = baseCamp.GetComponentInChildren<ColorSet>();
-                    if (colorSet != null)
-                    {
-                        colorSet.RecursiveSearchAndSetTexture(baseCamp.transform, GameManager.instance.Color_Index);
-                    }
-                    else
-                    {
-                        Debug.Log("³Î");
-                    }
-                }
-                else
-                {
-                    Debug.Log("Failed to find a valid position for base camp. Base camp spawning failed.");
-                    // ±âÁ¸ º£ÀÌ½º Ä·ÇÁ Á¦°Å
-                    RemoveBaseCamps(baseCamps);
-                    SpawnBaseCamps();
-                }
-            }
-        }
-
-        void RemoveBaseCamps(List<GameObject> baseCamps)
-        {
-            foreach (GameObject baseCamp in baseCamps)
-            {
-                Destroy(baseCamp);
-            }
-
-            baseCamps.Clear(); // º£ÀÌ½º Ä·ÇÁ ¸ñ·Ï ÃÊ±âÈ­
-            baseCampPositions.Clear(); // º£ÀÌ½º Ä·ÇÁ À§Ä¡ ¸ñ·Ï ÃÊ±âÈ­
-        }
-
-        void RemoveTreesFromBases()
-        {
-            // ¼ÒÈ¯µÈ º£ÀÌ½º Ä·ÇÁ À§Ä¡¿¡¼­ ³ª¹« Á¦°Å
-            foreach (Vector3 baseCampPosition in baseCampPositions)
-            {
-                // º£ÀÌ½º Ä·ÇÁ°¡ À§Ä¡ÇÑ Å×·¹ÀÎ Ã£±â
-                int x = (int)(baseCampPosition.x / m_terrainSize);
-                int z = (int)(baseCampPosition.z / m_terrainSize);
-                Terrain terrain = m_terrain[x, z];
-
-                // º£ÀÌ½º Ä·ÇÁ ÁÖº¯ÀÇ ³ª¹« Á¦°Å
-                RemoveTrees(terrain, baseCampPosition.x, baseCampPosition.z, 10);
-            }
-        }
-
-        void RemoveTrees(Terrain terrain, float posX, float posZ, float radius)
-        {
-            List<TreeInstance> trees = new List<TreeInstance>(terrain.terrainData.treeInstances);
-            Vector3 terrainPosition = terrain.transform.position;
-            float terrainSize = terrain.terrainData.size.x;
-
-            for (int i = trees.Count - 1; i >= 0; i--)
-            {
-                Vector3 treeWorldPosition = Vector3.Scale(trees[i].position, terrain.terrainData.size) + terrainPosition;
-
-                if (Vector3.Distance(new Vector3(posX, 0, posZ), new Vector3(treeWorldPosition.x, 0, treeWorldPosition.z)) < radius)
-                {
-                    trees.RemoveAt(i);
-                }
-            }
-
-            terrain.terrainData.treeInstances = trees.ToArray();
-        }
-
-
+        // í…ìŠ¤ì¶°
         void CreateProtoTypes()
         {
             int numSplat = m_splat.Length;
@@ -331,7 +367,7 @@ namespace SimpleProceduralTerrainProject
                 m_treeProtoTypes[i].prefab = m_tree[i];
             }
 
-            for(int i = 0; i < numDetail; i++)
+            for (int i = 0; i < numDetail; i++)
             {
                 m_detailProtoTypes[i] = new DetailPrototype();
                 m_detailProtoTypes[i].prototypeTexture = m_detail[i];
@@ -341,15 +377,16 @@ namespace SimpleProceduralTerrainProject
             }
         }
 
+        // ë†’ì´
         void FillHeights(float[,] htmap, int tileX, int tileZ)
         {
-            // ÁöÇüÀÇ Å©±â¿Í ³ôÀÌ¸ÊÀÇ Å©±âÀÇ ºñÀ²À» °è»ê.
+            // ì§€í˜•ì˜ í¬ê¸°ì™€ ë†’ì´ë§µì˜ í¬ê¸°ì˜ ë¹„ìœ¨ì„ ê³„ì‚°.
             float ratio = (float)m_terrainSize / (float)m_heightMapSize;
 
-            // ³ôÀÌ¸ÊÀÇ °¢ ÇÈ¼¿¿¡ ´ëÇØ ¹İº¹.
+            // ë†’ì´ë§µì˜ ê° í”½ì…€ì— ëŒ€í•´ ë°˜ë³µ.
             for (int x = 0; x < m_heightMapSize; x++)
             {
-                // ÇöÀç ÇÈ¼¿ÀÇ ¿ùµå ÁÂÇ¥¸¦ °è»ê.
+                // í˜„ì¬ í”½ì…€ì˜ ì›”ë“œ ì¢Œí‘œë¥¼ ê³„ì‚°.
                 for (int z = 0; z < m_heightMapSize; z++)
                 {
                     float worldPosX = (x + tileX * (m_heightMapSize - 1)) * ratio;
@@ -361,97 +398,99 @@ namespace SimpleProceduralTerrainProject
             }
         }
 
+        // ì•ŒíŒŒë§µ
         void FillAlphaMap(TerrainData terrainData)
         {
-            // m_alphaMapSize x m_alphaMapSize Å©±âÀÇ 2°³ÀÇ ½ºÇÃ·§¸Ê ·¹ÀÌ¾î¸¦ À§ÇÑ 3Â÷¿ø ¹è¿­À» »ı¼º.
+            // m_alphaMapSize x m_alphaMapSize í¬ê¸°ì˜ 2ê°œì˜ ìŠ¤í”Œë«ë§µ ë ˆì´ì–´ë¥¼ ìœ„í•œ 3ì°¨ì› ë°°ì—´ì„ ìƒì„±.
             float[,,] map = new float[m_alphaMapSize, m_alphaMapSize, 2];
 
-            // ¾ËÆÄ¸ÊÀ» Ã¤¿ì±â À§ÇØ °¢ ÁÂÇ¥¸¦ ¼øÈ¸.
+            // ì•ŒíŒŒë§µì„ ì±„ìš°ê¸° ìœ„í•´ ê° ì¢Œí‘œë¥¼ ìˆœíšŒ.
             for (int x = 0; x < m_alphaMapSize; x++)
             {
                 for (int z = 0; z < m_alphaMapSize; z++)
                 {
-                    // ÁöÇü ÁÂÇ¥¸¦ Á¤±ÔÈ­µÈ °ª(0.0 ~ 1.0)À¸·Î º¯È¯.
-                    // ÀÌ·¸°Ô ÇÏ¸é ÁÂÇ¥°¡ ÁöÇüÀÇ ¾î´À ºÎºĞÀ» °¡¸®Å°´ÂÁö ½±°Ô ¾Ë ¼ö ÀÖÀ½.
+                    // ì§€í˜• ì¢Œí‘œë¥¼ ì •ê·œí™”ëœ ê°’(0.0 ~ 1.0)ìœ¼ë¡œ ë³€í™˜.
+                    // ì´ë ‡ê²Œ í•˜ë©´ ì¢Œí‘œê°€ ì§€í˜•ì˜ ì–´ëŠ ë¶€ë¶„ì„ ê°€ë¦¬í‚¤ëŠ”ì§€ ì‰½ê²Œ ì•Œ ìˆ˜ ìˆìŒ.
                     float normX = x * 1.0f / (m_alphaMapSize - 1);
                     float normZ = z * 1.0f / (m_alphaMapSize - 1);
 
-                    // Á¤±ÔÈ­µÈ ÁÂÇ¥¿¡¼­ °æ»çµµ¸¦ °è»ê. 
-                    // °æ»çµµ´Â °¢µµ·Î ¹İÈ¯µÇ¸ç, °ªÀÇ ¹üÀ§´Â 0µµ¿¡¼­ 90µµ.
+                    // ì •ê·œí™”ëœ ì¢Œí‘œì—ì„œ ê²½ì‚¬ë„ë¥¼ ê³„ì‚°. 
+                    // ê²½ì‚¬ë„ëŠ” ê°ë„ë¡œ ë°˜í™˜ë˜ë©°, ê°’ì˜ ë²”ìœ„ëŠ” 0ë„ì—ì„œ 90ë„.
                     float angle = terrainData.GetSteepness(normX, normZ);
 
-                    // °æ»çµµ¸¦ ¾ËÆÄ ºí·»µù °ªÀÇ ¹üÀ§ÀÎ 0¿¡¼­ 1 »çÀÌÀÇ °ªÀ¸·Î º¯È¯.
-                    // °¢µµ°¡ Å¬¼ö·Ï 1¿¡ °¡±î¿öÁö°í, °¢µµ°¡ ÀÛÀ»¼ö·Ï 0¿¡ °¡±î¿öÁü.
+                    // ê²½ì‚¬ë„ë¥¼ ì•ŒíŒŒ ë¸”ë Œë”© ê°’ì˜ ë²”ìœ„ì¸ 0ì—ì„œ 1 ì‚¬ì´ì˜ ê°’ìœ¼ë¡œ ë³€í™˜.
+                    // ê°ë„ê°€ í´ìˆ˜ë¡ 1ì— ê°€ê¹Œì›Œì§€ê³ , ê°ë„ê°€ ì‘ì„ìˆ˜ë¡ 0ì— ê°€ê¹Œì›Œì§.
                     float frac = angle / 90.0f;
                     map[z, x, 0] = frac;
                     map[z, x, 1] = 1.0f - frac;
 
                 }
             }
-            // Å×·¹ÀÎ µ¥ÀÌÅÍÀÇ ¾ËÆÄ¸Ê ÇØ»óµµ¸¦ ¼³Á¤.
+            // í…Œë ˆì¸ ë°ì´í„°ì˜ ì•ŒíŒŒë§µ í•´ìƒë„ë¥¼ ì„¤ì •.
             terrainData.alphamapResolution = m_alphaMapSize;
-            // °è»êµÈ ¾ËÆÄ¸Ê °ªÀ» Å×·¹ÀÎ¿¡ Àû¿ë.
+            // ê³„ì‚°ëœ ì•ŒíŒŒë§µ ê°’ì„ í…Œë ˆì¸ì— ì ìš©.
             terrainData.SetAlphamaps(0, 0, map);
         }
 
+        // ë‚˜ë¬´
         void FillTreeInstances(Terrain terrain, int tileX, int tileZ)
         {
-            // ³­¼ö »ı¼º±âÀÇ ½Ãµå °ªÀ» 0À¸·Î ÃÊ±âÈ­. 
-            // ÀÌ·¸°Ô ÇÏ¸é ÇÁ·Î±×·¥À» ´Ù½Ã ½ÇÇàÇÒ ¶§¸¶´Ù µ¿ÀÏÇÑ °á°ú¸¦ ¾òÀ» ¼ö ÀÖ½À´Ï´Ù.
+            // ë‚œìˆ˜ ìƒì„±ê¸°ì˜ ì‹œë“œ ê°’ì„ 0ìœ¼ë¡œ ì´ˆê¸°í™”. 
+            // ì´ë ‡ê²Œ í•˜ë©´ í”„ë¡œê·¸ë¨ì„ ë‹¤ì‹œ ì‹¤í–‰í•  ë•Œë§ˆë‹¤ ë™ì¼í•œ ê²°ê³¼ë¥¼ ì–»ì„ ìˆ˜ ìˆìŠµë‹ˆë‹¤.
             Random.InitState(0);
 
-            // ÁöÇü ÀüÃ¼¸¦ ¼øÈ¸ÇÏ¸é¼­ Æ®¸® ÀÎ½ºÅÏ½º¸¦ Ãß°¡.
+            // ì§€í˜• ì „ì²´ë¥¼ ìˆœíšŒí•˜ë©´ì„œ íŠ¸ë¦¬ ì¸ìŠ¤í„´ìŠ¤ë¥¼ ì¶”ê°€.
             for (int x = 0; x < m_terrainSize; x += m_treeSpacing)
             {
                 for (int z = 0; z < m_terrainSize; z += m_treeSpacing)
                 {
-                    // ÁöÇüÀÇ ÇÑ º¯ÀÇ ±æÀÌ¿¡ ´ëÇÑ ¿ª¼ö¸¦ °è»ê.
+                    // ì§€í˜•ì˜ í•œ ë³€ì˜ ê¸¸ì´ì— ëŒ€í•œ ì—­ìˆ˜ë¥¼ ê³„ì‚°.
                     float unit = 1.0f / (m_terrainSize - 1);
 
-                    // Æ®¸®ÀÇ À§Ä¡¸¦ ¹«ÀÛÀ§·Î Á¶Á¤ÇÏ±â À§ÇÑ ¿ÀÇÁ¼ÂÀ» °è»ê.
+                    // íŠ¸ë¦¬ì˜ ìœ„ì¹˜ë¥¼ ë¬´ì‘ìœ„ë¡œ ì¡°ì •í•˜ê¸° ìœ„í•œ ì˜¤í”„ì…‹ì„ ê³„ì‚°.
                     float offsetX = Random.value * unit * m_treeSpacing;
                     float offsetZ = Random.value * unit * m_treeSpacing;
 
-                    // Æ®¸®ÀÇ À§Ä¡¸¦ Á¤±ÔÈ­µÈ ÁÂÇ¥°è·Î º¯È¯.
+                    // íŠ¸ë¦¬ì˜ ìœ„ì¹˜ë¥¼ ì •ê·œí™”ëœ ì¢Œí‘œê³„ë¡œ ë³€í™˜.
                     float normX = x * unit + offsetX;
                     float normZ = z * unit + offsetZ;
 
-                    // °æ»çµµ¸¦ °è»êÇÕ´Ï´Ù. ÀÌ °ªÀº 0µµ¿¡¼­ 90µµ »çÀÌ.
+                    // ê²½ì‚¬ë„ë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤. ì´ ê°’ì€ 0ë„ì—ì„œ 90ë„ ì‚¬ì´.
                     float angle = terrain.terrainData.GetSteepness(normX, normZ);
 
-                    // °æ»çµµ¸¦ 0¿¡¼­ 1 »çÀÌÀÇ °ªÀ¸·Î º¯È¯.
+                    // ê²½ì‚¬ë„ë¥¼ 0ì—ì„œ 1 ì‚¬ì´ì˜ ê°’ìœ¼ë¡œ ë³€í™˜.
                     float frac = angle / 90.0f;
 
-                    // °æ»ç°¡ ¿Ï¸¸ÇÑ Áö¿ª¿¡¼­¸¸ Æ®¸®¸¦ ½É±â.
-                    if (frac < 0.5f) 
+                    // ê²½ì‚¬ê°€ ì™„ë§Œí•œ ì§€ì—­ì—ì„œë§Œ íŠ¸ë¦¬ë¥¼ ì‹¬ê¸°.
+                    if (frac < 0.5f)
                     {
-                        // Æ®¸®ÀÇ ¿ùµå ÁÂÇ¥¸¦ °è»ê.
+                        // íŠ¸ë¦¬ì˜ ì›”ë“œ ì¢Œí‘œë¥¼ ê³„ì‚°.
                         float worldPosX = x + tileX * (m_terrainSize - 1);
                         float worldPosZ = z + tileZ * (m_terrainSize - 1);
 
-                        // ³ëÀÌÁî ÇÔ¼ö¸¦ »ç¿ëÇÏ¿© Æ®¸®ÀÇ ¹Ğµµ¸¦ °áÁ¤.
+                        // ë…¸ì´ì¦ˆ í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•˜ì—¬ íŠ¸ë¦¬ì˜ ë°€ë„ë¥¼ ê²°ì •.
                         float noise = m_treeNoise.Sample2D(worldPosX, worldPosZ);
                         float ht = terrain.terrainData.GetInterpolatedHeight(normX, normZ);
 
-                        // Æ®¸®ÀÇ ³ôÀÌ¸¦ ÁöÇü µ¥ÀÌÅÍ¿¡¼­ °¡Á®¿È.
+                        // íŠ¸ë¦¬ì˜ ë†’ì´ë¥¼ ì§€í˜• ë°ì´í„°ì—ì„œ ê°€ì ¸ì˜´.
                         if (noise > 0.0f && ht < m_terrainHeight * 0.4f)
                         {
                             TreeInstance temp = new TreeInstance();
                             temp.position = new Vector3(normX, ht, normZ);
                             temp.prototypeIndex = Random.Range(0, 3);
                             temp.widthScale = 1;
-                            temp.heightScale = 1;
+                            temp.heightScale = 2;
                             temp.color = Color.white;
                             temp.lightmapColor = Color.white;
 
-                            // Æ®¸® ÀÎ½ºÅÏ½º¸¦ ÁöÇü¿¡ Ãß°¡.
+                            // íŠ¸ë¦¬ ì¸ìŠ¤í„´ìŠ¤ë¥¼ ì§€í˜•ì— ì¶”ê°€.
                             terrain.AddTreeInstance(temp);
                         }
                     }
 
                 }
             }
-            // Æ®¸® °ü·Ã ¼³Á¤À» ÁöÁ¤.
+            // íŠ¸ë¦¬ ê´€ë ¨ ì„¤ì •ì„ ì§€ì •.
             terrain.treeDistance = m_treeDistance;
             terrain.treeBillboardDistance = m_treeBillboardDistance;
             terrain.treeCrossFadeLength = m_treeCrossFadeLength;
@@ -459,6 +498,7 @@ namespace SimpleProceduralTerrainProject
 
         }
 
+        // ë””í…Œì¼ë§µ
         void FillDetailMap(Terrain terrain, int tileX, int tileZ)
         {
             //each layer is drawn separately so if you have a lot of layers your draw calls will increase 
@@ -512,7 +552,6 @@ namespace SimpleProceduralTerrainProject
 
                 }
             }
-
             terrain.terrainData.wavingGrassStrength = m_wavingGrassStrength;
             terrain.terrainData.wavingGrassAmount = m_wavingGrassAmount;
             terrain.terrainData.wavingGrassSpeed = m_wavingGrassSpeed;
@@ -520,13 +559,173 @@ namespace SimpleProceduralTerrainProject
             terrain.detailObjectDensity = m_detailObjectDensity;
             terrain.detailObjectDistance = m_detailObjectDistance;
             terrain.terrainData.SetDetailResolution(m_detailMapSize, m_detailResolutionPerPatch);
-
             terrain.terrainData.SetDetailLayer(0, 0, 0, detailMap0);
             terrain.terrainData.SetDetailLayer(0, 0, 1, detailMap1);
             terrain.terrainData.SetDetailLayer(0, 0, 2, detailMap2);
+        }
+        #endregion
+        #region ê¹ƒë°œ, ë² ì´ìŠ¤ ìƒì„± ë©”ì†Œë“œ
+        private List<Vector3> SpawnFlags(int numberOfFlags, float range, float minDistanceBetweenFlags)
+        {
+            int maxAttempts = 100; // ìµœëŒ€ ì‹œë„ íšŸìˆ˜, ë¬´í•œ ë£¨í”„ ë°©ì§€ë¥¼ ìœ„í•´ ì„¤ì •
+            List<Vector3> flagPositions = new List<Vector3>();
+            List<GameObject> flags = new List<GameObject>();
 
+            for (int i = 0; i < numberOfFlags; i++)
+            {
+                bool validPositionFound = false;
+                Vector3 flagPosition = Vector3.zero;
+
+                for (int attempt = 0; attempt < maxAttempts; attempt++)
+                {
+                    // 50x50 ë²”ìœ„ ë‚´ì˜ ëœë¤í•œ ìœ„ì¹˜ ìƒì„±
+                    float posX = Random.Range(-range / 2f, range / 2f);
+                    float posZ = Random.Range(-range / 2f, range / 2f);
+                    flagPosition = new Vector3(posX, 10, posZ); // ë†’ì´ëŠ” ì ì ˆíˆ ì¡°ì •
+
+                    bool tooCloseToOtherFlags = flagPositions.Any(existingPosition => Vector3.Distance(flagPosition, existingPosition) < minDistanceBetweenFlags);
+
+                    if (!tooCloseToOtherFlags)
+                    {
+                        validPositionFound = true;
+                        break;
+                    }
+                }
+
+                if (validPositionFound)
+                {
+                    flagPositions.Add(flagPosition);
+                    GameObject flaG = Instantiate(flag[0], flagPosition, Quaternion.identity);
+                    flags.Add(flaG);
+                    flagPositions_List.Add(flaG);
+                }
+                else
+                {
+                    Debug.LogError("Failed to find a valid position for a flag.");
+                    RemoveFlag(flags);
+                    SpawnFlags(numberOfFlags, range, minDistanceBetweenFlags);
+                }
+            }
+
+            return flagPositions;
         }
 
+        void SpawnBaseCamps(List<Vector3> flagPositions)
+        {
+            int numPlayers = Ply_Num; // í”Œë ˆì´ì–´ ìˆ˜
+            int maxAttempts = 100; // ìµœëŒ€ ì‹œë„ íšŸìˆ˜, ë¬´í•œ ë£¨í”„ ë°©ì§€ë¥¼ ìœ„í•´ ì„¤ì •
+            List<GameObject> baseCamps = new List<GameObject>();
+
+            for (int i = 0; i < numPlayers; i++)
+            {
+                bool validPositionFound = false;
+                Vector3 baseCampPosition = Vector3.zero;
+
+                for (int attempt = 0; attempt < maxAttempts; attempt++)
+                {
+                    // ì¤‘ì•™ì—ì„œ 200x200 ë²”ìœ„ ë‚´ì˜ ëœë¤í•œ ìœ„ì¹˜ ìƒì„±
+                    float posX = Random.Range(-170f, 170f);
+                    float posZ = Random.Range(-170f, 170f);
+
+                    // ì›”ë“œ ì¢Œí‘œê³„ë¥¼ í…Œë ˆì¸ ë°°ì—´ ì¸ë±ìŠ¤ë¡œ ë³€í™˜
+                    int terrainIndexX = Mathf.FloorToInt((posX + m_tilesX * m_terrainSize * 0.5f) / m_terrainSize);
+                    int terrainIndexZ = Mathf.FloorToInt((posZ + m_tilesZ * m_terrainSize * 0.5f) / m_terrainSize);
+
+                    // ìœ„ì¹˜ê°€ í…Œë ˆì¸ ë°°ì—´ ë‚´ì— ìˆëŠ”ì§€ í™•ì¸
+                    if (terrainIndexX >= 0 && terrainIndexX < m_tilesX && terrainIndexZ >= 0 && terrainIndexZ < m_tilesZ)
+                    {
+                        Terrain terrain = m_terrain[terrainIndexX, terrainIndexZ];
+
+
+                        baseCampPosition = new Vector3(posX, 5, posZ);
+                        bool tooCloseToOtherBases = false;
+                        bool tooClostToFlag = false;
+
+                        foreach (GameObject flagPosition in flagPositions_List)
+                        {
+                            if (Vector3.Distance(baseCampPosition, flagPosition.transform.position) < 100f)
+                            {
+                                tooClostToFlag = true;
+                                break;
+                            }
+                        }
+
+                        foreach (GameObject otherBasePosition in baseCampPositions)
+                        {
+                            if (Vector3.Distance(baseCampPosition, otherBasePosition.transform.position) < 170f)
+                            {
+                                tooCloseToOtherBases = true;
+                                break;
+                            }
+                        }
+
+
+                        if (!tooCloseToOtherBases && !tooClostToFlag)
+                        {
+                            validPositionFound = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (validPositionFound)
+                {
+                    // ë² ì´ìŠ¤ ìº í”„ ì†Œí™˜
+                    GameObject baseCamp = Instantiate(Base_PreFabs[i % Base_PreFabs.Length], baseCampPosition, Quaternion.identity);
+
+                    baseCamps.Add(baseCamp);
+                    baseCampPositions.Add(baseCamp);
+                    // ë² ì´ìŠ¤ ìº í”„ë¥¼ ì›ì ì„ ë°”ë¼ë³´ë„ë¡ íšŒì „ ì„¤ì •
+                    Vector3 lookDirection = Vector3.zero - baseCamp.transform.position;
+                    lookDirection.y = 0f; // ì˜¤ë¸Œì íŠ¸ë¥¼ ìˆ˜í‰ìœ¼ë¡œ íšŒì „ì‹œí‚¤ë ¤ë©´ y ê°’ì„ 0ìœ¼ë¡œ ì„¤ì •
+                    Quaternion rotation = Quaternion.LookRotation(lookDirection.normalized);
+                    baseCamp.transform.rotation = rotation;
+
+                    // ColorSet ìŠ¤í¬ë¦½íŠ¸ì˜ RecursiveSearchAndSetTexture ë©”ì„œë“œ í˜¸ì¶œí•˜ì—¬ ì»¬ëŸ¬ ì„¤ì •
+                    ColorSet colorSet = baseCamp.GetComponentInChildren<ColorSet>();
+                    if (colorSet != null)
+                    {
+                        colorSet.RecursiveSearchAndSetTexture(baseCamp.transform, GameManager.instance.Color_Index);
+                    }
+                    else
+                    {
+                        Debug.Log("ë„");
+                    }
+                }
+                else
+                {
+                    Debug.Log("Failed to find a valid position for base camp. Base camp spawning failed.");
+                    // ê¸°ì¡´ ë² ì´ìŠ¤ ìº í”„ ì œê±°
+                    RemoveBaseCamps(baseCamps);
+                    SpawnBaseCamps(flagPositions);
+                }
+
+
+            }
+        }
+
+        void RemoveBaseCamps(List<GameObject> baseCamps)
+        {
+            foreach (GameObject baseCamp in baseCamps)
+            {
+                Destroy(baseCamp);
+            }
+
+            baseCamps.Clear(); // ë² ì´ìŠ¤ ìº í”„ ëª©ë¡ ì´ˆê¸°í™”
+            baseCampPositions.Clear(); // ë² ì´ìŠ¤ ìº í”„ ìœ„ì¹˜ ëª©ë¡ ì´ˆê¸°í™”
+        }
+
+        void RemoveFlag(List<GameObject> flags)
+        {
+            foreach (GameObject flag in flags)
+            {
+                Destroy(flag);
+            }
+
+            flags.Clear(); // ë² ì´ìŠ¤ ìº í”„ ëª©ë¡ ì´ˆê¸°í™”
+            flagPositions_List.Clear(); // ë² ì´ìŠ¤ ìº í”„ ìœ„ì¹˜ ëª©ë¡ ì´ˆê¸°í™”
+        }
+        #endregion
     }
 }
 

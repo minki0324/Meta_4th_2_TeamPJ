@@ -6,30 +6,29 @@ public class Ply_Controller : MonoBehaviour
 {
 
     /*
-        1. ¼ıÀÚÅ° ÀÔ·ÂÀ¸·Î º´»ç ¼ÒÈ¯
-        2. ´ÜÃàÅ° ÀÔ·ÂÀ¸·Î º´»çµé Áø¿µ ¹èÄ¡
+        1. ìˆ«ìí‚¤ ì…ë ¥ìœ¼ë¡œ ë³‘ì‚¬ ì†Œí™˜
+        2. ë‹¨ì¶•í‚¤ ì…ë ¥ìœ¼ë¡œ ë³‘ì‚¬ë“¤ ì§„ì˜ ë°°ì¹˜
     */
 
     public enum Mode
     {
-        Follow = 1,      //³ª¸¦ µû¸£¶ó~ (ÇÃ·¹ÀÌ¾î°¡ ¸ØÃß¸é ´ë¿­°®Ãß±â)
-        Attack,    //µ¹°İÇÏ¶ó~
-        Stop    //¸ØÃç¶ó~~
+        Follow = 1,      //ë‚˜ë¥¼ ë”°ë¥´ë¼~ (í”Œë ˆì´ì–´ê°€ ë©ˆì¶”ë©´ ëŒ€ì—´ê°–ì¶”ê¸°)
+        Attack,    //ëŒê²©í•˜ë¼~
+        Stop    //ë©ˆì¶°ë¼~~
     }
 
     public Mode CurrentMode;
 
-    //´Ù¸¥ Å¬·¡½º °´Ã¼=====================
+    //ë‹¤ë¥¸ í´ë˜ìŠ¤ ê°ì²´=====================
     private Minion_Controller[] minionController;
 
     private Following following;
 
-    //ÇÃ·¹ÀÌ¾î Á¤º¸========================
-    public int Max_MinionCount = 19;
-    public int Current_MinionCount;
+    //í”Œë ˆì´ì–´ ì •ë³´========================
+   
 
-    //¹Ì´Ï¾ğ ÇÁ¸®ÆÕ=========================
-    [Header("ÀÎµ¦½º - 0 : º¸º´ / 1 : ±â»ç / 2 : ±Ã¼ö")]
+    //ë¯¸ë‹ˆì–¸ í”„ë¦¬íŒ¹=========================
+    [Header("ì¸ë±ìŠ¤ - 0 : ë³´ë³‘ / 1 : ê¸°ì‚¬ / 2 : ê¶ìˆ˜")]
     [SerializeField] private GameObject[] Minion_Prefabs;
 
     public List<GameObject> UnitList_List = new List<GameObject>();
@@ -40,9 +39,8 @@ public class Ply_Controller : MonoBehaviour
     [SerializeField]
     private Transform Spawner;
 
-    //º¸º´ & ±Ã¼ö »ÌÀ» ¼ö ÀÖ´Â°¡ ÆÇ´ÜÇÏ´Â º¯¼ö -> ÃßÈÄ¿¡ ¾÷±×·¹ÀÌµå ±â´É°ú ÇÒ¶§ »ç¿ëÇØÁÖ¼¼¿©
-    //private bool isPossible_HeavyInfantry = false;
-    //private bool isPossible_Archer = false;
+    //ë³´ë³‘ & ê¶ìˆ˜ ë½‘ì„ ìˆ˜ ìˆëŠ”ê°€ íŒë‹¨í•˜ëŠ” ë³€ìˆ˜ -> ì¶”í›„ì— ì—…ê·¸ë ˆì´ë“œ ê¸°ëŠ¥ê³¼ í• ë•Œ ì‚¬ìš©í•´ì£¼ì„¸ì—¬
+    
 
 
     public LayerMask TargetLayer;
@@ -51,7 +49,7 @@ public class Ply_Controller : MonoBehaviour
 
 
 
-    //º¯¼öÃß°¡ ÀÌ¼­¿µ
+    //ë³€ìˆ˜ì¶”ê°€ ì´ì„œì˜
 
     public bool isOperateStop = false;
 
@@ -71,7 +69,7 @@ public class Ply_Controller : MonoBehaviour
 
 
 
-    //Ãß°¡
+    //ì¶”ê°€
     public bool ischeckPosition = false;
     public Vector3 StopPos;
 
@@ -86,10 +84,10 @@ public class Ply_Controller : MonoBehaviour
     private void Update()
     {
         Spawn_Solider();
-        //»óÅÂ º¯°æ
+        //ìƒíƒœ ë³€ê²½
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Debug.Log("³ª¸¦ µû¸£¶ó~~");
+            Debug.Log("ë‚˜ë¥¼ ë”°ë¥´ë¼~~");
             CurrentMode = Mode.Follow;
             if (!isPlay_FollowOrder)
             {
@@ -104,7 +102,7 @@ public class Ply_Controller : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("µ¹°İÇÏ¶ó~~");
+            Debug.Log("ëŒê²©í•˜ë¼~~");
             CurrentMode = Mode.Attack;
             if (!isPlay_AttackOrder)
             {
@@ -118,7 +116,7 @@ public class Ply_Controller : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log("¸ØÃç¶ó~~");
+            Debug.Log("ë©ˆì¶°ë¼~~");
             CurrentMode = Mode.Stop;
             if (!isPlay_StopOrder)
             {
@@ -131,6 +129,7 @@ public class Ply_Controller : MonoBehaviour
 
 
             ischeckPosition = true;
+
         }
 
 
@@ -141,11 +140,11 @@ public class Ply_Controller : MonoBehaviour
 
     private void Spawn_Solider()
     {
-        if (Current_MinionCount < Max_MinionCount)
+        if ( GameManager.instance.Current_MinionCount < GameManager.instance.Max_MinionCount)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
             {
-                int selectedNumber = -1; // ±âº»°ª ¼³Á¤
+                int selectedNumber = -1; // ê¸°ë³¸ê°’ ì„¤ì •
 
 
                 if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -167,7 +166,7 @@ public class Ply_Controller : MonoBehaviour
                     switch (selectedNumber)
                     {
                         case 1:
-                            Debug.Log("1´­¸²");
+                            Debug.Log("1ëˆŒë¦¼");
                             Human_num = 0;
                             if (GameManager.instance.Gold > 15)
                             {
@@ -175,36 +174,36 @@ public class Ply_Controller : MonoBehaviour
                             }
                             else
                             {
-                                // ³ªÁß¿¡ °ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù ¶ç¿öÁÙ UI Á¦ÀÛ ÇØ¾ßÇÔ
-                                Debug.Log("1¹ø º´»ç °ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù.");
+                                // ë‚˜ì¤‘ì— ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤ ë„ì›Œì¤„ UI ì œì‘ í•´ì•¼í•¨
+                                Debug.Log("1ë²ˆ ë³‘ì‚¬ ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.");
                             }
                             break;
                         case 2:
-                            Debug.Log("2´­¸²");
+                            Debug.Log("2ëˆŒë¦¼");
                             Human_num = 1;
-                            // ³ªÁß¿¡ if¹®¿¡ ¾Øµå°ÔÀÌÆ®·Î isPossible_HeavyInfantry ¾÷±Û À¯¹« È®ÀÎ
+                            // ë‚˜ì¤‘ì— ifë¬¸ì— ì•¤ë“œê²Œì´íŠ¸ë¡œ isPossible_HeavyInfantry ì—…ê¸€ ìœ ë¬´ í™•ì¸
                             if (GameManager.instance.Gold > 20)
                             {
                                 Init_Solider(Human_num);
                             }
                             else
                             {
-                                // ³ªÁß¿¡ °ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù ¶ç¿öÁÙ UI Á¦ÀÛ ÇØ¾ßÇÔ
-                                Debug.Log("2¹ø º´»ç °ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù.");
+                                // ë‚˜ì¤‘ì— ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤ ë„ì›Œì¤„ UI ì œì‘ í•´ì•¼í•¨
+                                Debug.Log("2ë²ˆ ë³‘ì‚¬ ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.");
                             }
                             break;
                         case 3:
-                            Debug.Log("3´­¸²");
+                            Debug.Log("3ëˆŒë¦¼");
                             Human_num = 2;
-                            // ³ªÁß¿¡ if¹®¿¡ ¾Øµå°ÔÀÌÆ®·Î isPossible_Archer ¾÷±Û À¯¹« È®ÀÎ
+                            // ë‚˜ì¤‘ì— ifë¬¸ì— ì•¤ë“œê²Œì´íŠ¸ë¡œ isPossible_Archer ì—…ê¸€ ìœ ë¬´ í™•ì¸
                             if (GameManager.instance.Gold > 25)
                             {
                                 Init_Solider(Human_num);
                             }
                             else
                             {
-                                // ³ªÁß¿¡ °ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù ¶ç¿öÁÙ UI Á¦ÀÛ ÇØ¾ßÇÔ
-                                Debug.Log("3¹ø º´»ç °ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù.");
+                                // ë‚˜ì¤‘ì— ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤ ë„ì›Œì¤„ UI ì œì‘ í•´ì•¼í•¨
+                                Debug.Log("3ë²ˆ ë³‘ì‚¬ ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.");
                             }
                             break;
                     }
@@ -218,11 +217,11 @@ public class Ply_Controller : MonoBehaviour
 
     private void Init_Solider(int Human_num)
     {
-        // ³ªÁß¿¡ ÀÎÆ®·Î ¾À¿¡¼­ ÄÃ·¯¼Â ½ºÅ©¸³Æ®¿¡¼­ ÄÃ·¯¹øÈ£ ³Ñ°Ü ¹ŞÀº°Å·Î ¼ÒÈ¯ÇÒ ¶§ ÄÃ·¯ Àû¿ë ½ÃÄÑ¾ßÇÔ
+        // ë‚˜ì¤‘ì— ì¸íŠ¸ë¡œ ì”¬ì—ì„œ ì»¬ëŸ¬ì…‹ ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ì»¬ëŸ¬ë²ˆí˜¸ ë„˜ê²¨ ë°›ì€ê±°ë¡œ ì†Œí™˜í•  ë•Œ ì»¬ëŸ¬ ì ìš© ì‹œì¼œì•¼í•¨
 
         GameObject Minion = null;
         Minion = Instantiate(Minion_Prefabs[Human_num], Spawner.position, Quaternion.identity);
-        //¹Ì´Ï¾ğ »ı¼º À§Ä¡´Â ³ªÁß¿¡ Á¡·ÉÁö(Spawner)À§Ä¡·Î ¹Ù²Ù±â 
+        //ë¯¸ë‹ˆì–¸ ìƒì„± ìœ„ì¹˜ëŠ” ë‚˜ì¤‘ì— ì ë ¹ì§€(Spawner)ìœ„ì¹˜ë¡œ ë°”ê¾¸ê¸° 
 
         Minion_Controller minionController = Minion.GetComponent<Minion_Controller>();
         Minion.layer = 7;
@@ -230,6 +229,6 @@ public class Ply_Controller : MonoBehaviour
         GameManager.instance.Gold -= (15 + (Human_num * 5));
         //Minion.transform.SetParent(transform);
         UnitList_List.Add(Minion);
-        Current_MinionCount++;
+        GameManager.instance.Current_MinionCount++;
     }
 }
