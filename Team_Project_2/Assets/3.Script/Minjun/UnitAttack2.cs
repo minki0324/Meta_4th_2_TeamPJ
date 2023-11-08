@@ -222,7 +222,6 @@ public class UnitAttack2 : MonoBehaviour
             StopCoroutine(attackCoroutine);
             isAttacking = false;
         }
-        Debug.Log(ani);
         ani.SetTrigger("Hit");
         yield return hitDelay;
         isHitting = false;

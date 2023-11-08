@@ -15436,7 +15436,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2189982912627248688, guid: fff833ebe4f286f4daa67607cd840078, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fff833ebe4f286f4daa67607cd840078, type: 3}
 --- !u!1 &661781898
 GameObject:
@@ -51218,6 +51219,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2189982912627248675, guid: fff833ebe4f286f4daa67607cd840078, type: 3}
+      propertyPath: Color_Index
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2189982912627248687, guid: fff833ebe4f286f4daa67607cd840078, type: 3}
       propertyPath: m_Name
       value: EnemyLeader
@@ -51490,7 +51495,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2189982912627248688, guid: fff833ebe4f286f4daa67607cd840078, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fff833ebe4f286f4daa67607cd840078, type: 3}
 --- !u!1 &2058179104
 GameObject:
