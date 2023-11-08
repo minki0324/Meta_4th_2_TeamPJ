@@ -73,11 +73,11 @@ namespace SimpleProceduralTerrainProject
         public GameObject[] Base_PreFabs;
         public int Ply_Num;
         public int Base_Num = 0;
-        List<Vector3> baseCampPositions = new List<Vector3>();
+        List<GameObject> baseCampPositions = new List<GameObject>();
 
         public GameObject[] flag;
         public int flag_Num;
-        List<Vector3> flagPositions_List = new List<Vector3>();
+        List<GameObject> flagPositions_List = new List<GameObject>();
         private Dictionary<string, List<Vector3>> cachedPaths = new Dictionary<string, List<Vector3>>();
 
         //Private
@@ -105,11 +105,11 @@ namespace SimpleProceduralTerrainProject
 
             foreach (var flagPos in flagPositions_List)
             {
-                float distance = Vector3.Distance(position, flagPos);
+                float distance = Vector3.Distance(position, flagPos.transform.position);
                 if (distance < minDistance)
                 {
                     minDistance = distance;
-                    nearestFlag = flagPos;
+                    nearestFlag = flagPos.transform.position;
                 }
             }
 
@@ -121,10 +121,10 @@ namespace SimpleProceduralTerrainProject
         {
             foreach (var basePos in baseCampPositions)
             {
-                var nearestFlag = FindNearestFlag(basePos);
+                var nearestFlag = FindNearestFlag(basePos.transform.position);
                 if (nearestFlag.HasValue)
                 {
-                    var path = Pathfinding(basePos, nearestFlag.Value);
+                    var path = Pathfinding(basePos.transform.position, nearestFlag.Value);
                     DrawRoad(path);
                 }
             }
@@ -138,9 +138,10 @@ namespace SimpleProceduralTerrainProject
                 // j를 i + 1로 시작하여, i와 j가 같지 않게 하고, 각 플래그 쌍을 한 번만 비교하도록 함
                 for (int j = i + 1; j < flagPositions_List.Count; j++)
                 {
-                    Vector3 startFlag = flagPositions_List[i];
-                    Vector3 endFlag = flagPositions_List[j];
-
+                    //int j = (i + 1) % flagPositions_List.Count;
+                    Vector3 startFlag = flagPositions_List[i].transform.position + Vector3.forward;
+                    Vector3 endFlag = flagPositions_List[j].transform.position + Vector3.forward;
+                    
                     string pathKey = i.ToString() + "-" + j.ToString();  // 경로를 식별하는 고유한 키 생성
 
                     // 이미 탐색한 경로인지 확인
@@ -161,10 +162,7 @@ namespace SimpleProceduralTerrainProject
                     }
                 }
             }
-            for (int i = 0; i < flagPositions_List.Count; i++)
-            {
-                Debug.Log(i + "번째 좌표는 : " + flagPositions_List[i]);
-            }
+            
         }
 
         private void DrawRoad(List<Vector3> pathPositions)
@@ -240,8 +238,7 @@ namespace SimpleProceduralTerrainProject
         {
             NNInfo startNode = AstarPath.active.GetNearest(start);
             NNInfo endNode = AstarPath.active.GetNearest(end);
-            Debug.Log(startNode.position);
-            Debug.Log(endNode.position);
+            
             ABPath path = ABPath.Construct(startNode.position, endNode.position);
 
             // 경로 계산 시작
@@ -311,7 +308,7 @@ namespace SimpleProceduralTerrainProject
                     terrainList.Add(m_terrain[x, z]);
                 }
             }
-
+            
             SpawnBaseCamps(SpawnFlags(flag_Num, 75f, 45f));
 
             for (int x = 0; x < m_tilesX; x++)
@@ -589,7 +586,7 @@ namespace SimpleProceduralTerrainProject
                     flagPositions.Add(flagPosition);
                     GameObject flaG = Instantiate(flag[0], flagPosition, Quaternion.identity);
                     flags.Add(flaG);
-                    flagPositions_List.Add(flagPosition);
+                    flagPositions_List.Add(flaG);
                 }
                 else
                 {
@@ -633,18 +630,18 @@ namespace SimpleProceduralTerrainProject
                         bool tooCloseToOtherBases = false;
                         bool tooClostToFlag = false;
 
-                        foreach (Vector3 flagPosition in flagPositions_List)
+                        foreach (GameObject flagPosition in flagPositions_List)
                         {
-                            if (Vector3.Distance(baseCampPosition, flagPosition) < 100f)
+                            if (Vector3.Distance(baseCampPosition, flagPosition.transform.position) < 100f)
                             {
                                 tooClostToFlag = true;
                                 break;
                             }
                         }
 
-                        foreach (Vector3 otherBasePosition in baseCampPositions)
+                        foreach (GameObject otherBasePosition in baseCampPositions)
                         {
-                            if (Vector3.Distance(baseCampPosition, otherBasePosition) < 170f)
+                            if (Vector3.Distance(baseCampPosition, otherBasePosition.transform.position) < 170f)
                             {
                                 tooCloseToOtherBases = true;
                                 break;
@@ -666,7 +663,7 @@ namespace SimpleProceduralTerrainProject
                     GameObject baseCamp = Instantiate(Base_PreFabs[i % Base_PreFabs.Length], baseCampPosition, Quaternion.identity);
 
                     baseCamps.Add(baseCamp);
-                    baseCampPositions.Add(baseCampPosition);
+                    baseCampPositions.Add(baseCamp);
                     // 베이스 캠프를 원점을 바라보도록 회전 설정
                     Vector3 lookDirection = Vector3.zero - baseCamp.transform.position;
                     lookDirection.y = 0f; // 오브젝트를 수평으로 회전시키려면 y 값을 0으로 설정

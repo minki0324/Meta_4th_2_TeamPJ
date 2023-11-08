@@ -27,7 +27,7 @@ public class ColorSet : MonoBehaviour
     private void Start()
     {
         //참조안하고 스크립트가지고있는오브젝트한테 적용시킬거면 이거 적용하기
-        RecursiveSearchAndSetTexture(transform , Color_Index);
+        // RecursiveSearchAndSetTexture(transform , Color_Index);
         //if(player.TryGetComponent<Material>(out 
 
         // player 참조 걸땐 이거사용하기 
