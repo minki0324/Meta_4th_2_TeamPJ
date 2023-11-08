@@ -100,14 +100,24 @@ public class UnitAttack2 : MonoBehaviour
     {
         if (!isDie)
         {
-            switch (leaderState.bat_State)
+            if (leaderState != null)
             {
-                case LeaderState.BattleState.Attack:
-                    AttackOrder();
-                    break;
-                default:
-                    FollowOrder();
-                    break;
+                switch (leaderState.bat_State)
+                {
+                    case LeaderState.BattleState.Attack:
+                        AttackOrder();
+                        break;
+                    default:
+                        FollowOrder();
+                        break;
+                }
+            }
+            else
+            {
+               
+                AttackOrder();
+                
+                
             }
         }
         // 미니언컨트롤러로 옮길필요성있음.
@@ -154,21 +164,7 @@ public class UnitAttack2 : MonoBehaviour
         transform.rotation = rotation;
     }
     //적을감지했을때 공격하기위해 적에게 이동하는메소드
-    private void AttackMoving(Transform target)
-    {
-        ani.SetBool("Move", true);
-        //int moveSpeed = 3;
-        navMeshAgent.SetDestination(target.transform.position);
-
-        //추후 미니언컨트롤러에서 제어할예정.(애니메이션)
-        // 공격 로직을 구현
-        //Debug.Log("공격타겟 : " + target.name);
-        //추후 네비게이션으로 이동변경 
-        //transform.position = Vector3.Lerp(transform.position, target.position, Time.deltaTime);
-
-
-
-    }
+    
     //감지범위 그리는메소드
     //private void OnDrawGizmos()
     //{
@@ -272,69 +268,7 @@ public class UnitAttack2 : MonoBehaviour
        
 
     }
-    public void MinionAttack()
-    {
-
- 
-        RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, combinedMask);
-
-        
-        nearestTarget = GetNearestTarget(allHits);
-        //target =1 << nearestTarget.gameObject.layer;
-        if (nearestTarget != null && !isDie)
-        {
-            //leaderState.
-            float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
-            if (attackDistance <= AttackRange)
-            {
-                isdetecting = true;
-            }
-            else
-            {
-                isdetecting = false;
-            }
-            //타겟감지시 타겟쪽으로 바라보기
-            LookatTarget(nearestTarget);
-            // 유닛의 공격범위에 들어갈때까지 타겟에게 이동
-            if (!isdetecting)
-            {
-                AttackMoving(nearestTarget);
-            }
-            // 타겟이 공격범위에 들어왔을때 공격
-            else
-            {
-               
-                navMeshAgent.isStopped = true;
-                ani.SetBool("Move", false);
-
-                // 
-                if (!isAttacking)
-                {
-                    attackCoroutine = StartCoroutine(Attack_co());
-                    //StartCoroutine(Attack_co());
-                }
-
-            }
-        }
-        else if (nearestTarget == null)
-        {
-            if(leaderState != null) { 
-            LeaderAI leaderAI = leaderState.GetComponent<LeaderAI>();
-            nearestTarget = leaderAI.GetNearestTarget();
-            }
-            else
-            {
-                navMeshAgent.isStopped = true;
-                ani.SetBool("Move", false);
-                
-            }
-            if (!isdetecting)
-            {
-                AttackMoving(nearestTarget);
-            }
-        }
-        
-    }
+    
     //자신의 레이어와 같은 리더를 찾는 메소드
     private LeaderState FindLeader()
     {
@@ -397,7 +331,7 @@ public class UnitAttack2 : MonoBehaviour
         RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, combinedMask);
         nearestTarget = GetNearestTarget(allHits);
 
-        if (nearestTarget != null)
+        if (nearestTarget != null) //탐지된 적이 있을때
         {
 
         LookatTarget(nearestTarget);
@@ -412,7 +346,7 @@ public class UnitAttack2 : MonoBehaviour
             }
 
 
-            if (!isdetecting)
+            if (!isdetecting) //탐지된적이 멀리있으면 적한테 이동
             {
                 navMeshAgent.isStopped = false;
                 ani.SetBool("Move", true);
@@ -421,8 +355,9 @@ public class UnitAttack2 : MonoBehaviour
 
 
             }
-            else
+            else // 탐지된 적이 접근하면 이동을 멈추고 공격
             {
+
                 ani.SetBool("Move", false);
                 navMeshAgent.isStopped = true;
                 if (!isAttacking)
@@ -432,10 +367,31 @@ public class UnitAttack2 : MonoBehaviour
                 }
             }
         }
+        else//탐지된 적이 없을때,
+        {
+            /*
+             1. 리더가 Attack 명령을 내렸지만 너무멀어서 공격할 적이 없을경우
+             2. 리더가 없을경우 
+             */
+            if(leaderState == null) // 리더가 없으면 제자리에서 대기
+            {
+                ani.SetBool("Move", false);
+                navMeshAgent.isStopped = true;
+                return;
+            }
+            else // 리더가 있으면 리더한테 이동
+            {
+                FollowOrder();
+            }
+
+
+            
+        }
     }
     private void FollowOrder()
     {
         ani.SetBool("Move", true);
+        navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(leader.transform.position);
     }
 }

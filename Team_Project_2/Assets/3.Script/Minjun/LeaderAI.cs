@@ -25,6 +25,7 @@ public class LeaderAI : Unit
         flag = GameObject.FindGameObjectsWithTag("Flag");
         targetFlag = TargetFlag();
         bat_State = BattleState.Move;
+        
     }
     private void Update()
     {

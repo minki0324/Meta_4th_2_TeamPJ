@@ -11484,7 +11484,6 @@ GameObject:
   - component: {fileID: 1843400025330777907}
   - component: {fileID: 1843400025330777904}
   - component: {fileID: 1843400025330777905}
-  - component: {fileID: 1843400025330777910}
   - component: {fileID: 2046472129491521936}
   - component: {fileID: 1843400025330777908}
   - component: {fileID: 1843400025330777914}
@@ -11547,29 +11546,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &1843400025330777910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843400025330777912}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7239361d7c63a544a9bd925757c8a73e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scanRange: 13
-  AttackRange: 1.5
-  isdetecting: 0
-  HitBox_col: {fileID: 1843400025330777908}
-  Ob_Weapon_col: {fileID: 1843400023942459172}
-  nearestTarget: {fileID: 0}
-  target:
-    serializedVersion: 2
-    m_Bits: 0
-  scanRange: 13
-  isdetecting: 0
 --- !u!114 &2046472129491521936
 MonoBehaviour:
   m_ObjectHideFlags: 0

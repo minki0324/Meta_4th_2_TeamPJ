@@ -142,7 +142,8 @@ public class EnemySpawn : MonoBehaviour
         ColorSet unitColorSet = newUnit.gameObject.GetComponent<ColorSet>();
 
         ColorSet leaderColorSet = leaderState.gameObject.GetComponent<ColorSet>();
-        unitColorSet.Color_Index = leaderColorSet.Color_Index;
+        //unitColorSet.Color_Index = leaderColorSet.Color_Index;
+        leaderColorSet.RecursiveSearchAndSetTexture(newUnit.transform , leaderColorSet.Color_Index);
 
 
     }
