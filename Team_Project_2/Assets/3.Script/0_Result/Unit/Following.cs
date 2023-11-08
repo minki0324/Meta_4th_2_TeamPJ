@@ -35,7 +35,7 @@ public class Following : MonoBehaviour
 
     [SerializeField]
     private GameObject Foward;
-
+    int playernum = 0;
     private void Awake()
     {
         pc = FindObjectOfType<Ply_Controller>();
@@ -103,7 +103,7 @@ public class Following : MonoBehaviour
             isStop = true;
             if (isTarget)
             {
-
+                pc.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
 
                 for (int i = 0; i < pc.UnitList_List.Count; i++)
                 {
@@ -147,9 +147,10 @@ public class Following : MonoBehaviour
 
         else
         {
-            
-            if(isStop == true)
+
+            if (isStop == true)
             {
+                pc.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                 Stop_List.Clear();
 
                 Stop_List.Add(pc.gameObject);
@@ -167,19 +168,31 @@ public class Following : MonoBehaviour
             }
 
 
+            //위치 배치
+            for (int i = 0; i < Stop_List.Count; i++)
+            {
+                if (Stop_List[i] == pc.gameObject)
+                {
+                    playernum = i;
+                }
+            }
+
+
+
 
             //위치 배치
             for (int i = 0; i < Stop_List.Count; i++)
             {
                 if (Stop_List[0] == pc.gameObject)
                 {
+                    //줄세우기
                     Debug.Log("플레이어가 StopList 0번");
 
                     if (i <= 4)
                     {
                         if (i % 2 == 0)
                         {
-                            if(i != 0)
+                            if (i != 0)
                             {
                                 pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.left);
                             }
@@ -209,112 +222,87 @@ public class Following : MonoBehaviour
                     }
 
                 }
+
                 else
                 {
-                    Debug.Log("플레이어는 0번이 아니야.." + i + "번이야..");
 
-                    Stop_List.Clear();
-                    Stop_A_List.Add(pc.gameObject);
-                    for (int j = 0; j < Stop_List.Count; j++)
+                    Debug.Log("플레이어는.." + playernum + "번이야..");
+                    Debug.Log(Stop_List.Count);
+                    //Debug.Log(i + " 번째" + "플레이어는.." + playernum + "번이야..");
+
+                    if (playernum + 2 > i)
                     {
-                        Stop_List.Add(pc.UnitList_List[j]);
+                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[playernum].transform.position + (Vector3.left * (i + 1)));
+                    }
+                    if (playernum - 2 < i)
+                    {
+                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[playernum].transform.position + (Vector3.right * (i + 1)));
+                    }
+                    //==================================================================
+                    if (i < playernum - 2)
+                    {
+                        
+                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 4].transform.position + Vector3.forward);
+                    }
+                    if (i > playernum + 2)
+                    {
+                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i - 4].transform.position + Vector3.back);
                     }
 
-                    Stop_A_List.Sort(delegate (GameObject a, GameObject b)
-                    {
-                        return Compare2(a, b, pc.gameObject);
-                    });
-
-
-
-                    if (i % 4 == 1)
-                    {
-                        if (i == 1)
-                        {
-                            Stop_A_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.gameObject.transform.position + Vector3.forward);
-                        }
-                        else
-                        {
-                            Stop_A_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_A_List[i - 4].transform.position + Vector3.left);
-                        }
-                    }
-                    if (i % 4 == 2)
-                    {
-                        if (i == 2)
-                        {
-                            Stop_A_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.gameObject.transform.position + Vector3.right);
-                        }
-                        else
-                        {
-                            Stop_A_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_A_List[i - 4].transform.position + Vector3.left);
-                        }
-                    }
-
-                    if (i % 4 == 3)
-                    {
-                        if (i == 3)
-                        {
-                            Stop_A_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.gameObject.transform.position + Vector3.back);
-                        }
-                        else
-                        {
-                            Stop_A_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_A_List[i - 4].transform.position + Vector3.left);
-                        }
-                    }
-                    if (i % 4 == 0)
-                    {
-                        if (i != 0)
-                        {
-                            Stop_A_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_A_List[i - 4].transform.position + Vector3.left);
-                        }
-                    }
                 }
+                
 
 
 
 
 
 
-
-                #region ㅎㅎㅎㅎ
-                //if (Stop_List[0] == pc.gameObject)
-                //{
-                //    Standard = pc.transform.position;
-
-                //    if (i <= 4)
-                //    {
-
-                //        if (i % 2 == 0)
-                //        {
-                //            if (i != 0)
-                //            {
-                //                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Standard + Vector3.left);
-                //            }
-
-                //        }
-                //        else
-                //        {
-                //            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Standard + Vector3.right);
-                //        }
-
-                //    }
-                //    else
-                //    {
-                //        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i - 4].transform.position + Vector3.back);
-                //    }
-
-                //}
-                #endregion
-
-
-                if (Stop_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 10f)
+                if (Stop_List[i] != pc.gameObject && Stop_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.5f)
                 {
-                    StartCoroutine(Timer());
-
+                    // StartCoroutine(Timer());
+                    Stop_List[i].GetComponent<Minion_Controller>().isClose = true;
                 }
+
             }
 
         }
+      
+
+
+
+
+        #region ㅎㅎㅎㅎ
+        //if (Stop_List[0] == pc.gameObject)
+        //{
+        //    Standard = pc.transform.position;
+
+        //    if (i <= 4)
+        //    {
+
+        //        if (i % 2 == 0)
+        //        {
+        //            if (i != 0)
+        //            {
+        //                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Standard + Vector3.left);
+        //            }
+
+        //        }
+        //        else
+        //        {
+        //            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Standard + Vector3.right);
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i - 4].transform.position + Vector3.back);
+        //    }
+
+        //}
+        #endregion
+
+
+      
 
 
 
