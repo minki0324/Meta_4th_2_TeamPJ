@@ -10,13 +10,6 @@ public class DoorInter : MonoBehaviour
     [SerializeField] private BoxCollider boxcol;  // 문 박스콜
     private bool isOpen = false;
 
-    private void OnEnable()
-    {
-        Door_Ani.SetTrigger("OpenDoor");
-        isOpen = true;
-        boxcol.enabled = false;
-    }
-
     public IEnumerator OpenDoor_co()
     {
         while (true)
