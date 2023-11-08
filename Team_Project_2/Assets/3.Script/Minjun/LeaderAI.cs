@@ -39,7 +39,6 @@ public class LeaderAI : Unit
                 break;
             case BattleState.Search:
                 
-                Debug.Log("鸥百标惯沥窃");
                 targetFlag = TargetFlag();
                 if(targetFlag != null) {
                     bat_State = BattleState.Move;
@@ -50,9 +49,9 @@ public class LeaderAI : Unit
             case BattleState.Move:
                 if (targetFlag.transform.position != null)
                 {
-                    ani.SetBool("Move", true);
-                    Debug.Log("格利瘤 标惯");
-                    navMesh.SetDestination(targetFlag.transform.position);
+                        ani.SetBool("Move", true);
+                        Debug.Log("标惯捞悼");
+                        navMesh.SetDestination(targetFlag.transform.position);
                 }
                 else
                 {
