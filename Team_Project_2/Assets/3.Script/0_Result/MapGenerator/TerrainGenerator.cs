@@ -1,12 +1,18 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
-
+using System.Linq;
+using Pathfinding;
 using ProceduralNoiseProject;
+using Pathfinding.Util;
 
 namespace SimpleProceduralTerrainProject
 {
-
+    /*
+        1. 랜덤 터레인 생성 (각종 노이즈 로직들 기반으로 랜덤한 높이의 언덕 생성)
+        2. 랜덤 지형으로 생성된 터레인에 랜덤한 위치에 베이스, 플래그 생성
+        3. 베이스 > 플래그로 가는 길 에이스타 알고리즘을 통해 경로를 파악하여 해당 위치에 도로 텍스춰 입히기
+    */
     public class TerrainGenerator : MonoBehaviour
     {
         //Prototypes
@@ -28,12 +34,13 @@ namespace SimpleProceduralTerrainProject
         public int m_tilesZ = 2; // z축에 있는 테레인 타일의 개수
         public float m_pixelMapError = 5f; // 숫자 낮아질수록 디테일 상승하지만 속도 느려짐
         public float m_baseMapDist = 100f; // 저해상도 기본 맵이 그려질 거리. 성능을 향상시키려면 이 값을 줄이세요.
+        private List<Terrain> terrainList;
 
         //Terrain data settings
         [Header("TerrainData 셋팅")]
         public AnimationCurve animationCurve;
         public int m_heightMapSize = 50; // 더 높은 숫자는 더 디테일한 높이 맵을 생성할 것입니다
-        public int m_alphaMapSize = 50; // 이것은 스플랫 텍스처가 어떻게 혼합될지를 제어하는 컨트롤 맵입니다
+        public int m_alphaMapSize = 512; // 이것은 스플랫 텍스처가 어떻게 혼합될지를 제어하는 컨트롤 맵입니다
         public int m_terrainSize = 512;
         public int m_terrainHeight = 256;
         public int m_detailMapSize = 128; // 디테일(풀) 레이어의 해상도
@@ -58,11 +65,20 @@ namespace SimpleProceduralTerrainProject
         public Color m_grassHealthyColor = Color.white;
         public Color m_grassDryColor = Color.white;
 
+        [Header("Road 셋팅")]
+        private NNInfo[] positionNode;
+
         //Base Settings
+        [Header("Base 셋팅")]
         public GameObject[] Base_PreFabs;
         public int Ply_Num;
         public int Base_Num = 0;
         List<Vector3> baseCampPositions = new List<Vector3>();
+
+        public GameObject[] flag;
+        public int flag_Num;
+        List<Vector3> flagPositions_List = new List<Vector3>();
+        private Dictionary<string, List<Vector3>> cachedPaths = new Dictionary<string, List<Vector3>>();
 
         //Private
         private FractalNoise m_groundNoise, m_mountainNoise, m_treeNoise, m_detailNoise;
@@ -72,22 +88,178 @@ namespace SimpleProceduralTerrainProject
         private DetailPrototype[] m_detailProtoTypes;
         private Vector2 m_offset;
 
-        void Start()
+        private void Awake()
         {
             int seed = (int)System.DateTime.Now.Ticks;
             Random.InitState(seed);
-
             m_seed = Random.Range(0, 100);
+            terrainList = new List<Terrain>();
+            InitializeTerrain();
+        }
+        #region 베이스부터 깃발까지 도로 까는 메소드들
+        // 가장 가까운 깃발 찾는 메소드
+        private Vector3? FindNearestFlag(Vector3 position)
+        {
+            Vector3? nearestFlag = null;
+            float minDistance = float.MaxValue;
+
+            foreach (var flagPos in flagPositions_List)
+            {
+                float distance = Vector3.Distance(position, flagPos);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestFlag = flagPos;
+                }
+            }
+
+            return nearestFlag;
         }
 
-        private void Update()
+        // baseCampPositions에서 각 베이스 캠프 위치에 대해 가장 가까운 플래그를 찾아 경로 계산
+        private void FindPathsFromBasesToFlags()
         {
-            if(Input.GetKeyDown(KeyCode.G))
+            foreach (var basePos in baseCampPositions)
             {
-                InitializeTerrain();
+                var nearestFlag = FindNearestFlag(basePos);
+                if (nearestFlag.HasValue)
+                {
+                    var path = Pathfinding(basePos, nearestFlag.Value);
+                    DrawRoad(path);
+                }
             }
         }
 
+        // 플래그 간의 경로를 찾는 메소드
+        private void FindPathsBetweenFlags()
+        {
+            for (int i = 0; i < flagPositions_List.Count; i++)
+            {
+                // j를 i + 1로 시작하여, i와 j가 같지 않게 하고, 각 플래그 쌍을 한 번만 비교하도록 함
+                for (int j = i + 1; j < flagPositions_List.Count; j++)
+                {
+                    Vector3 startFlag = flagPositions_List[i];
+                    Vector3 endFlag = flagPositions_List[j];
+
+                    string pathKey = i.ToString() + "-" + j.ToString();  // 경로를 식별하는 고유한 키 생성
+
+                    // 이미 탐색한 경로인지 확인
+                    if (!cachedPaths.ContainsKey(pathKey))
+                    {
+                        var path = Pathfinding(startFlag, endFlag);
+                        if (path != null && path.Count > 0)
+                        {
+                            cachedPaths[pathKey] = path;  // 경로를 캐시에 저장
+                            DrawRoad(path);
+                        }
+                        // 반대 방향의 경로도 저장해야 한다면 여기에 추가
+                        string reversePathKey = j.ToString() + "-" + i.ToString();
+                        if (!cachedPaths.ContainsKey(reversePathKey))
+                        {
+                            cachedPaths[reversePathKey] = path;  // 경로를 캐시에 저장
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < flagPositions_List.Count; i++)
+            {
+                Debug.Log(i + "번째 좌표는 : " + flagPositions_List[i]);
+            }
+        }
+
+        private void DrawRoad(List<Vector3> pathPositions)
+        {
+            // 각 지형에 대해 반복
+            foreach (var terrain in terrainList)
+            {
+                TerrainData terrainData = terrain.terrainData;
+                // 알파맵의 해상도를 가져옵니다.
+                int alphaMapWidth = terrainData.alphamapWidth;
+                int alphaMapHeight = terrainData.alphamapHeight;
+                int alphaMapLayers = terrainData.alphamapLayers;
+
+                // 현재 알파맵을 가져옵니다.
+                float[,,] alphaMap = terrainData.GetAlphamaps(0, 0, alphaMapWidth, alphaMapHeight);
+
+                // 경로를 따라 반복하면서 도로 텍스처를 적용합니다.
+                foreach (Vector3 position in pathPositions)
+                {
+                    // 월드 좌표를 알파맵 좌표로 변환합니다.
+                    int mapX = Mathf.FloorToInt((position.x - terrain.transform.position.x) / terrainData.size.x * alphaMapWidth);
+                    int mapZ = Mathf.FloorToInt((position.z - terrain.transform.position.z) / terrainData.size.z * alphaMapHeight);
+
+                    // 도로 폭을 설정합니다.
+                    int roadWidth = 5;  // 이 값은 도로의 폭에 따라 조절할 수 있습니다.
+
+                    // 도로의 폭만큼 알파맵을 수정합니다.
+                    for (int x = mapX - roadWidth / 2; x <= mapX + roadWidth / 2; x++)
+                    {
+                        for (int z = mapZ - roadWidth / 2; z <= mapZ + roadWidth / 2; z++)
+                        {
+                            if (x >= 0 && x < alphaMapWidth && z >= 0 && z < alphaMapHeight)
+                            {
+                                // 도로 텍스처 이외의 모든 레이어를 비활성화합니다.
+                                for (int i = 0; i < alphaMapLayers; i++)
+                                {
+                                    alphaMap[z, x, i] = 0;
+                                }
+
+                                // 도로 텍스처를 활성화합니다.
+                                alphaMap[z, x, 0] = 1;  // 여기서 '0'은 도로 텍스처 레이어를 가정합니다.
+                            }
+                        }
+                    }
+                }
+
+                // 알파맵을 지형 데이터에 적용합니다.
+                terrainData.SetAlphamaps(0, 0, alphaMap);
+            }
+        }
+
+        public void initRoad()
+        {
+            AstarPath.active.Scan();
+            foreach (var terrain in terrainList)
+            {
+                FillAlphaMap(terrain.terrainData);
+            }
+
+            // 도로 그리기 메소드 호출
+            // 이를 위해선 먼저 Pathfinding 메소드에서 도로 경로를 생성해야 합니다.
+            FindPathsFromBasesToFlags();
+            FindPathsBetweenFlags();
+            for (int i = 0; i < terrainList.Count; i++)
+            {
+                terrainList[i].GetComponent<TerrainCollider>().enabled = false;
+                terrainList[i].GetComponent<TerrainCollider>().enabled = true;
+            }
+        }
+        #endregion
+        #region 길찾기 알고리즘
+        private List<Vector3> Pathfinding(Vector3 start, Vector3 end)
+        {
+            NNInfo startNode = AstarPath.active.GetNearest(start);
+            NNInfo endNode = AstarPath.active.GetNearest(end);
+            Debug.Log(startNode.position);
+            Debug.Log(endNode.position);
+            ABPath path = ABPath.Construct(startNode.position, endNode.position);
+
+            // 경로 계산 시작
+            AstarPath.StartPath(path);
+            Debug.Log(path.vectorPath.Count);
+
+            // 경로 계산이 끝날 때까지 기다립니다.
+            path.BlockUntilCalculated();
+
+            // 경로 상의 점들을 List<Vector3> 형태로 반환합니다.
+            List<Vector3> pathPositions = path.vectorPath;
+
+            Draw.Debug.Polyline(pathPositions, Color.red);
+
+            return pathPositions;
+        }
+        #endregion
+        #region 랜덤 터레인 생성
         void InitializeTerrain()
         {
             m_groundNoise = new FractalNoise(new PerlinNoise(m_seed, m_groundFrq), 6, 1.0f, 0.1f);
@@ -105,7 +277,6 @@ namespace SimpleProceduralTerrainProject
 
             m_terrain = new Terrain[m_tilesX, m_tilesZ];
 
-            //this will center terrain at origin
             m_offset = new Vector2(-m_terrainSize * m_tilesX * 0.5f, -m_terrainSize * m_tilesZ * 0.5f);
 
             CreateProtoTypes();
@@ -124,8 +295,10 @@ namespace SimpleProceduralTerrainProject
                     terrainData.splatPrototypes = m_splatPrototypes;
                     terrainData.treePrototypes = m_treeProtoTypes;
                     terrainData.detailPrototypes = m_detailProtoTypes;
-
                     FillAlphaMap(terrainData);
+
+
+
                     m_terrain[x, z] = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
                     m_terrain[x, z].transform.position = new Vector3(m_terrainSize * x + m_offset.x, 0, m_terrainSize * z + m_offset.y);
                     m_terrain[x, z].heightmapPixelError = m_pixelMapError;
@@ -135,12 +308,12 @@ namespace SimpleProceduralTerrainProject
 
                     FillTreeInstances(m_terrain[x, z], x, z);
                     FillDetailMap(m_terrain[x, z], x, z);
+                    terrainList.Add(m_terrain[x, z]);
                 }
             }
-            SpawnBaseCamps();
-            RemoveTreesFromBases();
 
-            //Set the neighbours of terrain to remove seams.
+            SpawnBaseCamps(SpawnFlags(flag_Num, 75f, 45f));
+
             for (int x = 0; x < m_tilesX; x++)
             {
                 for (int z = 0; z < m_tilesZ; z++)
@@ -162,134 +335,7 @@ namespace SimpleProceduralTerrainProject
             }
         }
 
-        void SpawnBaseCamps()
-        {
-            int numPlayers = Ply_Num; // 플레이어 수
-            int maxAttempts = 100; // 최대 시도 횟수, 무한 루프 방지를 위해 설정
-            List<GameObject> baseCamps = new List<GameObject>();
-
-           
-            for (int i = 0; i < numPlayers; i++)
-            {
-                bool validPositionFound = false;
-                Vector3 baseCampPosition = Vector3.zero;
-
-                for (int attempt = 0; attempt < maxAttempts; attempt++)
-                {
-                    // 중앙에서 250x250 범위 내의 랜덤한 위치 생성
-                    float posX = Random.Range(-200f, 200f);
-                    float posZ = Random.Range(-200f, 200f);
-
-                    // 월드 좌표계를 테레인 배열 인덱스로 변환
-                    int terrainIndexX = Mathf.FloorToInt((posX + m_tilesX * m_terrainSize * 0.5f) / m_terrainSize);
-                    int terrainIndexZ = Mathf.FloorToInt((posZ + m_tilesZ * m_terrainSize * 0.5f) / m_terrainSize);
-
-                    // 위치가 테레인 배열 내에 있는지 확인
-                    if (terrainIndexX >= 0 && terrainIndexX < m_tilesX && terrainIndexZ >= 0 && terrainIndexZ < m_tilesZ)
-                    {
-                        Terrain terrain = m_terrain[terrainIndexX, terrainIndexZ];
-                        
-                    
-                        baseCampPosition = new Vector3(posX, 10, posZ);
-                        bool tooCloseToOtherBases = false;
-
-                        foreach (Vector3 otherBasePosition in baseCampPositions)
-                        {
-                            if (Vector3.Distance(baseCampPosition, otherBasePosition) < 170f)
-                            {
-                                tooCloseToOtherBases = true;
-                                break;
-                            }
-                        }
-
-                        if (!tooCloseToOtherBases)
-                        {
-                            validPositionFound = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (validPositionFound)
-                {
-                    // 베이스 캠프 소환
-                    GameObject baseCamp =  Instantiate(Base_PreFabs[i % Base_PreFabs.Length], baseCampPosition, Quaternion.identity);
-                                       
-                    baseCamps.Add(baseCamp);
-                    baseCampPositions.Add(baseCampPosition);
-                    // 베이스 캠프를 원점을 바라보도록 회전 설정
-                    Vector3 lookDirection = Vector3.zero - baseCamp.transform.position;
-                    lookDirection.y = 0f; // 오브젝트를 수평으로 회전시키려면 y 값을 0으로 설정
-                    Quaternion rotation = Quaternion.LookRotation(lookDirection.normalized);
-                    baseCamp.transform.rotation = rotation;
-
-                    // ColorSet 스크립트의 RecursiveSearchAndSetTexture 메서드 호출하여 컬러 설정
-                    ColorSet colorSet = baseCamp.GetComponentInChildren<ColorSet>();
-                    if (colorSet != null)
-                    {
-                        colorSet.RecursiveSearchAndSetTexture(baseCamp.transform, GameManager.instance.Color_Index);
-                    }
-                    else
-                    {
-                        Debug.Log("널");
-                    }
-                }
-                else
-                {
-                    Debug.Log("Failed to find a valid position for base camp. Base camp spawning failed.");
-                    // 기존 베이스 캠프 제거
-                    RemoveBaseCamps(baseCamps);
-                    SpawnBaseCamps();
-                }
-            }
-        }
-
-        void RemoveBaseCamps(List<GameObject> baseCamps)
-        {
-            foreach (GameObject baseCamp in baseCamps)
-            {
-                Destroy(baseCamp);
-            }
-
-            baseCamps.Clear(); // 베이스 캠프 목록 초기화
-            baseCampPositions.Clear(); // 베이스 캠프 위치 목록 초기화
-        }
-
-        void RemoveTreesFromBases()
-        {
-            // 소환된 베이스 캠프 위치에서 나무 제거
-            foreach (Vector3 baseCampPosition in baseCampPositions)
-            {
-                // 베이스 캠프가 위치한 테레인 찾기
-                int x = (int)(baseCampPosition.x / m_terrainSize);
-                int z = (int)(baseCampPosition.z / m_terrainSize);
-                Terrain terrain = m_terrain[x, z];
-
-                // 베이스 캠프 주변의 나무 제거
-                RemoveTrees(terrain, baseCampPosition.x, baseCampPosition.z, 10);
-            }
-        }
-
-        void RemoveTrees(Terrain terrain, float posX, float posZ, float radius)
-        {
-            List<TreeInstance> trees = new List<TreeInstance>(terrain.terrainData.treeInstances);
-            Vector3 terrainPosition = terrain.transform.position;
-            float terrainSize = terrain.terrainData.size.x;
-
-            for (int i = trees.Count - 1; i >= 0; i--)
-            {
-                Vector3 treeWorldPosition = Vector3.Scale(trees[i].position, terrain.terrainData.size) + terrainPosition;
-
-                if (Vector3.Distance(new Vector3(posX, 0, posZ), new Vector3(treeWorldPosition.x, 0, treeWorldPosition.z)) < radius)
-                {
-                    trees.RemoveAt(i);
-                }
-            }
-
-            terrain.terrainData.treeInstances = trees.ToArray();
-        }
-
-
+        // 텍스춰
         void CreateProtoTypes()
         {
             int numSplat = m_splat.Length;
@@ -313,7 +359,7 @@ namespace SimpleProceduralTerrainProject
                 m_treeProtoTypes[i].prefab = m_tree[i];
             }
 
-            for(int i = 0; i < numDetail; i++)
+            for (int i = 0; i < numDetail; i++)
             {
                 m_detailProtoTypes[i] = new DetailPrototype();
                 m_detailProtoTypes[i].prototypeTexture = m_detail[i];
@@ -323,6 +369,7 @@ namespace SimpleProceduralTerrainProject
             }
         }
 
+        // 높이
         void FillHeights(float[,] htmap, int tileX, int tileZ)
         {
             // 지형의 크기와 높이맵의 크기의 비율을 계산.
@@ -343,6 +390,7 @@ namespace SimpleProceduralTerrainProject
             }
         }
 
+        // 알파맵
         void FillAlphaMap(TerrainData terrainData)
         {
             // m_alphaMapSize x m_alphaMapSize 크기의 2개의 스플랫맵 레이어를 위한 3차원 배열을 생성.
@@ -376,6 +424,7 @@ namespace SimpleProceduralTerrainProject
             terrainData.SetAlphamaps(0, 0, map);
         }
 
+        // 나무
         void FillTreeInstances(Terrain terrain, int tileX, int tileZ)
         {
             // 난수 생성기의 시드 값을 0으로 초기화. 
@@ -405,7 +454,7 @@ namespace SimpleProceduralTerrainProject
                     float frac = angle / 90.0f;
 
                     // 경사가 완만한 지역에서만 트리를 심기.
-                    if (frac < 0.5f) 
+                    if (frac < 0.5f)
                     {
                         // 트리의 월드 좌표를 계산.
                         float worldPosX = x + tileX * (m_terrainSize - 1);
@@ -422,7 +471,7 @@ namespace SimpleProceduralTerrainProject
                             temp.position = new Vector3(normX, ht, normZ);
                             temp.prototypeIndex = Random.Range(0, 3);
                             temp.widthScale = 1;
-                            temp.heightScale = 1;
+                            temp.heightScale = 2;
                             temp.color = Color.white;
                             temp.lightmapColor = Color.white;
 
@@ -441,6 +490,7 @@ namespace SimpleProceduralTerrainProject
 
         }
 
+        // 디테일맵
         void FillDetailMap(Terrain terrain, int tileX, int tileZ)
         {
             //each layer is drawn separately so if you have a lot of layers your draw calls will increase 
@@ -494,7 +544,6 @@ namespace SimpleProceduralTerrainProject
 
                 }
             }
-
             terrain.terrainData.wavingGrassStrength = m_wavingGrassStrength;
             terrain.terrainData.wavingGrassAmount = m_wavingGrassAmount;
             terrain.terrainData.wavingGrassSpeed = m_wavingGrassSpeed;
@@ -502,13 +551,173 @@ namespace SimpleProceduralTerrainProject
             terrain.detailObjectDensity = m_detailObjectDensity;
             terrain.detailObjectDistance = m_detailObjectDistance;
             terrain.terrainData.SetDetailResolution(m_detailMapSize, m_detailResolutionPerPatch);
-
             terrain.terrainData.SetDetailLayer(0, 0, 0, detailMap0);
             terrain.terrainData.SetDetailLayer(0, 0, 1, detailMap1);
             terrain.terrainData.SetDetailLayer(0, 0, 2, detailMap2);
+        }
+        #endregion
+        #region 깃발, 베이스 생성 메소드
+        private List<Vector3> SpawnFlags(int numberOfFlags, float range, float minDistanceBetweenFlags)
+        {
+            int maxAttempts = 100; // 최대 시도 횟수, 무한 루프 방지를 위해 설정
+            List<Vector3> flagPositions = new List<Vector3>();
+            List<GameObject> flags = new List<GameObject>();
 
+            for (int i = 0; i < numberOfFlags; i++)
+            {
+                bool validPositionFound = false;
+                Vector3 flagPosition = Vector3.zero;
+
+                for (int attempt = 0; attempt < maxAttempts; attempt++)
+                {
+                    // 50x50 범위 내의 랜덤한 위치 생성
+                    float posX = Random.Range(-range / 2f, range / 2f);
+                    float posZ = Random.Range(-range / 2f, range / 2f);
+                    flagPosition = new Vector3(posX, 10, posZ); // 높이는 적절히 조정
+
+                    bool tooCloseToOtherFlags = flagPositions.Any(existingPosition => Vector3.Distance(flagPosition, existingPosition) < minDistanceBetweenFlags);
+
+                    if (!tooCloseToOtherFlags)
+                    {
+                        validPositionFound = true;
+                        break;
+                    }
+                }
+
+                if (validPositionFound)
+                {
+                    flagPositions.Add(flagPosition);
+                    GameObject flaG = Instantiate(flag[0], flagPosition, Quaternion.identity);
+                    flags.Add(flaG);
+                    flagPositions_List.Add(flagPosition);
+                }
+                else
+                {
+                    Debug.LogError("Failed to find a valid position for a flag.");
+                    RemoveFlag(flags);
+                    SpawnFlags(numberOfFlags, range, minDistanceBetweenFlags);
+                }
+            }
+
+            return flagPositions;
         }
 
+        void SpawnBaseCamps(List<Vector3> flagPositions)
+        {
+            int numPlayers = Ply_Num; // 플레이어 수
+            int maxAttempts = 100; // 최대 시도 횟수, 무한 루프 방지를 위해 설정
+            List<GameObject> baseCamps = new List<GameObject>();
+
+            for (int i = 0; i < numPlayers; i++)
+            {
+                bool validPositionFound = false;
+                Vector3 baseCampPosition = Vector3.zero;
+
+                for (int attempt = 0; attempt < maxAttempts; attempt++)
+                {
+                    // 중앙에서 200x200 범위 내의 랜덤한 위치 생성
+                    float posX = Random.Range(-170f, 170f);
+                    float posZ = Random.Range(-170f, 170f);
+
+                    // 월드 좌표계를 테레인 배열 인덱스로 변환
+                    int terrainIndexX = Mathf.FloorToInt((posX + m_tilesX * m_terrainSize * 0.5f) / m_terrainSize);
+                    int terrainIndexZ = Mathf.FloorToInt((posZ + m_tilesZ * m_terrainSize * 0.5f) / m_terrainSize);
+
+                    // 위치가 테레인 배열 내에 있는지 확인
+                    if (terrainIndexX >= 0 && terrainIndexX < m_tilesX && terrainIndexZ >= 0 && terrainIndexZ < m_tilesZ)
+                    {
+                        Terrain terrain = m_terrain[terrainIndexX, terrainIndexZ];
+
+
+                        baseCampPosition = new Vector3(posX, 5, posZ);
+                        bool tooCloseToOtherBases = false;
+                        bool tooClostToFlag = false;
+
+                        foreach (Vector3 flagPosition in flagPositions_List)
+                        {
+                            if (Vector3.Distance(baseCampPosition, flagPosition) < 100f)
+                            {
+                                tooClostToFlag = true;
+                                break;
+                            }
+                        }
+
+                        foreach (Vector3 otherBasePosition in baseCampPositions)
+                        {
+                            if (Vector3.Distance(baseCampPosition, otherBasePosition) < 170f)
+                            {
+                                tooCloseToOtherBases = true;
+                                break;
+                            }
+                        }
+
+
+                        if (!tooCloseToOtherBases && !tooClostToFlag)
+                        {
+                            validPositionFound = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (validPositionFound)
+                {
+                    // 베이스 캠프 소환
+                    GameObject baseCamp = Instantiate(Base_PreFabs[i % Base_PreFabs.Length], baseCampPosition, Quaternion.identity);
+
+                    baseCamps.Add(baseCamp);
+                    baseCampPositions.Add(baseCampPosition);
+                    // 베이스 캠프를 원점을 바라보도록 회전 설정
+                    Vector3 lookDirection = Vector3.zero - baseCamp.transform.position;
+                    lookDirection.y = 0f; // 오브젝트를 수평으로 회전시키려면 y 값을 0으로 설정
+                    Quaternion rotation = Quaternion.LookRotation(lookDirection.normalized);
+                    baseCamp.transform.rotation = rotation;
+
+                    // ColorSet 스크립트의 RecursiveSearchAndSetTexture 메서드 호출하여 컬러 설정
+                    ColorSet colorSet = baseCamp.GetComponentInChildren<ColorSet>();
+                    if (colorSet != null)
+                    {
+                        colorSet.RecursiveSearchAndSetTexture(baseCamp.transform, GameManager.instance.Color_Index);
+                    }
+                    else
+                    {
+                        Debug.Log("널");
+                    }
+                }
+                else
+                {
+                    Debug.Log("Failed to find a valid position for base camp. Base camp spawning failed.");
+                    // 기존 베이스 캠프 제거
+                    RemoveBaseCamps(baseCamps);
+                    SpawnBaseCamps(flagPositions);
+                }
+
+
+            }
+        }
+
+        void RemoveBaseCamps(List<GameObject> baseCamps)
+        {
+            foreach (GameObject baseCamp in baseCamps)
+            {
+                Destroy(baseCamp);
+            }
+
+            baseCamps.Clear(); // 베이스 캠프 목록 초기화
+            baseCampPositions.Clear(); // 베이스 캠프 위치 목록 초기화
+        }
+
+        void RemoveFlag(List<GameObject> flags)
+        {
+            foreach (GameObject flag in flags)
+            {
+                Destroy(flag);
+            }
+
+            flags.Clear(); // 베이스 캠프 목록 초기화
+            flagPositions_List.Clear(); // 베이스 캠프 위치 목록 초기화
+        }
+        #endregion
     }
 }
 
