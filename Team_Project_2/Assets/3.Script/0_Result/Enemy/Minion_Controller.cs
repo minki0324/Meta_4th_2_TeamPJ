@@ -11,6 +11,9 @@ public class Minion_Controller : MonoBehaviour
       2. 상태에 따라서 애니메이션 변경
     */
 
+    [SerializeField]
+    GameObject Player;
+
     public enum Type
     {
         //미니언 종류
@@ -21,6 +24,7 @@ public class Minion_Controller : MonoBehaviour
     }
 
     private Ply_Controller playerController;
+    private Ply_Movement playerMovement;    //added
     private Animator ani;
     private NavMeshAgent agent;
 
@@ -47,6 +51,7 @@ public class Minion_Controller : MonoBehaviour
         MeshCollider = GetComponent<CapsuleCollider>();
         DetectCollider = transform.GetChild(0).GetComponent<CapsuleCollider>();
         TryGetComponent(out ani);
+       
     }
 
     private void Start()
@@ -56,17 +61,18 @@ public class Minion_Controller : MonoBehaviour
 
     private void Update()
     {
+        transform.forward = playerController.transform.forward;
         Behavior_Mode();
+        
         if (isClose == true)
         {
             ani.SetBool("Move", false);
-
         }
         else
         {
-
             ani.SetBool("Move", true);
         }
+        
     }
 
     public void Get_HumanType()
