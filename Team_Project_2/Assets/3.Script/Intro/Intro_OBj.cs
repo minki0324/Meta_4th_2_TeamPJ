@@ -13,6 +13,7 @@ public class Intro_OBj : MonoBehaviour
     private int SpawnIndex = 0;
     //소환되는 간격
     private float Spawninterval = 0.4f;
+
     private void Awake()
     {
         leaderState = FindLeader();
@@ -27,12 +28,8 @@ public class Intro_OBj : MonoBehaviour
         if (leaderState.isDead)
         {
             leaderState.canSpawn = false;
-
             return;
         }
-
-
-
 
         //유닛카운트가 맥스가 됬거나 , 유닛비용보다 가진 골드가 적을때 false;
         if (leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost /*|| leaderState.isDead*/)
@@ -43,32 +40,21 @@ public class Intro_OBj : MonoBehaviour
         {
             leaderState.canSpawn = true;
         }
-
-
-
-
-
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
-       
-
-            InvokeRepeating("UnitSpawn", 0f, Spawninterval);
-
-
-     
+        InvokeRepeating("UnitSpawn", 0f, Spawninterval);
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer)
         {
-
             CancelInvoke("UnitSpawn");
         }
-
     }
+
     private void UnitSpawn()
     {
         if (leaderState.currentUnitCount > 40)
@@ -79,10 +65,8 @@ public class Intro_OBj : MonoBehaviour
         SetLayerRecursively(newUnit, leaderState.gameObject.layer);
         SetColar(newUnit);
 
-
         leaderState.UnitList.Add(newUnit);
         //leaderState.Gold -= leaderState.unitCost;
-        
         SpawnIndex++;
 
         leaderState.currentUnitCount++;
@@ -91,14 +75,13 @@ public class Intro_OBj : MonoBehaviour
         {
             SpawnIndex = 0;
         }
-
     }
+
     private LeaderState FindLeader()
     {
         GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTag에는 LeaderState 컴포넌트가 있는 오브젝트의 태그를 넣습니다.
 
         // 찾은 오브젝트 중에서 LeaderState 컴포넌트를 가진 첫 번째 오브젝트를 찾습니다.
-
 
         foreach (var obj in objectsWithSameLayer)
         {
@@ -128,16 +111,13 @@ public class Intro_OBj : MonoBehaviour
         {
             SetLayerRecursively(child.gameObject, newLayer); // 하위 오브젝트에 대해 재귀 호출
         }
-
-
     }
+
     private void SetColar(GameObject newUnit)
     {
         ColorSet unitColorSet = newUnit.gameObject.GetComponent<ColorSet>();
 
         ColorSet leaderColorSet = leaderState.gameObject.GetComponent<ColorSet>();
         unitColorSet.Color_Index = leaderColorSet.Color_Index;
-
-
     }
 }
