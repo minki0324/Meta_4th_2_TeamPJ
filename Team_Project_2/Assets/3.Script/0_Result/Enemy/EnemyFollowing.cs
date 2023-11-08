@@ -39,7 +39,7 @@ public class EnemyFollowing : MonoBehaviour
     {
 
 
-        if (leaderState.bat_State == LeaderState.BattleState.Follow)
+        if (leaderState.bat_State != LeaderState.BattleState.Attack)
         {
             StopCoroutine(Mode_Stop_co());
             StartCoroutine(Mode_Follow_co());

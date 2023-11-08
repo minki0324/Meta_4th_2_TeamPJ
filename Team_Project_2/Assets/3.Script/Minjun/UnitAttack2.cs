@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
-public class UnitAttack1 : MonoBehaviour
+public class UnitAttack2 : MonoBehaviour
 {
     //[SerializeField] private Ply_Controller player;
     /*
@@ -21,8 +21,8 @@ public class UnitAttack1 : MonoBehaviour
     private bool isDie;
    private Ply_Controller player;
     //팀의 리더가 누군지
-    private LeaderState leaderState;
-    private GameObject leader;
+    protected LeaderState leaderState;
+    protected GameObject leader;
 
     public GameObject GetLeader()
     {
@@ -35,11 +35,11 @@ public class UnitAttack1 : MonoBehaviour
     //이동중 적군유닛이 공격범위콜라이더에 닿았는가?
     [SerializeField] private bool isdetecting = false;
     //공격중인가?
-    private bool isAttacking = false;
+    protected bool isAttacking = false;
     private bool isHitting = false;
     private bool isSuccessAtk = true;
-    private Animator ani;
-    private Coroutine attackCoroutine;
+    protected Animator ani;
+    protected Coroutine attackCoroutine;
     private int myLayer;
     private int combinedMask;
     // 공격 대상 레이어
@@ -98,37 +98,18 @@ public class UnitAttack1 : MonoBehaviour
 
     private void Update()
     {
-
-        //오브젝트 레이어에 맞는 리더가 명령내렸을때 어택메소드 실행
-
-        if (myLayer == TeamLayer)
+        if (!isDie)
         {
-
-            if (player.CurrentMode == Ply_Controller.Mode.Attack)
+            switch (leaderState.bat_State)
             {
-                MinionAttack();
-            }
-
-        }
-        else
-        {
-            if (leaderState != null)
-            {
-                if (leaderState.bat_State == LeaderState.BattleState.Attack)
-                {
-                    MinionAttack();
-                }
-            }
-            else
-            {
-                //Debug.Log( $" {myLayer}번레이어 : 리더찾지못함");
-                //리더없으면 그냥 어택상태
-                MinionAttack();
+                case LeaderState.BattleState.Attack:
+                    AttackOrder();
+                    break;
+                default:
+                    FollowOrder();
+                    break;
             }
         }
-
-
-
         // 미니언컨트롤러로 옮길필요성있음.
         if (HP <= 0)
         {
@@ -168,7 +149,9 @@ public class UnitAttack1 : MonoBehaviour
     {
 
         Vector3 AttackDir = target.position - transform.position;
-        transform.rotation = Quaternion.LookRotation(AttackDir);
+        AttackDir.y = 0; // Y 축 이동을 무시하여 기울이지 않음
+        Quaternion rotation = Quaternion.LookRotation(AttackDir);
+        transform.rotation = rotation;
     }
     //적을감지했을때 공격하기위해 적에게 이동하는메소드
     private void AttackMoving(Transform target)
@@ -187,14 +170,14 @@ public class UnitAttack1 : MonoBehaviour
 
     }
     //감지범위 그리는메소드
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, scanRange);
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(transform.position, scanRange);
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, AttackRange);
-    }
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawWireSphere(transform.position, AttackRange);
+    //}
 
 
     //닿은 콜라이더와 오브젝트가 레이어가 다르고
@@ -211,7 +194,7 @@ public class UnitAttack1 : MonoBehaviour
 
     }
     //공격코루틴메소드
-    private IEnumerator Attack_co()
+    protected IEnumerator Attack_co()
     {
         //공격쿨타임
         float d = Random.Range(2f, 2.1f);
@@ -243,7 +226,7 @@ public class UnitAttack1 : MonoBehaviour
             StopCoroutine(attackCoroutine);
             isAttacking = false;
         }
-
+        Debug.Log(ani);
         ani.SetTrigger("Hit");
         yield return hitDelay;
         isHitting = false;
@@ -409,5 +392,50 @@ public class UnitAttack1 : MonoBehaviour
         return combinedMask;
     }
     //자신의 리더가 오더를내렸을때 말을듣게하기위한메소드
-  
+    private void AttackOrder()
+    {
+        RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, combinedMask);
+        nearestTarget = GetNearestTarget(allHits);
+
+        if (nearestTarget != null)
+        {
+
+        LookatTarget(nearestTarget);
+            float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
+            if (attackDistance <= AttackRange)
+            {
+                isdetecting = true;
+            }
+            else
+            {
+                isdetecting = false;
+            }
+
+
+            if (!isdetecting)
+            {
+                navMeshAgent.isStopped = false;
+                ani.SetBool("Move", true);
+                navMeshAgent.SetDestination(nearestTarget.transform.position);
+
+
+
+            }
+            else
+            {
+                ani.SetBool("Move", false);
+                navMeshAgent.isStopped = true;
+                if (!isAttacking)
+                {
+                    attackCoroutine = StartCoroutine(Attack_co());
+                    //StartCoroutine(Attack_co());
+                }
+            }
+        }
+    }
+    private void FollowOrder()
+    {
+        ani.SetBool("Move", true);
+        navMeshAgent.SetDestination(leader.transform.position);
+    }
 }

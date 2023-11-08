@@ -146,7 +146,6 @@ public class Ply_Movement : MonoBehaviour
             transform.position += (moveDirection.normalized * MoveSpeed * Time.deltaTime);
             transform.position = new Vector3(
             Mathf.Clamp(transform.position.x, Min, Max), transform.position.y, Mathf.Clamp(transform.position.z, Min, Max));
-            Debug.Log(transform.position);
             ani.SetBool("Move", true);
             ani.SetBool("Idle", false);
             isPlayerMove = true;

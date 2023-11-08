@@ -29,30 +29,31 @@ public class LeaderAI : Unit
     private void Update()
     {
 
-        // Ç×»ó ÁÖº¯¿¡ ÀûÀÌÀÖ´ÂÁö Å½Áö
+        // í•­ìƒ ì£¼ë³€ì— ì ì´ìˆëŠ”ì§€ íƒì§€
         EnemyDitect();
 
+  
         switch (bat_State)
         {
-
+  
             case BattleState.Attack:
                 break;
             case BattleState.Search:
-
+                
                 targetFlag = TargetFlag();
-                if (targetFlag != null)
+                if(targetFlag != null) 
                 {
                     bat_State = BattleState.Move;
                 }
-
-
+               
+             
                 break;
             case BattleState.Move:
                 if (targetFlag.transform.position != null)
                 {
-                    ani.SetBool("Move", true);
-                    Debug.Log("±ê¹ßÀÌµ¿");
-                    navMesh.SetDestination(targetFlag.transform.position);
+                        ani.SetBool("Move", true);
+                        Debug.Log("ê¹ƒë°œì´ë™");
+                        navMesh.SetDestination(targetFlag.transform.position);
                 }
                 else
                 {
@@ -61,6 +62,7 @@ public class LeaderAI : Unit
                 break;
             case BattleState.Defense:
                 break;
+
             case BattleState.Detect:
                 //ani.SetBool("Move", true);
                 //navMesh.SetDestination(NearestTarget.position);
@@ -81,7 +83,7 @@ public class LeaderAI : Unit
             float attackDistance = Vector3.Distance(transform.position, NearestTarget.position);
             bat_State = BattleState.Detect;
 
-            //DItect »óÅÂÀÏ¶§ ¹æÆĞ¸¦ µé¸ç ÃµÃµÈ÷ Á¢±Ù
+            //DItect ìƒíƒœì¼ë•Œ ë°©íŒ¨ë¥¼ ë“¤ë©° ì²œì²œíˆ ì ‘ê·¼
             if (attackDistance <= AttackRange)
             {
                 bat_State = BattleState.Attack;
@@ -109,7 +111,7 @@ public class LeaderAI : Unit
         }
 
 
-        //¹üÀ§³»¿¡ ÀûÄİ¶óÀÌ´õ°¡ ÀÖÀ»½Ã Ditect »óÅÂ·Î º¯°æ
+        //ë²”ìœ„ë‚´ì— ì ì½œë¼ì´ë”ê°€ ìˆì„ì‹œ Ditect ìƒíƒœë¡œ ë³€ê²½
     }
 
     private GameObject TargetFlag()
@@ -121,7 +123,7 @@ public class LeaderAI : Unit
             GameObject selected1Flag = defaultFlags[randomIndex];
 
             return selected1Flag;
-            // ¼±ÅÃµÈ °´Ã¼(selectedFlag)¸¦ »ç¿ëÇÏ¼¼¿ä.
+            // ì„ íƒëœ ê°ì²´(selectedFlag)ë¥¼ ì‚¬ìš©í•˜ì„¸ìš”.
         }
 
         GameObject selectedFlag = null;
@@ -130,10 +132,10 @@ public class LeaderAI : Unit
         int radius = 10;
         foreach (GameObject _flag in flag)
         {
-            // _flag ÁÖº¯¿¡¼­ trigger¿¡ ´ê¾Æ ÀÖ´Â °´Ã¼ °ËÃâ
+            // _flag ì£¼ë³€ì—ì„œ triggerì— ë‹¿ì•„ ìˆëŠ” ê°ì²´ ê²€ì¶œ
             Collider[] colliders = Physics.OverlapSphere(_flag.transform.position, radius, layerMask, QueryTriggerInteraction.Collide);
 
-            // ÃÖ¼Ò Ä«¿îÆ® °»½Å
+            // ìµœì†Œ ì¹´ìš´íŠ¸ ê°±ì‹ 
             if (colliders.Length < minTouchingCount)
             {
                 minTouchingCount = colliders.Length;
@@ -147,7 +149,7 @@ public class LeaderAI : Unit
         }
         else
         {
-            Debug.Log("±ê¹ß¸øÃ£À½");
+            Debug.Log("ê¹ƒë°œëª»ì°¾ìŒ");
             return null;
 
         }
