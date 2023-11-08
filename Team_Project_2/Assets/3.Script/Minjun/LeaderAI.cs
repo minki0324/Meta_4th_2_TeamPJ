@@ -16,74 +16,57 @@ public class LeaderAI : Unit
     public bool isEnermyChecked = false;
 
     //public Transform nearestTarget;
-    private float AttackRange = 5f;
+    private float AttackRange = 10f;
     private void Awake()
     {
         ani = GetComponent<Animator>();
         combinedMask = TargetLayers();
         navMesh = GetComponent<NavMeshAgent>();
-        bat_State = BattleState.Follow;
         flag = GameObject.FindGameObjectsWithTag("Flag");
+        targetFlag = TargetFlag();
+        bat_State = BattleState.Move;
     }
     private void Update()
     {
-        for (int i = 0; i < flag.Length; i++)
-        {
-          //  Debug.Log(flag[i]);
-        }
 
         // 항상 주변에 적이있는지 탐지
         EnemyDitect();
+
         switch (bat_State)
         {
-            case BattleState.Follow:
-                //if(targetFlag.transform.position != null) { 
-                //navMesh.SetDestination(targetFlag.transform.position);
-                //}
-                //else
-                //{
-                //    return;
-                //}
-                //navMesh.isStopped = true;
-                break;
+
             case BattleState.Attack:
                 break;
+            case BattleState.Search:
+
+                targetFlag = TargetFlag();
+                if (targetFlag != null)
+                {
+                    bat_State = BattleState.Move;
+                }
+
+
+                break;
+            case BattleState.Move:
+                if (targetFlag.transform.position != null)
+                {
+                    ani.SetBool("Move", true);
+                    Debug.Log("깃발이동");
+                    navMesh.SetDestination(targetFlag.transform.position);
+                }
+                else
+                {
+                    bat_State = BattleState.Search;
+                }
+                break;
+            case BattleState.Defense:
+                break;
             case BattleState.Detect:
-
-                //애니메이션 방패들기
-                ani_State = AniState.shild;
-                //천천히 적에게 접근
-                //Debug.Log()
-                ani.SetBool("Move", true);
-                navMesh.SetDestination(nearestTarget.position);
+                //ani.SetBool("Move", true);
+                //navMesh.SetDestination(NearestTarget.position);
                 break;
 
         }
-
-        switch (jud_State)
-        {
-            case JudgmentState.Ready:
-                ani_State = AniState.Idle;
-                Debug.Log("타겟깃발정함");
-                targetFlag= TargetFlag();
-                navMesh.SetDestination(targetFlag.transform.position);
-                jud_State = JudgmentState.Going;
-                //navMesh.SetDestination()
-                break;
-            case JudgmentState.Wait:
-                break;
-            case JudgmentState.Going:
-                //죽거나 
-                break;
-           
-
-                //float originalSpeed = navMeshAgent.speed; // 현재 속도 저장
-                //navMeshAgent.speed = originalSpeed / 4; // 1/4로 줄인 속도 설정
-
-
-
-        }
-
 
 
     }
@@ -91,10 +74,11 @@ public class LeaderAI : Unit
     private void EnemyDitect()
     {
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, combinedMask);
-        nearestTarget = GetNearestTarget(hits);
-        if (nearestTarget != null)
+        NearestTarget = GetNearestTarget(hits);
+
+        if (NearestTarget != null)
         {
-            float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
+            float attackDistance = Vector3.Distance(transform.position, NearestTarget.position);
             bat_State = BattleState.Detect;
 
             //DItect 상태일때 방패를 들며 천천히 접근
@@ -104,21 +88,23 @@ public class LeaderAI : Unit
             }
 
             isEnermyChecked = true;
-}
+        }
         else
         {
-            if(bat_State == BattleState.Attack) { 
-            if(targetFlag == null)
+            if (bat_State == BattleState.Attack)
             {
-                jud_State = JudgmentState.Ready;
+                if (targetFlag == null)
+                {
+                    bat_State = BattleState.Search;
+                }
+                else
+                {
+                    bat_State = BattleState.Move;
+                }
+
+
             }
-            else
-            {
-                jud_State = JudgmentState.Going;
-            }
-           
-            bat_State = BattleState.Follow;
-            }
+            bat_State = BattleState.Move;
             isEnermyChecked = false;
         }
 
@@ -165,7 +151,7 @@ public class LeaderAI : Unit
             return null;
 
         }
-       
+
 
     }
 }
