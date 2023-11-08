@@ -50,14 +50,14 @@ public class SkyBox_Controller : MonoBehaviour
     private IEnumerator Update_SkyBox_Night()
     {
        
-        float progress; //매개변수 대용
+        float progress = 0; //매개변수 대용
 
         float increment = smoothness / duration; //적용할 변경수준
 
-        progress = 0;
-        while (true)
+     
+        while (progress < 1)
         {
-            Debug.Log("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+            Debug.Log(progress);
             //current_material.Lerp(afternoon_M, night_M, progress);
             gameObject.GetComponent<Skybox>().material.Lerp(afternoon_M, night_M, progress);
            // Debug.Log(this.gameObject.GetComponent<Skybox>().material);
