@@ -29,7 +29,7 @@ public class LeaderAI : Unit
     {
         for (int i = 0; i < flag.Length; i++)
         {
-            Debug.Log(flag[i]);
+          //  Debug.Log(flag[i]);
         }
 
         // 항상 주변에 적이있는지 탐지
