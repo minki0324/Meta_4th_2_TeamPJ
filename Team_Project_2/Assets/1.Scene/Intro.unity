@@ -2138,7 +2138,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 4
     m_MaxSize: 50
-    m_Alignment: 0
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 0
     m_HorizontalOverflow: 1
@@ -2269,7 +2269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3636bcf8635926a49991910505e52199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Title_Panel: {fileID: 484743328}
+  Title_Panel: {fileID: 0}
   Login_Panel: {fileID: 0}
   Btn_Panel: {fileID: 0}
   Confirm_Btn: {fileID: 0}
@@ -2285,8 +2285,8 @@ MonoBehaviour:
   Shop_Panel: {fileID: 0}
   dropdown_Shop: {fileID: 0}
   Spec_Text: {fileID: 0}
-  Leader_A: {fileID: 7938536280104752933}
-  Leader_B: {fileID: 7938536281042328518}
+  Leader_A: {fileID: 0}
+  Leader_B: {fileID: 0}
   isLogined: 0
   id: sunny
   timer: 3
@@ -5164,6 +5164,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 0}
 --- !u!114 &1767629529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5176,6 +5193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5233dc0efe592e34c9bb285f65dc2b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Plane1: {fileID: 0}
+  surfaces: []
 --- !u!1 &1789847639
 GameObject:
   m_ObjectHideFlags: 0
@@ -33210,11 +33229,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f40d976cd9e6448a420ad82ef3bd54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearestMinion_List: []
+  Stop_List: []
+  Stop_A_List: []
   TargetLayer:
     serializedVersion: 2
     m_Bits: 256
+  isa: 0
   StopPos: {x: 0, y: 0, z: 0}
+  isStop: 0
+  Standard: {x: 0, y: 0, z: 0}
+  Foward: {fileID: 0}
 --- !u!1 &7089010467765153228
 GameObject:
   m_ObjectHideFlags: 0
