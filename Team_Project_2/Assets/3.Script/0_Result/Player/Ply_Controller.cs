@@ -25,8 +25,7 @@ public class Ply_Controller : MonoBehaviour
     private Following following;
 
     //플레이어 정보========================
-    public int Max_MinionCount = 19;
-    public int Current_MinionCount;
+   
 
     //미니언 프리팹=========================
     [Header("인덱스 - 0 : 보병 / 1 : 기사 / 2 : 궁수")]
@@ -41,8 +40,7 @@ public class Ply_Controller : MonoBehaviour
     private Transform Spawner;
 
     //보병 & 궁수 뽑을 수 있는가 판단하는 변수 -> 추후에 업그레이드 기능과 할때 사용해주세여
-    //private bool isPossible_HeavyInfantry = false;
-    //private bool isPossible_Archer = false;
+    
 
 
     public LayerMask TargetLayer;
@@ -134,7 +132,7 @@ public class Ply_Controller : MonoBehaviour
 
 
 
-
+            
 
         }
 
@@ -146,7 +144,7 @@ public class Ply_Controller : MonoBehaviour
 
     private void Spawn_Solider()
     {
-        if (Current_MinionCount < Max_MinionCount)
+        if ( GameManager.instance.Current_MinionCount < GameManager.instance.Max_MinionCount)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
             {
@@ -235,6 +233,6 @@ public class Ply_Controller : MonoBehaviour
         GameManager.instance.Gold -= (15 + (Human_num * 5));
         //Minion.transform.SetParent(transform);
         UnitList_List.Add(Minion);
-        Current_MinionCount++;
+        GameManager.instance.Current_MinionCount++;
     }
 }

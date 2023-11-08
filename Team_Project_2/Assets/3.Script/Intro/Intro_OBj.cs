@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawn : MonoBehaviour
+public class Intro_OBj : MonoBehaviour
 {
     //unitValue에 따라 소환되는 unit
     [SerializeField] private GameObject[] unit;
@@ -34,8 +34,8 @@ public class EnemySpawn : MonoBehaviour
 
 
 
-        //유닛카운트가 맥스가 됐거나 , 유닛비용보다 가진 골드가 적을때 false;
-        if(leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost)
+        //유닛카운트가 맥스가 됬거나 , 유닛비용보다 가진 골드가 적을때 false;
+        if (leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost /*|| leaderState.isDead*/)
         {
             leaderState.canSpawn = false;
         }
@@ -53,19 +53,12 @@ public class EnemySpawn : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderState.canSpawn)
-        {
+       
 
             InvokeRepeating("UnitSpawn", 0f, Spawninterval);
 
 
-        }
-        else if (!leaderState.canSpawn)
-        {
-
-            CancelInvoke("UnitSpawn");
-        }
-
+     
     }
     private void OnTriggerExit(Collider other)
     {
@@ -78,7 +71,7 @@ public class EnemySpawn : MonoBehaviour
     }
     private void UnitSpawn()
     {
-        if (leaderState.currentUnitCount > 19)
+        if (leaderState.currentUnitCount > 40)
         {
             return;
         }
@@ -88,7 +81,8 @@ public class EnemySpawn : MonoBehaviour
 
 
         leaderState.UnitList.Add(newUnit);
-        leaderState.Gold -= leaderState.unitCost;
+        //leaderState.Gold -= leaderState.unitCost;
+        
         SpawnIndex++;
 
         leaderState.currentUnitCount++;
