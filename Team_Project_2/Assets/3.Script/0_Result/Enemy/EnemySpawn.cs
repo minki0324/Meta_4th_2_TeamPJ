@@ -35,7 +35,7 @@ public class EnemySpawn : MonoBehaviour
 
 
         //유닛카운트가 맥스가 됬거나 , 유닛비용보다 가진 골드가 적을때 false;
-        if (leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost)
+        if(leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost)
         {
             leaderState.canSpawn = false;
         }
