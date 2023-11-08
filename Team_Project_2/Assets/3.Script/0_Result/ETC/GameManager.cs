@@ -5,8 +5,8 @@ using UnityEngine;
 
 public enum Team
 {
-    // 빨 초 파 핑
-    Team1 = 1,   
+    neutrality = 0, // 중립
+    Team1,   
     Team2,
     Team3,
     Team4
