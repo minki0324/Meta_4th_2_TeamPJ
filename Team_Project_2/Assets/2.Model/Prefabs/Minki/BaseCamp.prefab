@@ -146,8 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4294fa1fe9a76e5488b0bb0a04c4920a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Door_Ani: {fileID: 38242643724059043}
-  boxcol: {fileID: 218779495805277981}
 --- !u!65 &8518427302150640113
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2008,6 +2006,7 @@ GameObject:
   - component: {fileID: 3461648979845942033}
   - component: {fileID: 3461648979838564550}
   - component: {fileID: 3461648979838564601}
+  - component: {fileID: 4719996367785688654}
   - component: {fileID: 3461648979838564600}
   m_Layer: 0
   m_Name: Flag 1
@@ -2080,6 +2079,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 5, z: 0.5}
   m_Center: {x: 0, y: 2.6, z: 0}
+--- !u!114 &4719996367785688654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3461648979838564551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9814d3af0b00a445bbb5f07b98bca95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &3461648979838564600
 Rigidbody:
   m_ObjectHideFlags: 0
