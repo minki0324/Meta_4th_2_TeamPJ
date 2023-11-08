@@ -10,10 +10,12 @@ public class Unit_Occupation : MonoBehaviour
 
     private Flag flag; // 깃발 스크립트
     private OccupationHUD OccuHUD;
+    private OccupationManager OccuManager;
 
     private void Awake()
     {
         OccuHUD = FindObjectOfType<OccupationHUD>();
+        OccuManager = FindObjectOfType<OccupationManager>();
 
     }
 
@@ -22,9 +24,9 @@ public class Unit_Occupation : MonoBehaviour
         flag = other.gameObject.GetComponentInChildren<Flag>();       
         if (other.gameObject.CompareTag("Flag"))
         {
-            if (gameObject.CompareTag("Player"))
+            if (gameObject.layer.Equals(8))
             {
-                
+                Change_Color(2);
             }
 
         }
@@ -40,11 +42,11 @@ public class Unit_Occupation : MonoBehaviour
 
         }
     }
-
-    private void Change_Color(int Coloridx)
+    private void Change_Color(int TeamNum)
     {
-        flag.Change_Flag_Color(Coloridx);
-        OccuHUD.Change_HUD_Color(Coloridx);
+        flag.Change_Flag_Color(TeamNum);
+        OccuHUD.Change_HUD_Color(TeamNum);
     }
-    
+
+
 }

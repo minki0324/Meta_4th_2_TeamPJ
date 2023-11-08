@@ -9,10 +9,16 @@ public class ColorManager : MonoBehaviour
     
     public static ColorManager instance = null;
 
-    // 팀별로 컬러 지정 일단 싱글톤으로 해야할 것 같아서 싱글톤으로좀 하겠습니동
+    //  0 : BK / 1 : BL / 2 : DB / 3 : BR / 4 : GR / 5 : GR_BL / 6 : PK / 7 : PP / 8 : RE / 9 : TAN / 10 : WH / 11 : YE
+    //  0 : 검정 / 1 : 하늘 / 2 : 파랑 / 3 : 갈색 / 4 : 연두 / 5 : 초록
+    //  6 : 핑크 / 7 : 보라 / 8 : 빨강 / 9 : 연갈색 / 10 : 흰색 / 11 : 노랑
+    
+
 
     public Color[] Teamcolor; // 팀 컬러
     public Material[] Flag_Color; // 깃발 색바꿀 Marterial
+    public Texture2D[] Color_Texture;
+
 
     private void Awake()    
     {
@@ -25,15 +31,27 @@ public class ColorManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-
-        Teamcolor = new Color[System.Enum.GetValues(typeof(Team)).Length];           
-        Teamcolor[(int)Team.neutrality] = new Color(255, 255, 255); // 흰색
-        Teamcolor[(int)Team.Team1] = new Color(255, 0, 0);  // 빨간색
-        Teamcolor[(int)Team.Team2] = new Color(0, 170, 0);  // 초록색
-        Teamcolor[(int)Team.Team3] = new Color(0, 0, 255);  // 파란색
-        Teamcolor[(int)Team.Team4] = new Color(230, 0, 230); // 핑크색
     }
-    
+
+    public void RecursiveSearchAndSetTexture(Transform currentTransform, int index)
+    {
+        foreach (Transform child in currentTransform)
+        {
+            if (child.gameObject.activeSelf)
+            {
+                Renderer renderer = child.GetComponent<Renderer>();
+
+                if (renderer != null && child.tag != "Flag")
+                {
+                    Material material = renderer.material;
+                    material.SetTexture("_BaseMap", ColorManager.instance.Color_Texture[index]);
+                }
+
+                // 현재 자식 오브젝트의 하위 자식 오브젝트를 재귀적으로 검사
+
+                RecursiveSearchAndSetTexture(child, index);
+            }
+        }
+    }
 
 }
