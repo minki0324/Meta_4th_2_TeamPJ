@@ -148,7 +148,7 @@ public class LeaderAI : Unit
             return selectedFlag;
         }
         else
-        {
+        { 
             Debug.Log("깃발못찾음");
             return null;
 

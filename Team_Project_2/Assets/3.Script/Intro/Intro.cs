@@ -4,6 +4,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
+
+public struct TeamColor
+{
+    public int ColorNum;
+    public Color color_c;
+    public Material color_m;
+    public bool isUsing;
+}
+
 public class Intro : MonoBehaviour
 {
     #region 타이틀 패널 
@@ -148,9 +158,26 @@ public class Intro : MonoBehaviour
     private ScriptsData scriptsData;
 
     public bool isLogined = false;
+
     public string id = "sunny";
 
     public int timer = 3;
+
+
+
+    [Header("팀 컬러")]
+    [SerializeField]
+    private Material[] TeamColors;
+
+    [SerializeField]
+    public TeamColor[] teamColors = new TeamColor[11];
+
+
+    //GameManager에 보낼 팀 별 색상 번호, ColorSet 인덱스와 동일한 숫자
+    public int Team1_Color;
+    public int Team2_Color;
+    public int Team3_Color;
+    public int Team4_Color;
 
     #endregion
 
@@ -160,23 +187,34 @@ public class Intro : MonoBehaviour
     {
         dataManager = new DataManager();
         scriptsData = dataManager.Load("Scripts");
+       
     }
 
     private void Start()
     {
-        BackButton = transform.GetChild(0).GetComponent<Button>();
+       // BackButton = transform.GetChild(0).GetComponent<Button>();
 
         Title_Panel = transform.GetChild(0).gameObject;
         Setup_Panel = transform.GetChild(1).gameObject;
         Upgrade_Panel = transform.GetChild(2).gameObject;
         Option_Panel = transform.GetChild(3).gameObject;
+     
+       
 
 
-        Init_FuntionUI();
+
+        //Init_FuntionUI();
 
         TitlePanel_On();
 
-             
+        
+        for (int i = 0; i < TeamColors.Length; i++)
+        {
+            teamColors[i].color_m = TeamColors[i];
+            teamColors[i].color_c = TeamColors[i].color;
+            teamColors[i].ColorNum = i;
+            teamColors[i].isUsing = false;
+        }
     }
 
     private void Init_FuntionUI()
@@ -184,16 +222,14 @@ public class Intro : MonoBehaviour
         //시작 시 초기화할 함수들
 
         //Title_Panel = transform.GetChild(0).gameObject;
-        BackButton.onClick.AddListener(TitlePanel_On);
-
-        Exit_Btn.onClick.AddListener(Exit);
+     
     }
 
 
     public void GameStart_Btn_Clicekd()
     {
         //메인씬
-        Debug.Log("Game Start");
+        Debug.Log("@@@@@@@@@@Game Start@@@@@@@@@@@@@@@");
     }
 
     public void TitlePanel_On()
@@ -210,9 +246,9 @@ public class Intro : MonoBehaviour
         Btn_Panel = Title_Panel.transform.GetChild(2).gameObject;
 
         Ready_Btn = Btn_Panel.transform.GetChild(0).GetComponent<Button>();
-        Upgrade_Btn = Btn_Panel.transform.GetChild(0).GetComponent<Button>();
-        Option_Btn = Btn_Panel.transform.GetChild(0).GetComponent<Button>();
-        Exit_Btn = Btn_Panel.transform.GetChild(0).GetComponent<Button>();
+        Upgrade_Btn = Btn_Panel.transform.GetChild(1).GetComponent<Button>();
+        Option_Btn = Btn_Panel.transform.GetChild(2).GetComponent<Button>();
+        Exit_Btn = Btn_Panel.transform.GetChild(3).GetComponent<Button>();
 
 
         Ready_Btn.onClick.AddListener(SetupPanel_On);
@@ -233,6 +269,7 @@ public class Intro : MonoBehaviour
 
         GameObject Selection = Setup_Panel.transform.GetChild(0).gameObject;
 
+        #region 오브젝트 연결
         TeamColor1_Btn = Selection.transform.GetChild(0).GetChild(0).GetComponent<Button>();
         TeamColor2_Btn = Selection.transform.GetChild(1).GetChild(0).GetComponent<Button>();
         TeamColor3_Btn = Selection.transform.GetChild(2).GetChild(0).GetComponent<Button>();
@@ -240,35 +277,105 @@ public class Intro : MonoBehaviour
 
         Map_img = Selection.transform.GetChild(4).GetComponent<Image>();
         Original_Btn = Selection.transform.GetChild(5).GetComponent<Button>();
-        Original_Btn = Selection.transform.GetChild(6).GetComponent<Button>();
+        TimeAttack_Btn = Selection.transform.GetChild(6).GetComponent<Button>();
         GameStart_Btn = Selection.transform.GetChild(7).GetComponent<Button>();
 
 
-        Team1_Text = Selection.transform.GetChild(0).GetChild(1).GetComponent<Text>();
-        Team2_Text = Selection.transform.GetChild(1).GetChild(1).GetComponent<Text>();
-        Team3_Text = Selection.transform.GetChild(2).GetChild(1).GetComponent<Text>();
-        Team4_Text = Selection.transform.GetChild(3).GetChild(1).GetComponent<Text>();
+        Team1_Text = TeamColor1_Btn.transform.GetChild(0).GetComponent<Text>();
+        Team2_Text = TeamColor2_Btn.transform.GetChild(0).GetComponent<Text>();
+        Team3_Text = TeamColor3_Btn.transform.GetChild(0).GetComponent<Text>();
+        Team4_Text = TeamColor4_Btn.transform.GetChild(0).GetComponent<Text>(); 
 
-        ID1_Text = Selection.transform.GetChild(0).GetChild(2).GetComponent<Text>();
-        ID2_Text = Selection.transform.GetChild(1).GetChild(2).GetComponent<Text>();
-        ID3_Text = Selection.transform.GetChild(2).GetChild(2).GetComponent<Text>();
-        ID4_Text = Selection.transform.GetChild(3).GetChild(2).GetComponent<Text>();
+        ID1_Text = TeamColor1_Btn.transform.GetChild(1).GetComponent<Text>();
+        ID2_Text = TeamColor2_Btn.transform.GetChild(1).GetComponent<Text>();
+        ID3_Text = TeamColor3_Btn.transform.GetChild(1).GetComponent<Text>();
+        ID4_Text = TeamColor4_Btn.transform.GetChild(1).GetComponent<Text>();
+
+        #endregion
 
 
+        #region 버튼 함수 호출
         Original_Btn.onClick.AddListener(OriginalBtn_Clicked);
         TimeAttack_Btn.onClick.AddListener(TimeAttackBtn_Clicked);
         GameStart_Btn.onClick.AddListener(GameStart_Btn_Clicekd);
 
-        TeamColor1_Btn.onClick.AddListener(Change_Color);
+        TeamColor1_Btn.onClick.AddListener(delegate { Change_Team_Color(TeamColor1_Btn, ref Team1_Color); });
+        TeamColor2_Btn.onClick.AddListener(delegate { Change_Team_Color(TeamColor2_Btn, ref Team2_Color); });
+        TeamColor3_Btn.onClick.AddListener(delegate { Change_Team_Color(TeamColor3_Btn, ref Team3_Color); });
+        TeamColor4_Btn.onClick.AddListener(delegate { Change_Team_Color(TeamColor4_Btn, ref Team4_Color); });
+
+        #endregion
+
+        ID1_Text.text = id;
+
+        TeamColor1_Btn.image.color = teamColors[8].color_c;
+        TeamColor2_Btn.image.color = teamColors[2].color_c;
+        TeamColor3_Btn.image.color = teamColors[5].color_c;
+        TeamColor4_Btn.image.color = teamColors[10].color_c;
+
+        teamColors[8].isUsing = true;
+        teamColors[2].isUsing = true;
+        teamColors[5].isUsing = true;
+        teamColors[10].isUsing = true;
+
+        Team1_Color = teamColors[8].ColorNum;
+        Team2_Color = teamColors[2].ColorNum;
+        Team3_Color = teamColors[5].ColorNum;
+        Team4_Color = teamColors[10].ColorNum;
 
 
 
     }
 
-    private void Change_Color()
+    public void Change_Team_Color(Button button, ref int teamNum)
     {
-        TeamColor1_Btn.image.color = Color.black;
+        Debug.Log("컬러체인지");
+      
+        for (int i = teamNum; i < teamColors.Length; i++)
+        {
+
+            if (button.image.color == teamColors[i].color_c)
+            {
+
+                for (int j = 0; j < teamColors.Length; j++)
+                {
+                    if (i + j >= 10)
+                    {
+
+                        if (teamColors[i + j - 10].isUsing == false)
+                        {
+                            button.image.color = teamColors[i + j - 10].color_c;
+                            teamColors[i + j - 10].isUsing = true;
+                            teamColors[i].isUsing = false;
+                            teamNum = i + j - 10;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (teamColors[i + j].isUsing == false)
+                        {
+                            button.image.color = teamColors[i + j].color_c;
+                            teamColors[i + j].isUsing = true;
+                            teamColors[i].isUsing = false;
+                            teamNum = i + j;
+                            break;
+                        }
+
+                    }
+                  
+
+                }
+
+                break;
+
+            }
+
+        }
+
+
     }
+ 
 
 
 
@@ -334,10 +441,12 @@ public class Intro : MonoBehaviour
     public void OriginalBtn_Clicked()
     {
         //맵이미지 Original로 변경
+        Debug.Log("오리지널 맵 이미지");
     }
 
     public void TimeAttackBtn_Clicked()
     {
-        //맵이미지 Original로 변경
+        //맵이미지 타임어택으로 변경
+        Debug.Log("타임어택 맵 이미지");
     }
 }
