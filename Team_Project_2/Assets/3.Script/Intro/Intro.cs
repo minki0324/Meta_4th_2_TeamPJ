@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -118,53 +119,67 @@ public class Intro : MonoBehaviour
 
 
     #region 업그레이드 패널
-    [Header("Avatar Panel")]
-    [SerializeField]
+    [Header("Upgrade Panel")]
     private GameObject Upgrade_Panel;
-
-    private enum DropDownMenu
-    {
-        Head = 0,
-        Body,
-        Weapon
-
-    }
-
-    [SerializeField]
-    private DropDownMenu menu_list;
-
-
     #endregion
 
 
 
     #region 옵션 패널
-    [Header("Shop Panel")]
+    [Header("Option Panel")]
     [SerializeField]
     private GameObject Option_Panel;
+
+    [SerializeField]
+    private Slider masterVolume_Slider;
+
+    [SerializeField]
+    private Slider bgmVolume_Slider;
+
+    [SerializeField]
+    private Slider sfxVolume_Slider;
+
+    [SerializeField]
+    private Slider mouseSensitive_Slider;
+
+    [SerializeField]
+    private Slider Brightness_Slider;
+
+    [SerializeField]
+    private Button windowScreen_Btn;
+
+    [SerializeField]
+    private Button fullScreen_Btn;
+
     #endregion
 
 
 
     #region 기타
     [Header("기타")]
+
+    //배경관련
     [SerializeField]
     private GameObject Leader_A;
 
     [SerializeField]
     private GameObject Leader_B;
 
+    //json 관련
     private DataManager dataManager;
     private ScriptsData scriptsData;
 
+    //로그인 관련
     public bool isLogined = false;
 
     public string id = "sunny";
 
     public int timer = 3;
 
+    //소리 관련
+    public AudioMixer audioMixer;
 
-
+    //팀관련
     [Header("팀 컬러")]
     [SerializeField]
     private Material[] TeamColors;
@@ -194,20 +209,31 @@ public class Intro : MonoBehaviour
     {
        // BackButton = transform.GetChild(0).GetComponent<Button>();
 
-        Title_Panel = transform.GetChild(0).gameObject;
-        Setup_Panel = transform.GetChild(1).gameObject;
-        Upgrade_Panel = transform.GetChild(2).gameObject;
-        Option_Panel = transform.GetChild(3).gameObject;
+ 
      
        
 
 
 
-        //Init_FuntionUI();
+        Init_FuntionUI();
 
         TitlePanel_On();
 
         
+  
+    }
+
+    private void Init_FuntionUI()
+    {
+        //시작 시 초기화할 것들
+
+        Title_Panel = transform.GetChild(0).gameObject;
+        Setup_Panel = transform.GetChild(1).gameObject;
+        Upgrade_Panel = transform.GetChild(2).gameObject;
+        Option_Panel = transform.GetChild(3).gameObject;
+
+
+        //구조체 배열 초기화
         for (int i = 0; i < TeamColors.Length; i++)
         {
             teamColors[i].color_m = TeamColors[i];
@@ -217,18 +243,9 @@ public class Intro : MonoBehaviour
         }
     }
 
-    private void Init_FuntionUI()
-    {
-        //시작 시 초기화할 함수들
-
-        //Title_Panel = transform.GetChild(0).gameObject;
-     
-    }
-
-
     public void GameStart_Btn_Clicekd()
     {
-        //메인씬
+        //Move to MainScene
         Debug.Log("@@@@@@@@@@Game Start@@@@@@@@@@@@@@@");
     }
 
@@ -385,6 +402,11 @@ public class Intro : MonoBehaviour
         Upgrade_Panel.SetActive(true);
         Option_Panel.SetActive(false);
 
+
+
+
+
+
     }
 
     public void OptionPanel_On()
@@ -392,6 +414,43 @@ public class Intro : MonoBehaviour
         Setup_Panel.SetActive(false);
         Upgrade_Panel.SetActive(false);
         Option_Panel.SetActive(true);
+
+        GameObject Selection_img = Option_Panel.transform.GetChild(0).gameObject;
+
+        #region 오브젝트 연결
+        masterVolume_Slider = Selection_img.transform.GetChild(0).GetChild(0).GetComponent<Slider>();
+        bgmVolume_Slider = Selection_img.transform.GetChild(1).GetChild(0).GetComponent<Slider>();
+        sfxVolume_Slider = Selection_img.transform.GetChild(2).GetChild(0).GetComponent<Slider>();
+        mouseSensitive_Slider = Selection_img.transform.GetChild(3).GetChild(0).GetComponent<Slider>();
+        Brightness_Slider = Selection_img.transform.GetChild(4).GetChild(0).GetComponent<Slider>();
+
+        windowScreen_Btn = Selection_img.transform.GetChild(5).GetChild(0).GetComponent<Button>();
+        fullScreen_Btn = Selection_img.transform.GetChild(5).GetChild(1).GetComponent<Button>();
+        #endregion
+
+    }
+
+    public void AudioControl()
+    {
+        masterVolume_Slider.onValueChanged.AddListener(SetMasterVolume);
+    }
+
+    public void SetMasterVolume(float volume)
+    {
+        Debug.Log("MasterVolume Changed");
+        audioMixer.SetFloat("Master", Mathf.Log10(volume) * 20);   
+    }
+
+    public void SetBGMVolume(float volume)
+    {
+        Debug.Log("BGM Volume Changed");
+        audioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        Debug.Log("SFX Volume Changed");
+        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
     }
 
     public void CheckLogin()
@@ -449,4 +508,13 @@ public class Intro : MonoBehaviour
         //맵이미지 타임어택으로 변경
         Debug.Log("타임어택 맵 이미지");
     }
+
+
+
+
+
+
+
+
+
 }
