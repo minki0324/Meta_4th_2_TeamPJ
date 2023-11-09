@@ -8,7 +8,7 @@ public class Gate : MonoBehaviour
 
 
     private Animator Gate_Ani;  
-    private Collider Gate_Col;  // Gate 물리 Collider
+    [SerializeField] private Collider Gate_Col;  // Gate 물리 Collider
     private bool isOpen = false;
 
     private void Awake()
