@@ -28,6 +28,10 @@ public class LeaderAI : Unit
     }
     private void Update()
     {
+        if(!GameManager.instance.isLive)
+        {
+            return;
+        }
 
         // 항상 주변에 적이있는지 탐지
         EnemyDitect();

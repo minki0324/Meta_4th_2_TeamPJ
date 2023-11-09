@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class test : MonoBehaviour
+public class InitNavMesh : MonoBehaviour
 {
-	[SerializeField]
-	private GameObject Plane1;
-
 	[SerializeField]
 	NavMeshSurface[] surfaces;
 
@@ -17,7 +14,7 @@ public class test : MonoBehaviour
 		// GenerateNavmesh();
 	}
 
-	private void GenerateNavmesh()
+	public void GenerateNavmesh()
 	{
 
 		surfaces = gameObject.GetComponentsInChildren<NavMeshSurface>();
@@ -29,11 +26,5 @@ public class test : MonoBehaviour
 		}
 
 	}
-	void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.P))
-		{
-			GenerateNavmesh();
-		}
-	}
+	
 }
