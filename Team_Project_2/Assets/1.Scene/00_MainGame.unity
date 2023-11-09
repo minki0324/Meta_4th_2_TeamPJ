@@ -255,6 +255,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &49664454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 49664455}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &49664455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49664454}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &419623440
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -598,7 +628,13 @@ MonoBehaviour:
   isLive: 1
   Current_HP: 150
   Max_Hp: 150
+  Damage: 20
   Regeneration: 0.5
+  respawnTime: 10
+  Max_MinionCount: 19
+  Current_MinionCount: 0
+  isPossible_Upgrade_1: 0
+  isPossible_Upgrade_2: 0
 --- !u!4 &1503504437
 Transform:
   m_ObjectHideFlags: 0
@@ -842,20 +878,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9814d3af0b00a445bbb5f07b98bca95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skinnedmesh: {fileID: 0}
-  Flag_Color:
-  - {fileID: 2100000, guid: cf1fa6c73dc509448863697c25254027, type: 2}
-  - {fileID: 2100000, guid: 98a7fdcb4ebb44344b4afe0424d44b82, type: 2}
-  - {fileID: 2100000, guid: da1774cf1ebfffc4fb7671900ec15195, type: 2}
-  - {fileID: 2100000, guid: 19f3b2158b0cd134798555d774de0b3f, type: 2}
-  - {fileID: 2100000, guid: 23fe6e6315af1c6458ea91a3b762eaa4, type: 2}
-  Occu_Back: []
-  color: {fileID: 0}
-  player: {fileID: 0}
-  OccuValue: {fileID: 8311932150216790759}
-  occu_Speed: 5
-  isOccupating: 0
-  isOccupied: 0
 --- !u!1 &2066755157237931154
 GameObject:
   m_ObjectHideFlags: 0
@@ -9603,6 +9625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2300352df5924a942a5eada6086eda7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Terra: {fileID: 49664454}
   m_splat:
   - {fileID: 2800000, guid: 390b3e56cd374bf4d8298132dcde267a, type: 3}
   - {fileID: 2800000, guid: edf11b049ebd0054c83e6a14b9e62dbd, type: 3}
