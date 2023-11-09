@@ -11,18 +11,8 @@ public class ColorSet : MonoBehaviour
         -> 검사하는 객체의 자식객체가 없을때까지 반복.(재귀함수)
     */
 
-    //컬러배열
-    [Header("적용할 컬러배열(Texture)")]
-    [SerializeField] private Texture2D[] Color_Texture;
+   
 
-    //바꿀오브젝트 ->  혹시몰라서 넣어둠 필요없으면 빼도될듯 
-    [Header("색깔을 바꿀 오브젝트")]
-    [SerializeField] private Transform target;
-
-    //배열 인덱스
-    [Header("적용시킬 컬러배열의 인덱스")]
-    [TextArea()] public string Color_Num;
-    [SerializeField] public int Color_Index;    
 
     private void Start()
     {
@@ -44,7 +34,7 @@ public class ColorSet : MonoBehaviour
                 if (renderer != null && child.tag != "Flag")
                 {
                     Material material = renderer.material;
-                    material.SetTexture("_BaseMap", Color_Texture[index]);
+                    material.SetTexture("_BaseMap", ColorManager.instance.Color_Texture[index]);
                 }
 
                 // 현재 자식 오브젝트의 하위 자식 오브젝트를 재귀적으로 검사
