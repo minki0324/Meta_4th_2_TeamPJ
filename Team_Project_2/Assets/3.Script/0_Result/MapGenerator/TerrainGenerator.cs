@@ -687,17 +687,6 @@ namespace SimpleProceduralTerrainProject
                     lookDirection.y = 0f; // 오브젝트를 수평으로 회전시키려면 y 값을 0으로 설정
                     Quaternion rotation = Quaternion.LookRotation(lookDirection.normalized);
                     baseCamp.transform.rotation = rotation;
-
-                    // ColorSet 스크립트의 RecursiveSearchAndSetTexture 메서드 호출하여 컬러 설정
-                    ColorSet colorSet = baseCamp.GetComponentInChildren<ColorSet>();
-                    if (colorSet != null)
-                    {
-                        colorSet.RecursiveSearchAndSetTexture(baseCamp.transform, GameManager.instance.Color_Index);
-                    }
-                    else
-                    {
-                        Debug.Log("널");
-                    }
                 }
                 else
                 {
@@ -745,20 +734,23 @@ namespace SimpleProceduralTerrainProject
 
             for(int i = 0; i < baseCamps.Count; i++)
             {
-                ColorSet colorSet = baseCamps[i].GetComponentInChildren<ColorSet>();
                 switch (baseCamps[i].gameObject.layer)
                 {
                     case 6:
-                        colorSet.RecursiveSearchAndSetTexture(baseCamps[i].transform, GameManager.instance.Color_Index);
+                        ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.Color_Index);
+                        baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.Color_Index);
                         break;
                     case 7:
-                        colorSet.RecursiveSearchAndSetTexture(baseCamps[i].transform, GameManager.instance.T1_Color);
+                        ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T1_Color);
+                        baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T1_Color);
                         break;
                     case 8:
-                        colorSet.RecursiveSearchAndSetTexture(baseCamps[i].transform, GameManager.instance.T2_Color);
+                        ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T2_Color);
+                        baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T2_Color);
                         break;
                     case 9:
-                        colorSet.RecursiveSearchAndSetTexture(baseCamps[i].transform, GameManager.instance.T3_Color);
+                        ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T3_Color);
+                        baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T3_Color);
                         break;
                 }
             }

@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Start_Btn : MonoBehaviour
 {
+    [SerializeField] private GameObject light;
+    [SerializeField] private GameObject camera_;
+
    public void Click()
     {
         GameManager.instance.Color_Index = 2;
