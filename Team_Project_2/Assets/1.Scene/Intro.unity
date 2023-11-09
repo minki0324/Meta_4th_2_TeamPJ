@@ -985,7 +985,7 @@ GameObject:
   - component: {fileID: 235986276}
   - component: {fileID: 235986275}
   m_Layer: 5
-  m_Name: Text
+  m_Name: ID_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1616,7 +1616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.15686275}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1886,7 +1886,7 @@ RectTransform:
   m_Children:
   - {fileID: 1002503838}
   m_Father: {fileID: 667634722}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -2347,7 +2347,7 @@ GameObject:
   - component: {fileID: 476030933}
   - component: {fileID: 476030932}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: Team_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2754,7 +2754,7 @@ GameObject:
   - component: {fileID: 560138689}
   - component: {fileID: 560138688}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: GameStart_Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2875,7 +2875,7 @@ GameObject:
   - component: {fileID: 562813847}
   - component: {fileID: 562813846}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: TimeAttack_Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3512,10 +3512,10 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 484743329}
-  - {fileID: 853722799}
-  - {fileID: 457696510}
-  - {fileID: 379863479}
   - {fileID: 862012724}
+  - {fileID: 457696510}
+  - {fileID: 853722799}
+  - {fileID: 379863479}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3539,20 +3539,32 @@ MonoBehaviour:
   Title_Panel: {fileID: 484743328}
   Login_Panel: {fileID: 0}
   Btn_Panel: {fileID: 0}
-  Exit_Btn: {fileID: 0}
-  Confirm_Btn: {fileID: 0}
-  BackButton: {fileID: 0}
-  GameStart_Btn: {fileID: 0}
-  Shop_Btn: {fileID: 0}
-  Option_Btn: {fileID: 0}
   inputField: {fileID: 0}
-  Avatar_Panel: {fileID: 0}
+  Confirm_Btn: {fileID: 0}
+  Ready_Btn: {fileID: 0}
+  Upgrade_Btn: {fileID: 0}
+  Option_Btn: {fileID: 0}
+  Exit_Btn: {fileID: 0}
+  BackButton: {fileID: 0}
+  Setup_Panel: {fileID: 0}
+  TeamColor1_Btn: {fileID: 0}
+  TeamColor2_Btn: {fileID: 0}
+  TeamColor3_Btn: {fileID: 0}
+  TeamColor4_Btn: {fileID: 0}
+  Original_Btn: {fileID: 0}
+  TimeAttack_Btn: {fileID: 0}
+  GameStart_Btn: {fileID: 0}
+  Team1_Text: {fileID: 0}
+  Team2_Text: {fileID: 0}
+  Team3_Text: {fileID: 0}
+  Team4_Text: {fileID: 0}
+  ID1_Text: {fileID: 0}
+  ID2_Text: {fileID: 0}
+  ID3_Text: {fileID: 0}
+  ID4_Text: {fileID: 0}
+  Upgrade_Panel: {fileID: 0}
   menu_list: 0
-  dropdown_Avatar: {fileID: 0}
-  AvatarBtn_List: []
-  Shop_Panel: {fileID: 0}
-  dropdown_Shop: {fileID: 0}
-  Spec_Text: {fileID: 0}
+  Option_Panel: {fileID: 0}
   Leader_A: {fileID: 7938536280104752933}
   Leader_B: {fileID: 7938536281042328518}
   isLogined: 0
@@ -3937,14 +3949,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8117647, g: 0.69803923, b: 0.5921569, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: f51fc536afa25e541a48d0a1e44246f0, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4568,7 +4580,7 @@ RectTransform:
   m_Children:
   - {fileID: 284070743}
   m_Father: {fileID: 667634722}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4626,7 +4638,7 @@ GameObject:
   - component: {fileID: 861353872}
   - component: {fileID: 861353871}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: Team_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4725,7 +4737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &862012724
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4739,7 +4751,7 @@ RectTransform:
   m_Children:
   - {fileID: 352190717}
   m_Father: {fileID: 667634722}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4759,15 +4771,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39607844}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300002, guid: 2d5333e1f805292499e2d43ffc86ba9b, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -5484,7 +5496,7 @@ GameObject:
   - component: {fileID: 1040609538}
   - component: {fileID: 1040609537}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: Team_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5673,7 +5685,7 @@ GameObject:
   - component: {fileID: 1064636357}
   - component: {fileID: 1064636356}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Map_img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5750,7 +5762,7 @@ GameObject:
   - component: {fileID: 1074445277}
   - component: {fileID: 1074445276}
   m_Layer: 5
-  m_Name: Text
+  m_Name: ID_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6131,7 +6143,7 @@ GameObject:
   - component: {fileID: 1095317436}
   - component: {fileID: 1095317435}
   m_Layer: 5
-  m_Name: Shop_Btn
+  m_Name: Upgrade_Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6214,7 +6226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8078432, g: 0.69803923, b: 0.5921569, a: 1}
+  m_Color: {r: 0.8117647, g: 0.69803923, b: 0.5921569, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6766,7 +6778,7 @@ GameObject:
   - component: {fileID: 1204576493}
   - component: {fileID: 1204576492}
   m_Layer: 5
-  m_Name: Text
+  m_Name: ID_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6942,7 +6954,7 @@ GameObject:
   - component: {fileID: 1212989319}
   - component: {fileID: 1212989318}
   m_Layer: 5
-  m_Name: Text
+  m_Name: ID_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8342,14 +8354,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8117647, g: 0.69803923, b: 0.5921569, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: f51fc536afa25e541a48d0a1e44246f0, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8497,7 +8509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.8862745, g: 0.7882353, b: 0.7137255, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9602,7 +9614,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.8862745, g: 0.7882353, b: 0.7137255, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10013,7 +10025,7 @@ GameObject:
   - component: {fileID: 1854450189}
   - component: {fileID: 1854450188}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: Team_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10219,7 +10231,7 @@ GameObject:
   - component: {fileID: 1886723606}
   - component: {fileID: 1886723605}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Original_Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11439,7 +11451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.8862745, g: 0.7882353, b: 0.7137255, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

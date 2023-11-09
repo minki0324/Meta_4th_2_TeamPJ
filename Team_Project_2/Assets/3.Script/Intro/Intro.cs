@@ -17,32 +17,100 @@ public class Intro : MonoBehaviour
     [SerializeField]
     private GameObject Btn_Panel;
 
+    //로그인 패널
     [SerializeField]
-    private Button Exit_Btn;
+    private InputField inputField;
 
     [SerializeField]
     private Button Confirm_Btn;
 
+    //버튼 패널
     [SerializeField]
-    private Button BackButton;
+    private Button Ready_Btn;
 
     [SerializeField]
-    private Button GameStart_Btn;
-
-    [SerializeField]
-    private Button Shop_Btn;
+    private Button Upgrade_Btn;
 
     [SerializeField]
     private Button Option_Btn;
 
     [SerializeField]
-    private InputField inputField;
+    private Button Exit_Btn;
+
+
+
+    //뒤로가기
+    [SerializeField]
+    private Button BackButton;
     #endregion
 
-    #region 아바타 패널
+
+
+    #region Setup 패널(Ready 패널)
+
+    [Header("Setup Panel")]
+    [SerializeField]
+    private GameObject Setup_Panel;
+
+    [SerializeField]
+    private Image Map_img;
+
+
+    [SerializeField]
+    private Button TeamColor1_Btn;
+
+    [SerializeField]
+    private Button TeamColor2_Btn;
+
+    [SerializeField]
+    private Button TeamColor3_Btn;
+
+    [SerializeField]
+    private Button TeamColor4_Btn;
+
+    [SerializeField]
+    private Button Original_Btn;
+
+    [SerializeField]
+    private Button TimeAttack_Btn;
+
+    [SerializeField]
+    private Button GameStart_Btn;
+
+
+    [SerializeField]
+    private Text Team1_Text;
+
+    [SerializeField]
+    private Text Team2_Text;
+
+    [SerializeField]
+    private Text Team3_Text;
+
+    [SerializeField]
+    private Text Team4_Text;
+
+
+    [SerializeField]
+    private Text ID1_Text;
+
+    [SerializeField]
+    private Text ID2_Text;
+
+    [SerializeField]
+    private Text ID3_Text;
+
+    [SerializeField]
+    private Text ID4_Text;
+
+    #endregion
+
+
+
+    #region 업그레이드 패널
     [Header("Avatar Panel")]
     [SerializeField]
-    private GameObject Avatar_Panel;
+    private GameObject Upgrade_Panel;
 
     private enum DropDownMenu
     {
@@ -55,25 +123,20 @@ public class Intro : MonoBehaviour
     [SerializeField]
     private DropDownMenu menu_list;
 
-    [SerializeField]
-    private Dropdown dropdown_Avatar;
 
-    [SerializeField]
-    private List<Button> AvatarBtn_List;
     #endregion
 
-    #region 샵 패널
+
+
+    #region 옵션 패널
     [Header("Shop Panel")]
     [SerializeField]
-    private GameObject Shop_Panel;
-
-    [SerializeField]
-    private Dropdown dropdown_Shop;
-
-    [SerializeField]
-    private Text Spec_Text;
+    private GameObject Option_Panel;
     #endregion
 
+
+
+    #region 기타
     [Header("기타")]
     [SerializeField]
     private GameObject Leader_A;
@@ -89,6 +152,10 @@ public class Intro : MonoBehaviour
 
     public int timer = 3;
 
+    #endregion
+
+
+
     private void Awake()
     {
         dataManager = new DataManager();
@@ -98,99 +165,30 @@ public class Intro : MonoBehaviour
     private void Start()
     {
         BackButton = transform.GetChild(0).GetComponent<Button>();
-        Title_Panel = transform.GetChild(1).gameObject;
-        Shop_Panel = transform.GetChild(2).gameObject;
-        Avatar_Panel = transform.GetChild(3).gameObject;
+
+        Title_Panel = transform.GetChild(0).gameObject;
+        Setup_Panel = transform.GetChild(1).gameObject;
+        Upgrade_Panel = transform.GetChild(2).gameObject;
+        Option_Panel = transform.GetChild(3).gameObject;
+
+
+        Init_FuntionUI();
 
         TitlePanel_On();
 
-        Init_FuntionUI();       
+             
     }
 
     private void Init_FuntionUI()
     {
         //시작 시 초기화할 함수들
+
+        //Title_Panel = transform.GetChild(0).gameObject;
         BackButton.onClick.AddListener(TitlePanel_On);
-        Option_Btn.onClick.AddListener(AvatarPanel_On);
-        Shop_Btn.onClick.AddListener(ShopPanel_On);
+
         Exit_Btn.onClick.AddListener(Exit);
     }
 
-    #region 샵
-    private void SetDropDownOption_Shop()
-    {
-        dropdown_Shop.options.Clear();
-
-        Dropdown.OptionData option_Healer = new Dropdown.OptionData();
-        Dropdown.OptionData option_Halberdier = new Dropdown.OptionData();
-        Dropdown.OptionData option_Paladin = new Dropdown.OptionData();
-
-        option_Healer.text = "회복병";
-        option_Halberdier.text = "도끼병";
-        option_Paladin.text = "망치..병..?";
-
-        dropdown_Shop.options.Add(option_Healer);
-        dropdown_Shop.options.Add(option_Halberdier);
-        dropdown_Shop.options.Add(option_Paladin);        
-    }
-
-    private void Shop_Function()
-    {
-        switch (dropdown_Shop.value)
-        {
-            case 0:
-                Debug.Log("회복병");
-                Spec_Text.text = scriptsData.Scripts[0].Script;
-                break;
-
-            case 1:
-                Debug.Log("도끼병");
-                Spec_Text.text = scriptsData.Scripts[1].Script;
-                break;
-
-            case 2:
-                Debug.Log("망치맨");
-                Spec_Text.text = scriptsData.Scripts[2].Script;
-                break;
-        }
-    }
-    #endregion
-
-    #region 아바타
-    private void SetDropdownOption_Avatar()
-    {
-        dropdown_Avatar.options.Clear();
-
-        Dropdown.OptionData option_head = new Dropdown.OptionData();
-        Dropdown.OptionData option_body = new Dropdown.OptionData();
-        Dropdown.OptionData option_weapon = new Dropdown.OptionData();
-
-        option_head.text = "머리";
-        option_body.text = "몸";
-        option_weapon.text = "무기";
-
-        dropdown_Avatar.options.Add(option_head);
-        dropdown_Avatar.options.Add(option_body);
-        dropdown_Avatar.options.Add(option_weapon);
-    }
-
-    //update에 넣기
-    private void DropDownSelection_Avatar()
-    {
-        if (dropdown_Avatar.value == 0)
-        {
-            Debug.Log("111111");
-        }
-        else if (dropdown_Avatar.value == 1)
-        {
-            Debug.Log("2222222");
-        }
-        else if (dropdown_Avatar.value == 2)
-        {
-            Debug.Log("3333333");
-        }
-    }
-    #endregion
 
     public void GameStart_Btn_Clicekd()
     {
@@ -202,46 +200,91 @@ public class Intro : MonoBehaviour
     {
         //패널 on/off
         Title_Panel.SetActive(true);
-        Avatar_Panel.SetActive(false);
-        Shop_Panel.SetActive(false);
-        
-        BackButton.enabled = false;
+        Setup_Panel.SetActive(false);
+        Upgrade_Panel.SetActive(false);
+        Option_Panel.SetActive(false);
+
     
         //오브젝트 값 연결
         Login_Panel = Title_Panel.transform.GetChild(1).gameObject;
         Btn_Panel = Title_Panel.transform.GetChild(2).gameObject;
 
-        GameStart_Btn = Title_Panel.transform.GetChild(2).GetChild(0).GetComponent<Button>();
-        Shop_Btn = Title_Panel.transform.GetChild(2).GetChild(1).GetComponent<Button>();
-        Option_Btn = Title_Panel.transform.GetChild(2).GetChild(2).GetComponent<Button>();
-        Exit_Btn = Title_Panel.transform.GetChild(2).GetChild(3).GetComponent<Button>();
+        Ready_Btn = Btn_Panel.transform.GetChild(0).GetComponent<Button>();
+        Upgrade_Btn = Btn_Panel.transform.GetChild(0).GetComponent<Button>();
+        Option_Btn = Btn_Panel.transform.GetChild(0).GetComponent<Button>();
+        Exit_Btn = Btn_Panel.transform.GetChild(0).GetComponent<Button>();
+
+
+        Ready_Btn.onClick.AddListener(SetupPanel_On);
+        Upgrade_Btn.onClick.AddListener(UpgradePanel_On);
+        Option_Btn.onClick.AddListener(OptionPanel_On);
+        Exit_Btn.onClick.AddListener(Exit);
 
         CheckLogin();
     }
 
-    public void ShopPanel_On()
+    public void SetupPanel_On()
     {
-        Title_Panel.SetActive(false);
-        Avatar_Panel.SetActive(false);
-        Shop_Panel.SetActive(true);
+        Setup_Panel.SetActive(true);
+        Upgrade_Panel.SetActive(false);
+        Option_Panel.SetActive(false);
 
-        BackButton.enabled = true;
-
-        dropdown_Shop = Shop_Panel.transform.GetChild(0).GetChild(0).GetComponent<Dropdown>();
-        Spec_Text = Shop_Panel.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Text>();
         
-        SetDropDownOption_Shop();
-        dropdown_Shop.onValueChanged.AddListener(delegate { Shop_Function(); });
+
+        GameObject Selection = Setup_Panel.transform.GetChild(0).gameObject;
+
+        TeamColor1_Btn = Selection.transform.GetChild(0).GetChild(0).GetComponent<Button>();
+        TeamColor2_Btn = Selection.transform.GetChild(1).GetChild(0).GetComponent<Button>();
+        TeamColor3_Btn = Selection.transform.GetChild(2).GetChild(0).GetComponent<Button>();
+        TeamColor4_Btn = Selection.transform.GetChild(3).GetChild(0).GetComponent<Button>();
+
+        Map_img = Selection.transform.GetChild(4).GetComponent<Image>();
+        Original_Btn = Selection.transform.GetChild(5).GetComponent<Button>();
+        Original_Btn = Selection.transform.GetChild(6).GetComponent<Button>();
+        GameStart_Btn = Selection.transform.GetChild(7).GetComponent<Button>();
+
+
+        Team1_Text = Selection.transform.GetChild(0).GetChild(1).GetComponent<Text>();
+        Team2_Text = Selection.transform.GetChild(1).GetChild(1).GetComponent<Text>();
+        Team3_Text = Selection.transform.GetChild(2).GetChild(1).GetComponent<Text>();
+        Team4_Text = Selection.transform.GetChild(3).GetChild(1).GetComponent<Text>();
+
+        ID1_Text = Selection.transform.GetChild(0).GetChild(2).GetComponent<Text>();
+        ID2_Text = Selection.transform.GetChild(1).GetChild(2).GetComponent<Text>();
+        ID3_Text = Selection.transform.GetChild(2).GetChild(2).GetComponent<Text>();
+        ID4_Text = Selection.transform.GetChild(3).GetChild(2).GetComponent<Text>();
+
+
+        Original_Btn.onClick.AddListener(OriginalBtn_Clicked);
+        TimeAttack_Btn.onClick.AddListener(TimeAttackBtn_Clicked);
+        GameStart_Btn.onClick.AddListener(GameStart_Btn_Clicekd);
+
+        TeamColor1_Btn.onClick.AddListener(Change_Color);
+
+
+
     }
 
-    public void AvatarPanel_On()
+    private void Change_Color()
     {
-        SetDropdownOption_Avatar();
-        Avatar_Panel.SetActive(true);
-        Title_Panel.SetActive(false);
-        Shop_Panel.SetActive(false);
+        TeamColor1_Btn.image.color = Color.black;
+    }
 
-        BackButton.enabled = true; ;
+
+
+    public void UpgradePanel_On()
+    {
+        Setup_Panel.SetActive(false);
+        Upgrade_Panel.SetActive(true);
+        Option_Panel.SetActive(false);
+
+    }
+
+    public void OptionPanel_On()
+    {
+        Setup_Panel.SetActive(false);
+        Upgrade_Panel.SetActive(false);
+        Option_Panel.SetActive(true);
     }
 
     public void CheckLogin()
@@ -285,5 +328,16 @@ public class Intro : MonoBehaviour
 #endif
 
         Application.Quit();
+    }
+
+
+    public void OriginalBtn_Clicked()
+    {
+        //맵이미지 Original로 변경
+    }
+
+    public void TimeAttackBtn_Clicked()
+    {
+        //맵이미지 Original로 변경
     }
 }
