@@ -29,31 +29,59 @@ public class Flag : MonoBehaviour
     { 
         skinnedmesh.material = ColorManager.instance.Flag_Color[TeamNum];        
     }
-    private void Update()
-    {
-        if (Current_Gauge / Total_Gauge >= 1 && !isOccupied)
-        {
-            isOccupied = true;
-        }
 
+    private int ParentLayer()
+    {
+        return this.transform.parent.gameObject.layer;
     }
-    
+    private int UnitLayer(Unit_Occupation unit)
+    {
+        return unit.gameObject.layer;
+    }
+
+
     public IEnumerator OnOccu_co()
     {
+        // Case1 다른진영 -> 중립 / 중립 -> 본인진영
+        // Case2 중립 -> 본인진영
+
         // 점령 중
         unit_O.OccuHUD.Ply_OccuHUD(unit_O.Flag_Num, true);
 
-        while (isOccupating && Current_Gauge <= 100f)
+        isOccupating = true;
+        // 점령지역을 점령할 때
+        while (isOccupied && isOccupating && Current_Gauge >= 0f && !ParentLayer().Equals(UnitLayer(unit_O))) 
+        {
+            Current_Gauge -= Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20); // 나중에 인원수에 따른 배율 넣어야해용
+            OccuHUD.Ply_Slider(6, unit_O.Flag_Num, Current_Gauge, Total_Gauge);
+            Debug.Log(Current_Gauge);
+            yield return null;
+        }
+
+        if (Current_Gauge <= 0f && isOccupied)
+        {
+            isOccupied = false;   // 상대진영 -> 중립
+            this.transform.parent.gameObject.layer = 0;
+        }
+
+        // 중립지역을 점령할 때
+        while (!isOccupied && isOccupating && Current_Gauge <= Total_Gauge) 
         {
             Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20); // 나중에 인원수에 따른 배율 넣어야해용
             OccuHUD.Ply_Slider(6, unit_O.Flag_Num, Current_Gauge, Total_Gauge);
             Debug.Log(Current_Gauge);
             yield return null;
         }
-        isOccupied = true;
+
+        if (Current_Gauge >= Total_Gauge && !isOccupied)
+        {
+            isOccupied = true;   // 중립 -> 본인진영
+            this.transform.parent.gameObject.layer = UnitLayer(unit_O);
+        }
+
         unit_O.OccuHUD.Change_Color(6, unit_O.Flag_Num);
 
-        this.transform.parent.gameObject.layer = unit_O.gameObject.layer;
+        
         yield return null;
     }
     public IEnumerator OffOccu_co()
@@ -61,11 +89,18 @@ public class Flag : MonoBehaviour
         unit_O.OccuHUD.Ply_OccuHUD(unit_O.Flag_Num, false);
         yield return new WaitForSeconds(3.0f);
 
-        while (!isOccupied && !isOccupating && Current_Gauge >= 0f) // 점령 중도 아니고 
+        // 점령된 곳에서 점령하다가 나왔을 때
+        while (isOccupied && !isOccupating && Current_Gauge <= 100f)
+        {
+            Current_Gauge += Time.deltaTime * occu_Speed;
+        }
+        // 중립에서 점령 하다가 나갔을 때
+        while (!isOccupied && !isOccupating && Current_Gauge >= 0f) 
         {
             Current_Gauge -= Time.deltaTime * occu_Speed;
             yield return null;
         }
+        
         
         yield return null;
     }

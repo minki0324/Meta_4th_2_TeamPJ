@@ -22,8 +22,7 @@ public class Unit_Occupation : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Flag"))
         {
-            flag = other.gameObject.GetComponentInChildren<Flag>();
-            flag.isOccupating = true;
+            flag = other.gameObject.GetComponentInChildren<Flag>();            
             flag.unit_O = this;
 
             for (int i = 0; i < OccuHUD.FlagArray.Length; i++)
