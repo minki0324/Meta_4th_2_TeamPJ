@@ -11,41 +11,47 @@ public class OccupationHUD : MonoBehaviour
 
     [SerializeField] private Image[] Occu_Img_Color; // 점령 중인 팀 색
     public Flag[] FlagArray;  // 플래그 컴포넌트 배열
-    public Slider OccuSlider;
-    private Color colorTemp;
+    public Slider[] OccuSlider;
+    private Color ColorTemp;
 
     private void Awake()
     {
-        FlagArray = FindObjectsOfType<Flag>();
-        
+        FlagArray = FindObjectsOfType<Flag>();        
         Occu_Img_Color = GetComponentsInChildren<Image>();
-        OccuSlider = GetComponentInChildren<Slider>();
-        for (int i = 0; i < 5; i++)
+        OccuSlider = GetComponentsInChildren<Slider>();
+
+        for (int i = 0; i < Occu_Img_Color.Length * 0.5f; i++) 
         {
             Occu_Img_Color[(i * 2) + 1].transform.parent.gameObject.SetActive(false);
+           
         }
+    }    
 
-    }
-
-    private void Update()
+    public void Ply_Slider(int TeamNum, int FlagNum, float Current, float Max)
     {
+        ColorTemp = ColorManager.instance.Teamcolor[TeamNum];
+        ColorTemp.a = 0.431f;
 
+        Occu_Img_Color[FlagNum * 4 + 2].color = ColorTemp; 
+        OccuSlider[FlagNum].value = Current / Max;   // 슬라이더 현재 게이지
     }
-
-    public void ObjEnable(bool act)
+ 
+    public void Ply_OccuHUD(int FlagNum, bool Act)
     {
-        Occu_Img_Color[1].transform.parent.gameObject.SetActive(act);
-
+        Occu_Img_Color[FlagNum * 4 + 1].transform.parent.gameObject.SetActive(Act);
+        Occu_Img_Color[FlagNum * 4 + 3].transform.parent.gameObject.SetActive(Act);
     }
 
     public void Change_Color(int TeamNum, int FlagNum)
     {        
-        colorTemp = ColorManager.instance.Teamcolor[TeamNum];
-        colorTemp.a = 0.4f;
+        ColorTemp = ColorManager.instance.Teamcolor[TeamNum];
+        ColorTemp.a = 0.431f;
 
-        Occu_Img_Color[FlagNum * 2].color = colorTemp;
-        Occu_Img_Color[FlagNum * 2 + 1].color = colorTemp;
-        FlagArray[FlagNum].Change_Flag_Color(TeamNum);
+        Occu_Img_Color[FlagNum * 4].color = ColorTemp; // HUD 상단               
+
+        Occu_Img_Color[FlagNum * 4 + 1].color = ColorTemp; // 플레이어에게 뜰 HUD   
+
+        FlagArray[FlagNum].Change_Flag_Color(TeamNum); // 깃발 색 변경
 
     }
 

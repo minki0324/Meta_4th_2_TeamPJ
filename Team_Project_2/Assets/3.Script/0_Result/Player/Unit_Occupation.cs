@@ -9,8 +9,8 @@ public class Unit_Occupation : MonoBehaviour
     
 
     private Flag flag; // 깃발 스크립트
-    private OccupationHUD OccuHUD;
-    public int FlagNum=0;
+    public OccupationHUD OccuHUD;
+    public int Flag_Num=0;
 
     private void Awake()
     {
@@ -20,41 +20,43 @@ public class Unit_Occupation : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        flag = other.gameObject.GetComponentInChildren<Flag>();
-
-        for (int i = 0; i < OccuHUD.FlagArray.Length; i++)
-        {
-            
-            if (flag.Equals(OccuHUD.FlagArray[i]))
-            {
-                
-                break;
-            }
-            FlagNum++;
-        }
-
-
         if (other.gameObject.CompareTag("Flag"))
         {
-            if (gameObject.layer.Equals(8))
+            flag = other.gameObject.GetComponentInChildren<Flag>();
+            flag.isOccupating = true;
+            flag.unit_O = this;
+
+            for (int i = 0; i < OccuHUD.FlagArray.Length; i++)
             {
-                OccuHUD.Change_Color((int)Team.Team3, FlagNum);
-                flag.transform.parent.gameObject.layer = this.gameObject.layer;
+                if (flag.Equals(OccuHUD.FlagArray[i]))
+                {
+                    Flag_Num = i;
+                    break;
+                }
+                ;
             }
 
+            if (gameObject.layer.Equals(8))
+            {
+                
+                StartCoroutine(flag.OnOccu_co());
+
+            }
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Flag"))
         {
-            if (gameObject.CompareTag("Player"))
+            if (gameObject.layer.Equals(8))
             {
-                
+
+                StartCoroutine(flag.OffOccu_co());
+
             }
 
         }
-        FlagNum = 0;
+        //Flag_Num = 0;
     }
 
 

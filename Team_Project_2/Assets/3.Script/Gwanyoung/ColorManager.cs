@@ -15,9 +15,9 @@ public class ColorManager : MonoBehaviour
     
 
 
-    public Color[] Teamcolor; // ÆÀ ÄÃ·¯
-    public Material[] Flag_Color; // ±ê¹ß »ö¹Ù²Ü Marterial
-    public Texture2D[] Color_Texture;
+    public Color[] Teamcolor; // ÆÀ Color
+    public Material[] Flag_Color; // ±ê¹ß Material
+    public Texture2D[] Color_Texture; 
 
 
     private void Awake()    
