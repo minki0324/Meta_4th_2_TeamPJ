@@ -16,9 +16,6 @@ public class Gate : MonoBehaviour
     {
         Gate_Ani = GetComponent<Animator>();
         Gate_Col = GetComponent<Collider>();
-        Gate_Ani.SetTrigger("OpenDoor");
-        isOpen = true;
-        Gate_Col.enabled = false;
     }
     private void OnTriggerEnter(Collider other)
     {
