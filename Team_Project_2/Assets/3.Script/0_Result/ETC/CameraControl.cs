@@ -28,8 +28,21 @@ public class CameraControl : MonoBehaviour
         // Cursor.lockState = CursorLockMode.Locked;
         
     }
+
+    private void Update()
+    {
+        if(Player == null)
+        {
+            Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Ply_Controller>().transform;
+        }
+    }
     private void LateUpdate()
     {
+        if(!GameManager.instance.isLive)
+        {
+            return;
+        }
+
         Yaixs += Input.GetAxis("Mouse X") * RotSen;  // 카메라 좌우
         Xaixs += -Input.GetAxis("Mouse Y") * RotSen; // 카메라 상하
 

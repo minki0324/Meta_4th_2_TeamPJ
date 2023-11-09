@@ -28,26 +28,6 @@ public class Upgrade : MonoBehaviour
        
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            if (!isTab)
-            {
-                GameManager.instance.Stop();
-                UI.gameObject.SetActive(true);
-            }
-            else
-            {
-                GameManager.instance.Resume();
-                Time.timeScale = 1f;
-                UI.gameObject.SetActive(false);
-            }
-            isTab = !isTab;
-
-
-        }
-    }
     public void UpgradeMaxCountUp()
     {
         if (GameManager.instance.Gold >= 200)

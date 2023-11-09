@@ -84,6 +84,9 @@ namespace SimpleProceduralTerrainProject
         List<GameObject> flagPositions_List = new List<GameObject>();
         private Dictionary<string, List<Vector3>> cachedPaths = new Dictionary<string, List<Vector3>>();
 
+        public GameObject[] Leader_Prefabs;
+        public GameObject start_Btn;
+
         //Private
         private FractalNoise m_groundNoise, m_mountainNoise, m_treeNoise, m_detailNoise;
         private Terrain[,] m_terrain;
@@ -128,7 +131,7 @@ namespace SimpleProceduralTerrainProject
                 var nearestFlag = FindNearestFlag(basePos.transform.position);
                 if (nearestFlag.HasValue)
                 {
-                    var path = Pathfinding(basePos.transform.position, nearestFlag.Value);
+                    var path = Pathfinding(basePos.transform.position + Vector3.forward, nearestFlag.Value);
                     DrawRoad(path);
                 }
             }
@@ -235,6 +238,10 @@ namespace SimpleProceduralTerrainProject
                 terrainList[i].GetComponent<TerrainCollider>().enabled = false;
                 terrainList[i].GetComponent<TerrainCollider>().enabled = true;
             }
+            GameManager.instance.isLive = true;
+            Terra.GetComponent<InitNavMesh>().GenerateNavmesh();
+            start_Btn.SetActive(false);
+
         }
         #endregion
         #region 길찾기 알고리즘
@@ -305,7 +312,6 @@ namespace SimpleProceduralTerrainProject
                     m_terrain[x, z] = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
 
                     m_terrain[x, z].transform.SetParent(Terra.transform);
-
                     m_terrain[x, z].transform.position = new Vector3(m_terrainSize * x + m_offset.x, 0, m_terrainSize * z + m_offset.y);
                     m_terrain[x, z].heightmapPixelError = m_pixelMapError;
                     m_terrain[x, z].basemapDistance = m_baseMapDist;
@@ -637,7 +643,7 @@ namespace SimpleProceduralTerrainProject
                         Terrain terrain = m_terrain[terrainIndexX, terrainIndexZ];
 
 
-                        baseCampPosition = new Vector3(posX, 5, posZ);
+                        baseCampPosition = new Vector3(posX, 10, posZ);
                         bool tooCloseToOtherBases = false;
                         bool tooClostToFlag = false;
 
@@ -673,6 +679,7 @@ namespace SimpleProceduralTerrainProject
                     // 베이스 캠프 소환
                     GameObject baseCamp = Instantiate(Base_PreFabs[i % Base_PreFabs.Length], baseCampPosition, Quaternion.identity);
 
+                    
                     baseCamps.Add(baseCamp);
                     baseCampPositions.Add(baseCamp);
                     // 베이스 캠프를 원점을 바라보도록 회전 설정
@@ -699,9 +706,9 @@ namespace SimpleProceduralTerrainProject
                     RemoveBaseCamps(baseCamps);
                     SpawnBaseCamps(flagPositions);
                 }
-
-
             }
+            ColorSetting(baseCamps);
+            SpawnPlayer(baseCamps);
         }
 
         void RemoveBaseCamps(List<GameObject> baseCamps)
@@ -724,6 +731,59 @@ namespace SimpleProceduralTerrainProject
 
             flags.Clear(); // 베이스 캠프 목록 초기화
             flagPositions_List.Clear(); // 베이스 캠프 위치 목록 초기화
+        }
+
+        void ColorSetting(List<GameObject> baseCamps)
+        {
+            for(int i = 0; i < baseCamps.Count; i++)
+            {
+                if(baseCamps[i].gameObject.layer == 0)
+                {
+                    baseCamps[i].gameObject.layer = i + 6;
+                }
+            }
+
+            for(int i = 0; i < baseCamps.Count; i++)
+            {
+                ColorSet colorSet = baseCamps[i].GetComponentInChildren<ColorSet>();
+                switch (baseCamps[i].gameObject.layer)
+                {
+                    case 6:
+                        colorSet.RecursiveSearchAndSetTexture(baseCamps[i].transform, GameManager.instance.Color_Index);
+                        break;
+                    case 7:
+                        colorSet.RecursiveSearchAndSetTexture(baseCamps[i].transform, GameManager.instance.T1_Color);
+                        break;
+                    case 8:
+                        colorSet.RecursiveSearchAndSetTexture(baseCamps[i].transform, GameManager.instance.T2_Color);
+                        break;
+                    case 9:
+                        colorSet.RecursiveSearchAndSetTexture(baseCamps[i].transform, GameManager.instance.T3_Color);
+                        break;
+                }
+            }
+        }
+
+        void SpawnPlayer(List<GameObject> baseCamps)
+        {
+            for (int i = 0; i < baseCamps.Count; i++)
+            {
+                switch (baseCamps[i].gameObject.layer)
+                {
+                    case 6:
+                        Instantiate(Leader_Prefabs[0], baseCamps[i].transform.position, Quaternion.identity);
+                        break;
+                    case 7:
+                        Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
+                        break;
+                    case 8:
+                        Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
+                        break;
+                    case 9:
+                        Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
+                        break;
+                }
+            }
         }
         #endregion
     }
