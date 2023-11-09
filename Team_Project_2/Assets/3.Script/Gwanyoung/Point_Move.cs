@@ -7,7 +7,7 @@ public class Point_Move : MonoBehaviour
 {
     // 포인트지점까지 이동
 
-    private GameObject[] FlagPoint; // 플래그포인트
+    public GameObject[] FlagPoint; // 플래그포인트
     private NavMeshAgent navMesh;
     private Vector3 currentPos;
     private int Flag_Num;
@@ -32,7 +32,6 @@ public class Point_Move : MonoBehaviour
                 isMove = true;
                 navMesh.SetDestination(FlagPoint[Flag_Num].transform.position);   // 랜덤으로 Flag를 향해 이동
             }
-            
         }
         else
         {
