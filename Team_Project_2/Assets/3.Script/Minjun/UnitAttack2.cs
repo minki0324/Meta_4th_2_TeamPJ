@@ -91,6 +91,7 @@ public class UnitAttack2 : MonoBehaviour
         else
         {
             leader = player.gameObject;
+        
         }
 
       
@@ -98,9 +99,10 @@ public class UnitAttack2 : MonoBehaviour
 
     private void Update()
     {
-        if (!isDie)
+
+        if (!isDie && leader != player.gameObject)
         {
-            if (leaderState != null)
+            if (!leaderState.isDead)
             {
                 switch (leaderState.bat_State)
                 {
@@ -114,11 +116,29 @@ public class UnitAttack2 : MonoBehaviour
             }
             else
             {
-               
+
                 AttackOrder();
-                
-                
+
+
             }
+        }
+        if(!isDie && GameManager.instance.isDead && leader == player.gameObject)
+        {
+            switch (player.CurrentMode)
+            {
+                case Ply_Controller.Mode.Follow:
+                    FollowOrder();
+                    break;
+                case Ply_Controller.Mode.Attack:
+                    AttackOrder();
+                    break;
+                case Ply_Controller.Mode.Stop:
+                    break;
+            }
+        }
+        else
+        {
+            AttackOrder();
         }
         // 미니언컨트롤러로 옮길필요성있음.
         if (HP <= 0)
@@ -131,56 +151,57 @@ public class UnitAttack2 : MonoBehaviour
             isDie = true;
         }
     }
-    //레이어 감지후 가까운 타겟 설정하는메소드
-    Transform GetNearestTarget(RaycastHit[] hits)
-    {
-        Transform nearest = null;
-        float closestDistance = float.MaxValue;
-
-        foreach (RaycastHit hit in hits)
+        //레이어 감지후 가까운 타겟 설정하는메소드
+        Transform GetNearestTarget(RaycastHit[] hits)
         {
-            if (hit.transform.CompareTag("SpawnPoint")) {
-                continue;
-            }
-            float distance = Vector3.Distance(transform.position, hit.transform.position);
-            
-           
-            if (distance < closestDistance && !hit.transform.CompareTag("SpawnPoint"))
+            Transform nearest = null;
+            float closestDistance = float.MaxValue;
+
+            foreach (RaycastHit hit in hits)
             {
-                closestDistance = distance;
-                nearest = hit.transform;
+                if (hit.transform.CompareTag("SpawnPoint"))
+                {
+                    continue;
+                }
+                float distance = Vector3.Distance(transform.position, hit.transform.position);
+
+
+                if (distance < closestDistance && !hit.transform.CompareTag("SpawnPoint"))
+                {
+                    closestDistance = distance;
+                    nearest = hit.transform;
+                }
             }
+
+            return nearest;
         }
+        //적을감지했을때 적을바라보는 메소드
+        private void LookatTarget(Transform target)
+        {
 
-        return nearest;
-    }
-    //적을감지했을때 적을바라보는 메소드
-    private void LookatTarget(Transform target)
-    {
+            Vector3 AttackDir = target.position - transform.position;
+            AttackDir.y = 0; // Y 축 이동을 무시하여 기울이지 않음
+            Quaternion rotation = Quaternion.LookRotation(AttackDir);
+            transform.rotation = rotation;
+        }
+        //적을감지했을때 공격하기위해 적에게 이동하는메소드
 
-        Vector3 AttackDir = target.position - transform.position;
-        AttackDir.y = 0; // Y 축 이동을 무시하여 기울이지 않음
-        Quaternion rotation = Quaternion.LookRotation(AttackDir);
-        transform.rotation = rotation;
-    }
-    //적을감지했을때 공격하기위해 적에게 이동하는메소드
-    
-    //감지범위 그리는메소드
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(transform.position, scanRange);
+        //감지범위 그리는메소드
+        //private void OnDrawGizmos()
+        //{
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawWireSphere(transform.position, scanRange);
 
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawWireSphere(transform.position, AttackRange);
-    //}
+        //    Gizmos.color = Color.green;
+        //    Gizmos.DrawWireSphere(transform.position, AttackRange);
+        //}
 
 
-    //닿은 콜라이더와 오브젝트가 레이어가 다르고
-    //맞고있는중이 아니며
-    //닿은 콜라이더가 검일때
-    // 즉, 닿은 무기의 웨폰의 레이어가 자신과 다를때 히트
-    private void OnTriggerEnter(Collider other)
+        //닿은 콜라이더와 오브젝트가 레이어가 다르고
+        //맞고있는중이 아니며
+        //닿은 콜라이더가 검일때
+        // 즉, 닿은 무기의 웨폰의 레이어가 자신과 다를때 히트
+        private void OnTriggerEnter(Collider other)
     {
 
         if (other.CompareTag("Weapon") && (other.gameObject.layer != gameObject.layer) && !isHitting)
@@ -249,7 +270,7 @@ public class UnitAttack2 : MonoBehaviour
         HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
         //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
         if(gameObject.layer == TeamLayer) { 
-        player.UnitList_List.Remove(gameObject);
+        //player.UnitList_List.Remove(gameObject);
         }
         else
         {
@@ -333,7 +354,7 @@ public class UnitAttack2 : MonoBehaviour
         if (nearestTarget != null) //탐지된 적이 있을때
         {
 
-        LookatTarget(nearestTarget);
+            LookatTarget(nearestTarget);
             float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
             if (attackDistance <= AttackRange)
             {
@@ -372,7 +393,7 @@ public class UnitAttack2 : MonoBehaviour
              1. 리더가 Attack 명령을 내렸지만 너무멀어서 공격할 적이 없을경우
              2. 리더가 없을경우 
              */
-            if(leaderState == null) // 리더가 없으면 제자리에서 대기
+            if(leader == null) // 리더가 없으면 제자리에서 대기
             {
                 ani.SetBool("Move", false);
                 navMeshAgent.isStopped = true;
@@ -390,7 +411,10 @@ public class UnitAttack2 : MonoBehaviour
     private void FollowOrder()
     {
         ani.SetBool("Move", true);
+        if (navMeshAgent.isStopped) { 
         navMeshAgent.isStopped = false;
+        }   
         navMeshAgent.SetDestination(leader.transform.position);
     }
+    
 }

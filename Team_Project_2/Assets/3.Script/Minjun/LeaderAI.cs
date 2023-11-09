@@ -29,6 +29,10 @@ public class LeaderAI : Unit
     }
     private void Update()
     {
+        if (!GameManager.instance.isLive)
+        {
+            return;
+        }
 
         // 항상 주변에 적이있는지 탐지
         EnemyDitect();
@@ -135,6 +139,7 @@ public class LeaderAI : Unit
         {
             // _flag 주변에서 trigger에 닿아 있는 객체 검출
             Collider[] colliders = Physics.OverlapSphere(_flag.transform.position, radius, layerMask, QueryTriggerInteraction.Collide);
+            
 
             // 최소 카운트 갱신
             if (colliders.Length < minTouchingCount)

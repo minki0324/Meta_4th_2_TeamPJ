@@ -24,6 +24,12 @@ public class EnemySpawn : MonoBehaviour
     }
     private void Update()
     {
+
+        if (!GameManager.instance.isLive)
+        {
+            return;
+        }
+
         if (leaderState.isDead)
         {
             leaderState.canSpawn = false;
