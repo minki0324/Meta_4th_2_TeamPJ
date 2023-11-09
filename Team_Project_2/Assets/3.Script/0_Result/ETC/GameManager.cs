@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
 
     [SerializeField] private GameObject Option;
-    private bool isEnableOp = false;
 
     [Header("게임 플레이")]
     public float currentTime = 0f;  // 게임이 시작하고 지난 시간
