@@ -209,8 +209,10 @@ public class Intro : MonoBehaviour
     public int Team3_Color;
     public int Team4_Color;
 
-    #endregion
 
+
+
+    #endregion
 
 
     private void Awake()
@@ -229,6 +231,16 @@ public class Intro : MonoBehaviour
         Init_FuntionUI();
 
         TitlePanel_On(); 
+    }
+
+
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            Login();
+        }
     }
 
     private void Init_FuntionUI()
@@ -285,6 +297,7 @@ public class Intro : MonoBehaviour
         Option_Btn.onClick.AddListener(OptionPanel_On);
         Exit_Btn.onClick.AddListener(Exit);
 
+       
         CheckLogin();
     }
 
@@ -551,6 +564,9 @@ public class Intro : MonoBehaviour
             inputField = Login_Panel.transform.GetChild(0).GetComponent<InputField>();
             Confirm_Btn = Login_Panel.transform.GetChild(1).GetComponent<Button>();
             Confirm_Btn.onClick.AddListener(Login);
+
+            //시작시 inputField에 커서
+            inputField.ActivateInputField();
         }
         else
         {
@@ -565,7 +581,7 @@ public class Intro : MonoBehaviour
         //임시 아이디 sunny
         if(inputField.text == id)
         {
-            isLogined = true;
+            isLogined = true;   
         }
         else
         {

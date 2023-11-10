@@ -264,7 +264,7 @@ Skybox:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23348768}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CustomSkybox: {fileID: 0}
 --- !u!114 &23348775
 MonoBehaviour:
@@ -275,13 +275,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 23348768}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96883ed8fafc88244961d849dd5d3813, type: 3}
+  m_Script: {fileID: 11500000, guid: 6cda7915cdf9545428d6e2a6d00066b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  night_M: {fileID: 2100000, guid: d3823126980dd98479f7761e6d47338a, type: 2}
-  evening_M: {fileID: 2100000, guid: 6e00f8b39315691449f256740a5cb862, type: 2}
+  night_M: {fileID: 2100000, guid: d1fdb8e44b28da34d9e922cca0bc740e, type: 2}
+  evening_M: {fileID: 2100000, guid: 44d0573bf6d91e447b62f3aff840f2ae, type: 2}
   afternoon_M: {fileID: 2100000, guid: 67950864b84c5db4f9eee7ca51c85571, type: 2}
-  current_material: {fileID: 0}
+  skybox: {fileID: 0}
 --- !u!1 &272420368
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5233dc0efe592e34c9bb285f65dc2b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Plane1: {fileID: 0}
   surfaces: []
 --- !u!1 &527160030
 GameObject:
@@ -656,6 +655,7 @@ MonoBehaviour:
   isLive: 1
   Current_HP: 150
   Max_Hp: 150
+  isDead: 0
   Damage: 20
   Regeneration: 0.5
   respawnTime: 10
@@ -663,6 +663,9 @@ MonoBehaviour:
   Current_MinionCount: 0
   isPossible_Upgrade_1: 0
   isPossible_Upgrade_2: 0
+  T1_Color: 0
+  T2_Color: 0
+  T3_Color: 0
 --- !u!4 &1503504437
 Transform:
   m_ObjectHideFlags: 0
@@ -1190,6 +1193,8 @@ MonoBehaviour:
   Base_Num: 0
   flag: []
   flag_Num: 0
+  Leader_Prefabs: []
+  start_Btn: {fileID: 0}
 --- !u!114 &2794349095527052194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21575,6 +21580,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f96b4b4679455c49bb41a37f9a2642d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OccuHUD: {fileID: 0}
+  Flag_Num: 0
+  Team_Color: 0
 --- !u!1 &7734058830170692895
 GameObject:
   m_ObjectHideFlags: 0
@@ -22766,6 +22774,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9814d3af0b00a445bbb5f07b98bca95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Total_Gauge: 100
+  Current_Gauge: 0
+  Soldier_Multi: 1.03
+  occu_Speed: 12
+  isOccupating: 0
+  isOccupied: 0
+  unit_O: {fileID: 0}
 --- !u!1 &8232246181901963930
 GameObject:
   m_ObjectHideFlags: 0

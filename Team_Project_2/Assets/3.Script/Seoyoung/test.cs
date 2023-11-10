@@ -9,52 +9,53 @@ public class test : MonoBehaviour
     public Material evening_M;
     public Material afternoon_M;
 
+   
 
+    
 
-    public Renderer rend;
-
-    public Material current_material;
+    Color color;
+    //public Skybox skybox;
 
     float duration = 3; //3초마다
     float smoothness = 0.1f; //부드러움? 색깔 변화 텀
 
 
-    void Start()
+    private void Awake()
     {
 
-        rend = GetComponent<Renderer>();
-        rend.material = afternoon_M;
-
-      
-
-      
-
+        RenderSettings.skybox = night_M;
+        
     }
-
-
-
     private void Update()
     {
-        //if (GameManager.instance.currentTime >= 3f)
-        //{
-        //    //this.gameObject.GetComponent<Skybox>().material = night_M;
-        //    StartCoroutine(Update_SkyBox_Night());
-        //}
 
-
+        
 
     }
 
+   
 
 
 
 
+    private IEnumerator Update_SkyBox_Night()
+    {
 
 
-    //private IEnumerator Update_SkyBox_Night()
-    //{
+        float progress = 0; //매개변수 대용
 
-       
+        float increment = smoothness / duration; //적용할 변경수준
 
-    //}
+
+        while (progress < 1)
+        {
+            Debug.Log(progress);
+            color = Color.Lerp(afternoon_M.color, night_M.color, progress);
+            RenderSettings.skybox.color = color;
+
+            progress += increment;
+            yield return new WaitForSeconds(smoothness);        //컬렉션 데이터를 하나씩 리턴
+        }
+
+    }
 }

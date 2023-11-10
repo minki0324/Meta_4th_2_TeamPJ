@@ -45,6 +45,7 @@ public class Following : MonoBehaviour
     private void Start()
     {
         //StartCoroutine(Mode_Follow_co());
+        
     }
 
     private void Update()
@@ -248,6 +249,33 @@ public class Following : MonoBehaviour
                         {
                             if (i < playernum - 2)
                             {
+                                //i가 플레이어-2보다 작으면 
+                                //i가 stoplist.count-4 보다 작다는 가정하에 i+4로 이동
+                                if (i <= Stop_List.Count - 4)
+                                {
+                                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 4].transform.position + Vector3.forward);
+                                }
+                                else
+                                {
+                                    if (i == 0)
+                                    {
+                                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
+                                    }
+                                    if (i == 1)
+                                    {
+                                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
+                                    }
+                                    if (i == 2)
+                                    {
+                                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
+                                    }
+                                    if (i == 3)
+                                    {
+                                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
+                                    }
+
+                                }
+
 
                                 Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 4].transform.position + Vector3.forward);
                             }
