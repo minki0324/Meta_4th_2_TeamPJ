@@ -47,7 +47,7 @@ public class Flag : MonoBehaviour
         // Case2 중립 -> 본인진영
 
         // 점령 중
-        if (Teamlayer.Equals(7))
+        if (Teamlayer.Equals(TeamLayerIdx.Player))
         {
             unit_O.OccuHUD.Ply_OccuHUD(unit_O.Flag_Num, true);
         }
@@ -64,8 +64,8 @@ public class Flag : MonoBehaviour
         if (Current_Gauge <= 0f && isOccupied)
         {
             isOccupied = false;   // 상대진영 -> 중립
-            OccuHUD.Ply_Slider(10, unit_O.Flag_Num,Current_Gauge,Total_Gauge);
-            OccuHUD.Change_Color(10, unit_O.Flag_Num);
+            OccuHUD.Ply_Slider((int)ColorIdx.White, unit_O.Flag_Num,Current_Gauge,Total_Gauge);
+            OccuHUD.Change_Color((int)ColorIdx.White, unit_O.Flag_Num);
 
             this.transform.parent.gameObject.layer = 0;
         }
@@ -93,7 +93,7 @@ public class Flag : MonoBehaviour
     }
     public IEnumerator OffOccu_co(int Teamlayer)
     {
-        if (Teamlayer.Equals(7))
+        if (Teamlayer.Equals((int)TeamLayerIdx.Player))
         {
             unit_O.OccuHUD.Ply_OccuHUD(unit_O.Flag_Num, false);
         }
