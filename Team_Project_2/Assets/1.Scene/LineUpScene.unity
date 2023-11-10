@@ -281,6 +281,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 15853479}
   m_CullTransparentMesh: 1
+--- !u!1 &18028236
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 18028237}
+  - component: {fileID: 18028239}
+  - component: {fileID: 18028238}
+  m_Layer: 5
+  m_Name: InfoPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &18028237
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18028236}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.5, z: 0.5}
+  m_Children: []
+  m_Father: {fileID: 712483435}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &18028238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18028236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &18028239
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18028236}
+  m_CullTransparentMesh: 1
 --- !u!1 &37055179
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,6 +583,7 @@ MonoBehaviour:
   isLive: 1
   Current_HP: 150
   Max_Hp: 150
+  isDead: 0
   Damage: 20
   Regeneration: 0.5
   respawnTime: 10
@@ -2796,7 +2872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6302872a607373046a8df36210544f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
+  Player: {fileID: 368171537}
   RotSen: 3
 --- !u!114 &311382998
 MonoBehaviour:
@@ -5677,6 +5753,7 @@ RectTransform:
   - {fileID: 1657333266}
   - {fileID: 1576766449}
   - {fileID: 2017018022}
+  - {fileID: 18028237}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6274,6 +6351,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9814d3af0b00a445bbb5f07b98bca95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Total_Gauge: 100
+  Current_Gauge: 0
+  Soldier_Multi: 1.03
+  occu_Speed: 12
+  isOccupating: 0
+  isOccupied: 0
+  unit_O: {fileID: 0}
 --- !u!1 &785718231
 GameObject:
   m_ObjectHideFlags: 0
@@ -11908,7 +11992,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1686383872}
   - component: {fileID: 1686383876}
-  - component: {fileID: 1686383875}
   - component: {fileID: 1686383874}
   - component: {fileID: 1686383873}
   m_Layer: 5
@@ -11976,36 +12059,6 @@ MonoBehaviour:
   m_Spacing: {x: 60, y: 40}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &1686383875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1686383871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1686383876
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13602,6 +13655,7 @@ GameObject:
   - component: {fileID: 1963066152}
   - component: {fileID: 1963066151}
   - component: {fileID: 1963066150}
+  - component: {fileID: 1963066153}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -13711,6 +13765,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963066148}
   m_CullTransparentMesh: 1
+--- !u!114 &1963066153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963066148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9294c4af3d5d804db98bded49cb0e4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitInfo: {fileID: 11400000, guid: 97d2d90dc5f2dbf40b38a44565a5341d, type: 2}
+  infoPanel: {fileID: 0}
 --- !u!1 &1964580492
 GameObject:
   m_ObjectHideFlags: 0
@@ -13903,8 +13971,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttons: []
   lineupIndexs: 
-  unitSprite_array: []
-  lineupUI: {fileID: 0}
+  unitSprite_array:
+  - {fileID: 21300000, guid: 9a8dadc87a7d93045b8d67c16031dbe9, type: 3}
+  - {fileID: 21300000, guid: c689390433c94b84e8758449df5b13d5, type: 3}
+  - {fileID: 21300000, guid: d178b89460936624fba3d22c22e78eb1, type: 3}
+  - {fileID: 21300000, guid: 9f6de404df2a2f24d9ee7019722a9fe7, type: 3}
+  - {fileID: 21300000, guid: 8db9a7a3788d2464f8adfca7b0a61124, type: 3}
+  - {fileID: 21300000, guid: 1342af43a0c4d5b49a370537ffe16f2c, type: 3}
+  - {fileID: 21300000, guid: faa0e6bcc795b494f96923b7bb065de5, type: 3}
+  lineupUI: {fileID: 1686383871}
 --- !u!114 &2004864491
 MonoBehaviour:
   m_ObjectHideFlags: 0
