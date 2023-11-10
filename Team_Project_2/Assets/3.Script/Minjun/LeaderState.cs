@@ -5,15 +5,16 @@ using UnityEngine;
 public class LeaderState : MonoBehaviour
 {
 
-    public enum BattleState {
-    
+    public enum BattleState
+    {
+
         //Follow, //점령지 이동할때 
         Attack,  // AI가 적을 인지하고 일정시간 또는 거리가됬을때 
         Search,
         Move,
         Defense,
         Detect
-     
+
 
     }
 
@@ -29,7 +30,7 @@ public class LeaderState : MonoBehaviour
     public int maxUnitCount = 19;
     public int currentUnitCount = 0;
     public int unitValue = 0;
-    public float unitCost =16f;
+    public float unitCost = 16f;
     public bool canSpawn;
     public bool isDead;
     public bool isMoving;
@@ -37,7 +38,7 @@ public class LeaderState : MonoBehaviour
 
     public List<GameObject> UnitList = new List<GameObject>();
 
-  
+
     //AI 행동 우선순위
     /*
      1. 중립지역이 있을때
