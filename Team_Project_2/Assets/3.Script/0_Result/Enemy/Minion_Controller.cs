@@ -63,9 +63,11 @@ public class Minion_Controller : MonoBehaviour
 
     private void Update()
     {
+
         transform.forward = playerController.transform.forward + forward_Pos;
         Behavior_Mode();
         
+        if(playerController.CurrentMode == Ply_Controller.Mode.Follow) { 
         if (isClose == true)
         {
             ani.SetBool("Move", false);
@@ -74,7 +76,7 @@ public class Minion_Controller : MonoBehaviour
         {
             ani.SetBool("Move", true);
         }
-        
+        }
     }
 
     public void Get_HumanType()

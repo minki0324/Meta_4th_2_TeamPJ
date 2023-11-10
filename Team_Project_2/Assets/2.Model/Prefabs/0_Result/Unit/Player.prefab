@@ -3207,7 +3207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentMode: 0
   Minion_Prefabs:
-  - {fileID: 4239812368246995255, guid: 90345139ca52d394c8f1c4e71bc7bc22, type: 3}
+  - {fileID: 1843400025330777912, guid: 345fdb404ae102d4289e4dc4b4a877b0, type: 3}
   - {fileID: 6006503084427101158, guid: 7b2c5439dcdaff14682d91ecbec50354, type: 3}
   - {fileID: 4483072135592897270, guid: 688bb76400d688d40a0027c72be0d35e, type: 3}
   UnitList_List: []

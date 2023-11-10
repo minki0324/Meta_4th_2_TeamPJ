@@ -54,17 +54,21 @@ public class UnitAttack2 : MonoBehaviour
     private WaitForSeconds hitDelay = new WaitForSeconds(0.2f);
     //네비게이션
     private NavMeshAgent navMeshAgent;
-
+    public bool isClose;
     [Header("현재타겟 Transform")]
     [SerializeField] public Transform nearestTarget;
     [Header("현재타겟 Layer")]
     [SerializeField] LayerMask target;
 
+
+
+    private Following following;
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Ply_Controller>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
+        
     }
 
     private void Start()
@@ -86,6 +90,7 @@ public class UnitAttack2 : MonoBehaviour
             if (leaderState != null)
             {
                 leader = leaderState.gameObject;
+
             }
         }
         else
@@ -93,8 +98,8 @@ public class UnitAttack2 : MonoBehaviour
             leader = player.gameObject;
         
         }
+       
 
-      
     }
 
     private void Update()
@@ -122,12 +127,25 @@ public class UnitAttack2 : MonoBehaviour
 
             }
         }
-        if(!isDie && GameManager.instance.isDead && leader == player.gameObject)
+      
+        if(!isDie && !GameManager.instance.isDead && leader == player.gameObject)
         {
             switch (player.CurrentMode)
             {
                 case Ply_Controller.Mode.Follow:
-                    FollowOrder();
+                    
+                    if (player.CurrentMode == Ply_Controller.Mode.Follow)
+                    {
+                        if (isClose == true)
+                        {
+                            ani.SetBool("Move", false);
+                        }
+                        else
+                        {
+                            ani.SetBool("Move", true);
+                        }
+                    }
+                  
                     break;
                 case Ply_Controller.Mode.Attack:
                     AttackOrder();
@@ -138,6 +156,7 @@ public class UnitAttack2 : MonoBehaviour
         }
         else
         {
+
             AttackOrder();
         }
         // 미니언컨트롤러로 옮길필요성있음.
@@ -266,29 +285,31 @@ public class UnitAttack2 : MonoBehaviour
     public void Die()
     {
         ani.SetTrigger("Dead");  // 죽는모션재생
-        gameObject.layer = 9;   // 레이어 DIe로 변경해서 타겟으로 안되게
-        HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
-        //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
-        if(gameObject.layer == TeamLayer) { 
-        //player.UnitList_List.Remove(gameObject);
+        if (gameObject.layer == TeamLayer)
+        {
+            player.UnitList_List.Remove(gameObject);
+            following.Stop_List.Remove(gameObject);
         }
         else
         {
             leaderState.UnitList.Remove(gameObject);
+            leaderState.currentUnitCount--;
         }
-        
-        leaderState.currentUnitCount--;
+        gameObject.layer = 9;   // 레이어 DIe로 변경해서 타겟으로 안되게
+        HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
+        //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
+
         Destroy(gameObject, 3f);  // 죽고나서 3초후 디스트로이
 
 
 
 
-       
-        
-       
+
+
+
 
     }
-    
+
     //자신의 레이어와 같은 리더를 찾는 메소드
     private LeaderState FindLeader()
     {

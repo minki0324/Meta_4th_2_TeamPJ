@@ -24,9 +24,11 @@ public class Following : MonoBehaviour
 
     List<Vector3> listVetor = new List<Vector3>();
 
+    public bool isa = false;
 
     public Vector3 StopPos;
-    
+
+
 
     public bool isStop = false;
     public Vector3 Standard;
@@ -47,10 +49,6 @@ public class Following : MonoBehaviour
 
     private void Update()
     {
-        if(!GameManager.instance.isLive)
-        {
-            return;
-        }
 
         if (pc.CurrentMode == Ply_Controller.Mode.Follow)
         {
@@ -68,12 +66,12 @@ public class Following : MonoBehaviour
             StartCoroutine(Mode_Stop_co());
 
         }
-        if(Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(KeyCode.V))
         {
-            Debug.Log(pc.transform.position + (Vector3.forward*3));
+            Debug.Log(pc.transform.position + (Vector3.forward * 3));
         }
 
-     
+
 
 
 
@@ -109,7 +107,7 @@ public class Following : MonoBehaviour
 
                 for (int i = 0; i < pc.UnitList_List.Count; i++)
                 {
-                    pc.UnitList_List[i].GetComponent<Minion_Controller>().isClose = false;
+                    pc.UnitList_List[i].GetComponent<UnitAttack2>().isClose = false;
                     pc.UnitList_List[i].GetComponent<NavMeshAgent>().isStopped = false;
                 }
 
@@ -139,7 +137,7 @@ public class Following : MonoBehaviour
                 for (int i = 0; i < pc.UnitList_List.Count; i++)
                 {
 
-                    pc.UnitList_List[i].GetComponent<Minion_Controller>().isClose = false;
+                    pc.UnitList_List[i].GetComponent<UnitAttack2>().isClose = false;
 
                 }
             }
@@ -227,7 +225,7 @@ public class Following : MonoBehaviour
 
                 else
                 {
-                    if(Stop_List[i] != pc.gameObject)
+                    if (Stop_List[i] != pc.gameObject)
                     {
                         Debug.Log("플레이어는.." + playernum + "번이야..");
                         Debug.Log(Stop_List.Count);
@@ -267,12 +265,11 @@ public class Following : MonoBehaviour
                 }
 
 
-    
+
                 if (Stop_List[i] != pc.gameObject && Stop_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.5f)
                 {
                     // StartCoroutine(Timer());
-                    Stop_List[i].GetComponent<Minion_Controller>().isClose = true;
-                   
+                    Stop_List[i].GetComponent<UnitAttack2>().isClose = true;
                 }
 
             }
@@ -334,7 +331,7 @@ public class Following : MonoBehaviour
             if (pc.UnitList_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.8f)
             {
 
-                pc.UnitList_List[i].GetComponent<Minion_Controller>().isClose = true;
+                pc.UnitList_List[i].GetComponent<UnitAttack2>().isClose = true;
 
                 pc.UnitList_List[i].GetComponent<NavMeshAgent>().isStopped = true;
             }
@@ -350,13 +347,13 @@ public class Following : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         for (int i = 0; i < Stop_List.Count; i++)
-        { 
-            Stop_List[i].GetComponent<Minion_Controller>().isClose = true;
+        {
+            Stop_List[i].GetComponent<UnitAttack2>().isClose = true;
             Stop_List[i].GetComponent<NavMeshAgent>().isStopped = true;
-            Stop_A_List[i].GetComponent<Minion_Controller>().isClose = true;
+            Stop_A_List[i].GetComponent<UnitAttack2>().isClose = true;
             Stop_A_List[i].GetComponent<NavMeshAgent>().isStopped = true;
         }
-       
+
     }
 
 
