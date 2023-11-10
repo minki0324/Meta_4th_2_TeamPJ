@@ -165,6 +165,16 @@ public class Intro : MonoBehaviour
     [SerializeField]
     private GameObject Leader_B;
 
+
+    [SerializeField]
+    private Light light;
+
+   // public float mouseSensitivity;
+
+    private float MouseY;
+    private float MouseX;
+
+
     //json 관련
     private DataManager dataManager;
     private ScriptsData scriptsData;
@@ -209,20 +219,12 @@ public class Intro : MonoBehaviour
 
     private void Start()
     {
-       // BackButton = transform.GetChild(0).GetComponent<Button>();
-
- 
-     
-       
-
-
+        // BackButton = transform.GetChild(0).GetComponent<Button>();
+        SetScreenSize("Full");
 
         Init_FuntionUI();
 
-        TitlePanel_On();
-
-        
-  
+        TitlePanel_On(); 
     }
 
     private void Init_FuntionUI()
@@ -382,17 +384,11 @@ public class Intro : MonoBehaviour
                         }
 
                     }
-                  
-
                 }
-
                 break;
 
             }
-
         }
-
-
     }
  
 
@@ -430,56 +426,109 @@ public class Intro : MonoBehaviour
         fullScreen_Btn = Selection_img.transform.GetChild(5).GetChild(1).GetComponent<Button>();
         #endregion
 
-        AudioControl();
+  
+        //사운드 조절 슬라이더
+        masterVolume_Slider.onValueChanged.AddListener(delegate { SetVolume(5, "Master"); });
+
+
+        //밝기 조절 슬라이더
+        Brightness_Slider.onValueChanged.AddListener(SetBrightness);
+
+
+        //마우스 속도 슬라이더 -> 인게임에서 카메라 속도 조절
+        mouseSensitive_Slider.onValueChanged.AddListener(SetMouseSensitive);
+
+
+
+        //창 크기 조절 버튼
+        windowScreen_Btn.onClick.AddListener(delegate { SetScreenSize("Window"); });
+        fullScreen_Btn.onClick.AddListener(delegate { SetScreenSize("Full"); });
+
 
     }
-
-    public void AudioControl()
+    public void SetVolume(float volume, string soundtype)
     {
-        masterVolume_Slider.onValueChanged.AddListener(SetMasterVolume);
-        sfxVolume_Slider.onValueChanged.AddListener(SetBGMVolume);
-    }
-
-
-    public void SetVolume(string type, float volume)
-    {
-        switch(type)
+        switch (soundtype)
         {
             case "Master":
-
-
-                break;
-
-            case "BGM":
+                volume = masterVolume_Slider.value;
                 break;
 
 
-
-            case "SFX":
+            case "Bgm":
+                volume = bgmVolume_Slider.value;
                 break;
 
 
+            case "Sfx":
+                volume = sfxVolume_Slider.value;
+                break;
+        }
+
+        if (volume == 0f)
+        {
+            audioMixer.SetFloat(soundtype, -80);
+        }
+        else
+        {
+            audioMixer.SetFloat(soundtype, volume);
         }
     }
 
 
-    public void SetMasterVolume(float volume)
+    public void SetBrightness(float value)
     {
-        Debug.Log("MasterVolume Changed");
-        audioMixer.SetFloat("Master", Mathf.Log10(volume) * 20);   
+        light = FindObjectOfType<Light>();
+        value = Brightness_Slider.value;
+
+        if (value > 10)
+        {
+            value = 10;
+        }
+
+
+        light.intensity = value;
     }
 
-    public void SetBGMVolume(float volume)
+
+    private void SetMouseSensitive(float mouseSensitivity)
     {
-        Debug.Log("BGM Volume Changed");
-        audioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
+        //나중에 CameraControl 값 가져오기
+        if(mouseSensitivity > 100)
+        {
+            mouseSensitivity = 100;
+        }
+
+        MouseX += Input.GetAxisRaw("Mouse X") * mouseSensitivity * Time.deltaTime;
+        MouseY -= Input.GetAxisRaw("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+        MouseY = Mathf.Clamp(MouseY, -90f, 90f); //Clamp를 통해 최소값 최대값을 넘지 않도록함
+
+        transform.localRotation = Quaternion.Euler(MouseY, MouseX, 0f);// 각 축을 한꺼번에 계산
+    }
+   
+
+    public void SetScreenSize(string screen)
+    {
+        switch(screen)
+        {
+            case "Window":
+                Debug.Log("Window Screen");
+                Screen.SetResolution(1024, 768, true);
+                break;
+
+            case "Full":
+                Debug.Log("Full Screen");
+                
+                Screen.SetResolution(1920, 1080, true);
+                break;
+        }
     }
 
-    public void SetSFXVolume(float volume)
-    {
-        Debug.Log("SFX Volume Changed");
-        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
-    }
+
+
+
+  
 
     public void CheckLogin()
     {
@@ -536,13 +585,6 @@ public class Intro : MonoBehaviour
         //맵이미지 타임어택으로 변경
         Debug.Log("타임어택 맵 이미지");
     }
-
-
-
-
-
-
-
 
 
 }
