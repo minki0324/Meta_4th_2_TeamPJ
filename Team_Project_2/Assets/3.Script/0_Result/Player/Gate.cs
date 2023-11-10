@@ -10,6 +10,7 @@ public class Gate : MonoBehaviour
     private Animator Gate_Ani;  
     [SerializeField] private Collider Gate_Col;  // Gate ¹°¸® Collider
     private bool isOpen = false;
+    WaitForSeconds DoorCool = new WaitForSeconds(2f);
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class Gate : MonoBehaviour
             isOpen = false;
             Gate_Col.enabled = true;
         }
-        yield return null;
+        yield return DoorCool;
         
     }
 }

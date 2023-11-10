@@ -758,21 +758,26 @@ namespace SimpleProceduralTerrainProject
 
         void SpawnPlayer(List<GameObject> baseCamps)
         {
+            GameObject Leader;
             for (int i = 0; i < baseCamps.Count; i++)
             {
                 switch (baseCamps[i].gameObject.layer)
                 {
                     case 6:
-                        Instantiate(Leader_Prefabs[0], baseCamps[i].transform.position, Quaternion.identity);
+                        Leader = Instantiate(Leader_Prefabs[0], baseCamps[i].transform.position, Quaternion.identity);
+                        ColorManager.instance.RecursiveSearchAndSetUnit(Leader.transform, GameManager.instance.Color_Index);
                         break;
                     case 7:
-                        Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
+                        Leader = Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
+                        ColorManager.instance.RecursiveSearchAndSetUnit(Leader.transform, GameManager.instance.T1_Color);
                         break;
                     case 8:
-                        Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
+                        Leader = Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
+                        ColorManager.instance.RecursiveSearchAndSetUnit(Leader.transform, GameManager.instance.T2_Color);
                         break;
                     case 9:
-                        Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
+                        Leader = Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
+                        ColorManager.instance.RecursiveSearchAndSetUnit(Leader.transform, GameManager.instance.T3_Color);
                         break;
                 }
             }
