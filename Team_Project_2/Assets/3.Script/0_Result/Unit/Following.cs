@@ -328,7 +328,7 @@ public class Following : MonoBehaviour
             }
 
 
-            if (pc.UnitList_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.5f)
+            if (pc.UnitList_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 0.8f)
             {
 
                 pc.UnitList_List[i].GetComponent<Minion_Controller>().isClose = true;
