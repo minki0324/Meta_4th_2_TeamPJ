@@ -27,6 +27,7 @@ public class Gate : MonoBehaviour
         {
             Debug.Log("¹® ¿­¸²");
             Gate_Ani.SetTrigger("OpenDoor");
+            yield return DoorCool;
             isOpen = true;
             Gate_Col.enabled = false;
         }
@@ -34,10 +35,9 @@ public class Gate : MonoBehaviour
         {
             Debug.Log("¹® ´ÝÈû");
             Gate_Ani.SetTrigger("CloseDoor");
+            yield return DoorCool;
             isOpen = false;
             Gate_Col.enabled = true;
         }
-        yield return DoorCool;
-        
     }
 }

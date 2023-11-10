@@ -749,18 +749,22 @@ namespace SimpleProceduralTerrainProject
                     case (int)TeamLayerIdx.Player:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.Color_Index);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.Color_Index);
+                        baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 6;
                         break;
                     case (int)TeamLayerIdx.Team1:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T1_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T1_Color);
+                        baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 7;
                         break;
                     case (int)TeamLayerIdx.Team2:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T2_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T2_Color);
+                        baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 8;
                         break;
                     case (int)TeamLayerIdx.Team3:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T3_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T3_Color);
+                        baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 9;
                         break;
                 }
             }
