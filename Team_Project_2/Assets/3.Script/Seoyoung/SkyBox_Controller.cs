@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class SkyBox_Controller : MonoBehaviour
+public class Skybox_Controller : MonoBehaviour
 {
 
     public Material night_M;
@@ -22,10 +22,14 @@ public class SkyBox_Controller : MonoBehaviour
     void Start()
     {
         current_material = afternoon_M;
-        gameObject.GetComponent<Skybox>().material = current_material;
- 
 
-        StartCoroutine(Update_SkyBox_Night());
+        gameObject.GetComponent<Skybox>().material = current_material;
+
+
+        current_material.Lerp(current_material, night_M, 1f);
+
+        // StartCoroutine(Update_SkyBox_Night());
+       
     }
 
 
@@ -47,23 +51,24 @@ public class SkyBox_Controller : MonoBehaviour
 
 
 
+
     private IEnumerator Update_SkyBox_Night()
     {
-       
+
         float progress = 0; //매개변수 대용
 
         float increment = smoothness / duration; //적용할 변경수준
 
-     
+
         while (progress < 1)
         {
             Debug.Log(progress);
             //current_material.Lerp(afternoon_M, night_M, progress);
             gameObject.GetComponent<Skybox>().material.Lerp(afternoon_M, night_M, progress);
-           // Debug.Log(this.gameObject.GetComponent<Skybox>().material);
+            
             progress += increment;
             yield return new WaitForSeconds(smoothness);        //컬렉션 데이터를 하나씩 리턴
         }
-       
+
     }
 }

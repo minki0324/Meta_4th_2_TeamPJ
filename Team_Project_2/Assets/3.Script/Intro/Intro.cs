@@ -253,8 +253,12 @@ public class Intro : MonoBehaviour
 
     public void GameStart_Btn_Clicekd()
     {
-        //Move to MainScene
-        Debug.Log("@@@@@@@@@@Game Start@@@@@@@@@@@@@@@");
+        GameManager.instance.Color_Index = Team1_Color;
+        GameManager.instance.T1_Color = Team2_Color;
+        GameManager.instance.T2_Color = Team3_Color;
+        GameManager.instance.T3_Color = Team4_Color;
+
+        SceneManager.LoadScene(1);
     }
 
     public void TitlePanel_On()
@@ -358,15 +362,12 @@ public class Intro : MonoBehaviour
       
         for (int i = teamNum; i < teamColors.Length; i++)
         {
-
             if (button.image.color == teamColors[i].color_c)
             {
-
                 for (int j = 0; j < teamColors.Length; j++)
                 {
                     if (i + j >= 10)
                     {
-
                         if (teamColors[i + j - 10].isUsing == false)
                         {
                             button.image.color = teamColors[i + j - 10].color_c;
@@ -386,11 +387,9 @@ public class Intro : MonoBehaviour
                             teamNum = i + j;
                             break;
                         }
-
                     }
                 }
                 break;
-
             }
         }
     }

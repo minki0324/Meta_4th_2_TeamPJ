@@ -123,6 +123,16 @@ namespace SimpleProceduralTerrainProject
             return nearestFlag;
         }
 
+
+        private void Start()
+        {
+            Debug.Log(GameManager.instance.Color_Index);
+            Debug.Log(GameManager.instance.T1_Color);
+            Debug.Log(GameManager.instance.T2_Color);
+            Debug.Log(GameManager.instance.T3_Color);
+        }
+
+
         // baseCampPositions에서 각 베이스 캠프 위치에 대해 가장 가까운 플래그를 찾아 경로 계산
         private void FindPathsFromBasesToFlags()
         {
