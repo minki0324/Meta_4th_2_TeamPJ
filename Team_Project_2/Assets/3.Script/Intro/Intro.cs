@@ -179,6 +179,8 @@ public class Intro : MonoBehaviour
     //家府 包访
     public AudioMixer audioMixer;
 
+   
+
     //评包访
     [Header("评 拿矾")]
     [SerializeField]
@@ -428,12 +430,38 @@ public class Intro : MonoBehaviour
         fullScreen_Btn = Selection_img.transform.GetChild(5).GetChild(1).GetComponent<Button>();
         #endregion
 
+        AudioControl();
+
     }
 
     public void AudioControl()
     {
         masterVolume_Slider.onValueChanged.AddListener(SetMasterVolume);
+        sfxVolume_Slider.onValueChanged.AddListener(SetBGMVolume);
     }
+
+
+    public void SetVolume(string type, float volume)
+    {
+        switch(type)
+        {
+            case "Master":
+
+
+                break;
+
+            case "BGM":
+                break;
+
+
+
+            case "SFX":
+                break;
+
+
+        }
+    }
+
 
     public void SetMasterVolume(float volume)
     {
