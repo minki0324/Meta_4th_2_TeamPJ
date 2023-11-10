@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public enum Team
+enum TeamLayerIdx
 {
-    neutrality = 0, // Áß¸³
-    Team1,   
+    Player = 6,
+    Team1,
     Team2,
-    Team3,
-    Team4
+    Team3
 }
 
 public class GameManager : MonoBehaviour

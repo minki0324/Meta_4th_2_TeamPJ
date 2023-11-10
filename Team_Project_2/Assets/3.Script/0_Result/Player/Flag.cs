@@ -9,6 +9,7 @@ public class Flag : MonoBehaviour
 
     public float Total_Gauge = 100f; // 전체 점령 게이지
     public float Current_Gauge = 0;  // 현재 점령 게이지
+    private int TeamColor_Temp;
 
     public float Soldier_Multi = 1.03f; // 사람 수에 따른 배율
     public float occu_Speed = 12f; // 점령 속도
@@ -18,7 +19,7 @@ public class Flag : MonoBehaviour
 
     private SkinnedMeshRenderer skinnedmesh;
     public Unit_Occupation unit_O;
-    OccupationHUD OccuHUD;
+    private OccupationHUD OccuHUD;
 
     private void Awake()
     {
@@ -29,43 +30,87 @@ public class Flag : MonoBehaviour
     { 
         skinnedmesh.material = ColorManager.instance.Flag_Color[TeamNum];        
     }
-    private void Update()
+
+    private int ParentLayer()
     {
-        if (Current_Gauge / Total_Gauge >= 1 && !isOccupied)
+        return this.transform.parent.gameObject.layer;
+    }
+    private int UnitLayer(Unit_Occupation unit)
+    {
+        return unit.gameObject.layer;
+    }
+
+
+    public IEnumerator OnOccu_co(int TeamColor, int Teamlayer)
+    {
+        // Case1 다른진영 -> 중립 / 중립 -> 본인진영
+        // Case2 중립 -> 본인진영
+
+        // 점령 중
+        if (Teamlayer.Equals(TeamLayerIdx.Player))
         {
-            isOccupied = true;
+            unit_O.OccuHUD.Ply_OccuHUD(unit_O.Flag_Num, true);
         }
 
-    }
-    
-    public IEnumerator OnOccu_co()
-    {
-        // 점령 중
-        unit_O.OccuHUD.Ply_OccuHUD(unit_O.Flag_Num, true);
-
-        while (isOccupating && Current_Gauge <= 100f)
+        // 점령지역을 점령할 때
+        while (isOccupied && isOccupating && Current_Gauge >= 0f && !ParentLayer().Equals(UnitLayer(unit_O))) 
         {
             Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20); // 나중에 인원수에 따른 배율 넣어야해용
-            OccuHUD.Ply_Slider(6, unit_O.Flag_Num, Current_Gauge, Total_Gauge);
+            OccuHUD.Ply_Slider(TeamColor_Temp, unit_O.Flag_Num, Current_Gauge, Total_Gauge);
             Debug.Log(Current_Gauge);
             yield return null;
         }
-        isOccupied = true;
-        unit_O.OccuHUD.Change_Color(6, unit_O.Flag_Num);
 
-        this.transform.parent.gameObject.layer = unit_O.gameObject.layer;
-        yield return null;
-    }
-    public IEnumerator OffOccu_co()
-    {
-        unit_O.OccuHUD.Ply_OccuHUD(unit_O.Flag_Num, false);
-        yield return new WaitForSeconds(3.0f);
-
-        while (!isOccupied && !isOccupating && Current_Gauge >= 0f) // 점령 중도 아니고 
+        if (Current_Gauge <= 0f && isOccupied)
         {
-            Current_Gauge -= Time.deltaTime * occu_Speed;
+            isOccupied = false;   // 상대진영 -> 중립
+            OccuHUD.Ply_Slider((int)ColorIdx.White, unit_O.Flag_Num,Current_Gauge,Total_Gauge);
+            OccuHUD.Change_Color((int)ColorIdx.White, unit_O.Flag_Num);
+
+            this.transform.parent.gameObject.layer = 0;
+        }
+
+        // 중립지역을 점령할 때
+        while (!isOccupied && isOccupating && Current_Gauge <= Total_Gauge) 
+        {
+            Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20); // 나중에 인원수에 따른 배율 넣어야해용
+            OccuHUD.Ply_Slider(TeamColor, unit_O.Flag_Num, Current_Gauge, Total_Gauge);
+            Debug.Log(Current_Gauge);
             yield return null;
         }
+
+        if (Current_Gauge >= Total_Gauge && !isOccupied)
+        {
+            isOccupied = true;   // 중립 -> 본인진영
+            TeamColor_Temp = TeamColor;
+            unit_O.OccuHUD.Change_Color(TeamColor, unit_O.Flag_Num);
+            this.transform.parent.gameObject.layer = UnitLayer(unit_O);
+        }
+
+
+        
+        yield return null;
+    }
+    public IEnumerator OffOccu_co(int Teamlayer)
+    {
+        if (Teamlayer.Equals((int)TeamLayerIdx.Player))
+        {
+            unit_O.OccuHUD.Ply_OccuHUD(unit_O.Flag_Num, false);
+        }
+        yield return new WaitForSeconds(3.0f);
+
+        // 점령된 곳에서 점령하다가 나왔을 때
+        while (isOccupied && !isOccupating && Current_Gauge <= 100f)
+        {
+            Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20);
+        }
+        // 중립에서 점령 하다가 나갔을 때
+        while (!isOccupied && !isOccupating && Current_Gauge >= 0f) 
+        {
+            Current_Gauge -= Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20);
+            yield return null;
+        }
+        
         
         yield return null;
     }
