@@ -776,18 +776,22 @@ namespace SimpleProceduralTerrainProject
                     case 6:
                         Leader = Instantiate(Leader_Prefabs[0], baseCamps[i].transform.position, Quaternion.identity);
                         ColorManager.instance.RecursiveSearchAndSetUnit(Leader.transform, GameManager.instance.Color_Index);
+                        Leader.gameObject.layer = 6;
                         break;
                     case 7:
                         Leader = Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
                         ColorManager.instance.RecursiveSearchAndSetUnit(Leader.transform, GameManager.instance.T1_Color);
+                        Leader.gameObject.layer = 7;
                         break;
                     case 8:
                         Leader = Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
                         ColorManager.instance.RecursiveSearchAndSetUnit(Leader.transform, GameManager.instance.T2_Color);
+                        Leader.gameObject.layer = 8;
                         break;
                     case 9:
                         Leader = Instantiate(Leader_Prefabs[1], baseCamps[i].transform.position, Quaternion.identity);
                         ColorManager.instance.RecursiveSearchAndSetUnit(Leader.transform, GameManager.instance.T3_Color);
+                        Leader.gameObject.layer = 9;
                         break;
                 }
             }

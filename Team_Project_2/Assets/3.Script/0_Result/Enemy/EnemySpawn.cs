@@ -6,7 +6,7 @@ public class EnemySpawn : MonoBehaviour
 {
     //unitValue에 따라 소환되는 unit
     [SerializeField] private GameObject[] unit;
-    private LeaderState leaderState;
+    public LeaderState leaderState;
     //스폰위치 3개
     private Transform[] SpawnPoint = new Transform[3];
     //스폰위치를 0~2 번위치 차례대로 소환하기위한 인덱스

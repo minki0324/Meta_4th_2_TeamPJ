@@ -14,8 +14,8 @@ public enum ColorIdx
     Purple,
     Red,
     Orange,
-    White,
-    Yellow
+    Yellow,
+    White
 }
 
 public class ColorManager : MonoBehaviour
