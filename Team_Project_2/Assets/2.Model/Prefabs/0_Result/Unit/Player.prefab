@@ -3117,6 +3117,7 @@ GameObject:
   - component: {fileID: 8150775438576968457}
   - component: {fileID: 1894250265287797481}
   - component: {fileID: 1894250265287797480}
+  - component: {fileID: 6200436834573588005}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -3247,6 +3248,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f96b4b4679455c49bb41a37f9a2642d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OccuHUD: {fileID: 0}
+  Flag_Num: 0
 --- !u!208 &8150775438576968457
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -3308,6 +3311,20 @@ MonoBehaviour:
   isPossible_Attack_1: 1
   groundCheckRadius: 0.2
   groundTag: Ground
+--- !u!114 &6200436834573588005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8150775438576968468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83f57fa8d6242314891b7b62560d3d4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gate: {fileID: 0}
+  gateUI: {fileID: 0}
 --- !u!1 &8150775438582925476
 GameObject:
   m_ObjectHideFlags: 0

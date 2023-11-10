@@ -13,21 +13,30 @@ public class Unit_Gate : MonoBehaviour
     // 3. 주변 유닛 수에 따른 점령 슬라이더 변경
 
     [SerializeField] private Gate gate;   // 문 열기 스크립트
-    [SerializeField] private Text gateUI; // 문 열기 Text
+    [SerializeField] private GameObject gateUI; // 문 열기 Text
 
+    private void OnEnable()
+    {
+        gateUI = GameObject.Find("Doorui");
+    }
 
-    private void OnTriggerEnter(Collider other)
+    private void Start()
+    {
+        gateUI.gameObject.SetActive(false);
+    }
+
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Gate"))
         {
-            gate = other.gameObject.GetComponentInParent<Gate>();
-
+            gate = other.gameObject.GetComponent<Gate>();
             if (gameObject.CompareTag("Player"))
             {
                 gateUI.gameObject.SetActive(true);  // gateUI 활성화
 
                 if (Input.GetKeyDown(KeyCode.J))
                 {
+                    Debug.Log("??");
                     StartCoroutine(gate.Gate_Interaction());
                 }                
             }
