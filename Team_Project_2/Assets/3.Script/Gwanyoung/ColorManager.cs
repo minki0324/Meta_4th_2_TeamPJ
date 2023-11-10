@@ -11,7 +11,7 @@ public class ColorManager : MonoBehaviour
 
     //  0 : BK / 1 : BL / 2 : DB / 3 : BR / 4 : GR / 5 : GR_BL / 6 : PK / 7 : PP / 8 : RE / 9 : TAN / 10 : WH / 11 : YE
     //  0 : 검정 / 1 : 하늘 / 2 : 파랑 / 3 : 갈색 / 4 : 연두 / 5 : 초록
-    //  6 : 핑크 / 7 : 보라 / 8 : 빨강 / 9 : 연갈색 / 10 : 흰색 / 11 : 노랑
+    //  6 : 핑크 / 7 : 보라 / 8 : 빨강 / 9 : 주황 / 10 : 흰색 / 11 : 노랑
 
 
     public Flag flag;

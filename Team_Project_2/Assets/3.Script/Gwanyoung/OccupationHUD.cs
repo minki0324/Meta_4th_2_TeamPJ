@@ -27,31 +27,32 @@ public class OccupationHUD : MonoBehaviour
         }
     }    
 
-    public void Ply_Slider(int TeamNum, int FlagNum, float Current, float Max)
+    public void Ply_Slider(int TeamColor, int FlagNum, float Current, float Total)
     {
-        ColorTemp = ColorManager.instance.Teamcolor[TeamNum];
+        ColorTemp = ColorManager.instance.Teamcolor[TeamColor];
         ColorTemp.a = 0.431f;
 
         Occu_Img_Color[FlagNum * 4 + 2].color = ColorTemp; 
-        OccuSlider[FlagNum].value = Current / Max;   // 슬라이더 현재 게이지
+        OccuSlider[FlagNum].value = Current / Total;   // 슬라이더 현재 게이지
     }
  
     public void Ply_OccuHUD(int FlagNum, bool Act)
     {
-        Occu_Img_Color[FlagNum * 4 + 1].transform.parent.gameObject.SetActive(Act);
-        Occu_Img_Color[FlagNum * 4 + 3].transform.parent.gameObject.SetActive(Act);
+        // 점령중인 유닛이 Player 일 때 SetActive의 불값을 주기 위한 메서드
+        Occu_Img_Color[FlagNum * 4 + 1].transform.parent.gameObject.SetActive(Act);  // 점령 중앙쪽 HUD
+        Occu_Img_Color[FlagNum * 4 + 3].transform.parent.gameObject.SetActive(Act);  // 점령 슬라이더
     }
 
-    public void Change_Color(int TeamNum, int FlagNum)
+    public void Change_Color(int TeamColor, int FlagNum)
     {        
-        ColorTemp = ColorManager.instance.Teamcolor[TeamNum];
+        ColorTemp = ColorManager.instance.Teamcolor[TeamColor];
         ColorTemp.a = 0.431f;
 
         Occu_Img_Color[FlagNum * 4].color = ColorTemp; // HUD 상단               
 
         Occu_Img_Color[FlagNum * 4 + 1].color = ColorTemp; // 플레이어에게 뜰 HUD   
 
-        FlagArray[FlagNum].Change_Flag_Color(TeamNum); // 깃발 색 변경
+        FlagArray[FlagNum].Change_Flag_Color(TeamColor); // 깃발 색 변경
 
     }
 

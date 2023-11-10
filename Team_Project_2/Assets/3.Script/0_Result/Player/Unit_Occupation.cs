@@ -24,6 +24,7 @@ public class Unit_Occupation : MonoBehaviour
         {
             flag = other.gameObject.GetComponentInChildren<Flag>();            
             flag.unit_O = this;
+            flag.isOccupating = true;
 
             for (int i = 0; i < OccuHUD.FlagArray.Length; i++)
             {
@@ -32,14 +33,15 @@ public class Unit_Occupation : MonoBehaviour
                     Flag_Num = i;
                     break;
                 }
-                ;
             }
 
-            if (gameObject.layer.Equals(8))
+            if (!gameObject.layer.Equals(7)) // 레이어가 플레이어가 아닐 때
+            {                
+                StartCoroutine(flag.OnOccu_co(6, this.gameObject.layer));
+            }
+            else // 레이어가 플레이얼 때   --> 코루틴 내에서 예외처리해서 나중에 if-else문 지워도 됨.
             {
-                
-                StartCoroutine(flag.OnOccu_co());
-
+                StartCoroutine(flag.OnOccu_co(11, this.gameObject.layer));
             }
         }
     }
@@ -47,17 +49,8 @@ public class Unit_Occupation : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Flag"))
         {
-            if (gameObject.layer.Equals(8))
-            {
-
-                StartCoroutine(flag.OffOccu_co());
-
-            }
-
+            flag.isOccupating = false;
+            StartCoroutine(flag.OffOccu_co(this.gameObject.layer));
         }
-        //Flag_Num = 0;
     }
-
-
-
 }
