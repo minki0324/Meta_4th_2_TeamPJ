@@ -10,7 +10,6 @@ public class Gate : MonoBehaviour
     private Animator Gate_Ani;  
     [SerializeField] private Collider Gate_Col;  // Gate 물리 Collider
     private bool isOpen = false;
-    WaitForSeconds DoorCool = new WaitForSeconds(2f);
 
     private void Awake()
     {
@@ -21,23 +20,38 @@ public class Gate : MonoBehaviour
         Gate_Col.enabled = false;
     }
     // 게이트 상호작용
-    public IEnumerator Gate_Interaction()
+    public IEnumerator Gate_Interaction(int TeamLayer)
     {
-        if (!isOpen) // 문이 닫혀있을 때
+        while (true)
         {
-            Debug.Log("문 열림");
-            Gate_Ani.SetTrigger("OpenDoor");
-            isOpen = true;
-            Gate_Col.enabled = false;
+            if (!isOpen) // 문이 닫혀있을 때
+            {
+                if (!TeamLayer.Equals((int)TeamLayerIdx.Player))
+                {
+                    Gate_Ani.SetTrigger("OpenDoor");
+                    isOpen = true;
+                    Gate_Col.enabled = false;
+                }
+                else
+                {
+                    if (Input.GetKeyDown(KeyCode.J))
+                    {
+                        Debug.Log("문 열림");
+                        Gate_Ani.SetTrigger("OpenDoor");
+                        isOpen = true;
+                        Gate_Col.enabled = false;
+                    }
+                }
+            }
+            else // 문이 열려있을 때
+            {
+                Debug.Log("문 닫힘");
+                Gate_Ani.SetTrigger("CloseDoor");
+                isOpen = false;
+                Gate_Col.enabled = true;
+            }
+        yield return null;
         }
-        else // 문이 열려있을 때
-        {
-            Debug.Log("문 닫힘");
-            Gate_Ani.SetTrigger("CloseDoor");
-            isOpen = false;
-            Gate_Col.enabled = true;
-        }
-        yield return DoorCool;
         
     }
 }

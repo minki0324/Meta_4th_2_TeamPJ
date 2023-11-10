@@ -25,31 +25,21 @@ public class Unit_Gate : MonoBehaviour
         gateUI.gameObject.SetActive(false);
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Gate"))
         {
             gate = other.gameObject.GetComponent<Gate>();
-            if (gameObject.CompareTag("Player"))
+            if (this.gameObject.layer.Equals((int)TeamLayerIdx.Player))
             {
-                gateUI.gameObject.SetActive(true);  // gateUI 활성화
-
-                if (Input.GetKeyDown(KeyCode.J))
-                {
-                    Debug.Log("??");
-                    StartCoroutine(gate.Gate_Interaction());
-                }                
+                gateUI.gameObject.SetActive(true);  // gateUI 활성화                   
             }
-            else
-            {
-                StartCoroutine(gate.Gate_Interaction());
-            }
-            
+            StartCoroutine(gate.Gate_Interaction(this.gameObject.layer));
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Gate") && gameObject.CompareTag("Player")) 
+        if (other.gameObject.CompareTag("Gate") && this.gameObject.layer.Equals((int)TeamLayerIdx.Player)) 
         {
             gateUI.gameObject.SetActive(false);  // gateUI 비활성화        
         }
