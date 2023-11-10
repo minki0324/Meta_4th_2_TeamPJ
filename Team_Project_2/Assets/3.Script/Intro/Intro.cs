@@ -151,6 +151,9 @@ public class Intro : MonoBehaviour
     [SerializeField]
     private Button fullScreen_Btn;
 
+    [SerializeField]
+    private Image Brightness_img;
+
     #endregion
 
 
@@ -473,6 +476,13 @@ public class Intro : MonoBehaviour
         {
             audioMixer.SetFloat(soundtype, volume);
         }
+    }
+
+    public void SetBrightness_img(float value)
+    {
+        value = Brightness_Slider.value;
+
+        Brightness_img.color = new Color(Brightness_img.color.r, Brightness_img.color.g, Brightness_img.color.b, value);
     }
 
 
