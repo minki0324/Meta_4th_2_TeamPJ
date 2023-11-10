@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
 
     [SerializeField] private GameObject Option;
-    private bool isEnableOp = false;
 
     [Header("게임 플레이")]
     public float currentTime = 0f;  // 게임이 시작하고 지난 시간
@@ -36,7 +35,7 @@ public class GameManager : MonoBehaviour
     private float Magnifi = 2f;     // 기본 골드 배율 (업데이트문 프레임 60 x 2f로 기본 획득 골드량은 분당 120)
     
     [Header("플레이어 관련")]
-    public bool isLive = true;
+    public bool isLive = false;
     public float Current_HP = 150f;
     public float Max_Hp = 150f;
     public bool isDead;
@@ -67,20 +66,9 @@ public class GameManager : MonoBehaviour
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if(!isLive)
         {
-            if(!isEnableOp)
-            {
-                isEnableOp = true;
-                Time.timeScale = 0;
-                Option.SetActive(true);
-            }
-            else
-            {
-                isEnableOp = false;
-                Time.timeScale = 1;
-                Option.SetActive(false);
-            }
+            return;
         }
         
         currentTime += Time.deltaTime;
@@ -99,4 +87,8 @@ public class GameManager : MonoBehaviour
         isLive = true;
         Time.timeScale = 1;
     }
+
+    public int T1_Color;
+    public int T2_Color;
+    public int T3_Color;
 }

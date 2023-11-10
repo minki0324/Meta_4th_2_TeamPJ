@@ -29,7 +29,8 @@ public class LeaderAI : Unit
     }
     private void Update()
     {
-        if (!GameManager.instance.isLive)
+
+        if(!GameManager.instance.isLive)
         {
             return;
         }

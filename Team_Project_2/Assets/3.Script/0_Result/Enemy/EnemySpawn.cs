@@ -90,7 +90,7 @@ public class EnemySpawn : MonoBehaviour
         }
         GameObject newUnit = Instantiate(unit[leaderState.unitValue], SpawnPoint[SpawnIndex].position, Quaternion.identity);
         SetLayerRecursively(newUnit, leaderState.gameObject.layer);
-        SetColar(newUnit);
+        // SetColar(newUnit);
 
 
         leaderState.UnitList.Add(newUnit);
@@ -143,7 +143,7 @@ public class EnemySpawn : MonoBehaviour
 
 
     }
-    private void SetColar(GameObject newUnit)
+    /*private void SetColar(GameObject newUnit)
     {
         ColorSet unitColorSet = newUnit.gameObject.GetComponent<ColorSet>();
 
@@ -152,5 +152,5 @@ public class EnemySpawn : MonoBehaviour
         leaderColorSet.RecursiveSearchAndSetTexture(newUnit.transform , leaderColorSet.Color_Index);
 
 
-    }
+    }*/
 }
