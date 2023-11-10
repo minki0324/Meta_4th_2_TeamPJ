@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     public bool isLive = false;
     public float Current_HP = 150f;
     public float Max_Hp = 150f;
-    
+    public bool isDead;
     public float Damage = 20f; 
     public float Regeneration = 0.5f;
     public float respawnTime = 10f;
