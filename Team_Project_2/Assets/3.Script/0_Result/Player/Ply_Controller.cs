@@ -59,7 +59,6 @@ public class Ply_Controller : MonoBehaviour
     public bool isDead { get; private set; }
 
 
-
     [SerializeField]
     private Animator animator;
 
@@ -83,7 +82,12 @@ public class Ply_Controller : MonoBehaviour
 
     private void Update()
     {
-        Spawn_Solider();
+
+
+        if (GameManager.instance.inRange)
+        {
+            Spawn_Solider();
+        }
         //상태 변경
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -224,7 +228,7 @@ public class Ply_Controller : MonoBehaviour
         //미니언 생성 위치는 나중에 점령지(Spawner)위치로 바꾸기 
 
         Minion_Controller minionController = Minion.GetComponent<Minion_Controller>();
-        Minion.layer = 7;
+        Minion.layer = 6;
 
         GameManager.instance.Gold -= (15 + (Human_num * 5));
         //Minion.transform.SetParent(transform);

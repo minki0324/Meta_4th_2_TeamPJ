@@ -299,7 +299,7 @@ public class UnitAttack2 : MonoBehaviour
             leaderState.UnitList.Remove(gameObject);
             leaderState.currentUnitCount--;
         }
-        gameObject.layer = 9;   // 레이어 DIe로 변경해서 타겟으로 안되게
+        gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
         HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
         //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
 

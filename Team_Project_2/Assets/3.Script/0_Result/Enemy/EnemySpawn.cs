@@ -6,48 +6,75 @@ public class EnemySpawn : MonoBehaviour
 {
     //unitValue에 따라 소환되는 unit
     [SerializeField] private GameObject[] unit;
-    public LeaderState leaderState;
+    [SerializeField] private Ply_Controller player;
+    private LeaderState leaderState;
+    [SerializeField]private GameObject targetLeader;
+
     //스폰위치 3개
     private Transform[] SpawnPoint = new Transform[3];
     //스폰위치를 0~2 번위치 차례대로 소환하기위한 인덱스
     private int SpawnIndex = 0;
     //소환되는 간격
     private float Spawninterval = 0.4f;
+    private int myLayer;
+    private bool isAI;
+    // 공격 대상 레이어
+    private LayerMask TeamLayer;
     private void Awake()
     {
-        leaderState = FindLeader();
+        myLayer = gameObject.layer;
+        TeamLayer = LayerMask.NameToLayer("Team");
+        myLayer = transform.parent.gameObject.layer;
+        targetLeader = null;
+        
 
         for (int i = 0; i < 3; i++)
         {
             SpawnPoint[i] = transform.GetChild(i); // 각 자식 객체를 배열에 저장
         }
     }
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Ply_Controller>();
+    }
     private void Update()
     {
+    
 
-        if (!GameManager.instance.isLive)
+        if (myLayer != transform.parent.gameObject.layer)
         {
-            return;
+
+        Debug.Log("이프문 들어옵니다");
+            gameObject.layer  = transform.parent.gameObject.layer;
+            try
+            {
+                targetLeader = SetLeader();
+            }
+            catch
+            {
+                Debug.Log("타겟찾지못함");
+            }
+
+
         }
 
-        if (leaderState.isDead)
+
+        if (targetLeader.gameObject.layer == TeamLayer)
         {
-            leaderState.canSpawn = false;
+            isAI = false;
 
-            return;
-        }
-
-
-
-
-        //유닛카운트가 맥스가 됐거나 , 유닛비용보다 가진 골드가 적을때 false;
-        if(leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost)
-        {
-            leaderState.canSpawn = false;
         }
         else
         {
-            leaderState.canSpawn = true;
+            isAI = true;
+
+        }
+
+
+        if (isAI)
+        {
+            AIspawn();
+
         }
 
 
@@ -59,28 +86,49 @@ public class EnemySpawn : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderState.canSpawn)
+        if (isAI)
+        {
+            if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderState.canSpawn)
+            {
+
+                InvokeRepeating("UnitSpawn", 0f, Spawninterval);
+
+
+            }
+            else if (!leaderState.canSpawn)
+            {
+
+                CancelInvoke("UnitSpawn");
+            }
+        }
+        else
         {
 
-            InvokeRepeating("UnitSpawn", 0f, Spawninterval);
+            if (other.CompareTag("Player"))
+            {
+                GameManager.instance.inRange = true;
+            }
 
 
         }
-        else if (!leaderState.canSpawn)
-        {
-
-            CancelInvoke("UnitSpawn");
-        }
-
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer)
+        if (isAI)
         {
+            if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer)
+            {
 
-            CancelInvoke("UnitSpawn");
+                CancelInvoke("UnitSpawn");
+            }
         }
-
+        else
+        {
+            if (other.CompareTag("Player"))
+            {
+                GameManager.instance.inRange = false;
+            }
+        }
     }
     private void UnitSpawn()
     {
@@ -90,7 +138,6 @@ public class EnemySpawn : MonoBehaviour
         }
         GameObject newUnit = Instantiate(unit[leaderState.unitValue], SpawnPoint[SpawnIndex].position, Quaternion.identity);
         SetLayerRecursively(newUnit, leaderState.gameObject.layer);
-        // SetColar(newUnit);
 
 
         leaderState.UnitList.Add(newUnit);
@@ -143,14 +190,44 @@ public class EnemySpawn : MonoBehaviour
 
 
     }
-    /*private void SetColar(GameObject newUnit)
+    private GameObject SetLeader()
     {
-        ColorSet unitColorSet = newUnit.gameObject.GetComponent<ColorSet>();
+     
+        if (myLayer != TeamLayer)
+        {
 
-        ColorSet leaderColorSet = leaderState.gameObject.GetComponent<ColorSet>();
-        //unitColorSet.Color_Index = leaderColorSet.Color_Index;
-        leaderColorSet.RecursiveSearchAndSetTexture(newUnit.transform , leaderColorSet.Color_Index);
+            leaderState = FindLeader();
+            if (leaderState != null)
+            {
+                targetLeader = leaderState.gameObject;
+
+            }
+        }
+        else 
+        {
+
+            targetLeader = player.gameObject;
 
 
-    }*/
+        }
+        return targetLeader;
+    }
+    private void AIspawn()
+    {
+        if (leaderState.isDead)
+        {
+            leaderState.canSpawn = false;
+
+            return;
+        }
+        //유닛카운트가 맥스가 됐거나 , 유닛비용보다 가진 골드가 적을때 false;
+        if (leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost)
+        {
+            leaderState.canSpawn = false;
+        }
+        else
+        {
+            leaderState.canSpawn = true;
+        }
+    }
 }

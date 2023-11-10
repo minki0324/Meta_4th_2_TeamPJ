@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
     public float Damage = 20f; 
     public float Regeneration = 0.5f;
     public float respawnTime = 10f;
+    public bool inRange;
+    
     //병사인구 
     public int Max_MinionCount = 19;
     public int Current_MinionCount;

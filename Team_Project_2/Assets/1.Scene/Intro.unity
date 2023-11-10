@@ -8582,6 +8582,7 @@ MonoBehaviour:
   Damage: 20
   Regeneration: 0.5
   respawnTime: 10
+  inRange: 0
   Max_MinionCount: 19
   Current_MinionCount: 0
   isPossible_Upgrade_1: 0
