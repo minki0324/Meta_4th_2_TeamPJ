@@ -24,11 +24,9 @@ public class Following : MonoBehaviour
 
     List<Vector3> listVetor = new List<Vector3>();
 
-    public bool isa = false;
 
     public Vector3 StopPos;
-
-
+    
 
     public bool isStop = false;
     public Vector3 Standard;
@@ -274,6 +272,7 @@ public class Following : MonoBehaviour
                 {
                     // StartCoroutine(Timer());
                     Stop_List[i].GetComponent<Minion_Controller>().isClose = true;
+                   
                 }
 
             }

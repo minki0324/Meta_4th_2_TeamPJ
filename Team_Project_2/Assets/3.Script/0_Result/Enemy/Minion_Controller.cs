@@ -32,6 +32,8 @@ public class Minion_Controller : MonoBehaviour
     private CapsuleCollider DetectCollider; //공격 판정용 콜라이더
     [SerializeField] private UnitAttack1 UnitAtk;
 
+    private Vector3 forward_Pos = new Vector3(0, 0, 10f);
+
     private float MaxHP;
     public float CurrentHP { get; private set; }
 
@@ -61,7 +63,7 @@ public class Minion_Controller : MonoBehaviour
 
     private void Update()
     {
-        transform.forward = playerController.transform.forward;
+        transform.forward = playerController.transform.forward + forward_Pos;
         Behavior_Mode();
         
         if (isClose == true)
@@ -134,7 +136,7 @@ public class Minion_Controller : MonoBehaviour
                 break;
         }
     }
-    private void OnCollisionEnter(Collision collision)
+  /*  private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -145,5 +147,5 @@ public class Minion_Controller : MonoBehaviour
             agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         }
     }
-
+*/
 }
