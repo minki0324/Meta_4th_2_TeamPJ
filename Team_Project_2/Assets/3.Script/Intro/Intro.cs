@@ -91,6 +91,7 @@ public class Intro : MonoBehaviour
 
     private void Awake()
     {
+       // gameObject.SetActive(true);
         dataManager = new DataManager();
         scriptsData = dataManager.Load("Scripts");
     }
