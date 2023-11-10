@@ -104,6 +104,10 @@ public class UnitAttack2 : MonoBehaviour
 
     private void Update()
     {
+        if(!GameManager.instance.isLive)
+        {
+            return;
+        }
 
         if (!isDie && leader != player.gameObject)
         {

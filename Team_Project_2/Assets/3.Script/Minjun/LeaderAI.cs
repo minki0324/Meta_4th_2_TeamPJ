@@ -44,7 +44,7 @@ public class LeaderAI : Unit
   
             case BattleState.Attack:
                 break;
-            case BattleState.Search:
+            /*case BattleState.Search:
                 
                 targetFlag = TargetFlag();
                 if(targetFlag != null) 
@@ -65,7 +65,7 @@ public class LeaderAI : Unit
                 {
                     bat_State = BattleState.Search;
                 }
-                break;
+                break;*/
             case BattleState.Defense:
                 break;
 

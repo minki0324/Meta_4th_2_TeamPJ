@@ -11,9 +11,9 @@ public class Unit_Occupation : MonoBehaviour
 
     [HideInInspector] public int Flag_Num = 0;  // Flag ¿Œµ¶Ω∫ 
 
-    private int Team_Color;  // ∆¿ Color
+    public int Team_Color;  // ∆¿ Color
 
-    private void Awake()
+    private void Start()
     {
         switch (this.gameObject.layer)
         {

@@ -736,19 +736,19 @@ namespace SimpleProceduralTerrainProject
             {
                 switch (baseCamps[i].gameObject.layer)
                 {
-                    case 6:
+                    case (int)TeamLayerIdx.Player:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.Color_Index);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.Color_Index);
                         break;
-                    case 7:
+                    case (int)TeamLayerIdx.Team1:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T1_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T1_Color);
                         break;
-                    case 8:
+                    case (int)TeamLayerIdx.Team2:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T2_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T2_Color);
                         break;
-                    case 9:
+                    case (int)TeamLayerIdx.Team3:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T3_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T3_Color);
                         break;

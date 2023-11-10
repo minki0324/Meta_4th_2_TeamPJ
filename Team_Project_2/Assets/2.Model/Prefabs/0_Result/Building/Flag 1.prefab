@@ -36,7 +36,6 @@ Transform:
   - {fileID: 5805590287774689681}
   - {fileID: 5805590287774689687}
   - {fileID: 5805590287774689685}
-  - {fileID: 4014891845131425956}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 215, z: 0}
@@ -113,7 +112,7 @@ GameObject:
   - component: {fileID: 5805590287779870905}
   m_Layer: 0
   m_Name: Banner_Pole_B
-  m_TagString: Flag
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -197,7 +196,7 @@ GameObject:
   - component: {fileID: 5805590287779870907}
   m_Layer: 0
   m_Name: Banner_Pole_A
-  m_TagString: Flag
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -282,7 +281,7 @@ GameObject:
   - component: {fileID: 6581486797689249986}
   m_Layer: 0
   m_Name: Flag_A
-  m_TagString: Flag
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -388,7 +387,7 @@ GameObject:
   - component: {fileID: 5805590287779870911}
   m_Layer: 0
   m_Name: Banner_Pole_C
-  m_TagString: Flag
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -533,7 +532,7 @@ GameObject:
   - component: {fileID: 5805590287774689693}
   m_Layer: 0
   m_Name: Bone_Pole
-  m_TagString: Flag
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -582,34 +581,4 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5805590287774689689}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8236822944536536898
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4014891845131425956}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4014891845131425956
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8236822944536536898}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 5805590287774689677}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum TeamLayerIdx
+public enum TeamLayerIdx
 {
     Player = 6,
     Team1,

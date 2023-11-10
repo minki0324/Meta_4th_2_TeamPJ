@@ -23,6 +23,11 @@ public class Point_Move : MonoBehaviour
     private void Update()
     {
 
+        if(!GameManager.instance.isLive)
+        {
+            return;
+        }
+
         if (!isMove)
         {
             Flag_Num = Random.Range(0, FlagPoint.Length);
