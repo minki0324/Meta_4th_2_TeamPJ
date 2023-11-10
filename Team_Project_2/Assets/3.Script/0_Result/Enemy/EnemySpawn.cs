@@ -24,6 +24,12 @@ public class EnemySpawn : MonoBehaviour
     }
     private void Update()
     {
+
+        if (!GameManager.instance.isLive)
+        {
+            return;
+        }
+
         if (leaderState.isDead)
         {
             leaderState.canSpawn = false;
@@ -84,7 +90,7 @@ public class EnemySpawn : MonoBehaviour
         }
         GameObject newUnit = Instantiate(unit[leaderState.unitValue], SpawnPoint[SpawnIndex].position, Quaternion.identity);
         SetLayerRecursively(newUnit, leaderState.gameObject.layer);
-        SetColar(newUnit);
+        // SetColar(newUnit);
 
 
         leaderState.UnitList.Add(newUnit);
@@ -137,13 +143,14 @@ public class EnemySpawn : MonoBehaviour
 
 
     }
-    private void SetColar(GameObject newUnit)
+    /*private void SetColar(GameObject newUnit)
     {
         ColorSet unitColorSet = newUnit.gameObject.GetComponent<ColorSet>();
 
         ColorSet leaderColorSet = leaderState.gameObject.GetComponent<ColorSet>();
-        unitColorSet.Color_Index = leaderColorSet.Color_Index;
+        //unitColorSet.Color_Index = leaderColorSet.Color_Index;
+        leaderColorSet.RecursiveSearchAndSetTexture(newUnit.transform , leaderColorSet.Color_Index);
 
 
-    }
+    }*/
 }

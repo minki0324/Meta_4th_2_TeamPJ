@@ -11,7 +11,7 @@ public class Minimap_Follow : MonoBehaviour
     {
         if(!target)
         {
-            return;
+            target = GameObject.FindGameObjectWithTag("Player").GetComponent<Ply_Controller>().transform;
         }
 
         transform.position = new Vector3(

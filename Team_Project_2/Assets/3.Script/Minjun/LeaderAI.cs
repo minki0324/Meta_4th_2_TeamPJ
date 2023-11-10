@@ -25,9 +25,15 @@ public class LeaderAI : Unit
         flag = GameObject.FindGameObjectsWithTag("Flag");
         targetFlag = TargetFlag();
         bat_State = BattleState.Move;
+        
     }
     private void Update()
     {
+
+        if(!GameManager.instance.isLive)
+        {
+            return;
+        }
 
         // 항상 주변에 적이있는지 탐지
         EnemyDitect();
@@ -38,7 +44,7 @@ public class LeaderAI : Unit
   
             case BattleState.Attack:
                 break;
-            case BattleState.Search:
+            /*case BattleState.Search:
                 
                 targetFlag = TargetFlag();
                 if(targetFlag != null) 
@@ -59,7 +65,7 @@ public class LeaderAI : Unit
                 {
                     bat_State = BattleState.Search;
                 }
-                break;
+                break;*/
             case BattleState.Defense:
                 break;
 
@@ -134,6 +140,7 @@ public class LeaderAI : Unit
         {
             // _flag 주변에서 trigger에 닿아 있는 객체 검출
             Collider[] colliders = Physics.OverlapSphere(_flag.transform.position, radius, layerMask, QueryTriggerInteraction.Collide);
+            
 
             // 최소 카운트 갱신
             if (colliders.Length < minTouchingCount)
@@ -148,7 +155,7 @@ public class LeaderAI : Unit
             return selectedFlag;
         }
         else
-        {
+        { 
             Debug.Log("깃발못찾음");
             return null;
 

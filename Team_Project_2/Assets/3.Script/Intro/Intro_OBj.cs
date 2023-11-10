@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Intro_OBj : MonoBehaviour
 {
-    //unitValue¿¡ µû¶ó ¼ÒÈ¯µÇ´Â unit
+    //unitValueì— ë”°ë¼ ì†Œí™˜ë˜ëŠ” unit
     [SerializeField] private GameObject[] unit;
     private LeaderState leaderState;
-    //½ºÆùÀ§Ä¡ 3°³
+    //ìŠ¤í°ìœ„ì¹˜ 3ê°œ
     private Transform[] SpawnPoint = new Transform[3];
-    //½ºÆùÀ§Ä¡¸¦ 0~2 ¹øÀ§Ä¡ Â÷·Ê´ë·Î ¼ÒÈ¯ÇÏ±âÀ§ÇÑ ÀÎµ¦½º
+    //ìŠ¤í°ìœ„ì¹˜ë¥¼ 0~2 ë²ˆìœ„ì¹˜ ì°¨ë¡€ëŒ€ë¡œ ì†Œí™˜í•˜ê¸°ìœ„í•œ ì¸ë±ìŠ¤
     private int SpawnIndex = 0;
-    //¼ÒÈ¯µÇ´Â °£°İ
+    //ì†Œí™˜ë˜ëŠ” ê°„ê²©
     private float Spawninterval = 0.4f;
 
     private void Awake()
@@ -20,7 +20,7 @@ public class Intro_OBj : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            SpawnPoint[i] = transform.GetChild(i); // °¢ ÀÚ½Ä °´Ã¼¸¦ ¹è¿­¿¡ ÀúÀå
+            SpawnPoint[i] = transform.GetChild(i); // ê° ìì‹ ê°ì²´ë¥¼ ë°°ì—´ì— ì €ì¥
         }
     }
     private void Update()
@@ -31,7 +31,7 @@ public class Intro_OBj : MonoBehaviour
             return;
         }
 
-        //À¯´ÖÄ«¿îÆ®°¡ ¸Æ½º°¡ ‰ç°Å³ª , À¯´Öºñ¿ëº¸´Ù °¡Áø °ñµå°¡ ÀûÀ»¶§ false;
+        //ìœ ë‹›ì¹´ìš´íŠ¸ê°€ ë§¥ìŠ¤ê°€ Â‰ï¦¬í‚¬ , ìœ ë‹›ë¹„ìš©ë³´ë‹¤ ê°€ì§„ ê³¨ë“œê°€ ì ì„ë•Œ false;
         if (leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost /*|| leaderState.isDead*/)
         {
             leaderState.canSpawn = false;
@@ -63,14 +63,14 @@ public class Intro_OBj : MonoBehaviour
         }
         GameObject newUnit = Instantiate(unit[leaderState.unitValue], SpawnPoint[SpawnIndex].position, Quaternion.identity);
         SetLayerRecursively(newUnit, leaderState.gameObject.layer);
-        SetColar(newUnit);
+       //  SetColar(newUnit);
 
         leaderState.UnitList.Add(newUnit);
         //leaderState.Gold -= leaderState.unitCost;
         SpawnIndex++;
 
         leaderState.currentUnitCount++;
-        //½ºÆùÀ§Ä¡¸¦ Â÷·Ê´ë·Î ³ª¿À°ÔÇÏ±âÀ§ÇÑ ¸Ş¼Òµå 
+        //ìŠ¤í°ìœ„ì¹˜ë¥¼ ì°¨ë¡€ëŒ€ë¡œ ë‚˜ì˜¤ê²Œí•˜ê¸°ìœ„í•œ ë©”ì†Œë“œ 
         if (SpawnIndex > 2)
         {
             SpawnIndex = 0;
@@ -79,9 +79,9 @@ public class Intro_OBj : MonoBehaviour
 
     private LeaderState FindLeader()
     {
-        GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTag¿¡´Â LeaderState ÄÄÆ÷³ÍÆ®°¡ ÀÖ´Â ¿ÀºêÁ§Æ®ÀÇ ÅÂ±×¸¦ ³Ö½À´Ï´Ù.
+        GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTagì—ëŠ” LeaderState ì»´í¬ë„ŒíŠ¸ê°€ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ì˜ íƒœê·¸ë¥¼ ë„£ìŠµë‹ˆë‹¤.
 
-        // Ã£Àº ¿ÀºêÁ§Æ® Áß¿¡¼­ LeaderState ÄÄÆ÷³ÍÆ®¸¦ °¡Áø Ã¹ ¹øÂ° ¿ÀºêÁ§Æ®¸¦ Ã£½À´Ï´Ù.
+        // ì°¾ì€ ì˜¤ë¸Œì íŠ¸ ì¤‘ì—ì„œ LeaderState ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì§„ ì²« ë²ˆì§¸ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ìŠµë‹ˆë‹¤.
 
         foreach (var obj in objectsWithSameLayer)
         {
@@ -92,32 +92,25 @@ public class Intro_OBj : MonoBehaviour
                 if (leaderState != null)
                 {
                     return leaderState;
-                    // LeaderState¸¦ Ã£À¸¸é ·çÇÁ¸¦ Á¾·áÇÕ´Ï´Ù.
+                    // LeaderStateë¥¼ ì°¾ìœ¼ë©´ ë£¨í”„ë¥¼ ì¢…ë£Œí•©ë‹ˆë‹¤.
                 }
             }
         }
 
         if (leaderState == null)
         {
-            Debug.LogWarning("LeaderState ÄÄÆ÷³ÍÆ®¸¦ °¡Áø ¿ÀºêÁ§Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("LeaderState ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
         }
         return null;
     }
     private void SetLayerRecursively(GameObject obj, int newLayer)
     {
-        obj.layer = newLayer; // ÇöÀç ¿ÀºêÁ§Æ®ÀÇ ·¹ÀÌ¾î º¯°æ
+        obj.layer = newLayer; // í˜„ì¬ ì˜¤ë¸Œì íŠ¸ì˜ ë ˆì´ì–´ ë³€ê²½
 
         foreach (Transform child in obj.transform)
         {
-            SetLayerRecursively(child.gameObject, newLayer); // ÇÏÀ§ ¿ÀºêÁ§Æ®¿¡ ´ëÇØ Àç±Í È£Ãâ
+            SetLayerRecursively(child.gameObject, newLayer); // í•˜ìœ„ ì˜¤ë¸Œì íŠ¸ì— ëŒ€í•´ ì¬ê·€ í˜¸ì¶œ
         }
     }
 
-    private void SetColar(GameObject newUnit)
-    {
-        ColorSet unitColorSet = newUnit.gameObject.GetComponent<ColorSet>();
-
-        ColorSet leaderColorSet = leaderState.gameObject.GetComponent<ColorSet>();
-        unitColorSet.Color_Index = leaderColorSet.Color_Index;
-    }
 }
