@@ -13,6 +13,7 @@ public class Unit_Information : ScriptableObject
     public float maxHP;
     public float currentHP;
     public float attackRange;
+    public float cost;
     // 다른 정보 필드들을 추가할 수 있습니다.
 
 }
