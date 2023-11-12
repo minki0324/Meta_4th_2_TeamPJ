@@ -30,7 +30,7 @@ public class Unit_Gate : MonoBehaviour
         if (other.gameObject.CompareTag("Gate"))
         {
             gate = other.gameObject.GetComponent<Gate>();
-            if (this.gameObject.layer.Equals((int)TeamLayerIdx.Player))
+            if (gameObject.CompareTag("Player"))
             {
                 gateUI.gameObject.SetActive(true);  // gateUI 활성화                   
             }
@@ -39,10 +39,11 @@ public class Unit_Gate : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Gate") && this.gameObject.layer.Equals((int)TeamLayerIdx.Player)) 
+        if (other.gameObject.CompareTag("Gate") && gameObject.CompareTag("Player")) 
         {
             gateUI.gameObject.SetActive(false);  // gateUI 비활성화        
         }
+        if (gate != null) StopCoroutine(gate.Gate_Interaction(this.gameObject.layer));
         gate = null;
     }
 }

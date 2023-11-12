@@ -22,36 +22,50 @@ public class Gate : MonoBehaviour
     // 게이트 상호작용
     public IEnumerator Gate_Interaction(int TeamLayer)
     {
-        while (true)
+        if (!TeamLayer.Equals((int)TeamLayerIdx.Player))
         {
             if (!isOpen) // 문이 닫혀있을 때
             {
-                if (!TeamLayer.Equals((int)TeamLayerIdx.Player))
-                {
-                    Gate_Ani.SetTrigger("OpenDoor");
-                    isOpen = true;
-                    Gate_Col.enabled = false;
-                }
-                else
+                Gate_Ani.SetTrigger("OpenDoor");
+                isOpen = true;
+                Gate_Col.enabled = false;
+            }
+            else  // 문이 열려있을 때
+            {
+                Gate_Ani.SetTrigger("CloseDoor");
+                isOpen = false;
+                Gate_Col.enabled = true;
+            }
+        }
+        else
+        {
+            while (true)
+            {
+                if (!isOpen)
                 {
                     if (Input.GetKeyDown(KeyCode.J))
                     {
-                        Debug.Log("문 열림");
                         Gate_Ani.SetTrigger("OpenDoor");
                         isOpen = true;
                         Gate_Col.enabled = false;
                     }
                 }
+                else if (isOpen)
+                {
+                    if (Input.GetKeyDown(KeyCode.J))
+                    {
+                        Gate_Ani.SetTrigger("CloseDoor");
+                        isOpen = false;
+                        Gate_Col.enabled = true;
+                    }
+
+                }
+                    yield return null;
+                
             }
-            else // 문이 열려있을 때
-            {
-                Debug.Log("문 닫힘");
-                Gate_Ani.SetTrigger("CloseDoor");
-                isOpen = false;
-                Gate_Col.enabled = true;
-            }
-        yield return null;
+
         }
-        
+        yield return null;
     }
+
 }
