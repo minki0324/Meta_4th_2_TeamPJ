@@ -38,10 +38,10 @@ public class Ply_Controller : MonoBehaviour
 
     [SerializeField]
     private Transform Spawner;
-
+    public EnemySpawn spawnPoint;
     //보병 & 궁수 뽑을 수 있는가 판단하는 변수 -> 추후에 업그레이드 기능과 할때 사용해주세여
-    
 
+    private int spawnIndex;
 
     public LayerMask TargetLayer;
 
@@ -223,16 +223,57 @@ public class Ply_Controller : MonoBehaviour
     {
         // 나중에 인트로 씬에서 컬러셋 스크립트에서 컬러번호 넘겨 받은거로 소환할 때 컬러 적용 시켜야함
 
-        GameObject Minion = null;
-        Minion = Instantiate(Minion_Prefabs[Human_num], Spawner.position, Quaternion.identity);
-        //미니언 생성 위치는 나중에 점령지(Spawner)위치로 바꾸기 
-
-        Minion_Controller minionController = Minion.GetComponent<Minion_Controller>();
-        Minion.layer = 6;
+        //if(spawnPoint == null)
+        //{
+        //    FindSpawnPoint();
+        //}
+        //스폰포인트영역 들어가면 spawnPoint 참조받고 스폰위치 받아서 그위치로 소환.
+        GameObject newUnit = Instantiate(Minion_Prefabs[Human_num], spawnPoint.SpawnPoint[spawnIndex].position, Quaternion.identity);
+        spawnPoint.SetLayerRecursively(newUnit, gameObject.layer);
 
         GameManager.instance.Gold -= (15 + (Human_num * 5));
         //Minion.transform.SetParent(transform);
-        UnitList_List.Add(Minion);
+        UnitList_List.Add(newUnit);
         GameManager.instance.Current_MinionCount++;
+
+
+
+
+      
+     
+        spawnIndex++;
+
+   
+        //스폰위치를 차례대로 나오게하기위한 메소드 
+        if (spawnIndex > 2)
+        {
+            spawnIndex = 0;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("SpawnPoint") && other.gameObject.layer == gameObject.layer)
+        {
+            spawnPoint = other.GetComponent<EnemySpawn>();
+        }
+    }
+    private void FindSpawnPoint()
+    {
+        GameObject[] spawns;
+        spawns = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        float mindistance = int.MaxValue;
+        foreach (GameObject ob in spawns)
+        {
+            if (gameObject.layer == ob.gameObject.layer)
+            {
+
+                float distance = Vector3.Distance(gameObject.transform.position, ob.transform.position);
+                if (distance < mindistance)
+                {
+                    mindistance = distance;
+                    spawnPoint = ob.GetComponent<EnemySpawn>();
+                }
+            }
+        }
     }
 }

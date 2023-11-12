@@ -11,7 +11,7 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField]private GameObject targetLeader;
 
     //스폰위치 3개
-    private Transform[] SpawnPoint = new Transform[3];
+    public Transform[] SpawnPoint = new Transform[3];
     //스폰위치를 0~2 번위치 차례대로 소환하기위한 인덱스
     private int SpawnIndex = 0;
     //소환되는 간격
@@ -40,34 +40,53 @@ public class EnemySpawn : MonoBehaviour
     private void Update()
     {
     
-
+        //스폰포인트 레이어가 깃발의 레이어랑 다르면 깃발레이어로 업데이트.
         if (myLayer != transform.parent.gameObject.layer)
         {
-
-        Debug.Log("이프문 들어옵니다");
+            //깃발레이어로 변경
             gameObject.layer  = transform.parent.gameObject.layer;
-            try
+
+            //중립깃발이라면 그냥 리턴
+            if (gameObject.layer == 0)
             {
-                targetLeader = SetLeader();
+                return;
             }
-            catch
+            //팀깃발이라면 타겟은 플레이어
+            else if (gameObject.layer == TeamLayer)
             {
-                Debug.Log("타겟찾지못함");
+                targetLeader = player.gameObject;
             }
+            //적깃발이라면 레이어에맞게 타겟 세팅.
+            else
+            {
+                try
+                {
+                    targetLeader = SetLeader();
+                }
+                catch
+                {
+                    Debug.Log("타겟찾지못함");
+                }
+            }
+
 
 
         }
 
-
-        if (targetLeader.gameObject.layer == TeamLayer)
+        //중립이 아닐때
+        if (targetLeader != null)
         {
-            isAI = false;
+            //타겟이 팀이아니라면 소환하는 타겟은 AI이다
+            if (targetLeader.gameObject.layer == TeamLayer)
+            {
+                isAI = false;
 
-        }
-        else
-        {
-            isAI = true;
+            }
+            else
+            {
+                isAI = true;
 
+            }
         }
 
 
@@ -107,6 +126,8 @@ public class EnemySpawn : MonoBehaviour
             if (other.CompareTag("Player"))
             {
                 GameManager.instance.inRange = true;
+                Ply_Controller ply = other.GetComponent<Ply_Controller>();
+                ply.spawnPoint = gameObject.GetComponent<EnemySpawn>();
             }
 
 
@@ -179,7 +200,7 @@ public class EnemySpawn : MonoBehaviour
         }
         return null;
     }
-    private void SetLayerRecursively(GameObject obj, int newLayer)
+    public void SetLayerRecursively(GameObject obj, int newLayer)
     {
         obj.layer = newLayer; // 현재 오브젝트의 레이어 변경
 
