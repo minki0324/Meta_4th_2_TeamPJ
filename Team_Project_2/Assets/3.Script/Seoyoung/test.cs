@@ -9,7 +9,8 @@ public class test : MonoBehaviour
     public Material evening_M;
     public Material afternoon_M;
 
-   
+    [SerializeField]
+    public Material newSkybox;
 
     
 
@@ -23,7 +24,7 @@ public class test : MonoBehaviour
     private void Awake()
     {
 
-        RenderSettings.skybox = night_M;
+        RenderSettings.skybox = evening_M;
         
     }
     private void Update()

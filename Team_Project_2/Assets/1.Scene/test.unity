@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.6322768, g: 0.873692, b: 0.991532, a: 1}
+  m_IndirectSpecularColor: {r: 0.49780262, g: 0.49780262, b: 0.49780262, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -278,10 +278,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cda7915cdf9545428d6e2a6d00066b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  night_M: {fileID: 2100000, guid: d1fdb8e44b28da34d9e922cca0bc740e, type: 2}
-  evening_M: {fileID: 2100000, guid: 44d0573bf6d91e447b62f3aff840f2ae, type: 2}
+  night_M: {fileID: 2100000, guid: 96558b11175308d409b37f87725c365d, type: 2}
+  evening_M: {fileID: 2100000, guid: 39737dec886c0af478df5fd6716f5323, type: 2}
   afternoon_M: {fileID: 2100000, guid: 67950864b84c5db4f9eee7ca51c85571, type: 2}
-  skybox: {fileID: 0}
+  newSkybox: {fileID: 0}
 --- !u!1 &272420368
 GameObject:
   m_ObjectHideFlags: 0
