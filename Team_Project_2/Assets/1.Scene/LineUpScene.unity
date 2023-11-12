@@ -597,6 +597,8 @@ MonoBehaviour:
   Current_MinionCount: 0
   isPossible_Upgrade_1: 0
   isPossible_Upgrade_2: 0
+  unit1: {fileID: 0}
+  unit2: {fileID: 0}
   T1_Color: 0
   T2_Color: 0
   T3_Color: 0
@@ -1664,6 +1666,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: SimpleProceduralTerrainProject.TerrainGenerator,
           Assembly-CSharp
         m_MethodName: initRoad
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2004864490}
+        m_TargetAssemblyTypeName: LineUpSet, Assembly-CSharp
+        m_MethodName: UnitSetToPlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2751,6 +2765,8 @@ MonoBehaviour:
   - {fileID: 298959153}
   - {fileID: 1892019807}
   - {fileID: 1265383455}
+  - {fileID: 1454353635}
+  - {fileID: 307087897}
   ply: {fileID: 0}
   HP_Slider: {fileID: 0}
   SliderImg: {fileID: 0}
@@ -14639,6 +14655,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttons: []
+  unitinfos:
+  - {fileID: 11400000, guid: 97d2d90dc5f2dbf40b38a44565a5341d, type: 2}
+  - {fileID: 11400000, guid: 624770ab462c7dc439a1cf1567e032e9, type: 2}
+  - {fileID: 11400000, guid: a00150c2d1141d34c90de107f07f4ca5, type: 2}
+  - {fileID: 11400000, guid: 97d2d90dc5f2dbf40b38a44565a5341d, type: 2}
+  - {fileID: 11400000, guid: 624770ab462c7dc439a1cf1567e032e9, type: 2}
+  - {fileID: 11400000, guid: a00150c2d1141d34c90de107f07f4ca5, type: 2}
   lineupIndexs: 
   unitSprite_array:
   - {fileID: 21300000, guid: 9a8dadc87a7d93045b8d67c16031dbe9, type: 3}

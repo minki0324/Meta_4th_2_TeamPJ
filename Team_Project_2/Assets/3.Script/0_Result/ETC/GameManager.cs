@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
     //병종 업그레이드
     public bool isPossible_Upgrade_1 = false;
     public bool isPossible_Upgrade_2 = false;
+    public Unit_Information unit1;
+    public Unit_Information unit2;
     private void Awake()
     {
         if(instance == null)
