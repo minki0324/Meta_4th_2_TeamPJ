@@ -95,12 +95,16 @@ namespace SimpleProceduralTerrainProject
         private DetailPrototype[] m_detailProtoTypes;
         private Vector2 m_offset;
 
+        //Other Script
+        [SerializeField] private OccupationHUD hud;
+
         private void Awake()
         {
             int seed = (int)System.DateTime.Now.Ticks;
             Random.InitState(seed);
             m_seed = Random.Range(0, 100);
             terrainList = new List<Terrain>();
+            hud = FindObjectOfType<OccupationHUD>();
             InitializeTerrain();
         }
         #region 베이스부터 깃발까지 도로 까는 메소드들
@@ -250,6 +254,7 @@ namespace SimpleProceduralTerrainProject
             }
             GameManager.instance.isLive = true;
             Terra.GetComponent<InitNavMesh>().GenerateNavmesh();
+            hud.Occu_Set();
             start_Btn.SetActive(false);
 
         }
