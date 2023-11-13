@@ -9,8 +9,13 @@ public class LineUpSet : MonoBehaviour
     [SerializeField]
     //유닛선택 버튼들 6개
     private Button[] buttons;
+    //스타트버튼
+    [SerializeField] Button startButton;
     //각 버튼들의 체크이미지
     private GameObject[] Checkbox;
+    //스크립터블 배열
+    [Header("Sword > Heavy > Archer > Priest > Spear > Halberdier ")]
+    [SerializeField]private Unit_Information[] unitinfos;
     //최종 라인업 스프라이트 인덱스
     public List<int> lineupIndexs = new List<int>();
     [Header("Sword > Heavy > Archer > Priest > Spear > Halberdier > Default")]
@@ -20,10 +25,11 @@ public class LineUpSet : MonoBehaviour
     [SerializeField] private GameObject lineupUI;
     //라인업 UI 에 있는 최종 선택 유닛들(이미지)
     private Image[] lineupSprite;
+    private bool isCanStart;
     private Color originalColor;
     void Start()
     {
-
+     
         lineupSprite = lineupUI.GetComponentsInChildren<Image>();
         buttons = GetComponentsInChildren<Button>();
         Checkbox = new GameObject[buttons.Length]; //
@@ -57,7 +63,18 @@ public class LineUpSet : MonoBehaviour
                 lineupSprite[i].sprite = unitSprite_array[6];
             }
         }
-
+        if(lineupIndexs.Count == 3)
+        {
+            isCanStart = true;
+        }
+        if (isCanStart)
+        {
+            startButton.interactable = true;
+        }
+        else
+        {
+            startButton.interactable = false;
+        }
     }
 
     public void ButtonClicked(int buttonIndex)
@@ -86,7 +103,7 @@ public class LineUpSet : MonoBehaviour
 
 
 
-    }
+    }                   
     private void SetLineup(int buttonIndex)
     {
         if (buttonIndex >= 1 && buttonIndex < Checkbox.Length)
@@ -95,7 +112,7 @@ public class LineUpSet : MonoBehaviour
             bool isActive = !Checkbox[buttonIndex].gameObject.activeSelf;
             Checkbox[buttonIndex].gameObject.SetActive(isActive);
             if (isActive)
-            {
+                                           
                 //체크표시하는 동시에 최종 스프라이트 인덱스에 추가
                 lineupIndexs.Add(buttonIndex);
 
@@ -108,6 +125,13 @@ public class LineUpSet : MonoBehaviour
                 // c   = originalColor;
             }
         }
-    }
+  
+    public void UnitSetToPlayer()
+    {
+        GameManager.instance.unit1 =unitinfos[lineupIndexs[1]];
+        GameManager.instance.unit2 =unitinfos[lineupIndexs[2]];
 
+       }
 }
+  
+

@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8058749bdb9a96947beea6bd0876c4da, type: 3}
   m_Name: Heavy
   m_EditorClassIdentifier: 
-  unitName: "\uACE0\uAE09\uBCD1\uC0AC"
-  description: "\uACE0\uAE09\uBCD1\uC0AC\uC784\uB2E4"
+  unitName: "\uAE30\uC0AC"
+  description: "\uAE30\uC0AC\uC784\uB2E4"
   icon: {fileID: 0}
   damage: 20
   maxHP: 100
   currentHP: 100
   attackRange: 1.5
+  cost: 18
+  index: 1
