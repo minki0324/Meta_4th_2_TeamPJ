@@ -9,8 +9,11 @@ public class LineUpSet : MonoBehaviour
     [SerializeField]
     //유닛선택 버튼들 6개
     private Button[] buttons;
+    //스타트버튼
+    [SerializeField] Button startButton;
     //각 버튼들의 체크이미지
     private GameObject[] Checkbox;
+    //스크립터블 배열
     [Header("Sword > Heavy > Archer > Priest > Spear > Halberdier ")]
     [SerializeField]private Unit_Information[] unitinfos;
     //최종 라인업 스프라이트 인덱스
@@ -63,6 +66,14 @@ public class LineUpSet : MonoBehaviour
         if(lineupIndexs.Count == 3)
         {
             isCanStart = true;
+        }
+        if (isCanStart)
+        {
+            startButton.interactable = true;
+        }
+        else
+        {
+            startButton.interactable = false;
         }
     }
 
