@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class LeaderController : MonoBehaviour
 {
-    private NavMeshAgent Nav;
 
     public StateManager stateManager;
 
@@ -22,8 +21,6 @@ public class LeaderController : MonoBehaviour
 
     private void Start()
     {
-        TryGetComponent<NavMeshAgent>(out Nav);
-
         IState charge = new StateCharge();
         IState retreat = new StateRetreat();
         IState improve = new StateImprove();

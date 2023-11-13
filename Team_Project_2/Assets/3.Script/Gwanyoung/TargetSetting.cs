@@ -4,24 +4,37 @@ using UnityEngine;
 using UnityEngine.AI;
 using SimpleProceduralTerrainProject;
 
-public class TargetSetting : MonoBehaviour
+public abstract class TargetSetting : MonoBehaviour
 {
-    public TargetSetting targetset;
     public TerrainGenerator MapInfo;
+    public TargetSetting targetset;
 
-    private List<GameObject> Bases;
-    private GameObject TargetBase;
+    public NavMeshAgent Nav;
 
-    private Gate[] gates;         // 게이트들 담을 거
-    private Gate TargetGate;      // 내가 갈 게이트
-    private float Distance;       // 게이트와 나의 거리
+    public List<GameObject> Bases;
+    public GameObject TargetBase;
 
-    Transform ToEnemyBase()
+    public Gate[] gates;         // 게이트들 담을 거
+    public Gate TargetGate;      // 내가 갈 게이트
+    public float Distance;       // 게이트와 나의 거리
+
+    private void Start()
     {
-        List<GameObject> Bases = new List<GameObject>();
-        GameObject TargetBase;
+        Bases = new List<GameObject>();
+        MapInfo = FindObjectOfType<TerrainGenerator>();
+        TryGetComponent<NavMeshAgent>(out Nav);
+        gates = FindObjectsOfType<Gate>();
+    }
 
 
+    public virtual void ToTarget(Transform Target)
+    {
+        Nav.SetDestination(Target.position);
+    }
+
+
+    public virtual Transform ToEnemyBase()
+    {
         for (int i = 0; i < MapInfo.baseCampPositions.Count; i++)
         {
             if (!MapInfo.baseCampPositions[i].layer.Equals(gameObject.layer))
@@ -32,16 +45,14 @@ public class TargetSetting : MonoBehaviour
         TargetBase = Bases[Random.Range(0, Bases.Count)];
         return TargetBase.transform;
     }
-       
-    Transform ToFlag()
+
+    public Transform ToFlag()
     {
         return MapInfo.flagPositions_List[Random.Range(0, MapInfo.flagPositions_List.Count)].transform;
     }
-    
-    Transform ToGate(Transform StartPos)
-    {
-        gates = FindObjectsOfType<Gate>();
 
+    public virtual Transform ToGate(Transform StartPos)
+    {
         TargetGate = gates[0];
         float Distance = Vector3.SqrMagnitude(StartPos.position - gates[0].transform.position); // 비교용으로 0번째 배열 게이트 거리구하기
 
@@ -54,12 +65,11 @@ public class TargetSetting : MonoBehaviour
                 Distance = DistanceTemp;
             }
         }
+
         return TargetGate.transform;
     }
-    Transform ToMyBase()
+    public virtual Transform ToMyBase()
     {
-        TerrainGenerator MapInfo = FindObjectOfType<TerrainGenerator>();
-
         for (int i = 0; i < MapInfo.baseCampPositions.Count; i++)
         {
             if (MapInfo.baseCampPositions[i].layer.Equals(gameObject.layer))
@@ -88,6 +98,7 @@ public class TargetSetting : MonoBehaviour
                 }
             }
             return TargetBase.transform;
+            
         }
 
         return null;

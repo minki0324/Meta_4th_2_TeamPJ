@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateCharge : IState
+public class StateCharge : TargetSetting, IState
 {
+ 
     public void OperEnter()
     {
 
@@ -16,6 +17,7 @@ public class StateCharge : IState
 
     public void OperStay()
     {
-        
+
     }
+
 }

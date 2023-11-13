@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateImprove : IState
+public class StateImprove : TargetSetting, IState
 {
+
     public void OperEnter()
     {
     }
@@ -15,4 +16,6 @@ public class StateImprove : IState
     public void OperStay()
     {
     }
+
+
 }

@@ -11393,7 +11393,7 @@ GameObject:
   - component: {fileID: 8563116505424069821}
   - component: {fileID: 7674037152790838645}
   - component: {fileID: 8772205334172045319}
-  - component: {fileID: 7411362495028382749}
+  - component: {fileID: 8898059763314392748}
   m_Layer: 6
   m_Name: EnemyLeader
   m_TagString: Leader
@@ -11609,7 +11609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47275f1d5e3765d44aa6b55388fdc274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7411362495028382749
+--- !u!114 &8898059763314392748
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11618,10 +11618,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8132295210802862224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f4d530258c7f5f458f87d0e133b6307, type: 3}
+  m_Script: {fileID: 11500000, guid: 56c3d7c773f5aed46b1f382699ee8554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetset: {fileID: 0}
+  MapInfo: {fileID: 0}
+  Nav: {fileID: 0}
 --- !u!1 &8132295210802862830
 GameObject:
   m_ObjectHideFlags: 0

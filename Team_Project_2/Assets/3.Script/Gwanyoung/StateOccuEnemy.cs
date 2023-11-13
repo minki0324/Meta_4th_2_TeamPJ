@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StateOccuEnemy : IState
 {
+
     public void OperEnter()
     {
     }
@@ -15,4 +16,5 @@ public class StateOccuEnemy : IState
     public void OperStay()
     {
     }
+
 }
