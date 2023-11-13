@@ -17,7 +17,7 @@ public class UnitAttack2 : MonoBehaviour
      
      */
     //임시 미니언체력
-    private int HP = 3;
+    public int HP = 3;
     private bool isDie;
    private Ply_Controller player;
     //팀의 리더가 누군지
@@ -390,7 +390,7 @@ public class UnitAttack2 : MonoBehaviour
                 isdetecting = false;
             }
 
-
+            
             if (!isdetecting) //탐지된적이 멀리있으면 적한테 이동
             {
                 navMeshAgent.isStopped = false;
@@ -405,12 +405,16 @@ public class UnitAttack2 : MonoBehaviour
 
                 ani.SetBool("Move", false);
                 navMeshAgent.isStopped = true;
+                
                 if (!isAttacking)
                 {
                     attackCoroutine = StartCoroutine(Attack_co());
                     //StartCoroutine(Attack_co());
                 }
+
+                //힐러면 힐
             }
+         
         }
         else//탐지된 적이 없을때,
         {

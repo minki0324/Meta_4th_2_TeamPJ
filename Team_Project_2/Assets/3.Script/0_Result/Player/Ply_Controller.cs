@@ -17,6 +17,8 @@ public class Ply_Controller : MonoBehaviour
         Stop    //멈춰라~~
     }
 
+
+
     public Mode CurrentMode;
 
     //다른 클래스 객체=====================
