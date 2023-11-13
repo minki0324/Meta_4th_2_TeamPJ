@@ -16,7 +16,6 @@ public class UnitAttack2 : MonoBehaviour
      
      
      */
-   
     //임시 미니언체력
     public float currentHP;
     public float maxHP;
@@ -49,9 +48,9 @@ public class UnitAttack2 : MonoBehaviour
     // 공격 대상 레이어
     private LayerMask TeamLayer;
     private LayerMask EnemyLayer;
-    //죽었을때 박스콜라이더 Enable하기위해 직접참조 
-    [SerializeField] private BoxCollider HitBox_col;
-    [SerializeField] private BoxCollider Ob_Weapon_col;
+    //�׾����� �ڽ��ݶ��̴� Enable�ϱ����� �������� 
+    [SerializeField] private Collider HitBox_col;
+    [SerializeField] private Collider Ob_Weapon_col;
     
     //어택, 히트 딜레이
     private WaitForSeconds attackDelay;
@@ -427,7 +426,6 @@ public class UnitAttack2 : MonoBehaviour
                 isdetecting = false;
             }
 
-
             if (!isdetecting) //탐지된적이 멀리있으면 적한테 이동
             {
                 navMeshAgent.isStopped = false;
@@ -442,12 +440,16 @@ public class UnitAttack2 : MonoBehaviour
 
                 ani.SetBool("Move", false);
                 navMeshAgent.isStopped = true;
+                
                 if (!isAttacking)
                 {
                     attackCoroutine = StartCoroutine(Attack_co());
                     //StartCoroutine(Attack_co());
                 }
+
+                //������ ��
             }
+         
         }
         else//탐지된 적이 없을때,
         {

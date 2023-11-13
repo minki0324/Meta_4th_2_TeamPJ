@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
+
 public class Ply_Movement : MonoBehaviour
 {
     /*
@@ -222,4 +226,72 @@ public class Ply_Movement : MonoBehaviour
             // 여기에서 점프를 허용하거나 다른 동작을 수행할 수 있음
         }
     }
+
+
+
+
+    public Vector3 GetDirection(Vector3 standard, Vector3 forward, string Direction)
+    {
+        Vector3 Forward = new Vector3();
+        Vector3 Backward = new Vector3(); 
+        Vector3 Right = new Vector3();
+        Vector3 Left = new Vector3();
+
+
+        if (standard.z < forward.z)
+        {
+            Forward = standard + new Vector3(0f, 0f, 1f);         
+            Backward = standard - new Vector3(0f, 0f, 1f);
+            Left = standard - new Vector3(1f, 0f, 0f);
+            Right = standard + new Vector3(1f, 0f, 0f);
+        }
+        if (standard.x < forward.x)
+        {
+            Forward = standard + new Vector3(1f, 0f, 0f);   
+            Backward = standard - new Vector3(1f, 0f, 0f);
+            Left = standard + new Vector3(0f, 0f, 1f);
+            Right = standard - new Vector3(0f, 0f, 1f);
+
+        }
+        if(standard.z > forward.z)
+        {
+            Forward = standard - new Vector3(0f, 0f, 1f);
+            Backward = standard + new Vector3(0f, 0f, 1f);
+            Left = standard + new Vector3(1f, 0f, 0f);
+            Right = standard - new Vector3(1f, 0f, 0f);
+        }
+        if(standard.x > forward.x)
+        {
+            Forward = standard - new Vector3(1f, 0f, 0f);
+            Backward = standard + new Vector3(1f, 0f, 0f);
+            Left = standard - new Vector3(0f, 0f, 1f);
+            Right = standard + new Vector3(0f, 0f, 1f);
+        }
+        
+
+
+        switch(Direction)
+        {
+            case "Forward":
+                return Forward;
+                
+
+            case "Backward":
+                return Backward;
+
+            case "Left":
+                return Left;
+               
+
+            case "Right":
+                return Right;
+
+            default:
+                return new Vector3(0, 0, 0);
+        }
+
+    }
+
+
+
 }
