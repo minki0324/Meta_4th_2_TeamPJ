@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8058749bdb9a96947beea6bd0876c4da, type: 3}
   m_Name: Archer
   m_EditorClassIdentifier: 
+  unitObject: {fileID: 179124, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
+  ishealer: 0
   unitName: "\uAD81\uC218"
   description: "\uAD81\uC218\uC784\uB2E4"
-  icon: {fileID: 0}
   damage: 30
   maxHP: 80
   currentHP: 80
   attackRange: 5
+  cost: 20
+  index: 2

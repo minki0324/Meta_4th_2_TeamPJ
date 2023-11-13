@@ -16,14 +16,18 @@ public class UnitAttack2 : MonoBehaviour
      
      
      */
+   
     //임시 미니언체력
-    private int HP = 3;
+    public float currentHP;
+    public float maxHP;
+    public float Damage;
     private bool isDie;
    private Ply_Controller player;
     //팀의 리더가 누군지
     protected LeaderState leaderState;
     protected GameObject leader;
-
+    //적컴포넌트
+    private UnitAttack2 enemy;
     public GameObject GetLeader()
     {
         return leader;
@@ -59,8 +63,8 @@ public class UnitAttack2 : MonoBehaviour
     [SerializeField] public Transform nearestTarget;
     [Header("현재타겟 Layer")]
     [SerializeField] LayerMask target;
-
-
+    public Unit_Information data;
+    public bool isHealer = false;
 
     private Following following;
     private void Awake()
@@ -73,13 +77,12 @@ public class UnitAttack2 : MonoBehaviour
 
     private void Start()
     {
-        //자신의 레이어를 제외한 적팀레이어를 담은 배열 계산하는 메소드
 
+   
+        //자신의 레이어를 제외한 적팀레이어를 담은 배열 계산하는 메소드
         myLayer = gameObject.layer;
         TeamLayer = LayerMask.NameToLayer("Team");
         combinedMask = TargetLayers();
-
-
 
 
         //
@@ -109,14 +112,22 @@ public class UnitAttack2 : MonoBehaviour
             return;
         }
 
-        if (!isDie && leader != player.gameObject)
+        if (isDie && leader != player.gameObject)
         {
             if (!leaderState.isDead)
             {
                 switch (leaderState.bat_State)
                 {
                     case LeaderState.BattleState.Attack:
-                        AttackOrder();
+                        if (gameObject!= leader&& !data.ishealer)
+                        {
+                            AttackOrder();
+                        }
+                        else
+                        {
+
+                            //힐러 행동 메소드 넣기
+                        }
                         break;
                     default:
                         FollowOrder();
@@ -132,7 +143,7 @@ public class UnitAttack2 : MonoBehaviour
             }
         }
       
-        if(!isDie && !GameManager.instance.isDead && leader == player.gameObject)
+        if(isDie && !GameManager.instance.isDead && leader == player.gameObject)
         {
             switch (player.CurrentMode)
             {
@@ -164,7 +175,7 @@ public class UnitAttack2 : MonoBehaviour
             AttackOrder();
         }
         // 미니언컨트롤러로 옮길필요성있음.
-        if (HP <= 0)
+        if (currentHP <= 0)
         {
             //공격정지 ,이동정지 
             if (!isDie)
@@ -227,9 +238,35 @@ public class UnitAttack2 : MonoBehaviour
         private void OnTriggerEnter(Collider other)
     {
 
-        if (other.CompareTag("Weapon") && (other.gameObject.layer != gameObject.layer) && !isHitting)
+        if (other.CompareTag("Weapon")  && !isHitting)
         {
-            StartCoroutine(Hit_co());
+            enemy= FindParentComponent(other.gameObject);
+            if(enemy.gameObject.layer != gameObject.layer)
+            {
+            StartCoroutine(Hit_co(enemy.Damage));
+
+            }
+            if(currentHP <= 0)
+            {
+                if(leader == player.gameObject)
+                {
+                    GameManager.instance.DeathCount++;
+                    enemy.leaderState.killCount++;
+                }
+                else
+                {
+                    if (enemy.leader == player.gameObject)
+                    {
+                        GameManager.instance.killCount++;
+                        leaderState.deathCount++;
+                    }
+                    else
+                    {
+                        enemy.leaderState.killCount++;
+                        leaderState.deathCount++;
+                    }
+                }
+            }
         }
 
     }
@@ -251,11 +288,11 @@ public class UnitAttack2 : MonoBehaviour
         isAttacking = false;
     }
     //히트 코루틴메소드
-    private IEnumerator Hit_co()
+    private IEnumerator Hit_co(float damage)
     {
         isHitting = true;
         //히트시 대미지달기
-        HP -= 1;
+        currentHP -= damage;
 
 
         //공격도중 캔슬시 공격쿨타임 초기화
@@ -292,14 +329,14 @@ public class UnitAttack2 : MonoBehaviour
         if (gameObject.layer == TeamLayer)
         {
             player.UnitList_List.Remove(gameObject);
-            following.Stop_List.Remove(gameObject);
+            //following.Stop_List.Remove(gameObject);
         }
         else
         {
             leaderState.UnitList.Remove(gameObject);
             leaderState.currentUnitCount--;
         }
-        gameObject.layer = 9;   // 레이어 DIe로 변경해서 타겟으로 안되게
+        gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
         HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
         //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
 
@@ -379,7 +416,6 @@ public class UnitAttack2 : MonoBehaviour
         if (nearestTarget != null) //탐지된 적이 있을때
         {
 
-            LookatTarget(nearestTarget);
             float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
             if (attackDistance <= AttackRange)
             {
@@ -441,5 +477,28 @@ public class UnitAttack2 : MonoBehaviour
         }   
         navMeshAgent.SetDestination(leader.transform.position);
     }
-    
+    private UnitAttack2 FindParentComponent(GameObject child)
+    {
+        Transform parentTransform = child.transform.parent;
+
+        // 부모가 더 이상 없으면 null 반환
+        if (parentTransform == null)
+        {
+            return null;
+        }
+
+        // 부모 객체에서 원하는 컴포넌트 가져오기
+        UnitAttack2 parentComponent = parentTransform.GetComponent<UnitAttack2>();
+
+        // 부모 객체에 해당 컴포넌트가 있으면 반환, 없으면 부모의 부모로 재귀 호출
+        return parentComponent != null ? parentComponent : FindParentComponent(parentTransform.gameObject);
+    }
+    public void Setunit()
+    {
+
+        maxHP = data.maxHP;
+        currentHP = maxHP;
+        Damage = data.damage;
+        isHealer = data.ishealer;
+    }
 }
