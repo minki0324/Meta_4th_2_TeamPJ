@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitObject: {fileID: 179124, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
   ishealer: 0
-  unitName: "\uAD81\uC218"
+  unitName: Archer
   description: "\uAD81\uC218\uC784\uB2E4"
   damage: 30
   maxHP: 80
