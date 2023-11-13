@@ -39,6 +39,10 @@ public class EnemySpawn : MonoBehaviour
     }
     private void Update()
     {
+        if(!GameManager.instance.isLive)
+        {
+            return;
+        }
     
         //스폰포인트 레이어가 깃발의 레이어랑 다르면 깃발레이어로 업데이트.
         if (myLayer != transform.parent.gameObject.layer)

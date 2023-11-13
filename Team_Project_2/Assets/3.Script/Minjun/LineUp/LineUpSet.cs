@@ -78,7 +78,6 @@ public class LineUpSet : MonoBehaviour
     {
         if (lineupIndexs.Count < 3)
         {
-            Debug.Log("리스트추가");
             //카운트가 2이하일경우 추가
             SetLineup(buttonIndex);
 
@@ -109,7 +108,6 @@ public class LineUpSet : MonoBehaviour
         {
             //체크가 되있을경우 없애고 안되있을경우 생김
             bool isActive = !Checkbox[buttonIndex].gameObject.activeSelf;
-            Debug.Log(isActive);
             Checkbox[buttonIndex].gameObject.SetActive(isActive);
             if (isActive)
             {

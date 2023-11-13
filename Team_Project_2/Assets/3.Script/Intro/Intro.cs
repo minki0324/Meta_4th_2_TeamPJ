@@ -231,6 +231,15 @@ public class Intro : MonoBehaviour
         TitlePanel_On(); 
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Login();
+        }
+    }
+
+
     private void Init_FuntionUI()
     {
         //시작 시 초기화할 것들
