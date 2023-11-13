@@ -78,12 +78,14 @@ public class LineUpSet : MonoBehaviour
     {
         if (lineupIndexs.Count < 3)
         {
+            Debug.Log("리스트추가");
             //카운트가 2이하일경우 추가
             SetLineup(buttonIndex);
 
         }
         else
         {
+            
             //카운트가 3이상일땐 추가못함
             //선택되있는 유닛들만 리스트에서 뺄수있음.
             for (int i = 0; i < lineupIndexs.Count; i++)
@@ -100,31 +102,32 @@ public class LineUpSet : MonoBehaviour
 
 
 
-    }                   
+    }
     private void SetLineup(int buttonIndex)
     {
         if (buttonIndex >= 1 && buttonIndex < Checkbox.Length)
         {
             //체크가 되있을경우 없애고 안되있을경우 생김
             bool isActive = !Checkbox[buttonIndex].gameObject.activeSelf;
+            Debug.Log(isActive);
             Checkbox[buttonIndex].gameObject.SetActive(isActive);
             if (isActive)
-            Debug.Log("리스트추가ㅣ");
-                                           
+            {
                 //체크표시하는 동시에 최종 스프라이트 인덱스에 추가
                 lineupIndexs.Add(buttonIndex);
 
             }
             else
             {
-            Debug.Log("리스트삭제");
+
+                Debug.Log("리스트지움");
                 //체크푸는 동시에 최종 스프라이트 인덱스에 삭제
                 lineupIndexs.Remove(buttonIndex);
                 //Color c = buttons[buttonIndex].colors.selectedColor;
                 // c   = originalColor;
             }
         }
-  
+    }
     public void UnitSetToPlayer()
     {
        

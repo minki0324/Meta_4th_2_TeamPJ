@@ -157,16 +157,28 @@ public class EnemySpawn : MonoBehaviour
         {
             return;
         }
-        GameObject newUnit = Instantiate(unit[leaderState.unitValue], SpawnPoint[SpawnIndex].position, Quaternion.identity);
+        Unit_Information currentUnit = GameManager.instance.units[leaderState.unitValue];
+        GameObject newUnit = Instantiate(currentUnit.unitObject, SpawnPoint[SpawnIndex].position, Quaternion.identity);
         SetLayerRecursively(newUnit, leaderState.gameObject.layer);
+        switch(targetLeader.gameObject.layer)
+        {
+            case 7:
+                ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T1_Color);
+                break;
+            case 8:
+                ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T2_Color);
+                break;
+            case 9:
+                ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T3_Color);
+                break;
+
+        }
 
         UnitAttack2 unitAttack2 = newUnit.GetComponent<UnitAttack2>();
-        unitAttack2.maxHP = GameManager.instance.units[leaderState.unitValue].maxHP;
-        unitAttack2.currentHP = unitAttack2.maxHP;
-        unitAttack2.Damage = GameManager.instance.units[leaderState.unitValue].damage;
-
+        unitAttack2.data = currentUnit;
+        unitAttack2.Setunit();
         leaderState.UnitList.Add(newUnit);
-        leaderState.Gold -= GameManager.instance.units[leaderState.unitValue].cost;
+        leaderState.Gold -= currentUnit.cost;
         SpawnIndex++;
 
         leaderState.currentUnitCount++;

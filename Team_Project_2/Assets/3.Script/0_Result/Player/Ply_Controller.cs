@@ -28,8 +28,8 @@ public class Ply_Controller : MonoBehaviour
    
 
     //미니언 프리팹=========================
-    [Header("인덱스 - 0 : 보병 / 1 : 기사 / 2 : 궁수 / 3 : 힐러 / 4 : 창병 / 5 : 폴암병" )]
-    [SerializeField] private GameObject[] Minion_Prefabs;
+    //[Header("인덱스 - 0 : 보병 / 1 : 기사 / 2 : 궁수 / 3 : 힐러 / 4 : 창병 / 5 : 폴암병" )]
+    //[SerializeField] private GameObject[] Minion_Prefabs;
 
     public List<GameObject> UnitList_List = new List<GameObject>();
     //public LinkedList<GameObject> Minions_List = new LinkedList<GameObject>();
@@ -170,7 +170,6 @@ public class Ply_Controller : MonoBehaviour
                     switch (selectedNumber)
                     {
                         case 1:
-                            Debug.Log("1눌림");
                             Human_num = 0;
                             if (GameManager.instance.Gold > 15)
                             {
@@ -221,6 +220,7 @@ public class Ply_Controller : MonoBehaviour
 
     private void Init_Solider(Unit_Information unit)
     {
+
         // 나중에 인트로 씬에서 컬러셋 스크립트에서 컬러번호 넘겨 받은거로 소환할 때 컬러 적용 시켜야함
 
         //if(spawnPoint == null)
@@ -228,13 +228,13 @@ public class Ply_Controller : MonoBehaviour
         //    FindSpawnPoint();
         //}
         //스폰포인트영역 들어가면 spawnPoint 참조받고 스폰위치 받아서 그위치로 소환.
-        GameObject newUnit = Instantiate(Minion_Prefabs[unit.index], spawnPoint.SpawnPoint[spawnIndex].position, Quaternion.identity);
-        spawnPoint.SetLayerRecursively(newUnit, gameObject.layer);
-
+        GameObject newUnit = Instantiate(unit.unitObject, spawnPoint.SpawnPoint[spawnIndex].position, Quaternion.identity);
         UnitAttack2 unitAttack2 = newUnit.GetComponent<UnitAttack2>();
-        unitAttack2.maxHP = unit.maxHP;
-        unitAttack2.currentHP = unitAttack2.maxHP;
-        unitAttack2.Damage = unit.damage;
+        ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.Color_Index);
+        unitAttack2.data = unit;
+        unitAttack2.Setunit();
+
+        spawnPoint.SetLayerRecursively(newUnit, gameObject.layer);
 
         GameManager.instance.Gold -= unit.cost;
         //Minion.transform.SetParent(transform);
