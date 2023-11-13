@@ -7916,8 +7916,8 @@ MonoBehaviour:
   scanRange: 13
   AttackRange: 1.5
   isdetecting: 0
-  HitBox_col: {fileID: 0}
-  Ob_Weapon_col: {fileID: 0}
+  HitBox_col: {fileID: 1917523063885833559}
+  Ob_Weapon_col: {fileID: 1917523063885811997}
   isClose: 0
   nearestTarget: {fileID: 0}
   target:

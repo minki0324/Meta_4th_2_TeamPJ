@@ -46,8 +46,8 @@ public class UnitAttack2 : MonoBehaviour
     private LayerMask TeamLayer;
     private LayerMask EnemyLayer;
     //죽었을때 박스콜라이더 Enable하기위해 직접참조 
-    [SerializeField] private BoxCollider HitBox_col;
-    [SerializeField] private BoxCollider Ob_Weapon_col;
+    [SerializeField] private Collider HitBox_col;
+    [SerializeField] private Collider Ob_Weapon_col;
     
     //어택, 히트 딜레이
     private WaitForSeconds attackDelay;
