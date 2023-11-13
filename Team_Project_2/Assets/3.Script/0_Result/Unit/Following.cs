@@ -50,7 +50,10 @@ public class Following : MonoBehaviour
 
     private void Update()
     {
-
+        if(!GameManager.instance.isLive)
+        {
+            return;
+        }
         if (pc.CurrentMode == Ply_Controller.Mode.Follow)
         {
             StopCoroutine(Mode_Stop_co());
@@ -406,7 +409,8 @@ public class Following : MonoBehaviour
                     }
                     else
                     {
-                        pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.right);
+                        //pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.right);
+                        pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.GetDirection(pc.UnitList_List[i - 2].transform.position, pc.UnitList_List[i].transform.forward, "Right"));
                     }
 
                 }
@@ -417,7 +421,7 @@ public class Following : MonoBehaviour
                 //nearestMinion 의 index 5번째부터
 
                 pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 5].transform.position + Vector3.back);
-
+                
             }
 
 

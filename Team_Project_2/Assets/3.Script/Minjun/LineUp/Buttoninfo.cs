@@ -1,63 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class Buttoninfo : MonoBehaviour
+public class Buttoninfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-
-    public Unit_Information unitInfo; // ScriptableObject를 참조하기 위한 필드
-    public GameObject infoPanel; // 정보 패널을 참조하기 위한 필드
-
-    private bool isHovering = false;
-
+    public Unit_Information unitInfo;
+    public GameObject infoPanel;
+    public Text[] texts;
+    //public float offsetX = f; // 왼쪽과 오른쪽으로의 오프셋
+    //public float offsetY = 0f; // 위쪽과 아래쪽으로의 오프셋
     private void Start()
     {
         infoPanel.SetActive(false);
+        texts = infoPanel.GetComponentsInChildren<Text>();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+
+        infoPanel.SetActive(true);
+
+        ShowUnitInfo(unitInfo);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        infoPanel.SetActive(false);
+        HideUnitInfo();
     }
 
     private void Update()
     {
-        if (isHovering)
+        // Update 메서드에서는 추가적인 로직이 필요 없습니다.
+
+        if (infoPanel.activeSelf) 
         {
-            // 마우스 포인터 위치를 가져옵니다.
             Vector3 mousePosition = Input.mousePosition;
-
-            // 패널을 마우스 포인터 위치로 이동시킵니다.
             infoPanel.transform.position = mousePosition;
-
-            // 패널을 활성화합니다.
-            infoPanel.SetActive(true);
-        }
-        else
-        {
-            // 패널을 비활성화합니다.
-            infoPanel.SetActive(false);
         }
     }
 
-    private void OnMouseEnter()
-    {
-        isHovering = true;
-        ShowUnitInfo(unitInfo);
-    }
-
-    private void OnMouseExit()
-    {
-        isHovering = false;
-        HideUnitInfo();
-    }
-
-    // 정보를 패널에 표시하는 함수 (구현에 따라 다를 수 있음)
     private void ShowUnitInfo(Unit_Information info)
     {
         // info를 사용하여 정보를 패널에 표시
+        //0 : 이름 
+        //1 : 정보
+        //2 : HP
+        //3 : 공격력
+        //4 : 비용
+        //5 : 사거리
+
+        texts[0].text = info.unitName;
+        texts[1].text = info.description;
+        texts[2].text = $"체력     {info.maxHP}";
+        texts[3].text = $"공격력  {info.damage}";
+        texts[4].text = $"비용     {info.cost}";
+        texts[5].text = $"사거리  {info.attackRange}";
+
     }
 
-    // 정보 패널을 비활성화하는 함수 (구현에 따라 다를 수 있음)
     private void HideUnitInfo()
     {
         // 정보 패널을 비활성화
     }
+   
 }
-
-

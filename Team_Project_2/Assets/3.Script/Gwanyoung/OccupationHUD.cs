@@ -22,27 +22,29 @@ public class OccupationHUD : MonoBehaviour
         Occu_Img_Color = GetComponentsInChildren<Image>();
         OccuSlider = GetComponentsInChildren<Slider>();
        
-        for (int i = 0; i < FlagArray.Length; i++)
-        {
-            Occu_image[i] = Occu_Img_Color[i * 4].transform.parent.gameObject;
-            Occu_image[i].transform.localPosition = new Vector3((-50 * FlagArray.Length * 0.5f) + (50 * i), 0, 0);
-        }
-
-        for(int i = FlagArray.Length; i < 7; i++)
-        {
-            Debug.Log(i);
-            Occu_image[i] = Occu_Img_Color[i * 4].transform.parent.gameObject;
-            Occu_image[i].SetActive(false);
-        }
-
-
-
         for (int i = 0; i < Occu_Img_Color.Length * 0.5f; i++) 
         {
             Occu_Img_Color[(i * 2) + 1].transform.parent.gameObject.SetActive(false);
            
         }
     }    
+
+    public void Occu_Set()
+    {
+        for (int i = 0; i < FlagArray.Length; i++)
+        {
+            Occu_image[i] = Occu_Img_Color[i * 4].transform.parent.gameObject;
+            Occu_image[i].transform.localPosition = new Vector3((-50 * FlagArray.Length * 0.5f) + (50 * i), 0, 0);
+        }
+
+        for (int i = FlagArray.Length; i < 7; i++)
+        {
+            Debug.Log(i);
+            Occu_image[i] = Occu_Img_Color[i * 4].transform.parent.gameObject;
+            Occu_image[i].SetActive(false);
+        }
+
+    }
 
     public void Ply_Slider(int TeamColor, int FlagNum, float Current, float Total)
     {

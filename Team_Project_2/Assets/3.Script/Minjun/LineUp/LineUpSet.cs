@@ -9,6 +9,8 @@ public class LineUpSet : MonoBehaviour
     [SerializeField]
     //유닛선택 버튼들 6개
     private Button[] buttons;
+    //스타트버튼
+    [SerializeField] Button startButton;
     //각 버튼들의 체크이미지
     private GameObject[] Checkbox;
     //최종 라인업 스프라이트 인덱스
@@ -20,10 +22,11 @@ public class LineUpSet : MonoBehaviour
     [SerializeField] private GameObject lineupUI;
     //라인업 UI 에 있는 최종 선택 유닛들(이미지)
     private Image[] lineupSprite;
+    private bool isCanStart;
     private Color originalColor;
     void Start()
     {
-
+     
         lineupSprite = lineupUI.GetComponentsInChildren<Image>();
         buttons = GetComponentsInChildren<Button>();
         Checkbox = new GameObject[buttons.Length]; //
@@ -57,7 +60,18 @@ public class LineUpSet : MonoBehaviour
                 lineupSprite[i].sprite = unitSprite_array[6];
             }
         }
-
+        if(lineupIndexs.Count == 3)
+        {
+            isCanStart = true;
+        }
+        if (isCanStart)
+        {
+            startButton.interactable = true;
+        }
+        else
+        {
+            startButton.interactable = false;
+        }
     }
 
     public void ButtonClicked(int buttonIndex)
@@ -70,6 +84,7 @@ public class LineUpSet : MonoBehaviour
         }
         else
         {
+            
             //카운트가 3이상일땐 추가못함
             //선택되있는 유닛들만 리스트에서 뺄수있음.
             for (int i = 0; i < lineupIndexs.Count; i++)
@@ -102,6 +117,8 @@ public class LineUpSet : MonoBehaviour
             }
             else
             {
+
+                Debug.Log("리스트지움");
                 //체크푸는 동시에 최종 스프라이트 인덱스에 삭제
                 lineupIndexs.Remove(buttonIndex);
                 //Color c = buttons[buttonIndex].colors.selectedColor;
@@ -109,5 +126,14 @@ public class LineUpSet : MonoBehaviour
             }
         }
     }
+    public void UnitSetToPlayer()
+    {
+       
+        GameManager.instance.unit0 =GameManager.instance.units[lineupIndexs[0]];
+        GameManager.instance.unit1 =GameManager.instance.units[lineupIndexs[1]];
+        GameManager.instance.unit2 =GameManager.instance.units[lineupIndexs[2]];
 
+       }
 }
+  
+

@@ -44,7 +44,6 @@ public class Unit_Gate : MonoBehaviour
             {
                 StartCoroutine(gate.Gate_Interaction());
             }
-            
         }
     }
     private void OnTriggerExit(Collider other)
