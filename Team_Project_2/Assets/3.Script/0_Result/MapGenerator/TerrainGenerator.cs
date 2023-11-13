@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.AI;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,12 +96,17 @@ namespace SimpleProceduralTerrainProject
         private DetailPrototype[] m_detailProtoTypes;
         private Vector2 m_offset;
 
+        //Other Script
+        [SerializeField] private OccupationHUD hud;
+        [SerializeField] private Camera worldMapCam_;
+
         private void Awake()
         {
             int seed = (int)System.DateTime.Now.Ticks;
             Random.InitState(seed);
             m_seed = Random.Range(0, 100);
             terrainList = new List<Terrain>();
+            hud = FindObjectOfType<OccupationHUD>();
             InitializeTerrain();
         }
         #region 베이스부터 깃발까지 도로 까는 메소드들
@@ -122,16 +128,6 @@ namespace SimpleProceduralTerrainProject
 
             return nearestFlag;
         }
-
-
-        private void Start()
-        {
-            Debug.Log(GameManager.instance.Color_Index);
-            Debug.Log(GameManager.instance.T1_Color);
-            Debug.Log(GameManager.instance.T2_Color);
-            Debug.Log(GameManager.instance.T3_Color);
-        }
-
 
         // baseCampPositions에서 각 베이스 캠프 위치에 대해 가장 가까운 플래그를 찾아 경로 계산
         private void FindPathsFromBasesToFlags()
@@ -250,8 +246,9 @@ namespace SimpleProceduralTerrainProject
             }
             GameManager.instance.isLive = true;
             Terra.GetComponent<InitNavMesh>().GenerateNavmesh();
+            hud.Occu_Set();
             start_Btn.SetActive(false);
-
+            
         }
         #endregion
         #region 길찾기 알고리즘
@@ -749,21 +746,25 @@ namespace SimpleProceduralTerrainProject
                     case (int)TeamLayerIdx.Player:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.Color_Index);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.Color_Index);
+                        ColorManager.instance.Change_SolidColor(baseCamps[i].GetComponentInChildren<SpriteRenderer>(), GameManager.instance.Color_Index);
                         baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 6;
                         break;
                     case (int)TeamLayerIdx.Team1:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T1_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T1_Color);
+                        ColorManager.instance.Change_SolidColor(baseCamps[i].GetComponentInChildren<SpriteRenderer>(), GameManager.instance.T1_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 7;
                         break;
                     case (int)TeamLayerIdx.Team2:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T2_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T2_Color);
+                        ColorManager.instance.Change_SolidColor(baseCamps[i].GetComponentInChildren<SpriteRenderer>(), GameManager.instance.T2_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 8;
                         break;
                     case (int)TeamLayerIdx.Team3:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T3_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T3_Color);
+                        ColorManager.instance.Change_SolidColor(baseCamps[i].GetComponentInChildren<SpriteRenderer>(), GameManager.instance.T3_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 9;
                         break;
                 }

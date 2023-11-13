@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.3962264, g: 0.37566748, b: 0.37566748, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
@@ -267,7 +267,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -16684,6 +16684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c1c59672b2e6d418dc1760b19f8c37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldMap: {fileID: 0}
   Menu:
   - {fileID: 5212849661891370861}
   - {fileID: 1345920892}
@@ -17571,11 +17572,13 @@ MonoBehaviour:
   Base_Num: 0
   flag:
   - {fileID: 5805590287774594477, guid: 7fb92d38918ceee4d9a78bfe97aab807, type: 3}
-  flag_Num: 3
+  flag_Num: 4
   Leader_Prefabs:
   - {fileID: 8150775438576968468, guid: 1617f09da8c1f49438c736f1df8b1aee, type: 3}
   - {fileID: 8132295210802862224, guid: 83a886c026a251441893383dbcffea6b, type: 3}
   start_Btn: {fileID: 1973757020}
+  hud: {fileID: 0}
+  worldMapCam_: {fileID: 0}
 --- !u!1 &5788683543404669375
 GameObject:
   m_ObjectHideFlags: 0

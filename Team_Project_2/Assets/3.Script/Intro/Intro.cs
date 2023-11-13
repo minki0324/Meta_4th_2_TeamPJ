@@ -551,6 +551,7 @@ public class Intro : MonoBehaviour
             inputField = Login_Panel.transform.GetChild(0).GetComponent<InputField>();
             Confirm_Btn = Login_Panel.transform.GetChild(1).GetComponent<Button>();
             Confirm_Btn.onClick.AddListener(Login);
+            inputField.ActivateInputField();
         }
         else
         {

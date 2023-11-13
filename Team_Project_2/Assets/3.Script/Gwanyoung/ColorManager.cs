@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ColorIdx
 {
@@ -34,8 +35,7 @@ public class ColorManager : MonoBehaviour
     public Color[] Teamcolor; // ÆÀ Color
     public Material[] Flag_Color; // ±ê¹ß Material
     public Texture2D[] Unit_Texture; 
-    public Texture2D[] Building_Texture; 
-
+    public Texture2D[] Building_Texture;
 
     private void Awake()    
     {
@@ -70,6 +70,7 @@ public class ColorManager : MonoBehaviour
             }
         }
     }
+
     public void RecursiveSearchAndSetBuilding(Transform currentTransform, int index)
     {
         foreach (Transform child in currentTransform)
@@ -90,4 +91,14 @@ public class ColorManager : MonoBehaviour
             }
         }
     }
+
+    public void Change_SolidColor(SpriteRenderer Circle, int index)
+    {
+        Circle.color = Teamcolor[index];
+    }
+    public void Change_SolidColor(GameObject sprite, int index)
+    {
+        sprite.GetComponent<Image>().color = Teamcolor[index];
+    }
+
 }
