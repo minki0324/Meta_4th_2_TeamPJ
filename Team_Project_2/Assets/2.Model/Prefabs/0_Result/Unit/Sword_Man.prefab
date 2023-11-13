@@ -11559,7 +11559,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c89e91bf2e03494484905f46860dbe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 3
+  currentHP: 0
+  maxHP: 0
+  Damage: 0
   scanRange: 13
   AttackRange: 1.5
   isdetecting: 0
@@ -11570,6 +11572,8 @@ MonoBehaviour:
   target:
     serializedVersion: 2
     m_Bits: 0
+  data: {fileID: 0}
+  isHealer: 0
 --- !u!65 &1843400025330777908
 BoxCollider:
   m_ObjectHideFlags: 0
