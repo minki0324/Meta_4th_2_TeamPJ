@@ -28,20 +28,20 @@ public class Ply_Controller : MonoBehaviour
    
 
     //미니언 프리팹=========================
-    [Header("인덱스 - 0 : 보병 / 1 : 기사 / 2 : 궁수")]
-    [SerializeField] private GameObject[] Minion_Prefabs;
+    //[Header("인덱스 - 0 : 보병 / 1 : 기사 / 2 : 궁수 / 3 : 힐러 / 4 : 창병 / 5 : 폴암병" )]
+    //[SerializeField] private GameObject[] Minion_Prefabs;
 
     public List<GameObject> UnitList_List = new List<GameObject>();
     //public LinkedList<GameObject> Minions_List = new LinkedList<GameObject>();
-
+    
     public int Human_num;
 
     [SerializeField]
     private Transform Spawner;
-
+    public EnemySpawn spawnPoint;
     //보병 & 궁수 뽑을 수 있는가 판단하는 변수 -> 추후에 업그레이드 기능과 할때 사용해주세여
-    
 
+    private int spawnIndex;
 
     public LayerMask TargetLayer;
 
@@ -57,7 +57,6 @@ public class Ply_Controller : MonoBehaviour
 
 
     public bool isDead { get; private set; }
-
 
 
     [SerializeField]
@@ -83,7 +82,12 @@ public class Ply_Controller : MonoBehaviour
 
     private void Update()
     {
-        Spawn_Solider();
+
+
+        if (GameManager.instance.inRange)
+        {
+            Spawn_Solider();
+        }
         //상태 변경
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -166,11 +170,10 @@ public class Ply_Controller : MonoBehaviour
                     switch (selectedNumber)
                     {
                         case 1:
-                            Debug.Log("1눌림");
                             Human_num = 0;
                             if (GameManager.instance.Gold > 15)
                             {
-                                Init_Solider(Human_num);
+                                Init_Solider(GameManager.instance.unit0);
                             }
                             else
                             {
@@ -184,7 +187,7 @@ public class Ply_Controller : MonoBehaviour
                             // 나중에 if문에 앤드게이트로 isPossible_HeavyInfantry 업글 유무 확인
                             if (GameManager.instance.Gold > 20)
                             {
-                                Init_Solider(Human_num);
+                                Init_Solider(GameManager.instance.unit1);
                             }
                             else
                             {
@@ -198,7 +201,7 @@ public class Ply_Controller : MonoBehaviour
                             // 나중에 if문에 앤드게이트로 isPossible_Archer 업글 유무 확인
                             if (GameManager.instance.Gold > 25)
                             {
-                                Init_Solider(Human_num);
+                                Init_Solider(GameManager.instance.unit2);
                             }
                             else
                             {
@@ -215,20 +218,67 @@ public class Ply_Controller : MonoBehaviour
         }
     }
 
-    private void Init_Solider(int Human_num)
+    private void Init_Solider(Unit_Information unit)
     {
+
         // 나중에 인트로 씬에서 컬러셋 스크립트에서 컬러번호 넘겨 받은거로 소환할 때 컬러 적용 시켜야함
 
-        GameObject Minion = null;
-        Minion = Instantiate(Minion_Prefabs[Human_num], Spawner.position, Quaternion.identity);
-        //미니언 생성 위치는 나중에 점령지(Spawner)위치로 바꾸기 
+        //if(spawnPoint == null)
+        //{
+        //    FindSpawnPoint();
+        //}
+        //스폰포인트영역 들어가면 spawnPoint 참조받고 스폰위치 받아서 그위치로 소환.
+        GameObject newUnit = Instantiate(unit.unitObject, spawnPoint.SpawnPoint[spawnIndex].position, Quaternion.identity);
+        UnitAttack2 unitAttack2 = newUnit.GetComponent<UnitAttack2>();
+        ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.Color_Index);
+        unitAttack2.data = unit;
+        unitAttack2.Setunit();
 
-        Minion_Controller minionController = Minion.GetComponent<Minion_Controller>();
-        Minion.layer = 7;
+        spawnPoint.SetLayerRecursively(newUnit, gameObject.layer);
 
-        GameManager.instance.Gold -= (15 + (Human_num * 5));
+        GameManager.instance.Gold -= unit.cost;
         //Minion.transform.SetParent(transform);
-        UnitList_List.Add(Minion);
+        UnitList_List.Add(newUnit);
         GameManager.instance.Current_MinionCount++;
+
+
+
+
+      
+     
+        spawnIndex++;
+
+   
+        //스폰위치를 차례대로 나오게하기위한 메소드 
+        if (spawnIndex > 2)
+        {
+            spawnIndex = 0;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("SpawnPoint") && other.gameObject.layer == gameObject.layer)
+        {
+            spawnPoint = other.GetComponent<EnemySpawn>();
+        }
+    }
+    private void FindSpawnPoint()
+    {
+        GameObject[] spawns;
+        spawns = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        float mindistance = int.MaxValue;
+        foreach (GameObject ob in spawns)
+        {
+            if (gameObject.layer == ob.gameObject.layer)
+            {
+
+                float distance = Vector3.Distance(gameObject.transform.position, ob.transform.position);
+                if (distance < mindistance)
+                {
+                    mindistance = distance;
+                    spawnPoint = ob.GetComponent<EnemySpawn>();
+                }
+            }
+        }
     }
 }

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8058749bdb9a96947beea6bd0876c4da, type: 3}
-  m_Name: Sword
+  m_Name: Spearman
   m_EditorClassIdentifier: 
-  unitObject: {fileID: 1843400025330777912, guid: 345fdb404ae102d4289e4dc4b4a877b0, type: 3}
+  unitObject: {fileID: 123088, guid: 0755a95e2e1b5f44e8226989fb76f2cf, type: 3}
   ishealer: 0
-  unitName: "\uAE30\uBCF8\uBCD1\uC0AC"
-  description: "\uAE30\uBCF8\uBCD1\uC0AC\uC785\uB2C8\uB2E4"
-  damage: 20
+  unitName: "\uCC3D\uBCD1"
+  description: "\uCC3D\uBCD1\uC785\uB2C8\uB2E4"
+  damage: 25
   maxHP: 90
   currentHP: 90
-  attackRange: 1.5
-  cost: 16
-  index: 0
+  attackRange: 2
+  cost: 19
+  index: 4
