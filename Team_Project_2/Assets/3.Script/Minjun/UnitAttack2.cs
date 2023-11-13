@@ -7,34 +7,37 @@ public class UnitAttack2 : MonoBehaviour
 {
     //[SerializeField] private Ply_Controller player;
     /*
-     ¹Ì´Ï¾ğÀ» Áß½ÉÀ¸·ÎÇÑ ·¹ÀÌ¾î¸¦ °¨ÁöÇÏ´Â ¿ø »ı¼º
-    ·¹ÀÌ¾îÁß °¡Àå°¡±î¿îÀûÀ» Å¸°ÙÀ¸·Î ÁöÁ¤ÇÔ
-    Å¸°Ù°¨ÁöÈÄ ¹Ì´Ï¾ğÀÌ ÀûÀ» ¹Ù¶óº¸°í (Lookat¸Ş¼Òµå) Àû¿¡°Ô ÀÌµ¿  -> ÇöÀç´Â Lerp·Î ÀÌµ¿ ÃßÈÄ ³×ºñ°ÔÀÌ¼ÇÀ¸·Î º¯°æ
-    ÀÌµ¿Áß ¹Ì´Ï¾ğÀÇ °ø°İ¹üÀ§ Äİ¶óÀÌ´õ(¹Ì´Ï¾ğ¾Õ¿¡ ÀÛÀº ¹Ú½ºÄİ¶óÀÌ´õ (Á»ºñ¼­¹ÙÀÌ¹úÃ³·³))¿¡ ´êÀ¸¸é Á¤ÁöÈÄ °ø°İ
+     ë¯¸ë‹ˆì–¸ì„ ì¤‘ì‹¬ìœ¼ë¡œí•œ ë ˆì´ì–´ë¥¼ ê°ì§€í•˜ëŠ” ì› ìƒì„±
+    ë ˆì´ì–´ì¤‘ ê°€ì¥ê°€ê¹Œìš´ì ì„ íƒ€ê²Ÿìœ¼ë¡œ ì§€ì •í•¨
+    íƒ€ê²Ÿê°ì§€í›„ ë¯¸ë‹ˆì–¸ì´ ì ì„ ë°”ë¼ë³´ê³  (Lookatë©”ì†Œë“œ) ì ì—ê²Œ ì´ë™  -> í˜„ì¬ëŠ” Lerpë¡œ ì´ë™ ì¶”í›„ ë„¤ë¹„ê²Œì´ì…˜ìœ¼ë¡œ ë³€ê²½
+    ì´ë™ì¤‘ ë¯¸ë‹ˆì–¸ì˜ ê³µê²©ë²”ìœ„ ì½œë¼ì´ë”(ë¯¸ë‹ˆì–¸ì•ì— ì‘ì€ ë°•ìŠ¤ì½œë¼ì´ë” (ì¢€ë¹„ì„œë°”ì´ë²Œì²˜ëŸ¼))ì— ë‹¿ìœ¼ë©´ ì •ì§€í›„ ê³µê²©
 
      
      
      
      */
-    //ÀÓ½Ã ¹Ì´Ï¾ğÃ¼·Â
-    private int HP = 3;
+    //ì„ì‹œ ë¯¸ë‹ˆì–¸ì²´ë ¥
+    public float currentHP;
+    public float maxHP;
+    public float Damage;
     private bool isDie;
    private Ply_Controller player;
-    //ÆÀÀÇ ¸®´õ°¡ ´©±ºÁö
+    //íŒ€ì˜ ë¦¬ë”ê°€ ëˆ„êµ°ì§€
     protected LeaderState leaderState;
     protected GameObject leader;
-
+    //ì ì»´í¬ë„ŒíŠ¸
+    private UnitAttack2 enemy;
     public GameObject GetLeader()
     {
         return leader;
     }
-    // À¯´Ö °ø°İ°¨Áö¹üÀ§
+    // ìœ ë‹› ê³µê²©ê°ì§€ë²”ìœ„
     [SerializeField] private float scanRange = 13f;
     [SerializeField] private float AttackRange = 1.5f;
 
-    //ÀÌµ¿Áß Àû±ºÀ¯´ÖÀÌ °ø°İ¹üÀ§Äİ¶óÀÌ´õ¿¡ ´ê¾Ò´Â°¡?
+    //ì´ë™ì¤‘ ì êµ°ìœ ë‹›ì´ ê³µê²©ë²”ìœ„ì½œë¼ì´ë”ì— ë‹¿ì•˜ëŠ”ê°€?
     [SerializeField] private bool isdetecting = false;
-    //°ø°İÁßÀÎ°¡?
+    //ê³µê²©ì¤‘ì¸ê°€?
     protected bool isAttacking = false;
     private bool isHitting = false;
     private bool isSuccessAtk = true;
@@ -42,25 +45,25 @@ public class UnitAttack2 : MonoBehaviour
     protected Coroutine attackCoroutine;
     private int myLayer;
     private int combinedMask;
-    // °ø°İ ´ë»ó ·¹ÀÌ¾î
+    // ê³µê²© ëŒ€ìƒ ë ˆì´ì–´
     private LayerMask TeamLayer;
     private LayerMask EnemyLayer;
-    //Á×¾úÀ»¶§ ¹Ú½ºÄİ¶óÀÌ´õ EnableÇÏ±âÀ§ÇØ Á÷Á¢ÂüÁ¶ 
-    [SerializeField] private BoxCollider HitBox_col;
-    [SerializeField] private BoxCollider Ob_Weapon_col;
+    //ï¿½×¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ï¿½İ¶ï¿½ï¿½Ì´ï¿½ Enableï¿½Ï±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+    [SerializeField] private Collider HitBox_col;
+    [SerializeField] private Collider Ob_Weapon_col;
     
-    //¾îÅÃ, È÷Æ® µô·¹ÀÌ
+    //ì–´íƒ, íˆíŠ¸ ë”œë ˆì´
     private WaitForSeconds attackDelay;
     private WaitForSeconds hitDelay = new WaitForSeconds(0.2f);
-    //³×ºñ°ÔÀÌ¼Ç
+    //ë„¤ë¹„ê²Œì´ì…˜
     private NavMeshAgent navMeshAgent;
     public bool isClose;
-    [Header("ÇöÀçÅ¸°Ù Transform")]
+    [Header("í˜„ì¬íƒ€ê²Ÿ Transform")]
     [SerializeField] public Transform nearestTarget;
-    [Header("ÇöÀçÅ¸°Ù Layer")]
+    [Header("í˜„ì¬íƒ€ê²Ÿ Layer")]
     [SerializeField] LayerMask target;
-
-
+    public Unit_Information data;
+    public bool isHealer = false;
 
     private Following following;
     private void Awake()
@@ -73,13 +76,12 @@ public class UnitAttack2 : MonoBehaviour
 
     private void Start()
     {
-        //ÀÚ½ÅÀÇ ·¹ÀÌ¾î¸¦ Á¦¿ÜÇÑ ÀûÆÀ·¹ÀÌ¾î¸¦ ´ãÀº ¹è¿­ °è»êÇÏ´Â ¸Ş¼Òµå
 
+   
+        //ìì‹ ì˜ ë ˆì´ì–´ë¥¼ ì œì™¸í•œ ì íŒ€ë ˆì´ì–´ë¥¼ ë‹´ì€ ë°°ì—´ ê³„ì‚°í•˜ëŠ” ë©”ì†Œë“œ
         myLayer = gameObject.layer;
         TeamLayer = LayerMask.NameToLayer("Team");
         combinedMask = TargetLayers();
-
-
 
 
         //
@@ -109,7 +111,7 @@ public class UnitAttack2 : MonoBehaviour
             return;
         }
 
-        if (!isDie && leader != player.gameObject)
+        if (isDie && leader != player.gameObject)
         {
             if (!leaderState.isDead)
             {
@@ -117,6 +119,15 @@ public class UnitAttack2 : MonoBehaviour
                 {
                     case LeaderState.BattleState.Attack:
                         AttackOrder();
+                        if (gameObject!= leader&& !data.ishealer)
+                        {
+                            AttackOrder();
+                        }
+                        else
+                        {
+
+                            //íëŸ¬ í–‰ë™ ë©”ì†Œë“œ ë„£ê¸°
+                        }
                         break;
                     default:
                         FollowOrder();
@@ -132,7 +143,7 @@ public class UnitAttack2 : MonoBehaviour
             }
         }
       
-        if(!isDie && !GameManager.instance.isDead && leader == player.gameObject)
+        if(isDie && !GameManager.instance.isDead && leader == player.gameObject)
         {
             switch (player.CurrentMode)
             {
@@ -163,10 +174,10 @@ public class UnitAttack2 : MonoBehaviour
 
             AttackOrder();
         }
-        // ¹Ì´Ï¾ğÄÁÆ®·Ñ·¯·Î ¿Å±æÇÊ¿ä¼ºÀÖÀ½.
-        if (HP <= 0)
+        // ë¯¸ë‹ˆì–¸ì»¨íŠ¸ë¡¤ëŸ¬ë¡œ ì˜®ê¸¸í•„ìš”ì„±ìˆìŒ.
+        if (currentHP <= 0)
         {
-            //°ø°İÁ¤Áö ,ÀÌµ¿Á¤Áö 
+            //ê³µê²©ì •ì§€ ,ì´ë™ì •ì§€ 
             if (!isDie)
             {
                 Die();
@@ -174,7 +185,7 @@ public class UnitAttack2 : MonoBehaviour
             isDie = true;
         }
     }
-        //·¹ÀÌ¾î °¨ÁöÈÄ °¡±î¿î Å¸°Ù ¼³Á¤ÇÏ´Â¸Ş¼Òµå
+        //ë ˆì´ì–´ ê°ì§€í›„ ê°€ê¹Œìš´ íƒ€ê²Ÿ ì„¤ì •í•˜ëŠ”ë©”ì†Œë“œ
         Transform GetNearestTarget(RaycastHit[] hits)
         {
             Transform nearest = null;
@@ -198,18 +209,18 @@ public class UnitAttack2 : MonoBehaviour
 
             return nearest;
         }
-        //ÀûÀ»°¨ÁöÇßÀ»¶§ ÀûÀ»¹Ù¶óº¸´Â ¸Ş¼Òµå
+        //ì ì„ê°ì§€í–ˆì„ë•Œ ì ì„ë°”ë¼ë³´ëŠ” ë©”ì†Œë“œ
         private void LookatTarget(Transform target)
         {
 
             Vector3 AttackDir = target.position - transform.position;
-            AttackDir.y = 0; // Y Ãà ÀÌµ¿À» ¹«½ÃÇÏ¿© ±â¿ïÀÌÁö ¾ÊÀ½
+            AttackDir.y = 0; // Y ì¶• ì´ë™ì„ ë¬´ì‹œí•˜ì—¬ ê¸°ìš¸ì´ì§€ ì•ŠìŒ
             Quaternion rotation = Quaternion.LookRotation(AttackDir);
             transform.rotation = rotation;
         }
-        //ÀûÀ»°¨ÁöÇßÀ»¶§ °ø°İÇÏ±âÀ§ÇØ Àû¿¡°Ô ÀÌµ¿ÇÏ´Â¸Ş¼Òµå
+        //ì ì„ê°ì§€í–ˆì„ë•Œ ê³µê²©í•˜ê¸°ìœ„í•´ ì ì—ê²Œ ì´ë™í•˜ëŠ”ë©”ì†Œë“œ
 
-        //°¨Áö¹üÀ§ ±×¸®´Â¸Ş¼Òµå
+        //ê°ì§€ë²”ìœ„ ê·¸ë¦¬ëŠ”ë©”ì†Œë“œ
         //private void OnDrawGizmos()
         //{
         //    Gizmos.color = Color.red;
@@ -220,27 +231,53 @@ public class UnitAttack2 : MonoBehaviour
         //}
 
 
-        //´êÀº Äİ¶óÀÌ´õ¿Í ¿ÀºêÁ§Æ®°¡ ·¹ÀÌ¾î°¡ ´Ù¸£°í
-        //¸Â°íÀÖ´ÂÁßÀÌ ¾Æ´Ï¸ç
-        //´êÀº Äİ¶óÀÌ´õ°¡ °ËÀÏ¶§
-        // Áï, ´êÀº ¹«±âÀÇ ¿şÆùÀÇ ·¹ÀÌ¾î°¡ ÀÚ½Å°ú ´Ù¸¦¶§ È÷Æ®
+        //ë‹¿ì€ ì½œë¼ì´ë”ì™€ ì˜¤ë¸Œì íŠ¸ê°€ ë ˆì´ì–´ê°€ ë‹¤ë¥´ê³ 
+        //ë§ê³ ìˆëŠ”ì¤‘ì´ ì•„ë‹ˆë©°
+        //ë‹¿ì€ ì½œë¼ì´ë”ê°€ ê²€ì¼ë•Œ
+        // ì¦‰, ë‹¿ì€ ë¬´ê¸°ì˜ ì›¨í°ì˜ ë ˆì´ì–´ê°€ ìì‹ ê³¼ ë‹¤ë¥¼ë•Œ íˆíŠ¸
         private void OnTriggerEnter(Collider other)
     {
 
-        if (other.CompareTag("Weapon") && (other.gameObject.layer != gameObject.layer) && !isHitting)
+        if (other.CompareTag("Weapon")  && !isHitting)
         {
-            StartCoroutine(Hit_co());
+            enemy= FindParentComponent(other.gameObject);
+            if(enemy.gameObject.layer != gameObject.layer)
+            {
+            StartCoroutine(Hit_co(enemy.Damage));
+
+            }
+            if(currentHP <= 0)
+            {
+                if(leader == player.gameObject)
+                {
+                    GameManager.instance.DeathCount++;
+                    enemy.leaderState.killCount++;
+                }
+                else
+                {
+                    if (enemy.leader == player.gameObject)
+                    {
+                        GameManager.instance.killCount++;
+                        leaderState.deathCount++;
+                    }
+                    else
+                    {
+                        enemy.leaderState.killCount++;
+                        leaderState.deathCount++;
+                    }
+                }
+            }
         }
 
     }
-    //°ø°İÄÚ·çÆ¾¸Ş¼Òµå
+    //ê³µê²©ì½”ë£¨í‹´ë©”ì†Œë“œ
     protected IEnumerator Attack_co()
     {
-        //°ø°İÄğÅ¸ÀÓ
+        //ê³µê²©ì¿¨íƒ€ì„
         float d = Random.Range(2f, 2.1f);
         attackDelay = new WaitForSeconds(d);
 
-        //»óÅÂ °ø°İÁßÀ¸·Î º¯°æ
+        //ìƒíƒœ ê³µê²©ì¤‘ìœ¼ë¡œ ë³€ê²½
         isAttacking = true;
 
         isSuccessAtk = false;
@@ -250,15 +287,15 @@ public class UnitAttack2 : MonoBehaviour
 
         isAttacking = false;
     }
-    //È÷Æ® ÄÚ·çÆ¾¸Ş¼Òµå
-    private IEnumerator Hit_co()
+    //íˆíŠ¸ ì½”ë£¨í‹´ë©”ì†Œë“œ
+    private IEnumerator Hit_co(float damage)
     {
         isHitting = true;
-        //È÷Æ®½Ã ´ë¹ÌÁö´Ş±â
-        HP -= 1;
+        //íˆíŠ¸ì‹œ ëŒ€ë¯¸ì§€ë‹¬ê¸°
+        currentHP -= damage;
 
 
-        //°ø°İµµÁß Äµ½½½Ã °ø°İÄğÅ¸ÀÓ ÃÊ±âÈ­
+        //ê³µê²©ë„ì¤‘ ìº”ìŠ¬ì‹œ ê³µê²©ì¿¨íƒ€ì„ ì´ˆê¸°í™”
         if (!isSuccessAtk)
         {
 
@@ -273,7 +310,7 @@ public class UnitAttack2 : MonoBehaviour
 
     }
 
-    //ÀÌº¥Æ®¿¡¼­ ¹«±â ²¯´ÙÅ°´Â ¸Ş¼Òµå
+    //ì´ë²¤íŠ¸ì—ì„œ ë¬´ê¸° ê»ë‹¤í‚¤ëŠ” ë©”ì†Œë“œ
     public void WeaponActive()
     {
         isSuccessAtk = true;
@@ -285,25 +322,25 @@ public class UnitAttack2 : MonoBehaviour
     {
         Ob_Weapon_col.enabled = false;
     }
-    //Á×À»¶§ ¸Ş¼Òµå
+    //ì£½ì„ë•Œ ë©”ì†Œë“œ
     public void Die()
     {
-        ani.SetTrigger("Dead");  // Á×´Â¸ğ¼ÇÀç»ı
+        ani.SetTrigger("Dead");  // ì£½ëŠ”ëª¨ì…˜ì¬ìƒ
         if (gameObject.layer == TeamLayer)
         {
             player.UnitList_List.Remove(gameObject);
-            following.Stop_List.Remove(gameObject);
+            //following.Stop_List.Remove(gameObject);
         }
         else
         {
             leaderState.UnitList.Remove(gameObject);
             leaderState.currentUnitCount--;
         }
-        gameObject.layer = 9;   // ·¹ÀÌ¾î DIe·Î º¯°æÇØ¼­ Å¸°ÙÀ¸·Î ¾ÈµÇ°Ô
-        HitBox_col.enabled = false;    //ºÎµúÈ÷Áö¾Ê°Ô Äİ¶óÀÌ´õ false
-        //StopCoroutine(attackCoroutine);   //°ø°İµµÁßÀÌ¶ó¸é °ø°İµµ ÁßÁö
+        gameObject.layer = 12;   // ë ˆì´ì–´ DIeë¡œ ë³€ê²½í•´ì„œ íƒ€ê²Ÿìœ¼ë¡œ ì•ˆë˜ê²Œ
+        HitBox_col.enabled = false;    //ë¶€ë”ªíˆì§€ì•Šê²Œ ì½œë¼ì´ë” false
+        //StopCoroutine(attackCoroutine);   //ê³µê²©ë„ì¤‘ì´ë¼ë©´ ê³µê²©ë„ ì¤‘ì§€
 
-        Destroy(gameObject, 3f);  // Á×°í³ª¼­ 3ÃÊÈÄ µğ½ºÆ®·ÎÀÌ
+        Destroy(gameObject, 3f);  // ì£½ê³ ë‚˜ì„œ 3ì´ˆí›„ ë””ìŠ¤íŠ¸ë¡œì´
 
 
 
@@ -314,12 +351,12 @@ public class UnitAttack2 : MonoBehaviour
 
     }
 
-    //ÀÚ½ÅÀÇ ·¹ÀÌ¾î¿Í °°Àº ¸®´õ¸¦ Ã£´Â ¸Ş¼Òµå
+    //ìì‹ ì˜ ë ˆì´ì–´ì™€ ê°™ì€ ë¦¬ë”ë¥¼ ì°¾ëŠ” ë©”ì†Œë“œ
     private LeaderState FindLeader()
     {
-        GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTag¿¡´Â LeaderState ÄÄÆ÷³ÍÆ®°¡ ÀÖ´Â ¿ÀºêÁ§Æ®ÀÇ ÅÂ±×¸¦ ³Ö½À´Ï´Ù.
+        GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTagì—ëŠ” LeaderState ì»´í¬ë„ŒíŠ¸ê°€ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ì˜ íƒœê·¸ë¥¼ ë„£ìŠµë‹ˆë‹¤.
 
-        // Ã£Àº ¿ÀºêÁ§Æ® Áß¿¡¼­ LeaderState ÄÄÆ÷³ÍÆ®¸¦ °¡Áø Ã¹ ¹øÂ° ¿ÀºêÁ§Æ®¸¦ Ã£½À´Ï´Ù.
+        // ì°¾ì€ ì˜¤ë¸Œì íŠ¸ ì¤‘ì—ì„œ LeaderState ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì§„ ì²« ë²ˆì§¸ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ìŠµë‹ˆë‹¤.
        
 
         foreach (var obj in objectsWithSameLayer)
@@ -331,26 +368,26 @@ public class UnitAttack2 : MonoBehaviour
                 if (leaderState != null)
                 {
                     return leaderState;
-                    // LeaderState¸¦ Ã£À¸¸é ·çÇÁ¸¦ Á¾·áÇÕ´Ï´Ù.
+                    // LeaderStateë¥¼ ì°¾ìœ¼ë©´ ë£¨í”„ë¥¼ ì¢…ë£Œí•©ë‹ˆë‹¤.
                 }
             }
         }
 
         if (leaderState == null)
         {
-            Debug.LogWarning("LeaderState ÄÄÆ÷³ÍÆ®¸¦ °¡Áø ¿ÀºêÁ§Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("LeaderState ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
         }
             return null;
     }
-    //ÀÚ½ÅÀÇ ·¹ÀÌ¾î¿¡µû¶ó °ø°İÇÒ ·¹ÀÌ¾îµéÀ» ±¸ºĞ½ÃÄÑÁÖ´Â ¸Ş¼Òµå
-    //¿¹> ÀÚ½ÅÀÌ Enemy1 ÀÌ¶ó¸é Team,Enemy2, Enemy3 ´Â ÀûÀ¸·Î ±¸ºĞ
+    //ìì‹ ì˜ ë ˆì´ì–´ì—ë”°ë¼ ê³µê²©í•  ë ˆì´ì–´ë“¤ì„ êµ¬ë¶„ì‹œì¼œì£¼ëŠ” ë©”ì†Œë“œ
+    //ì˜ˆ> ìì‹ ì´ Enemy1 ì´ë¼ë©´ Team,Enemy2, Enemy3 ëŠ” ì ìœ¼ë¡œ êµ¬ë¶„
     private int TargetLayers()
     {
         int[] combinedLayerMask;
         int myLayer = gameObject.layer;
-        //ÃÑ 4°³ÆÀÀÇ ·¹ÀÌ¾î 
+        //ì´ 4ê°œíŒ€ì˜ ë ˆì´ì–´ 
         int[] layerArray = new int[] { LayerMask.NameToLayer("Team"), LayerMask.NameToLayer("Enemy1"), LayerMask.NameToLayer("Enemy2"), LayerMask.NameToLayer("Enemy3") };
-        //¿ì¸®ÆÀÀÇ ·¹ÀÌ¾î¸¦ Á¦¿ÜÇÑ ³ª¸ÓÁö ·¹ÀÌ¾î¸¦ ´ãÀ» ¹è¿­
+        //ìš°ë¦¬íŒ€ì˜ ë ˆì´ì–´ë¥¼ ì œì™¸í•œ ë‚˜ë¨¸ì§€ ë ˆì´ì–´ë¥¼ ë‹´ì„ ë°°ì—´
         combinedLayerMask = new int[3];
         int combinedIndex = 0;
 
@@ -370,16 +407,15 @@ public class UnitAttack2 : MonoBehaviour
         combinedMask = layerMask0 | layerMask1 | layerMask2;
         return combinedMask;
     }
-    //ÀÚ½ÅÀÇ ¸®´õ°¡ ¿À´õ¸¦³»·ÈÀ»¶§ ¸»À»µè°ÔÇÏ±âÀ§ÇÑ¸Ş¼Òµå
+    //ìì‹ ì˜ ë¦¬ë”ê°€ ì˜¤ë”ë¥¼ë‚´ë ¸ì„ë•Œ ë§ì„ë“£ê²Œí•˜ê¸°ìœ„í•œë©”ì†Œë“œ
     private void AttackOrder()
     {
         RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, combinedMask);
         nearestTarget = GetNearestTarget(allHits);
 
-        if (nearestTarget != null) //Å½ÁöµÈ ÀûÀÌ ÀÖÀ»¶§
+        if (nearestTarget != null) //íƒì§€ëœ ì ì´ ìˆì„ë•Œ
         {
 
-            LookatTarget(nearestTarget);
             float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
             if (attackDistance <= AttackRange)
             {
@@ -390,8 +426,7 @@ public class UnitAttack2 : MonoBehaviour
                 isdetecting = false;
             }
 
-
-            if (!isdetecting) //Å½ÁöµÈÀûÀÌ ¸Ö¸®ÀÖÀ¸¸é ÀûÇÑÅ× ÀÌµ¿
+            if (!isdetecting) //íƒì§€ëœì ì´ ë©€ë¦¬ìˆìœ¼ë©´ ì í•œí…Œ ì´ë™
             {
                 navMeshAgent.isStopped = false;
                 ani.SetBool("Move", true);
@@ -400,31 +435,35 @@ public class UnitAttack2 : MonoBehaviour
 
 
             }
-            else // Å½ÁöµÈ ÀûÀÌ Á¢±ÙÇÏ¸é ÀÌµ¿À» ¸ØÃß°í °ø°İ
+            else // íƒì§€ëœ ì ì´ ì ‘ê·¼í•˜ë©´ ì´ë™ì„ ë©ˆì¶”ê³  ê³µê²©
             {
 
                 ani.SetBool("Move", false);
                 navMeshAgent.isStopped = true;
+                
                 if (!isAttacking)
                 {
                     attackCoroutine = StartCoroutine(Attack_co());
                     //StartCoroutine(Attack_co());
                 }
+
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             }
+         
         }
-        else//Å½ÁöµÈ ÀûÀÌ ¾øÀ»¶§,
+        else//íƒì§€ëœ ì ì´ ì—†ì„ë•Œ,
         {
             /*
-             1. ¸®´õ°¡ Attack ¸í·ÉÀ» ³»·ÈÁö¸¸ ³Ê¹«¸Ö¾î¼­ °ø°İÇÒ ÀûÀÌ ¾øÀ»°æ¿ì
-             2. ¸®´õ°¡ ¾øÀ»°æ¿ì 
+             1. ë¦¬ë”ê°€ Attack ëª…ë ¹ì„ ë‚´ë ¸ì§€ë§Œ ë„ˆë¬´ë©€ì–´ì„œ ê³µê²©í•  ì ì´ ì—†ì„ê²½ìš°
+             2. ë¦¬ë”ê°€ ì—†ì„ê²½ìš° 
              */
-            if(leader == null) // ¸®´õ°¡ ¾øÀ¸¸é Á¦ÀÚ¸®¿¡¼­ ´ë±â
+            if(leader == null) // ë¦¬ë”ê°€ ì—†ìœ¼ë©´ ì œìë¦¬ì—ì„œ ëŒ€ê¸°
             {
                 ani.SetBool("Move", false);
                 navMeshAgent.isStopped = true;
                 return;
             }
-            else // ¸®´õ°¡ ÀÖÀ¸¸é ¸®´õÇÑÅ× ÀÌµ¿
+            else // ë¦¬ë”ê°€ ìˆìœ¼ë©´ ë¦¬ë”í•œí…Œ ì´ë™
             {
                 FollowOrder();
             }
@@ -441,5 +480,28 @@ public class UnitAttack2 : MonoBehaviour
         }   
         navMeshAgent.SetDestination(leader.transform.position);
     }
-    
+    private UnitAttack2 FindParentComponent(GameObject child)
+    {
+        Transform parentTransform = child.transform.parent;
+
+        // ë¶€ëª¨ê°€ ë” ì´ìƒ ì—†ìœ¼ë©´ null ë°˜í™˜
+        if (parentTransform == null)
+        {
+            return null;
+        }
+
+        // ë¶€ëª¨ ê°ì²´ì—ì„œ ì›í•˜ëŠ” ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°
+        UnitAttack2 parentComponent = parentTransform.GetComponent<UnitAttack2>();
+
+        // ë¶€ëª¨ ê°ì²´ì— í•´ë‹¹ ì»´í¬ë„ŒíŠ¸ê°€ ìˆìœ¼ë©´ ë°˜í™˜, ì—†ìœ¼ë©´ ë¶€ëª¨ì˜ ë¶€ëª¨ë¡œ ì¬ê·€ í˜¸ì¶œ
+        return parentComponent != null ? parentComponent : FindParentComponent(parentTransform.gameObject);
+    }
+    public void Setunit()
+    {
+
+        maxHP = data.maxHP;
+        currentHP = maxHP;
+        Damage = data.damage;
+        isHealer = data.ishealer;
+    }
 }

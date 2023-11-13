@@ -127,32 +127,9 @@ public class Intro : MonoBehaviour
 
     #region 옵션 패널
     [Header("Option Panel")]
-    [SerializeField]
-    private GameObject Option_Panel;
 
     [SerializeField]
-    private Slider masterVolume_Slider;
-
-    [SerializeField]
-    private Slider bgmVolume_Slider;
-
-    [SerializeField]
-    private Slider sfxVolume_Slider;
-
-    [SerializeField]
-    private Slider mouseSensitive_Slider;
-
-    [SerializeField]
-    private Slider Brightness_Slider;
-
-    [SerializeField]
-    private Button windowScreen_Btn;
-
-    [SerializeField]
-    private Button fullScreen_Btn;
-
-    [SerializeField]
-    private Image Brightness_img;
+    private Optioin_Panel Option_Panel;
 
     #endregion
 
@@ -168,9 +145,6 @@ public class Intro : MonoBehaviour
     [SerializeField]
     private GameObject Leader_B;
 
-
-    [SerializeField]
-    private Light light;
 
    // public float mouseSensitivity;
 
@@ -209,13 +183,17 @@ public class Intro : MonoBehaviour
     public int Team3_Color;
     public int Team4_Color;
 
-    #endregion
 
+
+
+    #endregion
 
 
     private void Awake()
     {
-       // gameObject.SetActive(true);
+        // gameObject.SetActive(true);
+        
+   
         dataManager = new DataManager();
         scriptsData = dataManager.Load("Scripts");
        
@@ -223,24 +201,41 @@ public class Intro : MonoBehaviour
 
     private void Start()
     {
-        // BackButton = transform.GetChild(0).GetComponent<Button>();
-        SetScreenSize("Full");
+      
+
+        Screen.SetResolution(1920, 1080, true);
 
         Init_FuntionUI();
 
-        TitlePanel_On(); 
+        TitlePanel_On();
+
+        BackButton.onClick.AddListener(BackBtn_Clicked);
+    }
+
+
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            Login();
+        }
     }
 
     private void Init_FuntionUI()
     {
         //시작 시 초기화할 것들
 
-        Title_Panel = transform.GetChild(0).gameObject;
-        Setup_Panel = transform.GetChild(1).gameObject;
-        Upgrade_Panel = transform.GetChild(2).gameObject;
-        Option_Panel = transform.GetChild(3).gameObject;
+        BackButton = transform.GetChild(0).GetComponent<Button>();
+        Title_Panel = transform.GetChild(1).gameObject;
+        Setup_Panel = transform.GetChild(2).gameObject;
+        Upgrade_Panel = transform.GetChild(3).gameObject;
+        Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
+        
 
 
+        
+        
         //구조체 배열 초기화
         for (int i = 0; i < TeamColors.Length; i++)
         {
@@ -249,6 +244,9 @@ public class Intro : MonoBehaviour
             teamColors[i].ColorNum = i;
             teamColors[i].isUsing = false;
         }
+
+
+       
     }
 
     public void GameStart_Btn_Clicekd()
@@ -267,9 +265,13 @@ public class Intro : MonoBehaviour
         Title_Panel.SetActive(true);
         Setup_Panel.SetActive(false);
         Upgrade_Panel.SetActive(false);
-        Option_Panel.SetActive(false);
+        Option_Panel.gameObject.SetActive(false);
 
-    
+
+      
+        BackButton.gameObject.SetActive(false);
+        BackButton.enabled = false;
+
         //오브젝트 값 연결
         Login_Panel = Title_Panel.transform.GetChild(1).gameObject;
         Btn_Panel = Title_Panel.transform.GetChild(2).gameObject;
@@ -285,6 +287,7 @@ public class Intro : MonoBehaviour
         Option_Btn.onClick.AddListener(OptionPanel_On);
         Exit_Btn.onClick.AddListener(Exit);
 
+       
         CheckLogin();
     }
 
@@ -292,9 +295,10 @@ public class Intro : MonoBehaviour
     {
         Setup_Panel.SetActive(true);
         Upgrade_Panel.SetActive(false);
-        Option_Panel.SetActive(false);
+        Option_Panel.gameObject.SetActive(false);
 
-        
+        BackButton.gameObject.SetActive(true);
+        BackButton.enabled = true;
 
         GameObject Selection = Setup_Panel.transform.GetChild(0).gameObject;
 
@@ -401,10 +405,10 @@ public class Intro : MonoBehaviour
     {
         Setup_Panel.SetActive(false);
         Upgrade_Panel.SetActive(true);
-        Option_Panel.SetActive(false);
+        Option_Panel.gameObject.SetActive(false);
 
-
-
+        BackButton.gameObject.SetActive(true);
+        BackButton.enabled = true;
 
 
 
@@ -412,130 +416,16 @@ public class Intro : MonoBehaviour
 
     public void OptionPanel_On()
     {
+        
         Setup_Panel.SetActive(false);
         Upgrade_Panel.SetActive(false);
-        Option_Panel.SetActive(true);
+        //Option_Panel.SetActive(true);
+        Option_Panel.gameObject.SetActive(true);
+        Option_Panel.OptionPanel_On();
 
-        GameObject Selection_img = Option_Panel.transform.GetChild(0).gameObject;
-
-        #region 오브젝트 연결
-        masterVolume_Slider = Selection_img.transform.GetChild(0).GetChild(0).GetComponent<Slider>();
-        bgmVolume_Slider = Selection_img.transform.GetChild(1).GetChild(0).GetComponent<Slider>();
-        sfxVolume_Slider = Selection_img.transform.GetChild(2).GetChild(0).GetComponent<Slider>();
-        mouseSensitive_Slider = Selection_img.transform.GetChild(3).GetChild(0).GetComponent<Slider>();
-        Brightness_Slider = Selection_img.transform.GetChild(4).GetChild(0).GetComponent<Slider>();
-
-        windowScreen_Btn = Selection_img.transform.GetChild(5).GetChild(0).GetComponent<Button>();
-        fullScreen_Btn = Selection_img.transform.GetChild(5).GetChild(1).GetComponent<Button>();
-        #endregion
-
-  
-        //사운드 조절 슬라이더
-        masterVolume_Slider.onValueChanged.AddListener(delegate { SetVolume(5, "Master"); });
-
-
-        //밝기 조절 슬라이더
-        Brightness_Slider.onValueChanged.AddListener(SetBrightness);
-
-
-        //마우스 속도 슬라이더 -> 인게임에서 카메라 속도 조절
-        mouseSensitive_Slider.onValueChanged.AddListener(SetMouseSensitive);
-
-
-
-        //창 크기 조절 버튼
-        windowScreen_Btn.onClick.AddListener(delegate { SetScreenSize("Window"); });
-        fullScreen_Btn.onClick.AddListener(delegate { SetScreenSize("Full"); });
-
-
+        BackButton.gameObject.SetActive(true);
+        BackButton.enabled = true;
     }
-    public void SetVolume(float volume, string soundtype)
-    {
-        switch (soundtype)
-        {
-            case "Master":
-                volume = masterVolume_Slider.value;
-                break;
-
-
-            case "Bgm":
-                volume = bgmVolume_Slider.value;
-                break;
-
-
-            case "Sfx":
-                volume = sfxVolume_Slider.value;
-                break;
-        }
-
-        if (volume == 0f)
-        {
-            audioMixer.SetFloat(soundtype, -80);
-        }
-        else
-        {
-            audioMixer.SetFloat(soundtype, volume);
-        }
-    }
-
-    public void SetBrightness_img(float value)
-    {
-        value = Brightness_Slider.value;
-
-        Brightness_img.color = new Color(Brightness_img.color.r, Brightness_img.color.g, Brightness_img.color.b, value);
-    }
-
-
-    public void SetBrightness(float value)
-    {
-        light = FindObjectOfType<Light>();
-        value = Brightness_Slider.value;
-
-        if (value > 10)
-        {
-            value = 10;
-        }
-
-
-        light.intensity = value;
-    }
-
-
-    private void SetMouseSensitive(float mouseSensitivity)
-    {
-        //나중에 CameraControl 값 가져오기
-        if(mouseSensitivity > 100)
-        {
-            mouseSensitivity = 100;
-        }
-
-        MouseX += Input.GetAxisRaw("Mouse X") * mouseSensitivity * Time.deltaTime;
-        MouseY -= Input.GetAxisRaw("Mouse Y") * mouseSensitivity * Time.deltaTime;
-
-        MouseY = Mathf.Clamp(MouseY, -90f, 90f); //Clamp를 통해 최소값 최대값을 넘지 않도록함
-
-        transform.localRotation = Quaternion.Euler(MouseY, MouseX, 0f);// 각 축을 한꺼번에 계산
-    }
-   
-
-    public void SetScreenSize(string screen)
-    {
-        switch(screen)
-        {
-            case "Window":
-                Debug.Log("Window Screen");
-                Screen.SetResolution(1024, 768, true);
-                break;
-
-            case "Full":
-                Debug.Log("Full Screen");
-                
-                Screen.SetResolution(1920, 1080, true);
-                break;
-        }
-    }
-
-
 
 
   
@@ -551,6 +441,9 @@ public class Intro : MonoBehaviour
             inputField = Login_Panel.transform.GetChild(0).GetComponent<InputField>();
             Confirm_Btn = Login_Panel.transform.GetChild(1).GetComponent<Button>();
             Confirm_Btn.onClick.AddListener(Login);
+
+            //시작시 inputField에 커서
+            inputField.ActivateInputField();
         }
         else
         {
@@ -565,7 +458,7 @@ public class Intro : MonoBehaviour
         //임시 아이디 sunny
         if(inputField.text == id)
         {
-            isLogined = true;
+            isLogined = true;   
         }
         else
         {
@@ -594,6 +487,13 @@ public class Intro : MonoBehaviour
     {
         //맵이미지 타임어택으로 변경
         Debug.Log("타임어택 맵 이미지");
+    }
+
+    
+    public void BackBtn_Clicked()
+    {
+        Debug.Log("Backbutton 클릭됨");
+        TitlePanel_On();
     }
 
 

@@ -4,22 +4,11 @@ using UnityEngine;
 
 public class ToggleMenu : MonoBehaviour
 {
-    enum state
-    {
-        empty,
-        upgrade,
-        worldmap,
-        option
-    }
-
     /*
         토글 했을 때 메뉴창들 켜고 끌 수 있는 스크립트 
     */
+    [SerializeField] private WorldMap worldMap;
     [SerializeField] private GameObject[] Menu;
-
-    [SerializeField] private GameObject Upgrade;
-    [SerializeField] private GameObject Option;
-    [SerializeField] private GameObject WorldMap;
 
     public bool isMenuOpen = false;
 
@@ -29,15 +18,16 @@ public class ToggleMenu : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                Togglemenu(Upgrade);
+                Togglemenu(Menu[0]);    // 업그레이드
             }
             else if (Input.GetKeyDown(KeyCode.M))
             {
-                Togglemenu(WorldMap);
+                worldMap.Change_ColorChip();
+                Togglemenu(Menu[1]);    // 월드맵
             }
             else if (Input.GetKeyDown(KeyCode.Escape))
             {
-                Togglemenu(Option);
+                Togglemenu(Menu[2]);    // 옵션
             }
         }
         else
@@ -47,17 +37,33 @@ public class ToggleMenu : MonoBehaviour
                 for (int i = 0; i < Menu.Length; i++)
                 {
                     Menu[i].SetActive(false);
-                    isMenuOpen = false;
-                    GameManager.instance.Resume();
                 }
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                isMenuOpen = false;
+                GameManager.instance.Resume();
             }
         }
     }
 
-    private void Togglemenu(GameObject menu)
+    public void Togglemenu(GameObject menu)
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
         menu.SetActive(true);
         isMenuOpen = true;
         GameManager.instance.Stop();
+    }
+
+    public void Close_Menu()
+    {
+        for (int i = 0; i < Menu.Length; i++)
+        {
+            Menu[i].SetActive(false);
+        }
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        isMenuOpen = false;
+        GameManager.instance.Resume();
     }
 }

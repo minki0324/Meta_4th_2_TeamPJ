@@ -34,18 +34,28 @@ public class GameManager : MonoBehaviour
     
     [Header("플레이어 관련")]
     public bool isLive = false;
+    public bool isDead;
+    public bool inRange;
     public float Current_HP = 150f;
     public float Max_Hp = 150f;
-    public bool isDead;
     public float Damage = 20f; 
     public float Regeneration = 0.5f;
     public float respawnTime = 10f;
+    public int killCount;
+    public int DeathCount;
+    
     //병사인구 
     public int Max_MinionCount = 19;
     public int Current_MinionCount;
     //병종 업그레이드
     public bool isPossible_Upgrade_1 = false;
     public bool isPossible_Upgrade_2 = false;
+    //스크립터블 배열
+    [Header("Sword > Heavy > Archer > Priest > Spear > Halberdier ")]
+    public Unit_Information[] units;
+    public Unit_Information unit0;
+    public Unit_Information unit1;
+    public Unit_Information unit2;
     private void Awake()
     {
         if(instance == null)

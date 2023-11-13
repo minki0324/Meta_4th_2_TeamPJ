@@ -29,6 +29,8 @@ public class LeaderState : MonoBehaviour
     public float Regeneration = 0.5f;
     public int maxUnitCount = 19;
     public int currentUnitCount = 0;
+    public int killCount = 0;
+    public int deathCount = 0;
     public int unitValue = 0;
     public float unitCost = 16f;
     public bool canSpawn;
