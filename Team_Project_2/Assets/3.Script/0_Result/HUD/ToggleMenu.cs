@@ -15,6 +15,7 @@ public class ToggleMenu : MonoBehaviour
     /*
         토글 했을 때 메뉴창들 켜고 끌 수 있는 스크립트 
     */
+    [SerializeField] private WorldMap worldMap;
     [SerializeField] private GameObject[] Menu;
 
     [SerializeField] private GameObject Upgrade;
@@ -33,6 +34,7 @@ public class ToggleMenu : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.M))
             {
+                worldMap.Change_ColorChip();
                 Togglemenu(WorldMap);
             }
             else if (Input.GetKeyDown(KeyCode.Escape))
@@ -47,17 +49,33 @@ public class ToggleMenu : MonoBehaviour
                 for (int i = 0; i < Menu.Length; i++)
                 {
                     Menu[i].SetActive(false);
-                    isMenuOpen = false;
-                    GameManager.instance.Resume();
                 }
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                isMenuOpen = false;
+                GameManager.instance.Resume();
             }
         }
     }
 
-    private void Togglemenu(GameObject menu)
+    public void Togglemenu(GameObject menu)
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
         menu.SetActive(true);
         isMenuOpen = true;
         GameManager.instance.Stop();
+    }
+
+    public void Close_Menu()
+    {
+        for (int i = 0; i < Menu.Length; i++)
+        {
+            Menu[i].SetActive(false);
+        }
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        isMenuOpen = false;
+        GameManager.instance.Resume();
     }
 }

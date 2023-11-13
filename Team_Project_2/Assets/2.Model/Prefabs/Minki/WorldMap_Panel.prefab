@@ -391,6 +391,7 @@ GameObject:
   - component: {fileID: 8751362896742347832}
   - component: {fileID: 8751362896742347838}
   - component: {fileID: 8751362896742347839}
+  - component: {fileID: 1077421684}
   m_Layer: 5
   m_Name: WorldMap_Panel
   m_TagString: Untagged
@@ -462,6 +463,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1077421684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8751362896742347833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0273548134b77f9469ff0773c2bcea56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorChips:
+  - {fileID: 8751362898295891437}
+  - {fileID: 8751362897247910733}
+  - {fileID: 8751362897593380125}
+  - {fileID: 8751362896754945273}
 --- !u!1 &8751362896754945273
 GameObject:
   m_ObjectHideFlags: 0

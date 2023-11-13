@@ -116,7 +116,9 @@ public class UnitAttack2 : MonoBehaviour
                 switch (leaderState.bat_State)
                 {
                     case LeaderState.BattleState.Attack:
+                      
                         AttackOrder();
+                        
                         break;
                     default:
                         FollowOrder();
