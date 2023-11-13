@@ -49,7 +49,10 @@ public class Following : MonoBehaviour
 
     private void Update()
     {
-
+        if(!GameManager.instance.isLive)
+        {
+            return;
+        }
         if (pc.CurrentMode == Ply_Controller.Mode.Follow)
         {
             StopCoroutine(Mode_Stop_co());

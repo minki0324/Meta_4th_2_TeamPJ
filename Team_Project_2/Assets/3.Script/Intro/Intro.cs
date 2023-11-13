@@ -231,6 +231,15 @@ public class Intro : MonoBehaviour
         TitlePanel_On(); 
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Login();
+        }
+    }
+
+
     private void Init_FuntionUI()
     {
         //시작 시 초기화할 것들
@@ -551,6 +560,7 @@ public class Intro : MonoBehaviour
             inputField = Login_Panel.transform.GetChild(0).GetComponent<InputField>();
             Confirm_Btn = Login_Panel.transform.GetChild(1).GetComponent<Button>();
             Confirm_Btn.onClick.AddListener(Login);
+            inputField.ActivateInputField();
         }
         else
         {

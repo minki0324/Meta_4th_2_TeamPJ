@@ -55,8 +55,8 @@ public class CameraControl : MonoBehaviour
         }
         else
         {
-            //Cursor.visible = false;
-            //Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         Xaixs = Mathf.Clamp(Xaixs, RotMin, RotMax);
