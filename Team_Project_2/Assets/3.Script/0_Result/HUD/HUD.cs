@@ -59,8 +59,8 @@ public class HUD : MonoBehaviour
                 textarray[0].text = $"♥80 /20\n고용 키: <color=#FF3E3E>1</color>\n비용: <color=#B7AF3D>15</color>"; // 검사
                 textarray[1].text = $"♥{GameManager.instance.unit1.maxHP} /{GameManager.instance.unit1.damage}\n고용 키: <color=#FF3E3E>2</color>\n비용: <color=#B7AF3D>{GameManager.instance.unit1.cost}</color>"; // 기사
                 textarray[2].text = $"♥{GameManager.instance.unit2.maxHP} /{GameManager.instance.unit2.damage}\n고용 키: <color=#FF3E3E>3</color>\n비용: <color=#B7AF3D>{GameManager.instance.unit2.cost}</color>"; // 궁수
-                textarray[3].text = GameManager.instance.unit1.unitName;
-                textarray[4].text = GameManager.instance.unit2.unitName;
+                textarray[3].text = GameManager.instance.unit1.unitName.ToString();
+                textarray[4].text = GameManager.instance.unit2.unitName.ToString();
    
                 break;
             case InfoType.TeamPoint:

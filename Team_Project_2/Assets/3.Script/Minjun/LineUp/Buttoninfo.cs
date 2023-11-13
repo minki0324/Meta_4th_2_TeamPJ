@@ -35,7 +35,7 @@ public class Buttoninfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         // Update 메서드에서는 추가적인 로직이 필요 없습니다.
 
-        if (infoPanel.activeSelf)
+        if (infoPanel.activeSelf) 
         {
             Vector3 mousePosition = Input.mousePosition;
             infoPanel.transform.position = mousePosition;

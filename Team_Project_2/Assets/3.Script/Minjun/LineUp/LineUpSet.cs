@@ -13,9 +13,6 @@ public class LineUpSet : MonoBehaviour
     [SerializeField] Button startButton;
     //각 버튼들의 체크이미지
     private GameObject[] Checkbox;
-    //스크립터블 배열
-    [Header("Sword > Heavy > Archer > Priest > Spear > Halberdier ")]
-    [SerializeField]private Unit_Information[] unitinfos;
     //최종 라인업 스프라이트 인덱스
     public List<int> lineupIndexs = new List<int>();
     [Header("Sword > Heavy > Archer > Priest > Spear > Halberdier > Default")]
@@ -112,6 +109,7 @@ public class LineUpSet : MonoBehaviour
             bool isActive = !Checkbox[buttonIndex].gameObject.activeSelf;
             Checkbox[buttonIndex].gameObject.SetActive(isActive);
             if (isActive)
+            Debug.Log("리스트추가ㅣ");
                                            
                 //체크표시하는 동시에 최종 스프라이트 인덱스에 추가
                 lineupIndexs.Add(buttonIndex);
@@ -119,6 +117,7 @@ public class LineUpSet : MonoBehaviour
             }
             else
             {
+            Debug.Log("리스트삭제");
                 //체크푸는 동시에 최종 스프라이트 인덱스에 삭제
                 lineupIndexs.Remove(buttonIndex);
                 //Color c = buttons[buttonIndex].colors.selectedColor;
@@ -128,8 +127,10 @@ public class LineUpSet : MonoBehaviour
   
     public void UnitSetToPlayer()
     {
-        GameManager.instance.unit1 =unitinfos[lineupIndexs[1]];
-        GameManager.instance.unit2 =unitinfos[lineupIndexs[2]];
+       
+        GameManager.instance.unit0 =GameManager.instance.units[lineupIndexs[0]];
+        GameManager.instance.unit1 =GameManager.instance.units[lineupIndexs[1]];
+        GameManager.instance.unit2 =GameManager.instance.units[lineupIndexs[2]];
 
        }
 }

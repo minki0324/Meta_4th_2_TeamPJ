@@ -3209,10 +3209,14 @@ MonoBehaviour:
   Minion_Prefabs:
   - {fileID: 1843400025330777912, guid: 345fdb404ae102d4289e4dc4b4a877b0, type: 3}
   - {fileID: 6006503084427101158, guid: 7b2c5439dcdaff14682d91ecbec50354, type: 3}
-  - {fileID: 4483072135592897270, guid: 688bb76400d688d40a0027c72be0d35e, type: 3}
+  - {fileID: 179124, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
+  - {fileID: 182384, guid: 9948d4669f9006844a963afb88d60afa, type: 3}
+  - {fileID: 123088, guid: 0755a95e2e1b5f44e8226989fb76f2cf, type: 3}
+  - {fileID: 163764, guid: 148322894bbd52e488116a8616dfbe4c, type: 3}
   UnitList_List: []
   Human_num: 0
   Spawner: {fileID: 1894250265279152374}
+  spawnPoint: {fileID: 0}
   TargetLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -3250,6 +3254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OccuHUD: {fileID: 0}
   Flag_Num: 0
+  Team_Color: 0
 --- !u!208 &8150775438576968457
 NavMeshObstacle:
   m_ObjectHideFlags: 0

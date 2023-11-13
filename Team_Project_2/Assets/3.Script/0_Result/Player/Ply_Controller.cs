@@ -28,12 +28,12 @@ public class Ply_Controller : MonoBehaviour
    
 
     //미니언 프리팹=========================
-    [Header("인덱스 - 0 : 보병 / 1 : 기사 / 2 : 궁수")]
+    [Header("인덱스 - 0 : 보병 / 1 : 기사 / 2 : 궁수 / 3 : 힐러 / 4 : 창병 / 5 : 폴암병" )]
     [SerializeField] private GameObject[] Minion_Prefabs;
 
     public List<GameObject> UnitList_List = new List<GameObject>();
     //public LinkedList<GameObject> Minions_List = new LinkedList<GameObject>();
-
+    
     public int Human_num;
 
     [SerializeField]
@@ -174,7 +174,7 @@ public class Ply_Controller : MonoBehaviour
                             Human_num = 0;
                             if (GameManager.instance.Gold > 15)
                             {
-                                Init_Solider(Human_num);
+                                Init_Solider(GameManager.instance.unit0);
                             }
                             else
                             {
@@ -188,7 +188,7 @@ public class Ply_Controller : MonoBehaviour
                             // 나중에 if문에 앤드게이트로 isPossible_HeavyInfantry 업글 유무 확인
                             if (GameManager.instance.Gold > 20)
                             {
-                                Init_Solider(Human_num);
+                                Init_Solider(GameManager.instance.unit1);
                             }
                             else
                             {
@@ -202,7 +202,7 @@ public class Ply_Controller : MonoBehaviour
                             // 나중에 if문에 앤드게이트로 isPossible_Archer 업글 유무 확인
                             if (GameManager.instance.Gold > 25)
                             {
-                                Init_Solider(Human_num);
+                                Init_Solider(GameManager.instance.unit2);
                             }
                             else
                             {
@@ -219,7 +219,7 @@ public class Ply_Controller : MonoBehaviour
         }
     }
 
-    private void Init_Solider(int Human_num)
+    private void Init_Solider(Unit_Information unit)
     {
         // 나중에 인트로 씬에서 컬러셋 스크립트에서 컬러번호 넘겨 받은거로 소환할 때 컬러 적용 시켜야함
 
@@ -228,10 +228,15 @@ public class Ply_Controller : MonoBehaviour
         //    FindSpawnPoint();
         //}
         //스폰포인트영역 들어가면 spawnPoint 참조받고 스폰위치 받아서 그위치로 소환.
-        GameObject newUnit = Instantiate(Minion_Prefabs[Human_num], spawnPoint.SpawnPoint[spawnIndex].position, Quaternion.identity);
+        GameObject newUnit = Instantiate(Minion_Prefabs[unit.index], spawnPoint.SpawnPoint[spawnIndex].position, Quaternion.identity);
         spawnPoint.SetLayerRecursively(newUnit, gameObject.layer);
 
-        GameManager.instance.Gold -= (15 + (Human_num * 5));
+        UnitAttack2 unitAttack2 = newUnit.GetComponent<UnitAttack2>();
+        unitAttack2.maxHP = unit.maxHP;
+        unitAttack2.currentHP = unitAttack2.maxHP;
+        unitAttack2.Damage = unit.damage;
+
+        GameManager.instance.Gold -= unit.cost;
         //Minion.transform.SetParent(transform);
         UnitList_List.Add(newUnit);
         GameManager.instance.Current_MinionCount++;

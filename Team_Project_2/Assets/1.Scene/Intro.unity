@@ -8587,6 +8587,16 @@ MonoBehaviour:
   Current_MinionCount: 0
   isPossible_Upgrade_1: 0
   isPossible_Upgrade_2: 0
+  units:
+  - {fileID: 11400000, guid: 97d2d90dc5f2dbf40b38a44565a5341d, type: 2}
+  - {fileID: 11400000, guid: 624770ab462c7dc439a1cf1567e032e9, type: 2}
+  - {fileID: 11400000, guid: a00150c2d1141d34c90de107f07f4ca5, type: 2}
+  - {fileID: 11400000, guid: 94daa86202143284a9f086959b8add57, type: 2}
+  - {fileID: 11400000, guid: 96d240278346a9747994890a15f92c4e, type: 2}
+  - {fileID: 11400000, guid: 00f16f1735de08c449416867ed5d7af3, type: 2}
+  unit0: {fileID: 0}
+  unit1: {fileID: 0}
+  unit2: {fileID: 0}
   T1_Color: 0
   T2_Color: 0
   T3_Color: 0
