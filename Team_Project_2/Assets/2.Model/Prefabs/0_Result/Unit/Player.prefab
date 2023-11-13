@@ -3352,7 +3352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ani: {fileID: 8150775438576968463}
   rb: {fileID: 8150775438576968460}
-  MoveSpeed: 5
+  MoveSpeed: 10
   JumpForce: 250
   isGrounded: 1
   isAttacking_1: 0

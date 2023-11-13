@@ -106,28 +106,34 @@ public class UnitAttack2 : MonoBehaviour
 
     private void Update()
     {
-        if(!GameManager.instance.isLive)
+        if(!GameManager.instance.isLive || isDie)
         {
             return;
         }
 
-        if (isDie && leader != player.gameObject)
+        if ( leader != player.gameObject)
         {
             if (!leaderState.isDead)
             {
                 switch (leaderState.bat_State)
                 {
                     case LeaderState.BattleState.Attack:
-                        AttackOrder();
-                        if (gameObject!= leader&& !data.ishealer)
+                        if (gameObject != leader)
                         {
-                            AttackOrder();
+                            if (!data.ishealer)
+                            {
+                                AttackOrder();
+                            }
+                            else
+                            {
+                                //힐러 메소드 넣기
+                            }
                         }
                         else
                         {
-
-                            //힐러 행동 메소드 넣기
+                            AttackOrder();
                         }
+                      
                         break;
                     default:
                         FollowOrder();
@@ -143,7 +149,7 @@ public class UnitAttack2 : MonoBehaviour
             }
         }
       
-        if(isDie && !GameManager.instance.isDead && leader == player.gameObject)
+        if(!GameManager.instance.isDead && leader == player.gameObject)
         {
             switch (player.CurrentMode)
             {
@@ -193,7 +199,7 @@ public class UnitAttack2 : MonoBehaviour
 
             foreach (RaycastHit hit in hits)
             {
-                if (hit.transform.CompareTag("SpawnPoint"))
+                if (hit.transform.CompareTag("SpawnPoint") || (hit.transform.CompareTag("Flag")))
                 {
                     continue;
                 }
@@ -325,10 +331,11 @@ public class UnitAttack2 : MonoBehaviour
     //죽을때 메소드
     public void Die()
     {
-        ani.SetTrigger("Dead");  // 죽는모션재생
+        ani.SetBool("DIe" , true);  // 죽는모션재생
         if (gameObject.layer == TeamLayer)
         {
             player.UnitList_List.Remove(gameObject);
+            GameManager.instance.Current_MinionCount--;
             //following.Stop_List.Remove(gameObject);
         }
         else
@@ -415,7 +422,7 @@ public class UnitAttack2 : MonoBehaviour
 
         if (nearestTarget != null) //탐지된 적이 있을때
         {
-
+            LookatTarget(nearestTarget);
             float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
             if (attackDistance <= AttackRange)
             {
