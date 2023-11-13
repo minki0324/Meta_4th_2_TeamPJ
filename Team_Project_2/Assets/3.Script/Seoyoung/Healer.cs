@@ -17,7 +17,7 @@ public class Healer : MonoBehaviour
     private ParticleSystem HealCircle;
 
     GameObject lessHPMinion;
-    int lessHP;
+    float lessHP;
     public float healCoolTime = 3f;
 
 
@@ -38,18 +38,18 @@ public class Healer : MonoBehaviour
             ani.SetTrigger("Heal");
 
             lessHPMinion = pc.UnitList_List[0];
-            lessHP = lessHPMinion.GetComponent<UnitAttack2>().HP;
+            lessHP = lessHPMinion.GetComponent<UnitAttack2>().currentHP;
             for (int i = 0; i < pc.UnitList_List.Count; i++)
             {
-                if (pc.UnitList_List[i].GetComponent<UnitAttack2>().HP <= lessHP)
+                if (pc.UnitList_List[i].GetComponent<UnitAttack2>().currentHP <= lessHP)
                 {
                     lessHPMinion = pc.UnitList_List[i];
 
                 }
-                lessHP = lessHPMinion.GetComponent<UnitAttack2>().HP;
+                lessHP = lessHPMinion.GetComponent<UnitAttack2>().currentHP;
             }
 
-            lessHPMinion.GetComponent<UnitAttack2>().HP += 1;
+            lessHPMinion.GetComponent<UnitAttack2>().currentHP += 1;
             HealEffect.transform.position = lessHPMinion.transform.position;
             HealEffect.Play();
 
