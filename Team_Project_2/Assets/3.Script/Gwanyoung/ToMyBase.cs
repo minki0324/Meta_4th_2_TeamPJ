@@ -1,21 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SimpleProceduralTerrainProject;
 
-public class ToMyBase : LeaderAction
+public class ToMyBase : TargetSetting
 {
-    private Flag[] flags;
-    public override Transform TargetSetting()
-    {
-        flags = FindObjectsOfType<Flag>();
-        for (int i = 0; i < flags.Length; i++)
-        {
-            if (flags[i].transform.root.gameObject.CompareTag("Base") && flags[i].transform.root.gameObject.layer.Equals(this.gameObject.layer))
-            {
-                return null;
-            }
-        }
-        return null;
+    // 본인 베이스로 이동
+    // 베이스는 가장 가까운 곳으로 가야되겠죠?
 
-    }
+    private List<GameObject> Bases;
+    private GameObject TargetBase;
+    private float Distance;
+
+
+
 }

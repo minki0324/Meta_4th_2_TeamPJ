@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ToFlag : TargetSetting
+public class ToEnemyBase : TargetSetting
 {
+
+
+
 
 }

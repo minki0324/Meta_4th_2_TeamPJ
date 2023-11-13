@@ -60,7 +60,7 @@ public class Gate : MonoBehaviour
                     }
 
                 }
-                    yield return null;
+                yield return null;
                 
             }
 
