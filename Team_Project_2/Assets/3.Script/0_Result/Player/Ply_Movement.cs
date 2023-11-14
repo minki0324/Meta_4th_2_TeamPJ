@@ -52,7 +52,6 @@ public class Ply_Movement : MonoBehaviour
     private float Min = -210f;
     private float Max = 210f;
 
-
  
     public Quaternion playerRotation { get; private set; }   //added
 

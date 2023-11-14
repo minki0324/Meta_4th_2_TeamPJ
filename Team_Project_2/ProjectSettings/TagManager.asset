@@ -10,6 +10,7 @@ TagManager:
   - Leader
   - SpawnPoint
   - Gate
+  - Line
   layers:
   - Default
   - TransparentFX

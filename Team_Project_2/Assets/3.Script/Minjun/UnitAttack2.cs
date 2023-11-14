@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
+
 public class UnitAttack2 : MonoBehaviour
 {
     //[SerializeField] private Ply_Controller player;
@@ -65,6 +66,9 @@ public class UnitAttack2 : MonoBehaviour
     public Unit_Information data;
     public bool isHealer = false;
 
+
+    public bool isNear = false;
+
     private Following following;
     private void Awake()
     {
@@ -102,6 +106,14 @@ public class UnitAttack2 : MonoBehaviour
         }
        
 
+    }
+
+    private void OnEnable()
+    {
+        if(!GameManager.instance.isLive)
+        {
+            return;
+        }
     }
 
     private void Update()
@@ -143,7 +155,7 @@ public class UnitAttack2 : MonoBehaviour
             }
         }
       
-        if(isDie && !GameManager.instance.isDead && leader == player.gameObject)
+        /*if(isDie && !GameManager.instance.isDead && leader == player.gameObject)
         {
             switch (player.CurrentMode)
             {
@@ -173,7 +185,7 @@ public class UnitAttack2 : MonoBehaviour
         {
 
             AttackOrder();
-        }
+        }*/
         // 미니언컨트롤러로 옮길필요성있음.
         if (currentHP <= 0)
         {
@@ -269,7 +281,10 @@ public class UnitAttack2 : MonoBehaviour
             }
         }
 
+       
     }
+
+    
     //공격코루틴메소드
     protected IEnumerator Attack_co()
     {
