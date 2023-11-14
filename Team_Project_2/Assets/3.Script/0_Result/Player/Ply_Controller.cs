@@ -41,6 +41,7 @@ public class Ply_Controller : MonoBehaviour
     [SerializeField]
     private Transform Spawner;
     public EnemySpawn spawnPoint;
+    private EnemySpawn RespawnPoint;
     //보병 & 궁수 뽑을 수 있는가 판단하는 변수 -> 추후에 업그레이드 기능과 할때 사용해주세여
 
     private int spawnIndex;
@@ -49,7 +50,7 @@ public class Ply_Controller : MonoBehaviour
 
     private UnityEngine.AI.NavMeshAgent[] agents;
 
-
+   
 
     //변수추가 이서영
 
@@ -138,7 +139,7 @@ public class Ply_Controller : MonoBehaviour
 
         }
 
-
+      
 
 
 
@@ -264,23 +265,5 @@ public class Ply_Controller : MonoBehaviour
             spawnPoint = other.GetComponent<EnemySpawn>();
         }
     }
-    private void FindSpawnPoint()
-    {
-        GameObject[] spawns;
-        spawns = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        float mindistance = int.MaxValue;
-        foreach (GameObject ob in spawns)
-        {
-            if (gameObject.layer == ob.gameObject.layer)
-            {
-
-                float distance = Vector3.Distance(gameObject.transform.position, ob.transform.position);
-                if (distance < mindistance)
-                {
-                    mindistance = distance;
-                    spawnPoint = ob.GetComponent<EnemySpawn>();
-                }
-            }
-        }
-    }
+    
 }

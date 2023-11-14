@@ -36,11 +36,25 @@ public class LeaderState : MonoBehaviour
     public bool canSpawn;
     public bool isDead;
     public bool isMoving;
+    public Transform respawnPoint;
+    //EnemySpawn respawnPoint;
     public BattleState bat_State;
 
     public List<GameObject> UnitList = new List<GameObject>();
 
+    public void Respawn()
+    {
+        //애니메이션초기화
+        //HP , 콜라이더 , isDead ,레이어 다시설정
+        //저장한 리스폰 위치로 이동
+        
+        Current_HP = Max_Hp;
+        isDead = false;
+        gameObject.layer = respawnPoint.parent.gameObject.layer;
+        gameObject.transform.position = respawnPoint.position;
 
+
+    }
     //AI 행동 우선순위
     /*
      1. 중립지역이 있을때

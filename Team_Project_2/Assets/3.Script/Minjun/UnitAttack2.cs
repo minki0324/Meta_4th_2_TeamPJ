@@ -106,7 +106,11 @@ public class UnitAttack2 : MonoBehaviour
 
     private void Update()
     {
-        if(!GameManager.instance.isLive || isDie)
+        if(!GameManager.instance.isLive || isDie )
+        {
+            return;
+        }
+        if(gameObject ==leader && leaderState.isDead)
         {
             return;
         }
@@ -180,12 +184,27 @@ public class UnitAttack2 : MonoBehaviour
 
             AttackOrder();
         }
+
+        if(gameObject == leader )
+        {
+            if (leaderState.isDead)
+            {
+                //콜라이더 다시 true
+                HitBox_col.enabled = false;
+            }
+            else
+            {
+                leaderRespawn();
+            }
+        }
+
         // 미니언컨트롤러로 옮길필요성있음.
-        if (currentHP <= 0)
+        if (currentHP <= 0 && gameObject != leader)
         {
             //공격정지 ,이동정지 
             if (!isDie)
             {
+
                 Die();
             }
             isDie = true;
@@ -224,29 +243,29 @@ public class UnitAttack2 : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(AttackDir);
             transform.rotation = rotation;
         }
-        //적을감지했을때 공격하기위해 적에게 이동하는메소드
+    //적을감지했을때 공격하기위해 적에게 이동하는메소드
 
-        //감지범위 그리는메소드
-        //private void OnDrawGizmos()
-        //{
-        //    Gizmos.color = Color.red;
-        //    Gizmos.DrawWireSphere(transform.position, scanRange);
+    //감지범위 그리는메소드
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(transform.position, scanRange);
 
-        //    Gizmos.color = Color.green;
-        //    Gizmos.DrawWireSphere(transform.position, AttackRange);
-        //}
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawWireSphere(transform.position, AttackRange);
+    //}
 
 
-        //닿은 콜라이더와 오브젝트가 레이어가 다르고
-        //맞고있는중이 아니며
-        //닿은 콜라이더가 검일때
-        // 즉, 닿은 무기의 웨폰의 레이어가 자신과 다를때 히트
-        private void OnTriggerEnter(Collider other)
+    //닿은 콜라이더와 오브젝트가 레이어가 다르고
+    //맞고있는중이 아니며
+    //닿은 콜라이더가 검일때
+    // 즉, 닿은 무기의 웨폰의 레이어가 자신과 다를때 히트
+    private void OnTriggerEnter(Collider other)
     {
 
-        if (other.CompareTag("Weapon")  && !isHitting)
+        if (other.CompareTag("Weapon") && !isHitting)
         {
-            enemy= FindParentComponent(other.gameObject);
+            enemy = FindParentComponent(other.gameObject);
 
 
             // null이 아닐때는 AI이고 null 이라면 유닛중에 UnitAttack2이 없는 player가 유일함.
@@ -257,7 +276,8 @@ public class UnitAttack2 : MonoBehaviour
                     StartCoroutine(Hit_co(enemy.Damage));
 
                 }
-            }else if(enemy ==null && gameObject.layer != player.gameObject.layer)//때리는 적이 플레이어일때
+            }
+            else if (enemy == null && gameObject.layer != player.gameObject.layer)//때리는 적이 플레이어일때
             {
                 StartCoroutine(Hit_co(GameManager.instance.Damage));
             }
@@ -274,7 +294,7 @@ public class UnitAttack2 : MonoBehaviour
                 }
                 else
                 {
-                  
+
                     if (enemy != null)
                     {
                         //적팀을 우리팀이 죽였을때
@@ -293,10 +313,10 @@ public class UnitAttack2 : MonoBehaviour
                     else
                     {  //적팀을 내가 죽였을때 (enemy ==null)
                         GameManager.instance.killCount++;
-                            leaderState.deathCount++;
-                        
+                        leaderState.deathCount++;
+
                     }
-                    
+
                 }
             }
         }
@@ -324,7 +344,14 @@ public class UnitAttack2 : MonoBehaviour
     {
         isHitting = true;
         //히트시 대미지달기
+        if(gameObject == leader)
+        {
+            leaderState.Current_HP -= damage;
+        }
+        else { 
         currentHP -= damage;
+        
+        }
 
 
         //공격도중 캔슬시 공격쿨타임 초기화
@@ -357,39 +384,36 @@ public class UnitAttack2 : MonoBehaviour
     //죽을때 메소드
     public void Die()
     {
+
         //ani.SetBool("Die" , true);  // 죽는모션재생
         ani.SetTrigger("Dead"); // 죽는모션재생
-        gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
         HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
-        if (gameObject == leader){
-            leaderState.isDead = true;
+
+        gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
+        if (gameObject.layer == TeamLayer)
+        {
+            player.UnitList_List.Remove(gameObject);
+            GameManager.instance.Current_MinionCount--;
+            //following.Stop_List.Remove(gameObject);
         }
         else
         {
-            if (gameObject.layer == TeamLayer)
-            {
-                player.UnitList_List.Remove(gameObject);
-                GameManager.instance.Current_MinionCount--;
-                //following.Stop_List.Remove(gameObject);
-            }
-            else
-            {
-                leaderState.UnitList.Remove(gameObject);
-                leaderState.currentUnitCount--;
-            }
-
-            //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
-
-            Destroy(gameObject, 3f);  // 죽고나서 3초후 디스트로이
+            leaderState.UnitList.Remove(gameObject);
+            leaderState.currentUnitCount--;
         }
 
+        //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
 
-
-
-
+        Destroy(gameObject, 3f);  // 죽고나서 3초후 디스트로이
 
 
     }
+    public void leaderRespawn()
+    {
+        HitBox_col.enabled = true;    //부딪히지않게 콜라이더 false
+        ani.SetBool("Die", false); // 죽는모션재생
+    }
+
 
     //자신의 레이어와 같은 리더를 찾는 메소드
     private LeaderState FindLeader()

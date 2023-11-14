@@ -27,21 +27,32 @@ public class LeaderAI : Unit
         bat_State = BattleState.Move;
         
     }
+    private void Start()
+    {
+        GameManager.instance.leaders.Add(gameObject.GetComponent<LeaderState>());
+    }
     private void Update()
     {
 
-        if(!GameManager.instance.isLive)
+        if (!GameManager.instance.isLive)
         {
             return;
         }
 
+        if (Current_HP <= 0)
+        {
+            if (!isDead)
+            {
+                Die();
+            }
+        }
         // 항상 주변에 적이있는지 탐지
         EnemyDitect();
 
-  
+
         switch (bat_State)
         {
-  
+
             case BattleState.Attack:
                 break;
             case BattleState.Search:
@@ -78,6 +89,23 @@ public class LeaderAI : Unit
 
 
     }
+    private void Die()
+    {
+        //죽는애니메이션
+        //레이어변하기
+        //콜라이더 끄기
+        //리스폰위치 저장하기
+        //isDead true하기
+        //ani.SetTrigger("Dead"); // 죽는모션재생
+        ani.SetBool("Die", true); // 죽는모션재생
+       
+        EnemySpawn ES = GameManager.instance.FindSpawnPoint(gameObject);
+        respawnPoint = ES.transform.GetChild(0);
+
+        gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
+        isDead = true;
+    } 
+   
 
     private void EnemyDitect()
     {
@@ -163,4 +191,5 @@ public class LeaderAI : Unit
 
 
     }
+
 }
