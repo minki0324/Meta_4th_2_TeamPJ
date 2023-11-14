@@ -66,12 +66,18 @@ public class UnitAttack2 : MonoBehaviour
     public bool isHealer = false;
 
     private Following following;
+
+
+    public bool isStop;
+    Rigidbody rigid;
+
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Ply_Controller>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
-        
+        rigid = GetComponent<Rigidbody>();
+     
     }
 
     private void Start()
@@ -79,7 +85,7 @@ public class UnitAttack2 : MonoBehaviour
 
    
         //자신의 레이어를 제외한 적팀레이어를 담은 배열 계산하는 메소드
-        myLayer = gameObject.layer;
+        myLayer = gameObject.layer; 
         TeamLayer = LayerMask.NameToLayer("Team");
         combinedMask = TargetLayers();
 
@@ -106,6 +112,12 @@ public class UnitAttack2 : MonoBehaviour
 
     private void Update()
     {
+        if(isStop)
+        {
+            rigid.velocity = Vector3.zero;
+        }
+     
+
         if(!GameManager.instance.isLive)
         {
             return;
@@ -151,14 +163,14 @@ public class UnitAttack2 : MonoBehaviour
                     
                     if (player.CurrentMode == Ply_Controller.Mode.Follow)
                     {
-                        if (isClose == true)
-                        {
-                            ani.SetBool("Move", false);
-                        }
-                        else
-                        {
-                            ani.SetBool("Move", true);
-                        }
+                        //if (isClose == true)
+                        //{
+                        //    ani.SetBool("Move", false);
+                        //}
+                        //else
+                        //{
+                        //    ani.SetBool("Move", true);
+                        //}
                     }
                   
                     break;
@@ -474,7 +486,7 @@ public class UnitAttack2 : MonoBehaviour
     }
     private void FollowOrder()
     {
-        ani.SetBool("Move", true);
+        //ani.SetBool("Move", true);
         if (navMeshAgent.isStopped) { 
         navMeshAgent.isStopped = false;
         }   

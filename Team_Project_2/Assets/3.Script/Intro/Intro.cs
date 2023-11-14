@@ -207,9 +207,11 @@ public class Intro : MonoBehaviour
 
         Init_FuntionUI();
 
+
+       
         TitlePanel_On();
 
-        BackButton.onClick.AddListener(BackBtn_Clicked);
+     
     }
 
 
@@ -227,6 +229,9 @@ public class Intro : MonoBehaviour
         //시작 시 초기화할 것들
 
         BackButton = transform.GetChild(0).GetComponent<Button>();
+        BackButton.onClick.AddListener(BackBtn_Clicked);
+        BackButton.gameObject.SetActive(false);
+
         Title_Panel = transform.GetChild(1).gameObject;
         Setup_Panel = transform.GetChild(2).gameObject;
         Upgrade_Panel = transform.GetChild(3).gameObject;
@@ -267,7 +272,7 @@ public class Intro : MonoBehaviour
         Upgrade_Panel.SetActive(false);
         Option_Panel.gameObject.SetActive(false);
 
-
+        Title_Panel.GetComponent<Image>().raycastTarget = false;
       
         BackButton.gameObject.SetActive(false);
         BackButton.enabled = false;
