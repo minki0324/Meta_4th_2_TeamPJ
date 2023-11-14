@@ -1,67 +1,224 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+
 
 public class LeaderController : MonoBehaviour
 {
+    // 하 살려주세요 제발
 
-    public StateManager stateManager;
+    public Targetsetting Targetset;
 
-    private enum LeaderAIState
-    {
-        Charge = 0, // 돌격 (적과 필드조우)
-        Retreat,    // 후퇴 (필드에서 단순 물러남)
-        Improve,    // 정비
-        Occu_Flag,  // 깃발 점령  
-        Occu_Enemy  // 상대 진영 점령
-    }
+    public Transform Target;
+    public Transform NextTarget;
 
-    private Dictionary<LeaderAIState, IState> dicState = new Dictionary<LeaderAIState, IState>();
+    private ObjPosInfo MapData;
+
+    public LeaderState leaderstate;
+
+    private bool isStart = false;
+
+    public Transform CurrentPos;    
+    
+
+
+
+    // 하.. 하..
 
     private void Start()
     {
-        IState charge = new StateCharge();
-        IState retreat = new StateRetreat();
-        IState improve = new StateImprove();
-        IState occu_Flag = new StateOccuFlag();
-        IState occu_Enemy = new StateOccuEnemy();
-
-        // Dictionary 에 저장
-        dicState.Add(LeaderAIState.Charge, charge);
-        dicState.Add(LeaderAIState.Retreat, retreat);
-        dicState.Add(LeaderAIState.Improve, improve);
-        dicState.Add(LeaderAIState.Occu_Flag, occu_Flag);
-        dicState.Add(LeaderAIState.Occu_Enemy, occu_Enemy);
-
-        stateManager = new StateManager(occu_Flag);
-
+        MapData = FindObjectOfType<ObjPosInfo>();
+        leaderstate = GetComponent<LeaderState>();
     }
 
     private void Update()
     {
-        stateManager.DoOperStay();
 
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            stateManager.SetState(dicState[LeaderAIState.Charge]);
-        }
+        if (!GameManager.instance.isLive) return;
+
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            stateManager.SetState(dicState[LeaderAIState.Retreat]);
+            leaderstate.currentUnitCount++;
+            Debug.Log(leaderstate.currentUnitCount);
         }
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            stateManager.SetState(dicState[LeaderAIState.Improve]);
+            leaderstate.currentUnitCount--;
+            Debug.Log(leaderstate.currentUnitCount);
         }
-        if (Input.GetKeyDown(KeyCode.F4))
+
+        if (isStart)
         {
-            stateManager.SetState(dicState[LeaderAIState.Occu_Flag]);
+            #region Base일 때
+            // 현재 위치가 베이스일 때
+            if (Target.gameObject.CompareTag("Base") && isArrive(Target))
+            {
+                // 현재 위치가 본인 진영일 때
+                if (Target.gameObject.layer.Equals(gameObject.layer))
+                {
+                    // 현재 병사 수가 15명 이상일 때
+                    if (leaderstate.currentUnitCount >= 15)
+                    {
+                        Targetset = GetComponent<TargetFlag>();
+                        NextTarget = Targetset.Target(transform);
+
+                        // 현재 중앙 지역 깃발을 내가 다 먹고있을 때
+                        // 그럼 돈 모일 때까지 기다리기..
+                        if (NextTarget.Equals(null))  
+                        {
+
+                            if (GameManager.instance.currentTime < 900)
+                            {
+                                if (leaderstate.currentUnitCount >= 18)
+                                {
+                                    Targetset = GetComponent<TargetEnemyBase>();
+                                    NextTarget = Targetset.Target(transform);
+                                }
+                            }
+                            else
+                            {
+                                if (leaderstate.currentUnitCount >= 23)
+                                {
+                                    Targetset = GetComponent<TargetEnemyBase>();
+                                    NextTarget = Targetset.Target(transform);
+                                }
+
+                            }
+                            return;
+                        }
+                        GoGate(transform, ref Target);
+
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                // 현재 위치가 상대 진영일 때
+                else
+                {
+                    // 깃발점령
+                    // 어차피 깃발 점령하면 베이스가 본인 진영으로 바뀌어서 위 if문으로 이동
+                    if (!Target.GetComponentInChildren<Flag>().transform.parent.gameObject.layer.Equals(gameObject.layer))
+                    {
+                        Target = Target.gameObject.GetComponentInChildren<Flag>().transform.parent.transform;
+                        Targetset.ToTarget(Target);
+                    }  
+
+
+
+                }
+            }
+            #endregion
+
+            #region Flag일 때
+            if (Target.CompareTag("Flag") && isArrive(Target))
+            {
+                // 내 깃발이 아닐 때
+                // 점령하려면 가만히 있어야지..
+                if(!Target.gameObject.layer.Equals(gameObject.layer)) 
+                {
+                    return;
+                }
+                // 내 깃발일 때
+                else
+                {
+                    if (leaderstate.currentUnitCount > 13)
+                    {
+                        GoFlag(transform, ref Target);
+                    }
+                    else
+                    {
+                        Targetset = GetComponent<TargetMyBase>();
+                        NextTarget = Targetset.Target(transform);
+                        GoMyBase(transform, ref Target);
+                    }
+                }
+            }
+            #endregion
+
+
+            #region Gate일 때
+            // 게이트에 서있을 때
+            if (Target.gameObject.CompareTag("Gate") && isArrive(Target))
+            {
+                if (NextTarget.Equals(null))
+                {
+                    return;
+
+                }
+                else
+                {
+                    Target = NextTarget;
+                    Targetset.ToTarget(Target);
+                    NextTarget = null;
+                }
+
+
+            }
+            #endregion
+
+
+
+
+
+
+
+
+
+
+
         }
-        if (Input.GetKeyDown(KeyCode.F5))
+
+
+
+
+
+
+
+        // --------------------------------------------------------------------------------------------
+        else  // 처음 한 번만 실행
         {
-            stateManager.SetState(dicState[LeaderAIState.Occu_Enemy]);
+            GoMyBase(transform, ref Target);
+            isStart = true;
         }
+
+
+    }
+
+
+    private bool isArrive(Transform EndPos)
+    {
+        return (Vector3.Magnitude(transform.position - EndPos.position) < 5) ? true : false;
+    }
+
+    private void GoFlag(Transform StartPos, ref Transform Target)
+    {
+        Targetset = GetComponent<TargetFlag>();
+        Target = Targetset.Target(StartPos);
+        Targetset.ToTarget(Target);
+
+    }
+    private void GoMyBase(Transform StartPos, ref Transform Target)
+    {     
+        Targetset = GetComponent<TargetMyBase>();
+        Target = Targetset.Target(StartPos);
+        Targetset.ToTarget(Target);
+
+    }
+    private void GoEnemyBase(Transform StartPos, ref Transform Target)
+    {    
+        Targetset = GetComponent<TargetEnemyBase>();
+        Target = Targetset.Target(StartPos);
+        Targetset.ToTarget(Target);
+
+    }
+    private void GoGate(Transform StartPos, ref Transform Target)
+    {
+        Targetset = GetComponent<TargetGate>();
+        Target = Targetset.Target(StartPos);
+        Targetset.ToTarget(Target);
+   
     }
 }
 

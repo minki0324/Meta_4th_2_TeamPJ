@@ -11392,8 +11392,10 @@ GameObject:
   - component: {fileID: -6335461727198921222}
   - component: {fileID: 8563116505424069821}
   - component: {fileID: 7674037152790838645}
-  - component: {fileID: 8772205334172045319}
-  - component: {fileID: 8898059763314392748}
+  - component: {fileID: -6345470137745102455}
+  - component: {fileID: 8736886272222092689}
+  - component: {fileID: -6659146888812430763}
+  - component: {fileID: 8870553910889788021}
   m_Layer: 6
   m_Name: EnemyLeader
   m_TagString: Leader
@@ -11596,8 +11598,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7d2cf42c3fe80a4dbf0f7b8f0933a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateManager: {fileID: 0}
---- !u!114 &8772205334172045319
+  targetset: {fileID: 0}
+--- !u!114 &-6345470137745102455
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11606,23 +11608,77 @@ MonoBehaviour:
   m_GameObject: {fileID: 8132295210802862224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47275f1d5e3765d44aa6b55388fdc274, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8898059763314392748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56c3d7c773f5aed46b1f382699ee8554, type: 3}
+  m_Script: {fileID: 11500000, guid: 91cb6d086c138cf4e9bcd139f4197fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MapInfo: {fileID: 0}
+  targetset: {fileID: 0}
   Nav: {fileID: 0}
+  Bases: []
+  TargetBase: {fileID: 0}
+  gates: []
+  TargetGate: {fileID: 0}
+  Distance: 0
+--- !u!114 &8736886272222092689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175d39913d172ab4cb3302306d1537a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MapInfo: {fileID: 0}
+  targetset: {fileID: 0}
+  Nav: {fileID: 0}
+  Bases: []
+  TargetBase: {fileID: 0}
+  gates: []
+  TargetGate: {fileID: 0}
+  Distance: 0
+--- !u!114 &-6659146888812430763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 598162fb2bf5bf74bbc9506aa1be71cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MapInfo: {fileID: 0}
+  targetset: {fileID: 0}
+  Nav: {fileID: 0}
+  Bases: []
+  TargetBase: {fileID: 0}
+  gates: []
+  TargetGate: {fileID: 0}
+  Distance: 0
+--- !u!114 &8870553910889788021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc6e23c7b9c03c34384191c06386efdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MapInfo: {fileID: 0}
+  targetset: {fileID: 0}
+  Nav: {fileID: 0}
+  Bases: []
+  TargetBase: {fileID: 0}
+  gates: []
+  TargetGate: {fileID: 0}
+  Distance: 0
 --- !u!1 &8132295210802862830
 GameObject:
   m_ObjectHideFlags: 0
