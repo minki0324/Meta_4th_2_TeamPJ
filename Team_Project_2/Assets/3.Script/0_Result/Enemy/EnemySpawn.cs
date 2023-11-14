@@ -192,7 +192,7 @@ public class EnemySpawn : MonoBehaviour
         }
 
         UnitAttack2 unitAttack2 = newUnit.GetComponent<UnitAttack2>();
-        unitAttack2.data = currentUnit;
+        unitAttack2.infodata = currentUnit;
         unitAttack2.Setunit();
         leaderState.UnitList.Add(newUnit);
         leaderState.Gold -= currentUnit.cost;

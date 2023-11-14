@@ -234,7 +234,7 @@ public class Ply_Controller : MonoBehaviour
         GameObject newUnit = Instantiate(unit.unitObject, spawnPoint.SpawnPoint[spawnIndex].position, Quaternion.identity);
         UnitAttack2 unitAttack2 = newUnit.GetComponent<UnitAttack2>();
         ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.Color_Index);
-        unitAttack2.data = unit;
+        unitAttack2.infodata = unit;
         unitAttack2.Setunit();
 
         spawnPoint.SetLayerRecursively(newUnit, gameObject.layer);

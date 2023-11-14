@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaderState : MonoBehaviour
+public class LeaderState : Unit
 {
 
     public enum BattleState
@@ -55,6 +55,10 @@ public class LeaderState : MonoBehaviour
 
 
     }
+    public override void Die()
+    {
+     
+    }
     //AI 행동 우선순위
     /*
      1. 중립지역이 있을때
@@ -65,5 +69,12 @@ public class LeaderState : MonoBehaviour
      2. 아무도없을시 점령
      
      */
-
+    public override void HitDamage(float damage)
+    {
+       
+    }
+    public override void Lostleader()
+    {
+       
+    }
 }
