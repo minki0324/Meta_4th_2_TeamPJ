@@ -44,28 +44,28 @@ public class LeaderAI : Unit
   
             case BattleState.Attack:
                 break;
-            /*case BattleState.Search:
-                
+            case BattleState.Search:
+
                 targetFlag = TargetFlag();
-                if(targetFlag != null) 
+                if (targetFlag != null)
                 {
                     bat_State = BattleState.Move;
                 }
-               
-             
+
+
                 break;
             case BattleState.Move:
                 if (targetFlag.transform.position != null)
                 {
-                        ani.SetBool("Move", true);
-                        Debug.Log("깃발이동");
-                        navMesh.SetDestination(targetFlag.transform.position);
+                    ani.SetBool("Move", true);
+                    Debug.Log("깃발이동");
+                    navMesh.SetDestination(targetFlag.transform.position);
                 }
                 else
                 {
                     bat_State = BattleState.Search;
                 }
-                break;*/
+                break;
             case BattleState.Defense:
                 break;
 

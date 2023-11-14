@@ -247,30 +247,56 @@ public class UnitAttack2 : MonoBehaviour
         if (other.CompareTag("Weapon")  && !isHitting)
         {
             enemy= FindParentComponent(other.gameObject);
-            if(enemy.gameObject.layer != gameObject.layer)
-            {
-            StartCoroutine(Hit_co(enemy.Damage));
 
-            }
-            if(currentHP <= 0)
+
+            // null이 아닐때는 AI이고 null 이라면 유닛중에 UnitAttack2이 없는 player가 유일함.
+            if (enemy != null)
             {
-                if(leader == player.gameObject)
+                if (enemy.gameObject.layer != gameObject.layer)
+                {
+                    StartCoroutine(Hit_co(enemy.Damage));
+
+                }
+            }else if(enemy ==null && gameObject.layer != player.gameObject.layer)//때리는 적이 플레이어일때
+            {
+                StartCoroutine(Hit_co(GameManager.instance.Damage));
+            }
+            if (currentHP <= 0)
+            {
+                //적이 나를 죽였을때 -> 플레이어 컨트롤 다이에서 따로 설정
+                //enemy ==null  -> 플레이어
+
+                //우리팀을 적팀이 죽였을때 
+                if (leader == player.gameObject)
                 {
                     GameManager.instance.DeathCount++;
                     enemy.leaderState.killCount++;
                 }
                 else
                 {
-                    if (enemy.leader == player.gameObject)
+                  
+                    if (enemy != null)
                     {
-                        GameManager.instance.killCount++;
-                        leaderState.deathCount++;
+                        //적팀을 우리팀이 죽였을때
+                        if (enemy.leader == player.gameObject || enemy == null)
+                        {
+                            GameManager.instance.killCount++;
+                            leaderState.deathCount++;
+                        }
+                        //적팀끼리 죽였을때
+                        else
+                        {
+                            enemy.leaderState.killCount++;
+                            leaderState.deathCount++;
+                        }
                     }
                     else
-                    {
-                        enemy.leaderState.killCount++;
-                        leaderState.deathCount++;
+                    {  //적팀을 내가 죽였을때 (enemy ==null)
+                        GameManager.instance.killCount++;
+                            leaderState.deathCount++;
+                        
                     }
+                    
                 }
             }
         }
@@ -331,24 +357,31 @@ public class UnitAttack2 : MonoBehaviour
     //죽을때 메소드
     public void Die()
     {
-        ani.SetBool("DIe" , true);  // 죽는모션재생
-        if (gameObject.layer == TeamLayer)
-        {
-            player.UnitList_List.Remove(gameObject);
-            GameManager.instance.Current_MinionCount--;
-            //following.Stop_List.Remove(gameObject);
+        //ani.SetBool("Die" , true);  // 죽는모션재생
+        ani.SetTrigger("Dead"); // 죽는모션재생
+        gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
+        HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
+        if (gameObject == leader){
+            leaderState.isDead = true;
         }
         else
         {
-            leaderState.UnitList.Remove(gameObject);
-            leaderState.currentUnitCount--;
+            if (gameObject.layer == TeamLayer)
+            {
+                player.UnitList_List.Remove(gameObject);
+                GameManager.instance.Current_MinionCount--;
+                //following.Stop_List.Remove(gameObject);
+            }
+            else
+            {
+                leaderState.UnitList.Remove(gameObject);
+                leaderState.currentUnitCount--;
+            }
+
+            //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
+
+            Destroy(gameObject, 3f);  // 죽고나서 3초후 디스트로이
         }
-        gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
-        HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
-        //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
-
-        Destroy(gameObject, 3f);  // 죽고나서 3초후 디스트로이
-
 
 
 

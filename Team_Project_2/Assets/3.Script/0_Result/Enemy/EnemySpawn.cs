@@ -9,6 +9,7 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] private Ply_Controller player;
     private LeaderState leaderState;
     [SerializeField]private GameObject targetLeader;
+    private LeaderState leaderstate;
 
     //스폰위치 3개
     public Transform[] SpawnPoint = new Transform[3];
@@ -66,6 +67,7 @@ public class EnemySpawn : MonoBehaviour
                 try
                 {
                     targetLeader = SetLeader();
+                    targetLeader.TryGetComponent(out leaderState);
                 }
                 catch
                 {
@@ -76,6 +78,7 @@ public class EnemySpawn : MonoBehaviour
 
 
         }
+       
 
         //중립이 아닐때
         if (targetLeader != null)
@@ -270,5 +273,9 @@ public class EnemySpawn : MonoBehaviour
         {
             leaderState.canSpawn = true;
         }
+    }
+    private void ReSpawn()
+    {
+        
     }
 }
