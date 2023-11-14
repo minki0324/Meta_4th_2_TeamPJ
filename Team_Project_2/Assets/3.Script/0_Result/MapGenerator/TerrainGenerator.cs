@@ -261,7 +261,6 @@ namespace SimpleProceduralTerrainProject
 
             // 경로 계산 시작
             AstarPath.StartPath(path);
-            Debug.Log(path.vectorPath.Count);
 
             // 경로 계산이 끝날 때까지 기다립니다.
             path.BlockUntilCalculated();

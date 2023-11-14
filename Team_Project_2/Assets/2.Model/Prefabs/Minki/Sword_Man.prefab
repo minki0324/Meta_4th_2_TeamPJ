@@ -1453,7 +1453,6 @@ GameObject:
   - component: {fileID: 9159112012165647529}
   - component: {fileID: 9159112012165647528}
   - component: {fileID: 5492942058269001799}
-  - component: {fileID: 2387114778181874603}
   - component: {fileID: 5883006208365223104}
   - component: {fileID: -8152224595248025579}
   - component: {fileID: 6418486420126089662}
@@ -1605,18 +1604,6 @@ CapsuleCollider:
   m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 0.7, z: 0}
---- !u!114 &2387114778181874603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9159112012165647531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cdde32052e5ce948b35638780e82763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!208 &5883006208365223104
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1677,7 +1664,7 @@ MonoBehaviour:
   radius: 0.5
   height: 2
   canMove: 1
-  maxSpeed: 3
+  maxSpeed: 5
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -1701,8 +1688,8 @@ MonoBehaviour:
   endReachedDistance: 0.4
   alwaysDrawGizmos: 1
   slowWhenNotFacingTarget: 1
-  whenCloseToDestination: 1
-  constrainInsideGraph: 0
+  whenCloseToDestination: 0
+  constrainInsideGraph: 1
 --- !u!114 &-3238926180370340512
 MonoBehaviour:
   m_ObjectHideFlags: 0
