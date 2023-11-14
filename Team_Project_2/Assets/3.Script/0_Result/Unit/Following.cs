@@ -215,16 +215,7 @@ public class Following : MonoBehaviour
                             pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.right);
 
                         }
-                        if (i == 5)
-                        {
-                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.left);
-
-                        }
-                        if (i == 6)
-                        {
-                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.right);
-
-                        }
+        
 
                     }
                     else
@@ -258,11 +249,11 @@ public class Following : MonoBehaviour
                         {
                             if (playernum + 2 >= i)
                             {
-                                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[playernum].transform.position + (Vector3.left * (i - playernum)));
+                                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[playernum].transform.right * (-1* (i - playernum)));
                             }
                             if (playernum - 2 <= i)
                             {
-                                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[playernum].transform.position + (Vector3.right * (playernum - i)));
+                                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[playernum].transform.right * (playernum - i));
                             }
                         }
 
@@ -275,20 +266,36 @@ public class Following : MonoBehaviour
                                 //i가 stoplist.count-4 보다 작다는 가정하에 i+4로 이동
                                 if (i <= Stop_List.Count - 4)
                                 {
-                                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 4].transform.position + Vector3.forward);
+                                    if(i+4 < Stop_List.Count)
+                                    {
+                                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 4].transform.forward);
+                                    }
+                                    else
+                                    {
+                                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[Stop_List.Count].transform.forward);
+                                    }
+                                   
                                 }
                                 if (i >= Stop_List.Count + 4)
                                 {
-                                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.transform.position);     
+                                    if(i-4 >Stop_List.Count)
+                                    {
+                                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 4].transform.forward * -1f);
+                                    }
+                                    else
+                                    {
+                                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[0].transform.forward * -1f);
+                                    }
+                                   
 
                                 }
 
-                                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.transform.position);
+                                //Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.transform.position);
                             }
-                            if (i > playernum + 2)
-                            {
-                                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.transform.position);
-                            }
+                            //if (i > playernum + 2)
+                            //{
+                            //    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.transform.position.);
+                            //}
                         }
 
 
@@ -300,70 +307,7 @@ public class Following : MonoBehaviour
                         Stop_List[i].GetComponent<NavMeshAgent>().isStopped = true;
                         Stop_List[i].GetComponent<UnitAttack2>().isClose = true;
                     }
-                    #region 기존
-                    //if (Stop_List[i] != pc.gameObject)
-                    //{
-                    //    Debug.Log("플레이어는.." + playernum + "번이야..");
-                    //    Debug.Log(Stop_List.Count);
-                    //    //Debug.Log(i + " 번째" + "플레이어는.." + playernum + "번이야..");
-
-                    //    if (playernum + 2 >= i && playernum - 2 <= i)
-                    //    {
-                    //        if (playernum + 2 >= i)
-                    //        {
-                    //            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[playernum].transform.position + (Vector3.left * (i - playernum)));
-                    //        }
-                    //        if (playernum - 2 <= i)
-                    //        {
-                    //            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[playernum].transform.position + (Vector3.right * (playernum - i)));
-                    //        }
-                    //    }
-
-                    //    //==================================================================
-                    //    else
-                    //    {
-                    //        if (i < playernum - 2)
-                    //        {
-                    //            //i가 플레이어-2보다 작으면 
-                    //            //i가 stoplist.count-4 보다 작다는 가정하에 i+4로 이동
-                    //            if (i <= Stop_List.Count - 4)
-                    //            {
-                    //                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 4].transform.position + Vector3.forward);
-                    //            }
-                    //            if (i >= Stop_List.Count + 4)
-                    //            {
-                    //                if (i == 0)
-                    //                {
-                    //                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
-                    //                }
-                    //                if (i == 1)
-                    //                {
-                    //                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
-                    //                }
-                    //                if (i == 2)
-                    //                {
-                    //                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
-                    //                }
-                    //                if (i == 3)
-                    //                {
-                    //                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
-                    //                }
-
-                    //            }
-
-
-                    //            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 4].transform.position + Vector3.forward);
-                    //        }
-                    //        if (i > playernum + 2)
-                    //        {
-                    //            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i - 4].transform.position + Vector3.back);
-                    //        }
-                    //    }
-
-
-                    //}
-
-                    #endregion
+                  
 
                 }
 
