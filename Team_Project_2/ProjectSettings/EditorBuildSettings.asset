@@ -9,9 +9,9 @@ EditorBuildSettings:
     path: Assets/1.Scene/Intro.unity
     guid: 50dcef2c8e9ec9545b8a0582937789d8
   - enabled: 1
-    path: Assets/1.Scene/Minjun.unity
-    guid: 5373629464711bf468b207c3621bac1e
-  - enabled: 1
     path: Assets/1.Scene/00_MainGame.unity
     guid: 2102ed02bac444d409510ec4e7fea6ad
+  - enabled: 1
+    path: Assets/1.Scene/Minjun.unity
+    guid: 5373629464711bf468b207c3621bac1e
   m_configObjects: {}
