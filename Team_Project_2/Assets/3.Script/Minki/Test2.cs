@@ -16,8 +16,24 @@ public class Test2 : MonoBehaviour
 
     private void Update()
     {
-        
-        SetFormation();
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            Following();
+        }
+        else if(Input.GetKeyDown(KeyCode.I))
+        {
+            SetFormation();
+        }
+    }
+
+    private void Following()
+    {
+        for(int i = 0; i < player_Con.UnitList_List.Count; i++)
+        {
+            GameObject unit = player_Con.UnitList_List[i];
+            Animator anim = unit.GetComponent<Animator>();
+            unit.GetComponent<AIDestinationSetter>().target = player_Con.transform.gameObject.transform;
+        }
     }
 
     private void SetFormation()
@@ -30,10 +46,11 @@ public class Test2 : MonoBehaviour
         }
     }
 
-    private void Scan(float scanRange)
+    private List<GameObject> Scan(float scanRange)
     {
         RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0);
-        Transform nearestTarget = null;
+        GameObject nearestTarget = null;
+        List<GameObject> nearList = null;
         if (allHits != null)
         {
             foreach (RaycastHit hit in allHits)
@@ -41,14 +58,16 @@ public class Test2 : MonoBehaviour
                 if (hit.transform.gameObject.layer == gameObject.layer)
                 {
                     nearestTarget = GetNearestTarget(allHits);
+                    nearList.Add(nearestTarget);
                 }
             }
         }
+        return nearList;
     }
 
-    private Transform GetNearestTarget(RaycastHit[] hits)
+    private GameObject GetNearestTarget(RaycastHit[] hits)
     {
-        Transform nearest = null;
+        GameObject nearest = null;
         float closestDistance = float.MaxValue;
 
         foreach (RaycastHit hit in hits)
@@ -63,7 +82,7 @@ public class Test2 : MonoBehaviour
             if (distance < closestDistance && !hit.transform.CompareTag("SpawnPoint"))
             {
                 closestDistance = distance;
-                nearest = hit.transform;
+                nearest = hit.transform.gameObject;
             }
         }
 
