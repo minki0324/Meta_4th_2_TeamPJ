@@ -42,8 +42,6 @@ public class UnitAttack2 : Unit
   
     //네비게이션
     public bool isClose;
-    [Header("현재타겟 Layer")]
-    [SerializeField] LayerMask target;
     public Unit_Information infodata;
     public bool isHealer = false;
 
@@ -93,9 +91,10 @@ public class UnitAttack2 : Unit
             return;
         }
         
-
+        //병사의 리더가 적리더일때
         if ( leader != player.gameObject)
         {
+            //적리더가 죽지않았을때
             if (!leaderState.isDead)
             {
                 switch (leaderState.bat_State)
@@ -164,22 +163,11 @@ public class UnitAttack2 : Unit
             AttackOrder();
         }
 
-        if(gameObject == leader )
-        {
-            if (leaderState.isDead)
-            {
-                //콜라이더 다시 true
-                HitBox_col.enabled = false;
-            }
-            else
-            {
-                leaderRespawn();
-            }
-        }
 
-        // 미니언컨트롤러로 옮길필요성있음.
-        if (infodata.currentHP <= 0 && gameObject != leader)
+     
+        if (data.currentHP <= 0 )
         {
+            Debug.Log("죽는조건");
             //공격정지 ,이동정지 
             if (!isDie)
             {
@@ -303,11 +291,7 @@ public class UnitAttack2 : Unit
 
 
     }
-    public void leaderRespawn()
-    {
-        HitBox_col.enabled = true;    //부딪히지않게 콜라이더 false
-        ani.SetBool("Die", false); // 죽는모션재생
-    }
+
 
 
     //자신의 레이어와 같은 리더를 찾는 메소드

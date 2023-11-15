@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+[System.Serializable]
 public struct Data
 {
     public float currentHP;
@@ -36,8 +36,8 @@ public abstract class Unit : MonoBehaviour
     protected LayerMask TeamLayer;
     protected bool isSuccessAtk = true;
     //죽었을때 박스콜라이더 Enable하기위해 직접참조 
-    [SerializeField] protected BoxCollider HitBox_col;
-    [SerializeField] protected BoxCollider Ob_Weapon_col;
+    [SerializeField] protected Collider HitBox_col;
+    [SerializeField] protected Collider Ob_Weapon_col;
 
 
     //네비게이션
@@ -51,8 +51,6 @@ public abstract class Unit : MonoBehaviour
        
     }
 
-    [Header("현재타겟 Layer")]
-    [SerializeField] LayerMask target;
 
     private void Awake()
     {
