@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using System.Linq;
+
 public class LeaderAI : LeaderState 
 {
     private LayerMask targetLayer;
-    private NavMeshAgent navMesh;
     private GameObject[] flag;
     SphereCollider col;
     bool isStart = false;
@@ -19,7 +18,6 @@ public class LeaderAI : LeaderState
     {
         base.Awake();
         combinedMask = TargetLayers();
-        navMesh = GetComponent<NavMeshAgent>();
         flag = GameObject.FindGameObjectsWithTag("Flag");
         targetFlag = TargetFlag();
         bat_State = BattleState.Move;
@@ -80,7 +78,6 @@ public class LeaderAI : LeaderState
                 {
                     ani.SetBool("Move", true);
                     Debug.Log("깃발이동");
-                    navMesh.SetDestination(targetFlag.transform.position);
                 }
                 else
                 {

@@ -50,7 +50,6 @@ public class UnitAttack2 : Unit
     {
         base.Awake();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Ply_Controller>();
-        navMeshAgent = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
         
     }
@@ -367,7 +366,6 @@ public class UnitAttack2 : Unit
         if (leader == null) // 리더가 없으면 제자리에서 대기
         {
             ani.SetBool("Move", false);
-            navMeshAgent.isStopped = true;
             return;
         }
         else // 리더가 있으면 리더한테 이동

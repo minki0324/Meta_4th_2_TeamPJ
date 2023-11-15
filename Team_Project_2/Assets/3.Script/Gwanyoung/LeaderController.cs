@@ -4,7 +4,7 @@ using UnityEngine;
 using Pathfinding;
 
 
-public class LeaderController : MonoBehaviour
+public class LeaderController : LeaderState
 {
     // 하 살려주세요 제발
 
@@ -14,8 +14,6 @@ public class LeaderController : MonoBehaviour
     public Transform NextTarget;
 
     private ObjPosInfo MapData;
-
-    public LeaderState leaderstate;
 
     private bool isStart = false;
 
@@ -30,25 +28,14 @@ public class LeaderController : MonoBehaviour
     private void Start()
     {
         MapData = FindObjectOfType<ObjPosInfo>();
-        leaderstate = GetComponent<LeaderState>();
         Target_ = GetComponent<AIDestinationSetter>();
+        
     }
 
     private void Update()
     {
 
         if (!GameManager.instance.isLive) return;
-
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            leaderstate.currentUnitCount++;
-            Debug.Log(leaderstate.currentUnitCount);
-        }
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            leaderstate.currentUnitCount--;
-            Debug.Log(leaderstate.currentUnitCount);
-        }
 
         if (isStart)
         {
@@ -60,8 +47,10 @@ public class LeaderController : MonoBehaviour
                 if (Target.gameObject.layer.Equals(gameObject.layer))
                 {
                     // 현재 병사 수가 15명 이상일 때
-                    if (leaderstate.currentUnitCount >= 15)
+                    if (base.currentUnitCount >= 15)
                     {
+                        Debug.Log(currentUnitCount);
+                        Debug.Log(base.currentUnitCount);
                         Targetset = GetComponent<TargetFlag>();
                         NextTarget = Targetset.Target(transform);
 
@@ -72,7 +61,7 @@ public class LeaderController : MonoBehaviour
 
                             if (GameManager.instance.currentTime < 900)
                             {
-                                if (leaderstate.currentUnitCount >= 18)
+                                if (currentUnitCount >= 18)
                                 {
                                     Targetset = GetComponent<TargetEnemyBase>();
                                     NextTarget = Targetset.Target(transform);
@@ -80,7 +69,7 @@ public class LeaderController : MonoBehaviour
                             }
                             else
                             {
-                                if (leaderstate.currentUnitCount >= 23)
+                                if (currentUnitCount >= 23)
                                 {
                                     Targetset = GetComponent<TargetEnemyBase>();
                                     NextTarget = Targetset.Target(transform);
@@ -126,7 +115,7 @@ public class LeaderController : MonoBehaviour
                 // 내 깃발일 때
                 else
                 {
-                    if (leaderstate.currentUnitCount > 13)
+                    if (currentUnitCount > 13)
                     {
                         GoFlag(transform, ref Target);
                     }

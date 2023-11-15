@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using Pathfinding;
 [System.Serializable]
 public struct Data
@@ -41,10 +40,6 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected Collider HitBox_col;
     [SerializeField] protected Collider Ob_Weapon_col;
 
-
-    //네비게이션
-    protected NavMeshAgent navMeshAgent;
-
     [Header("현재타겟 Transform")]
     [SerializeField] protected Transform nearestTarget;
     public Transform GetNearestTarget()
@@ -58,7 +53,6 @@ public abstract class Unit : MonoBehaviour
     {
         ani = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Ply_Controller>();
-        navMeshAgent = GetComponent<NavMeshAgent>();
 
     }
 
@@ -98,9 +92,7 @@ public abstract class Unit : MonoBehaviour
 
             if (!isdetecting) //탐지된적이 멀리있으면 적한테 이동
             {
-                navMeshAgent.isStopped = false;
                 ani.SetBool("Move", true);
-                navMeshAgent.SetDestination(nearestTarget.transform.position);
 
 
 
@@ -108,8 +100,7 @@ public abstract class Unit : MonoBehaviour
             else // 탐지된 적이 접근하면 이동을 멈추고 공격
             {
 
-                ani.SetBool("Move", false);
-                navMeshAgent.isStopped = true;
+                ani.SetBool("Move", false);             
 
                 if (!isAttacking)
                 {
