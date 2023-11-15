@@ -35,10 +35,9 @@ public class LeaderController : MonoBehaviour
     private void Update()
     {
 
-        AI.Current_HP = 100;
         if (!GameManager.instance.isLive) return;
 
-        if (isStart)
+        if (isStart && AI.GetNearestTarget().Equals(null)) 
         {
             #region Base일 때
             // 현재 위치가 베이스일 때
@@ -60,7 +59,7 @@ public class LeaderController : MonoBehaviour
 
                             if (GameManager.instance.currentTime < 900)
                             {
-                                if (AI.currentUnitCount >= 18)
+                                if (AI.currentUnitCount >= 21)
                                 {
                                     Targetset = GetComponent<TargetEnemyBase>();
                                     NextTarget = Targetset.Target(transform);

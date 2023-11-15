@@ -63,14 +63,6 @@ public class LeaderAI : LeaderState
                 AttackOrder();
                 break;
             case BattleState.Search:
-
-                targetFlag = TargetFlag();
-                if (targetFlag != null)
-                {
-                    bat_State = BattleState.Move;
-                }
-
-
                 break;
             case BattleState.Move:
                 if (targetFlag.transform.position != null)
