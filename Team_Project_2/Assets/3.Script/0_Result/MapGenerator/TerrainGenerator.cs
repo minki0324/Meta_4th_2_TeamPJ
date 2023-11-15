@@ -78,11 +78,11 @@ namespace SimpleProceduralTerrainProject
         public GameObject[] Base_PreFabs;
         public int Ply_Num;
         public int Base_Num = 0;
-        List<GameObject> baseCampPositions = new List<GameObject>();
+        public List<GameObject> baseCampPositions = new List<GameObject>();
 
         public GameObject[] flag;
         public int flag_Num;
-        List<GameObject> flagPositions_List = new List<GameObject>();
+        public List<GameObject> flagPositions_List = new List<GameObject>();
         private Dictionary<string, List<Vector3>> cachedPaths = new Dictionary<string, List<Vector3>>();
 
         public GameObject[] Leader_Prefabs;

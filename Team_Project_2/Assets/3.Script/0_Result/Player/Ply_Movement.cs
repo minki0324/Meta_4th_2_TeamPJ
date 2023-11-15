@@ -146,9 +146,16 @@ public class Ply_Movement : MonoBehaviour
 
         if (moveDirection != Vector3.zero)
         {
+            if (Input.GetMouseButton(1))
+            {
+                transform.rotation = Quaternion.LookRotation(playerRotate);
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(moveDirection);
+            }
             // 회전
-            transform.rotation = Quaternion.LookRotation(moveDirection);
-
+          
             playerRotation = transform.rotation;    //added
 
             // 이동

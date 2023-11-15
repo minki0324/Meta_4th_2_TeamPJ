@@ -11555,7 +11555,11 @@ GameObject:
   - component: {fileID: 8132295210802862238}
   - component: {fileID: -6335461727198921222}
   - component: {fileID: 8563116505424069821}
-  - component: {fileID: -4176325943719837745}
+  - component: {fileID: 7674037152790838645}
+  - component: {fileID: -6345470137745102455}
+  - component: {fileID: 8736886272222092689}
+  - component: {fileID: -6659146888812430763}
+  - component: {fileID: 8870553910889788021}
   m_Layer: 6
   m_Name: EnemyLeader
   m_TagString: Leader
@@ -11713,7 +11717,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8132295210802862224}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.35
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -11722,8 +11726,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
+  m_Height: 1.6
+  m_BaseOffset: -0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &-6335461727198921222
@@ -11755,7 +11759,7 @@ MonoBehaviour:
   OccuHUD: {fileID: 0}
   Flag_Num: 0
   Team_Color: 0
---- !u!114 &-4176325943719837745
+--- !u!114 &7674037152790838645
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11764,10 +11768,90 @@ MonoBehaviour:
   m_GameObject: {fileID: 8132295210802862224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 307c9505029f82445b237b7dc3be45de, type: 3}
+  m_Script: {fileID: 11500000, guid: e7d2cf42c3fe80a4dbf0f7b8f0933a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FlagPoint: []
+  targetset: {fileID: 0}
+--- !u!114 &-6345470137745102455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91cb6d086c138cf4e9bcd139f4197fe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MapInfo: {fileID: 0}
+  targetset: {fileID: 0}
+  Nav: {fileID: 0}
+  Bases: []
+  TargetBase: {fileID: 0}
+  gates: []
+  TargetGate: {fileID: 0}
+  Distance: 0
+--- !u!114 &8736886272222092689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175d39913d172ab4cb3302306d1537a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MapInfo: {fileID: 0}
+  targetset: {fileID: 0}
+  Nav: {fileID: 0}
+  Bases: []
+  TargetBase: {fileID: 0}
+  gates: []
+  TargetGate: {fileID: 0}
+  Distance: 0
+--- !u!114 &-6659146888812430763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 598162fb2bf5bf74bbc9506aa1be71cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MapInfo: {fileID: 0}
+  targetset: {fileID: 0}
+  Nav: {fileID: 0}
+  Bases: []
+  TargetBase: {fileID: 0}
+  gates: []
+  TargetGate: {fileID: 0}
+  Distance: 0
+--- !u!114 &8870553910889788021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc6e23c7b9c03c34384191c06386efdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MapInfo: {fileID: 0}
+  targetset: {fileID: 0}
+  Nav: {fileID: 0}
+  Bases: []
+  TargetBase: {fileID: 0}
+  gates: []
+  TargetGate: {fileID: 0}
+  Distance: 0
 --- !u!1 &8132295210802862830
 GameObject:
   m_ObjectHideFlags: 0
