@@ -17,7 +17,6 @@ public class OccupationHUD : MonoBehaviour
 
     private void Start()
     {
-        FlagArray = FindObjectsOfType<Flag>();
         Occu_image = new GameObject[7];
         Occu_Img_Color = GetComponentsInChildren<Image>();
         OccuSlider = GetComponentsInChildren<Slider>();
@@ -31,6 +30,13 @@ public class OccupationHUD : MonoBehaviour
 
     public void Occu_Set()
     {
+        FlagArray = FindObjectsOfType<Flag>();
+        for (int i = 0; i < FlagArray.Length; i++)
+        {
+            FlagArray[i].Flag_Num = i;
+        }
+
+
         for (int i = 0; i < FlagArray.Length; i++)
         {
             Occu_image[i] = Occu_Img_Color[i * 4].transform.parent.gameObject;

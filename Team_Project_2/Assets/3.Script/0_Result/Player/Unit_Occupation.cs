@@ -6,12 +6,9 @@ using UnityEngine.UI;
 public class Unit_Occupation : MonoBehaviour
 { 
     // 유닛의 점령 상호작용   
-    private Flag flag; // 깃발 스크립트
-    [HideInInspector] public OccupationHUD OccuHUD; // 점령HUD
 
-    [HideInInspector] public int Flag_Num = 0;  // Flag 인덱스 
-
-    public int Team_Color;  // 팀 Color
+    private Flag flag; // 내 감지범위에 닿은 깃발
+    private int Team_Color;  // 팀 Color
 
     private void Start()
     {
@@ -32,8 +29,6 @@ public class Unit_Occupation : MonoBehaviour
             default:
                 return;
         }  
-
-        OccuHUD = FindObjectOfType<OccupationHUD>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -41,27 +36,13 @@ public class Unit_Occupation : MonoBehaviour
         if (other.gameObject.CompareTag("Flag"))
         {
             flag = other.gameObject.GetComponentInChildren<Flag>();            
-            flag.unit_O = this;
-            flag.isOccupating = true; // 점령 중 true
-
-            for (int i = 0; i < OccuHUD.FlagArray.Length; i++)
-            {
-                if (flag.Equals(OccuHUD.FlagArray[i]))
-                {
-                    Flag_Num = i;
-                    break;
-                }
-            }
-            StartCoroutine(flag.OnOccu_co(Team_Color, this.gameObject.layer));
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Flag"))
         {
-            flag.isOccupating = false; // 점령 중 false
-            StartCoroutine(flag.OffOccu_co(this.gameObject.layer));
-            flag.unit_O = null;
+            flag = null;
         }
     }
 }
