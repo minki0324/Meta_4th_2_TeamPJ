@@ -25,7 +25,7 @@ public class Intro_OBj : MonoBehaviour
     }
     private void Update()
     {
-        if (leaderState.isDead)
+        if (leaderState.data.isDie)
         {
             leaderState.canSpawn = false;
             return;

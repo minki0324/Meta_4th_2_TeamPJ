@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using Pathfinding.Util;
 [System.Serializable]
 public struct Data
 {
     public float currentHP;
     public float maxHP;
-    public float Damage;
+    public float damage;
     public bool isDie;
 }
 public abstract class Unit : MonoBehaviour 
@@ -15,9 +16,9 @@ public abstract class Unit : MonoBehaviour
     public Data data;
     protected WaitForSeconds attackDelay;
     protected WaitForSeconds hitDelay = new WaitForSeconds(0.2f);
-    protected bool isDie;
     protected Ply_Controller player;
     public AIDestinationSetter target;
+    protected AIPath aipath;
     //팀의 리더가 누군지
 
     //공격중인가?
@@ -26,10 +27,10 @@ public abstract class Unit : MonoBehaviour
     protected bool isdetecting;
     protected Animator ani;
     protected Coroutine attackCoroutine;
-    protected LeaderState leaderState;
-    protected GameObject leader;
-
-    [SerializeField] protected float scanRange = 13f;
+    public LeaderState leaderState;
+    public GameObject leader;
+    protected UnitAttack2 enemy;
+   [SerializeField] protected float scanRange = 13f;
     [SerializeField] protected float AttackRange = 1.5f;
     protected int myLayer;
     protected int combinedMask;
@@ -53,7 +54,7 @@ public abstract class Unit : MonoBehaviour
     {
         ani = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Ply_Controller>();
-
+        aipath = GetComponent<AIPath>();
     }
 
     protected virtual void Start()
@@ -66,7 +67,7 @@ public abstract class Unit : MonoBehaviour
         leaderState = GetComponent<LeaderState>();
         target = GetComponent<AIDestinationSetter>();
 
-
+        
         //
 
 
@@ -162,7 +163,37 @@ public abstract class Unit : MonoBehaviour
     //공격코루틴메소드
 
     //히트 코루틴메소드
+    protected GameObject FindParentGameObject(GameObject child)
+    {
+        Transform parentTransform = child.transform.parent;
 
+        // 부모가 더 이상 없으면 현재 child 반환
+        if (parentTransform != null)
+        {
+            return FindParentGameObject(parentTransform.gameObject);
+        }
+        else
+        {
+            // 부모가 더 이상 없으면 현재 child 반환
+            return child;
+        }
+    }
+    protected UnitAttack2 FindParentComponent(GameObject child)
+    {
+        Transform parentTransform = child.transform.parent;
+
+        // 부모가 더 이상 없으면 null 반환
+        if (parentTransform == null)
+        {
+            return null;
+        }
+
+        // 부모 객체에서 원하는 컴포넌트 가져오기
+        UnitAttack2 parentComponent = parentTransform.GetComponent<UnitAttack2>();
+
+        // 부모 객체에 해당 컴포넌트가 있으면 반환, 없으면 부모의 부모로 재귀 호출
+        return parentComponent != null ? parentComponent : FindParentComponent(parentTransform.gameObject);
+    }
 
     //이벤트에서 무기 껏다키는 메소드
     public void WeaponActive()
@@ -249,11 +280,11 @@ public abstract class Unit : MonoBehaviour
 
         isAttacking = false;
     }
-    protected void FollowOrder()
-    {
-        ani.SetBool("Move", true);
-        target.target = leader.transform;
-    }
+    //protected void FollowOrder()
+    //{
+    //    ani.SetBool("Move", true);
+    //    target.target = leader.transform;
+    //}
     public abstract void Lostleader();
     public abstract void Die();
     public abstract void HitDamage(float damage);

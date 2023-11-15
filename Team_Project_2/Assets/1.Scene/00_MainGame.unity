@@ -3618,7 +3618,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1099632189}
   - component: {fileID: 1099632188}
-  - component: {fileID: 1099632187}
   - component: {fileID: 1099632186}
   m_Layer: 0
   m_Name: WorldMapCamera
@@ -3660,14 +3659,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!81 &1099632187
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1099632185}
-  m_Enabled: 1
 --- !u!20 &1099632188
 Camera:
   m_ObjectHideFlags: 0

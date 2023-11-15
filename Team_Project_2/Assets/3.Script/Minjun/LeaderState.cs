@@ -24,8 +24,6 @@ public class LeaderState : Unit
 
     [Header("AI 관련")]
     // private bool Ready =true;
-    public float Current_HP = 150f;
-    public float Max_Hp = 150f;
     public float Regeneration = 0.5f;
     public int maxUnitCount = 19;
     public int currentUnitCount = 0;
@@ -34,7 +32,6 @@ public class LeaderState : Unit
     public int unitValue = 0;
     public float unitCost = 16f;
     public bool canSpawn;
-    public bool isDead;
     public bool isMoving;
     public Transform respawnPoint;
     //EnemySpawn respawnPoint;
@@ -42,19 +39,7 @@ public class LeaderState : Unit
 
     public List<GameObject> UnitList = new List<GameObject>();
 
-    public void Respawn()
-    {
-        //애니메이션초기화
-        //HP , 콜라이더 , isDead ,레이어 다시설정
-        //저장한 리스폰 위치로 이동
-        
-        Current_HP = Max_Hp;
-        isDead = false;
-        gameObject.layer = respawnPoint.parent.gameObject.layer;
-        gameObject.transform.position = respawnPoint.position;
-
-
-    }
+   
     public override void Die()
     {
      
@@ -69,6 +54,23 @@ public class LeaderState : Unit
      2. 아무도없을시 점령
      
      */
+    public void Respawn(GameObject leader)
+    {
+        //애니메이션초기화
+        //HP , 콜라이더 , isDead ,레이어 다시설정
+        //저장한 리스폰 위치로 이동
+        aipath.canMove = false;
+        aipath.canSearch = false;
+        ani.SetTrigger("Reset");
+        ani.SetLayerWeight(1, 1);
+        data.currentHP = data.maxHP;
+        data.isDie = false;
+        Debug.Log(respawnPoint.parent.gameObject.layer);
+        leader.layer = respawnPoint.parent.gameObject.layer;
+        leader.transform.position = respawnPoint.position;
+
+
+    }
     public override void HitDamage(float damage)
     {
        

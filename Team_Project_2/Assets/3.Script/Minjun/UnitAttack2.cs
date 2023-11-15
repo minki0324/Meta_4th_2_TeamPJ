@@ -23,7 +23,7 @@ public class UnitAttack2 : Unit
     //팀의 리더가 누군지
     
     //적컴포넌트
-    private UnitAttack2 enemy;
+    private GameObject ob;
     public GameObject GetLeader()
     {
         return leader;
@@ -49,7 +49,7 @@ public class UnitAttack2 : Unit
     protected override void Awake()
     {
         base.Awake();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Ply_Controller>();
+        
         ani = GetComponent<Animator>();
         
     }
@@ -80,13 +80,12 @@ public class UnitAttack2 : Unit
             leader = player.gameObject;
         
         }
-       
-
-    }
+      
+}
 
     private void Update()
     {
-        if(!GameManager.instance.isLive || isDie )
+        if(!GameManager.instance.isLive || data.isDie )
         {
             return;
         }
@@ -95,7 +94,7 @@ public class UnitAttack2 : Unit
         if ( leader != player.gameObject)
         {
             //적리더가 죽지않았을때
-            if (!leaderState.isDead)
+            if (leaderState.data.isDie)
             {
                 switch (leaderState.bat_State)
                 {
@@ -169,17 +168,17 @@ public class UnitAttack2 : Unit
         {
             Debug.Log("죽는조건");
             //공격정지 ,이동정지 
-            if (!isDie)
+            if (!data.isDie)
             {
-
+                data.isDie = true;
                 Die();
             }
-            isDie = true;
+            
         }
     }
-        //레이어 감지후 가까운 타겟 설정하는메소드
-     
-        //적을감지했을때 적을바라보는 메소드
+    //레이어 감지후 가까운 타겟 설정하는메소드
+
+    //적을감지했을때 적을바라보는 메소드
     //적을감지했을때 공격하기위해 적에게 이동하는메소드
 
     //감지범위 그리는메소드
@@ -193,85 +192,112 @@ public class UnitAttack2 : Unit
     //}
 
 
-    //닿은 콜라이더와 오브젝트가 레이어가 다르고
-    //맞고있는중이 아니며
-    //닿은 콜라이더가 검일때
-    // 즉, 닿은 무기의 웨폰의 레이어가 자신과 다를때 히트
     private void OnTriggerEnter(Collider other)
     {
 
+
         if (other.CompareTag("Weapon") && !isHitting)
         {
-            enemy = FindParentComponent(other.gameObject);
+            ob = FindParentGameObject(other.gameObject);   //칼을들고있는 오브젝트
 
-
-            // null이 아닐때는 AI이고 null 이라면 유닛중에 UnitAttack2이 없는 player가 유일함.
-            if (enemy != null)
+            if (gameObject.layer != ob.layer) //공격하는 오브젝트가 적일때 
             {
-                if (enemy.gameObject.layer != gameObject.layer)
-                {
-                    StartCoroutine(Hit_co(enemy.infodata.damage));
 
-                }
-            }
-            else if (enemy == null && gameObject.layer != player.gameObject.layer)//때리는 적이 플레이어일때
-            {
-                StartCoroutine(Hit_co(GameManager.instance.Damage));
-            }
-            if (infodata.currentHP <= 0)
-            {
-                //적이 나를 죽였을때 -> 플레이어 컨트롤 다이에서 따로 설정
-                //enemy ==null  -> 플레이어
+                enemy = FindParentComponent(other.gameObject);
 
-                //우리팀을 적팀이 죽였을때 
-                if (leader == player.gameObject)
-                {
-                    GameManager.instance.DeathCount++;
-                    enemy.leaderState.killCount++;
-                }
-                else
-                {
 
-                    if (enemy != null)
+                //병사들
+                if (enemy != null)
+                {
+                    if (enemy.gameObject.layer != gameObject.layer)
                     {
-                        //적팀을 우리팀이 죽였을때
-                        if (enemy.leader == player.gameObject || enemy == null)
-                        {
-                            GameManager.instance.killCount++;
-                            leaderState.deathCount++;
-                        }
-                        //적팀끼리 죽였을때
-                        else
-                        {
-                            enemy.leaderState.killCount++;
-                            leaderState.deathCount++;
-                        }
+                        StartCoroutine(Hit_co(enemy.data.damage));
+
+
+                    }
+                }
+                else//null : 리더들 , 플레이어 
+                {
+                    LeaderAI _leader = other.GetComponent<LeaderAI>();
+
+                    if (_leader != null && _leader.gameObject.layer != gameObject.layer)
+                    {
+                        StartCoroutine(Hit_co(_leader.data.damage));
+                    }
+                    else if (gameObject.layer != player.gameObject.layer)
+                    {
+                        StartCoroutine(Hit_co(GameManager.instance.Damage));
+                    }
+                }
+
+
+
+                if (data.currentHP <= 0)
+                {
+                    //적이 나를 죽였을때 -> 플레이어 컨트롤 다이에서 따로 설정
+                    //enemy ==null  -> 플레이어
+
+                    //우리팀을 적팀이 죽였을때 
+                    if (leader == player.gameObject)
+                    {
+                        GameManager.instance.DeathCount++;
+                        enemy.leaderState.killCount++;
                     }
                     else
-                    {  //적팀을 내가 죽였을때 (enemy ==null)
-                        GameManager.instance.killCount++;
-                        leaderState.deathCount++;
+                    {
+                        //병사끼리의 킬계산
+                        if (enemy != null)
+                        {
+                            //적팀을 우리팀이 죽였을때
+                            if (enemy.leader == player.gameObject )
+                            {
+                                GameManager.instance.killCount++;
+                                leaderState.deathCount++;
+                            }
+                            //적팀끼리 죽였을때
+                            else
+                            {
+                                enemy.leaderState.killCount++;
+                                leaderState.deathCount++;
+                            }
+                        }
+                        else//리더가죽였을때 킬계산
+                        {  //적팀을 내가 죽였을때 (enemy ==null)
+                            if (ob.gameObject == player.gameObject)
+                            {
+                                GameManager.instance.killCount++;
+                                leaderState.deathCount++;
+                            }
+                            else
+                            {
+                                LeaderAI _leader = ob.GetComponent<LeaderAI>();
+                                _leader.killCount++;
+                                leaderState.deathCount++;
+                            }
+
+                        }
 
                     }
-
                 }
             }
         }
 
     }
     //공격코루틴메소드
-   
+
 
     //이벤트에서 무기 껏다키는 메소드
-    
+
     //죽을때 메소드
     public override void Die()
     {
 
-        //ani.SetBool("Die" , true);  // 죽는모션재생
+        //ani.SetBool("Die", true);  // 죽는모션재생
+        ani.SetLayerWeight(1, 0);
         ani.SetTrigger("Dead"); // 죽는모션재생
-        HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
-
+        //HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
+        aipath.canMove = false;
+        aipath.canSearch = false;
         gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
         if (gameObject.layer == TeamLayer)
         {
@@ -328,29 +354,15 @@ public class UnitAttack2 : Unit
     //자신의 리더가 오더를내렸을때 말을듣게하기위한메소드
     
    
-    private UnitAttack2 FindParentComponent(GameObject child)
-    {
-        Transform parentTransform = child.transform.parent;
-
-        // 부모가 더 이상 없으면 null 반환
-        if (parentTransform == null)
-        {
-            return null;
-        }
-
-        // 부모 객체에서 원하는 컴포넌트 가져오기
-        UnitAttack2 parentComponent = parentTransform.GetComponent<UnitAttack2>();
-
-        // 부모 객체에 해당 컴포넌트가 있으면 반환, 없으면 부모의 부모로 재귀 호출
-        return parentComponent != null ? parentComponent : FindParentComponent(parentTransform.gameObject);
-    }
    
+   
+
     public void Setunit()
     {
 
         data.maxHP = infodata.maxHP;
         data.currentHP = data.maxHP;
-        data.Damage = infodata.damage;
+        data.damage = infodata.damage;
         isHealer = infodata.ishealer;
     }
     public override void HitDamage(float damage)
@@ -376,7 +388,6 @@ public class UnitAttack2 : Unit
     private void FollowOrder()
     {
         ani.SetBool("Move", true);
-        Debug.Log(leader.transform);
         target.target = leader.transform;
     }
 }
