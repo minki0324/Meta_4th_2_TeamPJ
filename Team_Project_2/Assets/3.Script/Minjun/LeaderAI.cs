@@ -8,6 +8,8 @@ public class LeaderAI : LeaderState
     private LayerMask targetLayer;
     private NavMeshAgent navMesh;
     private GameObject[] flag;
+    SphereCollider col;
+    bool isStart = false;
     [SerializeField] private GameObject targetFlag;
 
     public bool isEnermyChecked = false;
@@ -21,12 +23,17 @@ public class LeaderAI : LeaderState
         flag = GameObject.FindGameObjectsWithTag("Flag");
         targetFlag = TargetFlag();
         bat_State = BattleState.Move;
-        
+        col = GetComponent<SphereCollider>();
+        col.enabled = false;
+
+
     }
     protected override void Start()
     {
         base.Start();
         GameManager.instance.leaders.Add(gameObject.GetComponent<LeaderState>());
+        SetLeaderState();
+        
     }
     private void Update()
     {
@@ -35,10 +42,15 @@ public class LeaderAI : LeaderState
         {
             return;
         }
+        if(!isStart)
+        {
+            col.enabled = true;
+            isStart = true;
+        }
 
         if (data.currentHP <= 0)
         {
-            if (!isDead)
+            if (!data.isDie)
             {
                 Die();
             }
@@ -98,9 +110,22 @@ public class LeaderAI : LeaderState
         ani.SetBool("Die", true); // 죽는모션재생
         gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
         HitBox_col.enabled = false;
-        EnemySpawn ES = GameManager.instance.FindSpawnPoint(gameObject);
-        respawnPoint = ES.transform.GetChild(0);
+        SetRespawnPoint();
         isDead = true;
+
+    }
+    private void SetRespawnPoint()
+    {
+        EnemySpawn ES = GameManager.instance.FindSpawnPoint(gameObject);
+        Debug.Log(ES);
+        respawnPoint = ES.transform.GetChild(0);
+    }
+    private void SetLeaderState()
+    {
+        data.maxHP = 150;
+        data.currentHP = data.maxHP;
+        data.Damage = 20;
+        data.isDie = false;
 
     }
  
@@ -199,4 +224,9 @@ public class LeaderAI : LeaderState
         leaderState.bat_State = LeaderState.BattleState.Move;
     }
 
+    public void OnOffCol()
+    {
+        HitBox_col.enabled = false;
+        HitBox_col.enabled = true;
+    }
 }

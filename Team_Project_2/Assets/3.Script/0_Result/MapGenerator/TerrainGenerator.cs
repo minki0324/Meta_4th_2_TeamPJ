@@ -245,7 +245,6 @@ namespace SimpleProceduralTerrainProject
                 terrainList[i].GetComponent<TerrainCollider>().enabled = true;
             }
             GameManager.instance.isLive = true;
-            Terra.GetComponent<InitNavMesh>().GenerateNavmesh();
             hud.Occu_Set();
             start_Btn.SetActive(false);
             

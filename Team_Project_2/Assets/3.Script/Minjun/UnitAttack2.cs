@@ -46,18 +46,19 @@ public class UnitAttack2 : Unit
     public bool isHealer = false;
 
     private Following following;
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Ply_Controller>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
         
     }
 
-    private void Start()
+    protected override void Start()
     {
 
-   
+        base.Start();
         //자신의 레이어를 제외한 적팀레이어를 담은 배열 계산하는 메소드
         myLayer = gameObject.layer;
         TeamLayer = LayerMask.NameToLayer("Team");
@@ -373,5 +374,11 @@ public class UnitAttack2 : Unit
         {
             FollowOrder();
         }
+    }
+    private void FollowOrder()
+    {
+        ani.SetBool("Move", true);
+        Debug.Log(leader.transform);
+        target.target = leader.transform;
     }
 }

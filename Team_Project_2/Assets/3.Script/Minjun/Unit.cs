@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Pathfinding;
 [System.Serializable]
 public struct Data
 {
@@ -17,6 +18,7 @@ public abstract class Unit : MonoBehaviour
     protected WaitForSeconds hitDelay = new WaitForSeconds(0.2f);
     protected bool isDie;
     protected Ply_Controller player;
+    public AIDestinationSetter target;
     //팀의 리더가 누군지
 
     //공격중인가?
@@ -68,7 +70,7 @@ public abstract class Unit : MonoBehaviour
         TeamLayer = LayerMask.NameToLayer("Team");
         combinedMask = TargetLayers();
         leaderState = GetComponent<LeaderState>();
-
+        target = GetComponent<AIDestinationSetter>();
 
 
         //
@@ -259,11 +261,7 @@ public abstract class Unit : MonoBehaviour
     protected void FollowOrder()
     {
         ani.SetBool("Move", true);
-        if (navMeshAgent.isStopped)
-        {
-            navMeshAgent.isStopped = false;
-        }
-        navMeshAgent.SetDestination(leader.transform.position);
+        target.target = leader.transform;
     }
     public abstract void Lostleader();
     public abstract void Die();

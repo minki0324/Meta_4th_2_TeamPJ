@@ -31,7 +31,7 @@ public class LeaderController : MonoBehaviour
     {
         MapData = FindObjectOfType<ObjPosInfo>();
         leaderstate = GetComponent<LeaderState>();
-        Target_.GetComponent<AIDestinationSetter>();
+        Target_ = GetComponent<AIDestinationSetter>();
     }
 
     private void Update()
