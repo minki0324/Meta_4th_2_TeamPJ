@@ -11560,6 +11560,9 @@ GameObject:
   - component: {fileID: 8736886272222092689}
   - component: {fileID: -6659146888812430763}
   - component: {fileID: 8870553910889788021}
+  - component: {fileID: 2549932089501598413}
+  - component: {fileID: -4631484934897724047}
+  - component: {fileID: 4643609815274536730}
   m_Layer: 6
   m_Name: EnemyLeader
   m_TagString: Leader
@@ -11653,7 +11656,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c59f0d7f888654b448d7f19fcaa25db6, type: 3}
   m_Name: 
@@ -11688,7 +11691,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c89e91bf2e03494484905f46860dbe2, type: 3}
   m_Name: 
@@ -11771,7 +11774,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7d2cf42c3fe80a4dbf0f7b8f0933a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetset: {fileID: 0}
+  Targetset: {fileID: 0}
+  Target: {fileID: 0}
+  NextTarget: {fileID: 0}
+  leaderstate: {fileID: 0}
+  CurrentPos: {fileID: 0}
 --- !u!114 &-6345470137745102455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11785,9 +11792,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapInfo: {fileID: 0}
-  targetset: {fileID: 0}
+  Targetset: {fileID: 0}
   Nav: {fileID: 0}
-  Bases: []
+  ListTemp: []
   TargetBase: {fileID: 0}
   gates: []
   TargetGate: {fileID: 0}
@@ -11805,9 +11812,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapInfo: {fileID: 0}
-  targetset: {fileID: 0}
+  Targetset: {fileID: 0}
   Nav: {fileID: 0}
-  Bases: []
+  ListTemp: []
   TargetBase: {fileID: 0}
   gates: []
   TargetGate: {fileID: 0}
@@ -11825,9 +11832,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapInfo: {fileID: 0}
-  targetset: {fileID: 0}
+  Targetset: {fileID: 0}
   Nav: {fileID: 0}
-  Bases: []
+  ListTemp: []
   TargetBase: {fileID: 0}
   gates: []
   TargetGate: {fileID: 0}
@@ -11845,13 +11852,96 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapInfo: {fileID: 0}
-  targetset: {fileID: 0}
+  Targetset: {fileID: 0}
   Nav: {fileID: 0}
-  Bases: []
+  ListTemp: []
   TargetBase: {fileID: 0}
   gates: []
   TargetGate: {fileID: 0}
   Distance: 0
+--- !u!114 &2549932089501598413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
+--- !u!114 &-4631484934897724047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
+  radius: 0.5
+  height: 2
+  canMove: 1
+  maxSpeed: 1
+  gravity: {x: NaN, y: NaN, z: NaN}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  repathRateCompatibility: NaN
+  canSearchCompability: 0
+  orientation: 0
+  enableRotation: 1
+  autoRepath:
+    mode: 2
+    interval: 0.5
+    sensitivity: 10
+    maximumInterval: 2
+    visualizeSensitivity: 0
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: -2.5
+  rotationSpeed: 360
+  slowdownDistance: 0.6
+  pickNextWaypointDist: 2
+  endReachedDistance: 0.2
+  alwaysDrawGizmos: 1
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 0
+  constrainInsideGraph: 0
+--- !u!114 &4643609815274536730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9679e68a0f1144e79c664d9a11ca121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!1 &8132295210802862830
 GameObject:
   m_ObjectHideFlags: 0
