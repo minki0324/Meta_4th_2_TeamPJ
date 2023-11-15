@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
+
 
 
 
@@ -34,6 +36,9 @@ public class Intro : MonoBehaviour
 
     [SerializeField]
     private Button Confirm_Btn;
+
+    [SerializeField]
+    private Button SignUp_Btn;
 
     //버튼 패널
     [SerializeField]
@@ -134,6 +139,26 @@ public class Intro : MonoBehaviour
     #endregion
 
 
+    #region 회원가입 패널
+    [SerializeField]
+    private GameObject SignUp_Panel;
+
+    [SerializeField]
+    private InputField SignUp_inputField;
+
+    [SerializeField]
+    private Button SignUp_Confirm_Btn;
+
+    [SerializeField]
+    private Button SignUp_Cancel_Btn;
+    #endregion
+
+
+    #region 경고 패널
+    [SerializeField]
+    private GameObject Warning_Panel;
+    #endregion
+
 
     #region 기타
     [Header("기타")]
@@ -155,6 +180,7 @@ public class Intro : MonoBehaviour
     //json 관련
     private DataManager dataManager;
     private ScriptsData scriptsData;
+    private Player_Data playerData;
 
     //로그인 관련
     public bool isLogined = false;
@@ -189,6 +215,8 @@ public class Intro : MonoBehaviour
     #endregion
 
 
+
+
     private void Awake()
     {
         // gameObject.SetActive(true);
@@ -196,6 +224,8 @@ public class Intro : MonoBehaviour
    
         dataManager = new DataManager();
         scriptsData = dataManager.Load("Scripts");
+        playerData = dataManager.Load_playerData();
+
        
     }
 
@@ -236,10 +266,11 @@ public class Intro : MonoBehaviour
         Setup_Panel = transform.GetChild(2).gameObject;
         Upgrade_Panel = transform.GetChild(3).gameObject;
         Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
-        
+        SignUp_Panel = transform.GetChild(5).gameObject;
+        Warning_Panel = transform.GetChild(6).gameObject;
 
 
-        
+       
         
         //구조체 배열 초기화
         for (int i = 0; i < TeamColors.Length; i++)
@@ -271,6 +302,8 @@ public class Intro : MonoBehaviour
         Setup_Panel.SetActive(false);
         Upgrade_Panel.SetActive(false);
         Option_Panel.gameObject.SetActive(false);
+        SignUp_Panel.SetActive(false);
+        Warning_Panel.SetActive(false);
 
         Title_Panel.GetComponent<Image>().raycastTarget = false;
       
@@ -287,6 +320,8 @@ public class Intro : MonoBehaviour
         Exit_Btn = Btn_Panel.transform.GetChild(3).GetComponent<Button>();
 
 
+        
+
         Ready_Btn.onClick.AddListener(SetupPanel_On);
         Upgrade_Btn.onClick.AddListener(UpgradePanel_On);
         Option_Btn.onClick.AddListener(OptionPanel_On);
@@ -301,6 +336,8 @@ public class Intro : MonoBehaviour
         Setup_Panel.SetActive(true);
         Upgrade_Panel.SetActive(false);
         Option_Panel.gameObject.SetActive(false);
+        SignUp_Panel.SetActive(false);
+        Warning_Panel.SetActive(false);
 
         BackButton.gameObject.SetActive(true);
         BackButton.enabled = true;
@@ -411,11 +448,11 @@ public class Intro : MonoBehaviour
         Setup_Panel.SetActive(false);
         Upgrade_Panel.SetActive(true);
         Option_Panel.gameObject.SetActive(false);
+        SignUp_Panel.SetActive(false);
+        Warning_Panel.SetActive(false);
 
         BackButton.gameObject.SetActive(true);
         BackButton.enabled = true;
-
-
 
     }
 
@@ -427,13 +464,63 @@ public class Intro : MonoBehaviour
         //Option_Panel.SetActive(true);
         Option_Panel.gameObject.SetActive(true);
         Option_Panel.OptionPanel_On();
+        SignUp_Panel.SetActive(false);
+        Warning_Panel.SetActive(false);
 
         BackButton.gameObject.SetActive(true);
         BackButton.enabled = true;
     }
 
 
-  
+    public void SignUpPanel_On()
+    {
+        //오브젝트 연결
+        SignUp_Panel.SetActive(true);
+        SignUp_inputField = SignUp_Panel.transform.GetChild(1).GetComponent<InputField>();
+        SignUp_Confirm_Btn = SignUp_Panel.transform.GetChild(2).GetComponent<Button>();
+        SignUp_Cancel_Btn = SignUp_Panel.transform.GetChild(3).GetComponent<Button>();
+
+        //버튼 이벤트
+        SignUp_Confirm_Btn.onClick.AddListener(Check_SignUp);
+        SignUp_Cancel_Btn.onClick.AddListener(() => {
+            SignUp_Panel.SetActive(false);
+            inputField.enabled = true;
+            inputField.ActivateInputField();
+            SignUp_inputField.text = "";
+        });
+
+        inputField.enabled = false;
+        SignUp_inputField.ActivateInputField();
+    }
+
+    public void WarningPanel_Off()
+    {
+
+        Warning_Panel.SetActive(false);
+
+    }
+
+
+
+    public void Check_SignUp()
+    {
+
+       
+        for(int i = 0; i< playerData.playerData.Count; i++)
+        {
+            if (playerData.playerData[i].ID != SignUp_inputField.text)
+            {
+                dataManager.Save_playerData(SignUp_inputField.text, 0, false, false, false);
+            }
+            else
+            {
+                Warning_Panel.SetActive(true);
+            }
+        }
+
+      
+
+    }
 
     public void CheckLogin()
     {
@@ -445,7 +532,10 @@ public class Intro : MonoBehaviour
 
             inputField = Login_Panel.transform.GetChild(0).GetComponent<InputField>();
             Confirm_Btn = Login_Panel.transform.GetChild(1).GetComponent<Button>();
+            SignUp_Btn = Login_Panel.transform.GetChild(2).GetComponent<Button>();
+
             Confirm_Btn.onClick.AddListener(Login);
+            SignUp_Btn.onClick.AddListener(SignUpPanel_On);
 
             //시작시 inputField에 커서
             inputField.ActivateInputField();
