@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using SimpleProceduralTerrainProject;
-using Pathfinding;
 
 public abstract class Targetsetting : MonoBehaviour
 {
@@ -12,7 +11,7 @@ public abstract class Targetsetting : MonoBehaviour
 
     [HideInInspector] public NavMeshAgent Nav;
 
-    AIDestinationSetter Target_;
+
     [HideInInspector] public List<GameObject> ListTemp;
     
     [HideInInspector] public GameObject TargetBase;
@@ -28,14 +27,14 @@ public abstract class Targetsetting : MonoBehaviour
         MapInfo = FindObjectOfType<TerrainGenerator>();
         TryGetComponent<NavMeshAgent>(out Nav);
         gates = FindObjectsOfType<Gate>();
-        Target_.GetComponent<AIDestinationSetter>();
+        
     }
 
 
     public virtual void ToTarget(Transform Target)
     {
         /*Nav.SetDestination(Target.position);*/
-        Target_.target = Target;
+       
     }
 
     public abstract Transform Target(Transform StartPos);

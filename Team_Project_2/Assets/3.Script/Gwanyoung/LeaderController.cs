@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 
 public class LeaderController : MonoBehaviour
@@ -18,8 +19,9 @@ public class LeaderController : MonoBehaviour
 
     private bool isStart = false;
 
-    public Transform CurrentPos;    
-    
+    public Transform CurrentPos;
+
+    public AIDestinationSetter Target_;
 
 
 
@@ -29,6 +31,7 @@ public class LeaderController : MonoBehaviour
     {
         MapData = FindObjectOfType<ObjPosInfo>();
         leaderstate = GetComponent<LeaderState>();
+        Target_.GetComponent<AIDestinationSetter>();
     }
 
     private void Update()
@@ -150,7 +153,7 @@ public class LeaderController : MonoBehaviour
                 else
                 {
                     Target = NextTarget;
-                    Targetset.ToTarget(Target);
+                    ToTarget(Target);
                     NextTarget = null;
                 }
 
@@ -196,30 +199,35 @@ public class LeaderController : MonoBehaviour
     {
         Targetset = GetComponent<TargetFlag>();
         Target = Targetset.Target(StartPos);
-        Targetset.ToTarget(Target);
+        ToTarget(Target);
 
     }
     private void GoMyBase(Transform StartPos, ref Transform Target)
     {     
         Targetset = GetComponent<TargetMyBase>();
         Target = Targetset.Target(StartPos);
-        Targetset.ToTarget(Target);
+        ToTarget(Target);
 
     }
     private void GoEnemyBase(Transform StartPos, ref Transform Target)
     {    
         Targetset = GetComponent<TargetEnemyBase>();
         Target = Targetset.Target(StartPos);
-        Targetset.ToTarget(Target);
+        ToTarget(Target);
 
     }
     private void GoGate(Transform StartPos, ref Transform Target)
     {
         Targetset = GetComponent<TargetGate>();
         Target = Targetset.Target(StartPos);
-        Targetset.ToTarget(Target);
+        ToTarget(Target);
    
     }
+    private void ToTarget(Transform Target)
+    {
+        Target_.target = Target;
+    }
+
 }
 
 
