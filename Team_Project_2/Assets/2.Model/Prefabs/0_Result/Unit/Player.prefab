@@ -3352,7 +3352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ani: {fileID: 8150775438576968463}
   rb: {fileID: 8150775438576968460}
-  MoveSpeed: 5
+  MoveSpeed: 10
   JumpForce: 250
   isGrounded: 1
   isAttacking_1: 0
@@ -3551,7 +3551,7 @@ GameObject:
   - component: {fileID: 8150775438600951846}
   m_Layer: 0
   m_Name: w_sword_B
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3627,7 +3627,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8150775438600951844}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.4380313, y: 0.08983608, z: 0.21364306}

@@ -190,7 +190,6 @@ public class Following : MonoBehaviour
                 if (Stop_List[0] == pc.gameObject)
                 {
                     //줄세우기
-                    Debug.Log("플레이어가 StopList 0번");
 
                     if (i <= 6)
                     {

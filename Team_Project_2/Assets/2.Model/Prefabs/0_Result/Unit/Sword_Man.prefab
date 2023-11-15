@@ -11485,7 +11485,6 @@ GameObject:
   - component: {fileID: 1843400025330777904}
   - component: {fileID: 1843400025330777905}
   - component: {fileID: 2046472129491521936}
-  - component: {fileID: 1843400025330777908}
   - component: {fileID: 1843400025330777914}
   - component: {fileID: 1843400025330777915}
   - component: {fileID: 3077217372575218644}
@@ -11554,7 +11553,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1843400025330777912}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c89e91bf2e03494484905f46860dbe2, type: 3}
   m_Name: 
@@ -11565,7 +11564,7 @@ MonoBehaviour:
   scanRange: 13
   AttackRange: 1.5
   isdetecting: 0
-  HitBox_col: {fileID: 1843400025330777908}
+  HitBox_col: {fileID: 3077217372575218644}
   Ob_Weapon_col: {fileID: 1843400023942459172}
   isClose: 0
   nearestTarget: {fileID: 0}
@@ -11609,7 +11608,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 7
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -11631,7 +11630,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.3
+  m_Radius: 0.4
   m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 0.7, z: 0}

@@ -11661,6 +11661,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59f0d7f888654b448d7f19fcaa25db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    currentHP: 0
+    maxHP: 0
+    Damage: 0
+    isDie: 0
+  scanRange: 13
+  AttackRange: 1.5
+  HitBox_col: {fileID: 0}
+  Ob_Weapon_col: {fileID: 8132295210802871309}
+  nearestTarget: {fileID: 0}
   Gold: 500
   Current_HP: 150
   Max_Hp: 150
@@ -11674,14 +11684,9 @@ MonoBehaviour:
   canSpawn: 1
   isDead: 0
   isMoving: 0
+  respawnPoint: {fileID: 0}
   bat_State: 0
   UnitList: []
-  HitBox_col: {fileID: 0}
-  Ob_Weapon_col: {fileID: 8132295210802871309}
-  nearestTarget: {fileID: 0}
-  target:
-    serializedVersion: 2
-    m_Bits: 0
   targetFlag: {fileID: 0}
   isEnermyChecked: 0
 --- !u!114 &8132295210802862222
@@ -11696,20 +11701,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c89e91bf2e03494484905f46860dbe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHP: 150
-  maxHP: 150
-  Damage: 20
+  data:
+    currentHP: 0
+    maxHP: 0
+    Damage: 0
+    isDie: 0
   scanRange: 13
   AttackRange: 1.5
-  isdetecting: 0
   HitBox_col: {fileID: 8132295210802862225}
   Ob_Weapon_col: {fileID: 8132295210802871309}
-  isClose: 0
   nearestTarget: {fileID: 0}
-  target:
-    serializedVersion: 2
-    m_Bits: 0
-  data: {fileID: 0}
+  isClose: 0
+  infodata: {fileID: 0}
   isHealer: 0
 --- !u!195 &8132295210802862238
 NavMeshAgent:
@@ -11769,7 +11772,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7d2cf42c3fe80a4dbf0f7b8f0933a0c, type: 3}
   m_Name: 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaderState : MonoBehaviour
+public class LeaderState : Unit
 {
 
     public enum BattleState
@@ -36,11 +36,29 @@ public class LeaderState : MonoBehaviour
     public bool canSpawn;
     public bool isDead;
     public bool isMoving;
+    public Transform respawnPoint;
+    //EnemySpawn respawnPoint;
     public BattleState bat_State;
 
     public List<GameObject> UnitList = new List<GameObject>();
 
+    public void Respawn()
+    {
+        //애니메이션초기화
+        //HP , 콜라이더 , isDead ,레이어 다시설정
+        //저장한 리스폰 위치로 이동
+        
+        Current_HP = Max_Hp;
+        isDead = false;
+        gameObject.layer = respawnPoint.parent.gameObject.layer;
+        gameObject.transform.position = respawnPoint.position;
 
+
+    }
+    public override void Die()
+    {
+     
+    }
     //AI 행동 우선순위
     /*
      1. 중립지역이 있을때
@@ -51,5 +69,12 @@ public class LeaderState : MonoBehaviour
      2. 아무도없을시 점령
      
      */
-
+    public override void HitDamage(float damage)
+    {
+       
+    }
+    public override void Lostleader()
+    {
+       
+    }
 }
