@@ -23,8 +23,7 @@ public class LeaderAI : LeaderState
         bat_State = BattleState.Move;
         col = GetComponent<SphereCollider>();
         col.enabled = false;
-
-
+        
     }
     protected override void Start()
     {

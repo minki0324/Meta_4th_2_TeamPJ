@@ -10,7 +10,7 @@ public struct Data
     public float Damage;
     public bool isDie;
 }
-public abstract class Unit : MonoBehaviour
+public abstract class Unit : MonoBehaviour 
 {
     public Data data;
     protected WaitForSeconds attackDelay;

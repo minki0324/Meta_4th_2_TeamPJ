@@ -11667,6 +11667,7 @@ MonoBehaviour:
     maxHP: 0
     Damage: 0
     isDie: 0
+  target: {fileID: 0}
   scanRange: 13
   AttackRange: 1.5
   HitBox_col: {fileID: 1803586442092828233}
@@ -11748,15 +11749,41 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7d2cf42c3fe80a4dbf0f7b8f0933a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    currentHP: 0
+    maxHP: 0
+    Damage: 0
+    isDie: 0
+  target: {fileID: 0}
+  scanRange: 13
+  AttackRange: 1.5
+  HitBox_col: {fileID: 0}
+  Ob_Weapon_col: {fileID: 0}
+  nearestTarget: {fileID: 0}
+  Gold: 500
+  Current_HP: 150
+  Max_Hp: 150
+  Regeneration: 0.5
+  maxUnitCount: 19
+  currentUnitCount: 0
+  killCount: 0
+  deathCount: 0
+  unitValue: 0
+  unitCost: 16
+  canSpawn: 0
+  isDead: 0
+  isMoving: 0
+  respawnPoint: {fileID: 0}
+  bat_State: 0
+  UnitList: []
   Targetset: {fileID: 0}
   Target: {fileID: 0}
   NextTarget: {fileID: 0}
-  leaderstate: {fileID: 0}
   CurrentPos: {fileID: 0}
   Target_: {fileID: 4643609815274536730}
 --- !u!114 &-6345470137745102455
