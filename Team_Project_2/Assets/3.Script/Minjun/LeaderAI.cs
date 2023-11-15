@@ -13,9 +13,9 @@ public class LeaderAI : LeaderState
     public bool isEnermyChecked = false;
 
     //public Transform nearestTarget;
-    private void Awake()
+    protected override void Awake()
     {
-        
+        base.Awake();
         combinedMask = TargetLayers();
         navMesh = GetComponent<NavMeshAgent>();
         flag = GameObject.FindGameObjectsWithTag("Flag");
@@ -23,8 +23,9 @@ public class LeaderAI : LeaderState
         bat_State = BattleState.Move;
         
     }
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         GameManager.instance.leaders.Add(gameObject.GetComponent<LeaderState>());
     }
     private void Update()

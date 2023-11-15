@@ -11548,10 +11548,8 @@ GameObject:
   - component: {fileID: 8132295210803057956}
   - component: {fileID: 8132295210795312938}
   - component: {fileID: 8132295210802862226}
-  - component: {fileID: 8132295210802862225}
   - component: {fileID: 2186265468818679685}
   - component: {fileID: 8132295210802862239}
-  - component: {fileID: 8132295210802862222}
   - component: {fileID: 8132295210802862238}
   - component: {fileID: -6335461727198921222}
   - component: {fileID: 8563116505424069821}
@@ -11563,6 +11561,7 @@ GameObject:
   - component: {fileID: 2549932089501598413}
   - component: {fileID: -4631484934897724047}
   - component: {fileID: 4643609815274536730}
+  - component: {fileID: 1803586442092828233}
   m_Layer: 6
   m_Name: EnemyLeader
   m_TagString: Leader
@@ -11624,19 +11623,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &8132295210802862225
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8132295210802862224}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 1.5, z: 0.5}
-  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!114 &2186265468818679685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11656,7 +11642,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c59f0d7f888654b448d7f19fcaa25db6, type: 3}
   m_Name: 
@@ -11689,31 +11675,6 @@ MonoBehaviour:
   UnitList: []
   targetFlag: {fileID: 0}
   isEnermyChecked: 0
---- !u!114 &8132295210802862222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c89e91bf2e03494484905f46860dbe2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-    currentHP: 0
-    maxHP: 0
-    Damage: 0
-    isDie: 0
-  scanRange: 13
-  AttackRange: 1.5
-  HitBox_col: {fileID: 8132295210802862225}
-  Ob_Weapon_col: {fileID: 8132295210802871309}
-  nearestTarget: {fileID: 0}
-  isClose: 0
-  infodata: {fileID: 0}
-  isHealer: 0
 --- !u!195 &8132295210802862238
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -11946,6 +11907,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+--- !u!136 &1803586442092828233
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.44746113
+  m_Height: 1.6062459
+  m_Direction: 1
+  m_Center: {x: 0.0044394135, y: 0.7640465, z: 0}
 --- !u!1 &8132295210802862830
 GameObject:
   m_ObjectHideFlags: 0

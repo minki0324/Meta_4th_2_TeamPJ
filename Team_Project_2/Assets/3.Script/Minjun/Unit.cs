@@ -52,7 +52,7 @@ public abstract class Unit : MonoBehaviour
     }
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         ani = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Ply_Controller>();
@@ -60,7 +60,7 @@ public abstract class Unit : MonoBehaviour
 
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         //자신의 레이어를 제외한 적팀레이어를 담은 배열 계산하는 메소드
 
