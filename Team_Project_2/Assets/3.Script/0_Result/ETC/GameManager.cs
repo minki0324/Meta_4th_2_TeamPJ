@@ -21,6 +21,15 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
 
     [SerializeField] private GameObject Option;
+    [Header("계정 관련")]
+    public string PlayerID;
+    public int PlayerCoin;
+    public bool isCanUse_SwordMan;
+    public bool isCanUse_Knight;
+    public bool isCanUse_Archer;
+    public bool isCanUse_SpearMan;
+    public bool isCanUse_Halberdier;
+    public bool isCanUse_Prist;
 
     [Header("게임 플레이")]
     public float currentTime = 0f;  // 게임이 시작하고 지난 시간

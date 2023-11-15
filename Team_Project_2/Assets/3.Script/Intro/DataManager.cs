@@ -35,6 +35,9 @@ public class PlayerData
 {
     public string ID;
     public int Coin;
+    public bool SwordMan;
+    public bool Knight;
+    public bool Archer;
     public bool SpearMan;
     public bool Halberdier;
     public bool Prist;
@@ -69,7 +72,7 @@ public class DataManager : MonoBehaviour
     public string filename = "playerData";
     Player_Data player_Data = new Player_Data();
 
-    public void Save_playerData(string id, int coin, bool spearMan, bool halberdier, bool priest)
+    public void Save_playerData(string id, int coin, bool swordman, bool knight, bool archer, bool spearMan, bool halberdier, bool priest)
     {
        
         PlayerData player = new PlayerData();

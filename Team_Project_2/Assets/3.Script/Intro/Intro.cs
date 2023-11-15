@@ -125,7 +125,14 @@ public class Intro : MonoBehaviour
 
     #region 업그레이드 패널
     [Header("Upgrade Panel")]
-    private GameObject Upgrade_Panel;
+    private ScrollRect Upgrade_Panel;
+
+    [SerializeField]
+    private List<GameObject> Upgrade_Items;
+
+    [SerializeField]
+    private Text Coin_Text;
+
     #endregion
 
 
@@ -135,6 +142,8 @@ public class Intro : MonoBehaviour
 
     [SerializeField]
     private Optioin_Panel Option_Panel;
+
+
 
     #endregion
 
@@ -264,7 +273,7 @@ public class Intro : MonoBehaviour
 
         Title_Panel = transform.GetChild(1).gameObject;
         Setup_Panel = transform.GetChild(2).gameObject;
-        Upgrade_Panel = transform.GetChild(3).gameObject;
+        Upgrade_Panel = transform.GetChild(3).GetComponent<ScrollRect>();
         Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
         SignUp_Panel = transform.GetChild(5).gameObject;
         Warning_Panel = transform.GetChild(6).gameObject;
@@ -300,7 +309,7 @@ public class Intro : MonoBehaviour
         //패널 on/off
         Title_Panel.SetActive(true);
         Setup_Panel.SetActive(false);
-        Upgrade_Panel.SetActive(false);
+        Upgrade_Panel.gameObject.SetActive(false);
         Option_Panel.gameObject.SetActive(false);
         SignUp_Panel.SetActive(false);
         Warning_Panel.SetActive(false);
@@ -334,7 +343,7 @@ public class Intro : MonoBehaviour
     public void SetupPanel_On()
     {
         Setup_Panel.SetActive(true);
-        Upgrade_Panel.SetActive(false);
+        Upgrade_Panel.gameObject.SetActive(false);
         Option_Panel.gameObject.SetActive(false);
         SignUp_Panel.SetActive(false);
         Warning_Panel.SetActive(false);
@@ -439,14 +448,14 @@ public class Intro : MonoBehaviour
             }
         }
     }
- 
+
 
 
 
     public void UpgradePanel_On()
     {
         Setup_Panel.SetActive(false);
-        Upgrade_Panel.SetActive(true);
+        Upgrade_Panel.gameObject.SetActive(true);
         Option_Panel.gameObject.SetActive(false);
         SignUp_Panel.SetActive(false);
         Warning_Panel.SetActive(false);
@@ -454,13 +463,198 @@ public class Intro : MonoBehaviour
         BackButton.gameObject.SetActive(true);
         BackButton.enabled = true;
 
+        Coin_Text = Upgrade_Panel.transform.GetChild(2).GetComponent<Text>();
+        Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
+
+        Init_Scroll_Item();
+
+
     }
+
+    private void Init_Scroll_Item()
+    {
+       
+        for (int i = 0; i < 7; i++)
+        {
+            GameObject a = Upgrade_Panel.transform.GetChild(0).GetChild(0).GetChild(i).gameObject;
+            Upgrade_Items.Add(a);
+        }
+
+        for(int i = 0; i<Upgrade_Items.Count; i++)
+        {
+            Upgrade_Items[i].transform.GetChild(1).GetComponent<Text>().text = scriptsData.Scripts[i].Title;
+            Upgrade_Items[i].transform.GetChild(2).GetComponent<Text>().text = scriptsData.Scripts[i].Script;
+            Upgrade_Items[i].transform.GetChild(3).GetComponent<Text>().text = $"{scriptsData.Scripts[i].Price}c";
+        }
+
+        #region 구매여부
+        if (GameManager.instance.isCanUse_SwordMan)
+        {
+            Upgrade_Items[0].GetComponent<Button>().enabled = false;
+            Upgrade_Items[0].GetComponent<Image>().color = Color.black;
+        }
+        else
+        {
+            Upgrade_Items[0].GetComponent<Button>().enabled = true;
+            Upgrade_Items[0].GetComponent<Button>().onClick.AddListener(() =>
+            {
+                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[0].Price)
+                {
+                    GameManager.instance.isCanUse_SwordMan = true;
+                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[0].Price;
+                    Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
+                    Upgrade_Items[0].GetComponent<Button>().enabled = false;
+                    Upgrade_Items[0].GetComponent<Image>().color = Color.black;
+                    
+                }
+            });    
+        }
+
+        if (GameManager.instance.isCanUse_Knight)
+        {
+            Upgrade_Items[1].GetComponent<Button>().enabled = false;
+            Upgrade_Items[1].GetComponent<Image>().color = Color.black;
+        }
+        else
+        {
+            Upgrade_Items[0].GetComponent<Button>().enabled = true;
+            Upgrade_Items[0].GetComponent<Button>().onClick.AddListener(() =>
+            {
+                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[1].Price)
+                {
+                    GameManager.instance.isCanUse_Knight = true;
+                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[1].Price;
+                    Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
+                    Upgrade_Items[1].GetComponent<Button>().enabled = false;
+                    Upgrade_Items[1].GetComponent<Image>().color = Color.black;
+
+                }
+            });
+        }
+
+        if (GameManager.instance.isCanUse_Archer)
+        {
+            Upgrade_Items[2].GetComponent<Button>().enabled = false;
+            Upgrade_Items[2].GetComponent<Image>().color = Color.black;
+        }
+        else
+        {
+            Upgrade_Items[2].GetComponent<Button>().enabled = true;
+            Upgrade_Items[2].GetComponent<Button>().onClick.AddListener(() =>
+            {
+                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[2].Price)
+                {
+                    GameManager.instance.isCanUse_Archer = true;
+                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[2].Price;
+                    Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
+                    Upgrade_Items[2].GetComponent<Button>().enabled = false;
+                    Upgrade_Items[2].GetComponent<Image>().color = Color.black;
+
+                }
+            });
+        }
+
+        if (GameManager.instance.isCanUse_SpearMan)
+        {
+            Upgrade_Items[3].GetComponent<Button>().enabled = false;
+            Upgrade_Items[3].GetComponent<Image>().color = Color.black;
+        }
+        else
+        {
+            Upgrade_Items[3].GetComponent<Button>().enabled = true;
+            Upgrade_Items[3].GetComponent<Button>().onClick.AddListener(() =>
+            {
+                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[3].Price)
+                {
+                    GameManager.instance.isCanUse_SpearMan = true;
+                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[3].Price;
+                    Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
+                    Upgrade_Items[3].GetComponent<Button>().enabled = false;
+                    Upgrade_Items[3].GetComponent<Image>().color = Color.black;
+
+                }
+            });
+        }
+
+        if (GameManager.instance.isCanUse_Halberdier)
+        {
+            Upgrade_Items[4].GetComponent<Button>().enabled = false;
+            Upgrade_Items[4].GetComponent<Image>().color = Color.black;
+        }
+        else
+        {
+            Upgrade_Items[4].GetComponent<Button>().enabled = true;
+            Upgrade_Items[4].GetComponent<Button>().onClick.AddListener(() =>
+            {
+                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[4].Price)
+                {
+                    GameManager.instance.isCanUse_SwordMan = true;
+                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[4].Price;
+                    Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
+                    Upgrade_Items[4].GetComponent<Button>().enabled = false;
+                    Upgrade_Items[4].GetComponent<Image>().color = Color.black;
+
+                }
+            });
+        }
+
+        if (GameManager.instance.isCanUse_Prist)
+        {
+            Upgrade_Items[5].GetComponent<Button>().enabled = false;
+            Upgrade_Items[5].GetComponent<Image>().color = Color.black;
+        }
+        else
+        {
+            Upgrade_Items[5].GetComponent<Button>().enabled = true;
+            Upgrade_Items[5].GetComponent<Button>().onClick.AddListener(() =>
+            {
+                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[5].Price)
+                {
+                    GameManager.instance.isCanUse_SwordMan = true;
+                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[5].Price;
+                    Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
+                    Upgrade_Items[5].GetComponent<Button>().enabled = false;
+                    Upgrade_Items[5].GetComponent<Image>().color = Color.black;
+
+                }
+            });
+        }
+        #endregion
+
+
+
+    }
+
+    public void BuyBtn_Clicked(Button button, bool isHave, int solidernum)
+    {
+        if(isHave)
+        {
+            button.enabled = false;
+            button.GetComponent<Image>().color = Color.black;
+        }
+        else
+        {
+            button.enabled = true;
+            button.onClick.AddListener(() =>
+            {
+                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[solidernum].Price)
+                {
+                    
+                    button.enabled = false;
+                    button.GetComponent<Image>().color = Color.black;
+                }
+
+            });
+        }
+      
+    }
+
 
     public void OptionPanel_On()
     {
         
         Setup_Panel.SetActive(false);
-        Upgrade_Panel.SetActive(false);
+        Upgrade_Panel.gameObject.SetActive(false);
         //Option_Panel.SetActive(true);
         Option_Panel.gameObject.SetActive(true);
         Option_Panel.OptionPanel_On();
@@ -508,9 +702,9 @@ public class Intro : MonoBehaviour
        
         for(int i = 0; i< playerData.playerData.Count; i++)
         {
-            if (playerData.playerData[i].ID != SignUp_inputField.text)
+            if (playerData.playerData[i].ID != SignUp_inputField.text || SignUp_inputField.text != "")
             {
-                dataManager.Save_playerData(SignUp_inputField.text, 0, false, false, false);
+                dataManager.Save_playerData(SignUp_inputField.text, 0, true, true, true, false, false, false);
             }
             else
             {
@@ -524,6 +718,7 @@ public class Intro : MonoBehaviour
 
     public void CheckLogin()
     {
+        
         //로그인 확인
         if (!isLogined)
         {
@@ -545,20 +740,39 @@ public class Intro : MonoBehaviour
             Btn_Panel.SetActive(true);
             Login_Panel.SetActive(false);
         }
+
+       
     }
 
     public void Login()
     {
-        //추후에 로그인 파일 만들어서 비교할 것
-        //임시 아이디 sunny
-        if(inputField.text == id)
+        
+        for (int i = 0; i < playerData.playerData.Count; i++)
         {
-            isLogined = true;   
+            if(playerData.playerData[i].ID == inputField.text)
+            {
+                GameManager.instance.PlayerID = playerData.playerData[i].ID;
+                GameManager.instance.PlayerCoin = playerData.playerData[i].Coin;
+                GameManager.instance.isCanUse_SwordMan = playerData.playerData[i].SwordMan;
+                GameManager.instance.isCanUse_Knight = playerData.playerData[i].Knight;
+                GameManager.instance.isCanUse_Archer = playerData.playerData[i].Archer;
+                GameManager.instance.isCanUse_SpearMan = playerData.playerData[i].SpearMan;
+                GameManager.instance.isCanUse_Halberdier = playerData.playerData[i].Halberdier;
+                GameManager.instance.isCanUse_Prist = playerData.playerData[i].Prist;
+                isLogined = true;
+            }
+      
         }
-        else
-        {
-            isLogined = false;
-        }
+
+        //if(inputField.text == id)
+        //{
+        //    isLogined = true;   
+        //}
+        //else
+        //{
+        //    isLogined = false;
+        //}
+
         CheckLogin();
     }
 
