@@ -6,50 +6,25 @@ using Pathfinding;
 using Pathfinding.Util;
 using System.Linq;
 
-public class Position
-{
-   public Transform position;
-   public float weight;
-   public bool isSuccess = false;
-   
 
-} 
 public class Formation_enemy : MonoBehaviour
 {
 
     private LeaderAI leaderAI;
     [SerializeField] private Transform[] Parents_Pos;
     [SerializeField] private Formation_Count[] Count;
-    public  List<(Transform transform, float weighted)> weightedParents = new List<(Transform, float)>();
-    public List<Position> positions = new List<Position>();
+
     private bool isUnitsMoving = true;
-    public int Parents_index;
-    public int succeCount;
-    private Transform currentPosGroup;
+
+    
     private void Awake()
     {
         leaderAI = GetComponent<LeaderAI>();
-        currentPosGroup = Parents_Pos[Parents_index];
-
-        for (int i = 0; i < weightedParents.Count; i++)
-        {
-            positions[i].position = weightedParents[i].transform;
-            positions[i].weight = weightedParents[i].weighted;
-            positions[i].isSuccess = false;
-        }
+     
     }
 
     private void Update()
     {
-        //ÇöÀç±×·ì 
-        //±×·ìÀÇ ÀÚ¸®°¡ ´Ù Â÷¸é ´ÙÀ½ ±×·ìÀ¸·Î ÀÌµ¿
-        if(currentPosGroup.childCount == succeCount)
-        {
-            Parents_index++;
-            succeCount = 0;
-            currentPosGroup = Parents_Pos[Parents_index];
-        }
-       
         //if(Input.GetKeyDown(KeyCode.U))
         //{
         //    Following(100);
@@ -83,7 +58,7 @@ public class Formation_enemy : MonoBehaviour
         //}
     }
 
-    #region ¸í·É ·ÎÁ÷
+    #region ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void Following(int scanRange)
     {
         for (int i = 0; i < leaderAI.UnitList.Count; i++)
@@ -107,7 +82,7 @@ public class Formation_enemy : MonoBehaviour
             Transform[] sortedParents = GetSortedParentsByWeight(unit);
             Transform selectedParent = null;
 
-            // ÀûÀýÇÑ ºÎ¸ð Æ÷Áö¼Ç Ã£±â
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½
             foreach (Transform parent in sortedParents)
             {
                 if (parent.childCount != parent.GetComponent<Formation_Count>().Count)
@@ -117,7 +92,7 @@ public class Formation_enemy : MonoBehaviour
                 }
             }
 
-            // À¯´ÖÀÇ Å¸°Ù ¼³Á¤
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (selectedParent != null)
             {
                 unit.GetComponent<AIDestinationSetter>().target = selectedParent.GetChild(selectedParent.GetComponent<Formation_Count>().Count).transform;
@@ -126,7 +101,7 @@ public class Formation_enemy : MonoBehaviour
             else
             {
                 Debug.LogError("No available position for unit: " + unit.name);
-                // ¸ðµç ºÎ¸ð À§Ä¡°¡ ²Ë Ã¡À» °æ¿ìÀÇ Ã³¸®
+                // ï¿½ï¿½ï¿½ ï¿½Î¸ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ Ã¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
             }
         }
     }
@@ -141,7 +116,7 @@ public class Formation_enemy : MonoBehaviour
             unit.GetComponent<AIPath>().canSearch = false;
             unit.GetComponent<AIPath>().canMove = false;
         }
-        // ÇÃ·¹ÀÌ¾îÀÇ ÇöÀç ÀÌµ¿ ¹æÇâ°ú ¼Óµµ
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
        
         //Quaternion rotation = leaderAI.gameObject.transform.rotation;
        
@@ -149,8 +124,10 @@ public class Formation_enemy : MonoBehaviour
         {
             GameObject unit = leaderAI.UnitList[i];
 
-            // À¯´ÖÀÇ À§Ä¡¿Í È¸ÀüÀ» ÇÃ·¹ÀÌ¾î¿Í µ¿±âÈ­
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­
             //Vector3 newPosition = unit.transform.position + playerDirection * speed * Time.deltaTime;
+
+            Debug.Log(leaderAIDirection);
 
             Vector3 newPosition = unit.transform.position + leaderAIDirection * speed * Time.deltaTime;
             unit.transform.position = newPosition;
@@ -163,8 +140,8 @@ public class Formation_enemy : MonoBehaviour
         }
     }
     #endregion
-    #region ½ºÄµ ¹× À¯Æ¿ ¸Þ¼Òµåµé
-    // °¡±î¿î À¯´Öµé ´ã¾Æ¿À´Â ¸Þ¼Òµå
+    #region ï¿½ï¿½Äµ ï¿½ï¿½ ï¿½ï¿½Æ¿ ï¿½Þ¼Òµï¿½ï¿½
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Öµï¿½ ï¿½ï¿½Æ¿ï¿½ï¿½ï¿½ ï¿½Þ¼Òµï¿½
     private List<GameObject> Scan_Unit(float scanRange)
     {
         RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0);
@@ -180,7 +157,7 @@ public class Formation_enemy : MonoBehaviour
         return unitList;
     }
 
-    // Æ÷Áö¼Ç ´ã¾Æ¿À´Â ¸Þ¼Òµå
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¿ï¿½ï¿½ï¿½ ï¿½Þ¼Òµï¿½
     private List<GameObject> Scan_Pos(float scanRange)
     {
         RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0);
@@ -205,61 +182,54 @@ public class Formation_enemy : MonoBehaviour
         return unitList;
     }
    
-    // °¡ÁßÄ¡ ±â¹Ý Æ÷Áö¼Ç Á¤·Ä ¸Þ¼Òµå
+    // ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼Òµï¿½
     private Transform[] GetSortedParentsByWeight(GameObject unit)
     {
         Vector3 currentPosition = unit.transform.position;
-  
-        float weightvalue = 0.1f;
-        float weight = 1f;
+        List<(Transform transform, float weightedDistance)> weightedParents = new List<(Transform, float)>();
+
         foreach (Transform parent in Parents_Pos)
         {
+            float distance = Vector3.Distance(currentPosition, parent.position);
+            float weight = GetWeightForParent(parent);
 
-            for (int i = 0; i < parent.childCount; i++)
-            {
-                Transform child = parent.GetChild(i);
-
-                weight += weightvalue;
-
-                weightedParents.Add((child, weight));  // ¼öÁ¤µÈ ºÎºÐ
-            }
-
+            weightedParents.Add((parent, distance * weight));
         }
 
-        // °¡ÁßÄ¡µÈ °Å¸®¿¡ µû¶ó Á¤·Ä
-        // Á¤·ÄµÈ Æ®·£½ºÆû ¹è¿­ ÃßÃâ
+        // ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        weightedParents.Sort((a, b) => a.weightedDistance.CompareTo(b.weightedDistance));
+
+        // ï¿½ï¿½ï¿½Äµï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½
         return weightedParents.Select(item => item.transform).ToArray();
     }
 
-    // °¡ÁßÄ¡ ¼³Á¤ ¸Þ¼Òµå
+    // ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼Òµï¿½
     private float GetWeightForParent(Transform parent)
     {
         int index = Array.IndexOf(Parents_Pos, parent);
-        float baseWeight = 1.0f; // ±âº» °¡ÁßÄ¡
+        float baseWeight = 1.0f; // ï¿½âº» ï¿½ï¿½ï¿½ï¿½Ä¡
 
         if (parent.childCount == parent.GetComponent<Formation_Count>().Count)
         {
-            return float.MaxValue; // Ç®ÀÏ °æ¿ì ¸Å¿ì ³ôÀº °¡ÁßÄ¡¸¦ ¼³Á¤ÇÏ¿© ¿ì¼±¼øÀ§¸¦ ³·Ãã
+            return float.MaxValue; // Ç®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Å¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ì¼±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
         else if (index >= 0 && index <= 3)
         {
-            return baseWeight / 2f; // 1ºÎÅÍ 4¹ø ÀÎµ¦½º¿¡ ´ëÇÑ ³·Àº °¡ÁßÄ¡
+            return baseWeight / 2f; // 1ï¿½ï¿½ï¿½ï¿½ 4ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
         }
         else if (index == 4)
         {
-            return baseWeight / 1.2f; // 5¹ø ÀÎµ¦½º¿¡ ´ëÇÑ ³·Àº °¡ÁßÄ¡
+            return baseWeight / 1.2f; // 5ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
         }
         else if (index >= 5 && index <= 6)
         {
-            return baseWeight / 1.5f; // 6¿¡¼­ 7¹ø ÀÎµ¦½º¿¡ ´ëÇÑ ³·Àº °¡ÁßÄ¡
+            return baseWeight / 1.5f; // 6ï¿½ï¿½ï¿½ï¿½ 7ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
         }
-        return baseWeight; // ³ª¸ÓÁö´Â ±âº» °¡ÁßÄ¡
+        return baseWeight; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº» ï¿½ï¿½ï¿½ï¿½Ä¡
 
-
-       
     }
 
-    // °¡±î¿î Æ÷Áö¼Ç ´ã¾Æ¿À´Â ¸Þ¼Òµå
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¿ï¿½ï¿½ï¿½ ï¿½Þ¼Òµï¿½
     private Transform GetNearestTarget(RaycastHit[] hits)
     {
         Transform nearest = null;

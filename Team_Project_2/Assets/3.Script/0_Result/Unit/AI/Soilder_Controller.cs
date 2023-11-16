@@ -6,25 +6,10 @@ using System.Linq;
 
 public class Soilder_Controller : Unit
 {
-
-    //Detect 상태일때만 적용되는 스테이트
-    public enum FomationState { 
-    Following, // 리더와 가까워질때까지 따라다님
-    Formation, // 리더한테 도착하면 포메이션 이동
-    Shield, //포메이션 이동완료시 실드들고 리더와 발맞추기
-    
-    }
-    
     //적컴포넌트
     private GameObject ob;
-    public GameObject GetLeader()
-    {
-        return leader;
-    }
-    // 유닛 공격감지범위
 
     public FomationState fomationState;
-
 
     //네비게이션
     public Unit_Information infodata;
@@ -81,34 +66,70 @@ public class Soilder_Controller : Unit
         {
             return;
         }
-        
+       
+        if (!holdingShield)
+        {
+            if (isMove)
+            {
+                speed += 1f * Time.deltaTime;
+            }
+            else
+            {
+                speed -= 1f * Time.deltaTime;
+            }
+        }
+        if (holdingShield)
+        {
+            speed -= 1f * Time.deltaTime;
+            speed = Mathf.Clamp(speed, 0.3f, 1f);
+        }
+        else
+        {
+            speed = Mathf.Clamp01(speed);
+        }
+        ani.SetBool("Shield", holdingShield);
+        ani.SetFloat("Speed", speed);
+        ani.SetBool("Move", isMove);
         //병사의 리더가 적리더일때
         if ( leader != player.gameObject)
         {
             //적리더가 죽지않았을때
-            if (leaderState.data.isDie)
+            if (!leaderState.data.isDie)
             {
                 switch (leaderState.bat_State)
                 {
+                    case LeaderState.BattleState.Detect:
+
+                        holdingShield = true;
+                        break;
                     case LeaderState.BattleState.Attack:
-                        if (gameObject != leader)
+                        holdingShield = false;
+                        aipath.maxSpeed = defalutSpeed;
+                       
+                     
+                        if (!infodata.ishealer)
                         {
-                            if (!infodata.ishealer)
-                            {
-                                AttackOrder();
-                            }
-                            else
-                            {
-                                //힐러 메소드 넣기
-                            }
+                            //느려졌던 이동속도 초기화
+                          
+                            AttackOrder();
                         }
                         else
                         {
-                            AttackOrder();
+                            //힐러 메소드 넣기
                         }
-                      
+
+
+                        break;
+                    case LeaderState.BattleState.Move:
+                        holdingShield = false;
+                        isMove = true;
+                        aipath.canMove = true;
+                        aipath.canSearch = true;
                         break;
                     default:
+                        holdingShield = false;
+                        isMove = true;
+                      
                         FollowOrder();
                         break;
                 }
@@ -184,7 +205,7 @@ public class Soilder_Controller : Unit
     //    Gizmos.color = Color.green;
     //    Gizmos.DrawWireSphere(transform.position, AttackRange);
     //}
-
+    
 
     private void OnTriggerEnter(Collider other)
     {
@@ -361,6 +382,7 @@ public class Soilder_Controller : Unit
         data.currentHP = data.maxHP;
         data.damage = infodata.damage;
         isHealer = infodata.ishealer;
+        
     }
     public override void HitDamage(float damage)
     {

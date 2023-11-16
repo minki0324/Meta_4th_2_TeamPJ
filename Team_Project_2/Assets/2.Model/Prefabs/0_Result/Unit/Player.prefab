@@ -10156,7 +10156,7 @@ GameObject:
   - component: {fileID: 680374640050530730}
   m_Layer: 6
   m_Name: w_sword_B
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10232,7 +10232,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 680374640050530728}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.4380313, y: 0.08983608, z: 0.21364306}
@@ -10546,9 +10546,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f96b4b4679455c49bb41a37f9a2642d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OccuHUD: {fileID: 0}
-  Flag_Num: 0
-  Team_Color: 0
 --- !u!114 &7072279407184288612
 MonoBehaviour:
   m_ObjectHideFlags: 0
