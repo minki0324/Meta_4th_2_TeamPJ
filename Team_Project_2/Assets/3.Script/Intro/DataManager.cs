@@ -68,7 +68,7 @@ public class DataManager : MonoBehaviour
     #endregion
 
 
-    public string path = Application.persistentDataPath + "/";
+    //public string path = "C:/Users/KGA/Documents/GitHub/Meta_4th_2_TeamPJ/Team_Project_2/JsonFiles/";
     public string filename = "playerData";
     Player_Data player_Data = new Player_Data();
 
@@ -82,11 +82,11 @@ public class DataManager : MonoBehaviour
         player.Halberdier = halberdier;
         player.Prist = priest;
 
-
-        string loadJson = File.ReadAllText(path + filename);    //json파일의 내용 불러오고
+        filename = Path.Combine("C:", "JsonFiles", filename);
+        string loadJson = File.ReadAllText(filename);    //json파일의 내용 불러오고
 
         player_Data = JsonConvert.DeserializeObject<Player_Data>(loadJson); //풀고~
-        Debug.Log(path);
+        //Debug.Log(path);
 
         player_Data.playerData.Add(player); //원소 추가하고~
 
@@ -94,7 +94,7 @@ public class DataManager : MonoBehaviour
 
 
         string data = JsonUtility.ToJson(player_Data);  //다시 넣고~
-        File.WriteAllText(path + filename, data);
+        File.WriteAllText(filename, data);
 
 
 
@@ -108,13 +108,23 @@ public class DataManager : MonoBehaviour
 
 
 
-    public Player_Data Load_playerData()
+    public Player_Data Load_playerData(string filename)
     {
         //PlayerData player = new PlayerData();
         //string data = File.ReadAllText(path + filename);
         //player = JsonUtility.FromJson<PlayerData>(data);
 
-        string ReadData = File.ReadAllText(path + filename);
+
+        if (!filename.Contains(".json"))
+        {
+            filename += ".json";
+        }
+
+        filename = Path.Combine("C:", "JsonFiles", filename);
+        string ReadData = File.ReadAllText(filename);
+
+
+        //string ReadData = File.ReadAllText(path + filename);
 
         Player_Data playerdata = new Player_Data();
 
@@ -132,7 +142,7 @@ public class DataManager : MonoBehaviour
             filename += ".json";
         }
 
-        filename = Path.Combine("C:", "Script", filename);
+        filename = Path.Combine("C:", "JsonFiles", filename);
         string ReadData = File.ReadAllText(filename);
 
       
@@ -146,6 +156,6 @@ public class DataManager : MonoBehaviour
 
     public void printPath()
     {
-        Debug.Log(path);
+        //Debug.Log(path);
     }
 }

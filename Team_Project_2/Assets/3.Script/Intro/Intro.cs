@@ -196,7 +196,7 @@ public class Intro : MonoBehaviour
 
     public string id = "sunny";
 
-    public int timer = 3;
+    public int playerID_index;
 
     //소리 관련
     public AudioMixer audioMixer;
@@ -233,7 +233,7 @@ public class Intro : MonoBehaviour
    
         dataManager = new DataManager();
         scriptsData = dataManager.Load("Scripts");
-        playerData = dataManager.Load_playerData();
+        playerData = dataManager.Load_playerData("playerData");
 
        
     }
@@ -279,7 +279,7 @@ public class Intro : MonoBehaviour
         Warning_Panel = transform.GetChild(6).gameObject;
 
 
-       
+
         
         //구조체 배열 초기화
         for (int i = 0; i < TeamColors.Length; i++)
@@ -751,6 +751,7 @@ public class Intro : MonoBehaviour
         {
             if(playerData.playerData[i].ID == inputField.text)
             {
+                playerID_index = i;
                 GameManager.instance.PlayerID = playerData.playerData[i].ID;
                 GameManager.instance.PlayerCoin = playerData.playerData[i].Coin;
                 GameManager.instance.isCanUse_SwordMan = playerData.playerData[i].SwordMan;
@@ -759,6 +760,11 @@ public class Intro : MonoBehaviour
                 GameManager.instance.isCanUse_SpearMan = playerData.playerData[i].SpearMan;
                 GameManager.instance.isCanUse_Halberdier = playerData.playerData[i].Halberdier;
                 GameManager.instance.isCanUse_Prist = playerData.playerData[i].Prist;
+
+
+
+                Debug.Log("로그인됨ㅎㅎ");
+
                 isLogined = true;
             }
       
