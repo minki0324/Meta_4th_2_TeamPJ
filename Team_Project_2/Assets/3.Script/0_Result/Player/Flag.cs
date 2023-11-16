@@ -37,37 +37,60 @@ public class Flag : MonoBehaviour
 
     private void Update()
     {
-        
+        if (!GameManager.instance.isLive)
+        {
+            return;
+        }
+
+        switch (Leaders.Count)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Player") && other.gameObject.CompareTag("Leader"))
+        if (GameManager.instance.isLive)
         {
-            Leaders.Add(other.gameObject);
+            if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader"))
+            {
+                if (other.gameObject.CompareTag("Player")) OccuHUD.Ply_OccuHUD(Flag_Num, true);
+
+                Leaders.Add(other.gameObject);
+            }
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && other.gameObject.CompareTag("Leader"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader"))
         {
+            if (other.gameObject.CompareTag("Player")) OccuHUD.Ply_OccuHUD(Flag_Num, false);
+
             Leaders.Remove(other.gameObject);
         }
     }
 
-
-
-
-
     public void Change_Flag_Color(int TeamNum)
-    { 
-        skinnedmesh.material = ColorManager.instance.Flag_Color[TeamNum];        
+    {
+        skinnedmesh.material = ColorManager.instance.Flag_Color[TeamNum];
     }
 
     private int ParentLayer()
     {
         return this.transform.parent.gameObject.layer;
     }
+
+    IEnumerator Occupating_Co()
+    {
+        yield return null;
+    }
+
 
 
     public IEnumerator OnOccu_co(int TeamColor, int Teamlayer)
@@ -76,10 +99,7 @@ public class Flag : MonoBehaviour
         // Case2 중립 -> 본인진영
 
         // 점령 중
-        if (Teamlayer.Equals(TeamLayerIdx.Player))
-        {
-            OccuHUD.Ply_OccuHUD(Flag_Num, true);
-        }
+
 
         // 점령지역을 점령할 때
         while (isOccupied && isOccupating && Current_Gauge >= 0f) 

@@ -31,21 +31,23 @@ public class OccupationHUD : MonoBehaviour
     public void Occu_Set()
     {
         FlagArray = FindObjectsOfType<Flag>();
+
+        // 플래그마다 번호부여
         for (int i = 0; i < FlagArray.Length; i++)
         {
             FlagArray[i].Flag_Num = i;
         }
 
-
+        // 상단 점령현황 위치조정
         for (int i = 0; i < FlagArray.Length; i++)
         {
             Occu_image[i] = Occu_Img_Color[i * 4].transform.parent.gameObject;
             Occu_image[i].transform.localPosition = new Vector3((-50 * FlagArray.Length * 0.5f) + (50 * i), 0, 0);
         }
 
+        // 상단 점령현황 setActive 
         for (int i = FlagArray.Length; i < 7; i++)
         {
-            Debug.Log(i);
             Occu_image[i] = Occu_Img_Color[i * 4].transform.parent.gameObject;
             Occu_image[i].SetActive(false);
         }
