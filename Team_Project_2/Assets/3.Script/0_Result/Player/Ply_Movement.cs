@@ -65,7 +65,7 @@ public class Ply_Movement : MonoBehaviour
 
     private void Update()
     {
-
+        Debug.Log(rb.velocity.magnitude);
 
         CurrentPos = transform.position;
         InputMovment();

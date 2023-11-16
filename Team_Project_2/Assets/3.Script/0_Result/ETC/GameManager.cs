@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour
     */
     public static GameManager instance = null;
 
+    [Header("게임 모드")]
+    public int GameMode = 0;
+    public int GameSpeed = 0;
+
     [SerializeField] private GameObject Option;
     [Header("계정 관련")]
     public string PlayerID;
@@ -35,9 +39,9 @@ public class GameManager : MonoBehaviour
     public float currentTime = 0f;  // 게임이 시작하고 지난 시간
     public float EndTime = 1800f;   // 게임 시간은 30분
     public int Occupied_Area = 1;   // 점령한 지역 Default값 1
-    public int Color_Index;         // 플레이어 컬러 인덱스
 
     [Header("골드 관련")]
+    public float total_Gold = 1000;
     public float Gold = 1000;       // 골드량
     private float Magnifi = 2f;     // 기본 골드 배율 (업데이트문 프레임 60 x 2f로 기본 획득 골드량은 분당 120)
     
@@ -52,7 +56,9 @@ public class GameManager : MonoBehaviour
     public float respawnTime = 10f;
     public int killCount;
     public int DeathCount;
-    
+    public int Ply_hasFlag = 0;
+    public float Teampoint = 0;
+    public int Hire = 0;
 
     //병사인구 
     public int Max_MinionCount = 19;
@@ -68,6 +74,13 @@ public class GameManager : MonoBehaviour
     public Unit_Information unit2;
 
     public List<LeaderState> leaders;
+
+    [Header("컬러인덱스")]
+    public int Color_Index;         // 플레이어 컬러 인덱스
+    public int T1_Color;
+    public int T2_Color;
+    public int T3_Color;
+
     private void Awake()
     {
         if(instance == null)
@@ -95,6 +108,7 @@ public class GameManager : MonoBehaviour
         
         currentTime += Time.deltaTime;
 
+        total_Gold += Time.deltaTime * Magnifi * Occupied_Area;
         Gold += Time.deltaTime * Magnifi * Occupied_Area; // 골드수급 = 분당 120 * 점령한 지역 개수
     }
 
@@ -110,9 +124,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    public int T1_Color;
-    public int T2_Color;
-    public int T3_Color;
 
     public EnemySpawn FindSpawnPoint(GameObject leader)
     {
