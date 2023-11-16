@@ -155,11 +155,8 @@ public class Test2 : MonoBehaviour
         foreach (RaycastHit hit in allHits)
         {
             GameObject hitObject = hit.transform.gameObject;
-            if (hitObject.layer == gameObject.layer && 
-                !hitObject.CompareTag("Player") && 
-                !hitObject.CompareTag("Leader") && 
-                !hitObject.CompareTag("Base") && 
-                !hitObject.CompareTag("Flag"))
+            if (hitObject.layer == gameObject.layer && hitObject.CompareTag("Soilder"))
+              
             {
                 if (!uniqueTargets.Contains(hitObject))
                 {
