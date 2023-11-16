@@ -45,12 +45,12 @@ public class Following : MonoBehaviour
     private void Start()
     {
         //StartCoroutine(Mode_Follow_co());
-        
+
     }
 
     private void Update()
     {
-        if(!GameManager.instance.isLive)
+        if (!GameManager.instance.isLive)
         {
             return;
         }
@@ -111,8 +111,10 @@ public class Following : MonoBehaviour
 
                 for (int i = 0; i < pc.UnitList_List.Count; i++)
                 {
+                    Animator anim = pc.UnitList_List[i].GetComponent<Animator>();
                     pc.UnitList_List[i].GetComponent<UnitAttack2>().isClose = false;
                     pc.UnitList_List[i].GetComponent<NavMeshAgent>().isStopped = false;
+                    anim.SetBool("Move", true);
                 }
 
 
@@ -166,7 +168,7 @@ public class Following : MonoBehaviour
                 //리스트 정렬
                 Stop_List.Sort(delegate (GameObject a, GameObject b)
                 {
-                    return Compare2(a, b, pc.gameObject);
+                    return Compare2(a, b, Foward);
                 });
                 isStop = false;
             }
@@ -187,60 +189,60 @@ public class Following : MonoBehaviour
             //위치 배치
             for (int i = 0; i < Stop_List.Count; i++)
             {
+                Animator anim = Stop_List[i].GetComponent<Animator>();
                 if (Stop_List[0] == pc.gameObject)
                 {
+                   
                     //줄세우기
 
-                    if (i <= 6)
+                    if (i <= 4)
                     {
-                      
-                        if(i == 1)
-                        {
-                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.transform.position + Vector3.left);
 
+                        if (i == 1)
+                        {
+                            Debug.Log("1번");
+                             Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[0].transform.position + Vector3.left);
+                          
                         }
                         if (i == 2)
                         {
-                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.transform.position + Vector3.right);
+                            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[0].transform.position + Vector3.right);
+                         
 
                         }
                         if (i == 3)
                         {
-                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i-2].transform.position + Vector3.left);
+                            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[1].transform.position + Vector3.left);
+                          
 
                         }
                         if (i == 4)
                         {
-                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.right);
-
+                            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[2].transform.position + Vector3.right);
+                           
                         }
-                        if (i == 5)
-                        {
-                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.left);
 
-                        }
-                        if (i == 6)
-                        {
-                            pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.right);
-
-                        }
 
                     }
                     else
                     {
                         //nearestMinion 의 index 5번째부터
 
-                        pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 7].transform.position + Vector3.back);
-
+                        Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i - 5].transform.position + Vector3.back);                   
                     }
 
 
 
-                    if (Stop_List[i] != pc.gameObject && Stop_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 1f)
+                    if (Stop_List[i] != pc.gameObject && Stop_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 1.5f)
                     {
-                        // StartCoroutine(Timer());
-                        //Stop_List[i].GetComponent<NavMeshAgent>().isStopped = true;
-                        Stop_List[i].GetComponent<UnitAttack2>().isClose = true;
+
+                        Stop_List[i].GetComponent<NavMeshAgent>().isStopped = true;
+                        Stop_List[i].GetComponent<NavMeshAgent>().obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+                       
+                       // Stop_List[i].GetComponent<NavMeshAgent>().avoidancePriority = 50 - i;
+                        //Stop_List[i].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+                        anim.SetBool("Move", false);
+                        
                     }
 
                 }
@@ -251,8 +253,7 @@ public class Following : MonoBehaviour
                     {
                         Debug.Log("플레이어는.." + playernum + "번이야..");
                         Debug.Log(Stop_List.Count);
-                        //Debug.Log(i + " 번째" + "플레이어는.." + playernum + "번이야..");
-
+                    
                         if (playernum + 2 >= i && playernum - 2 <= i)
                         {
                             if (playernum + 2 >= i)
@@ -268,101 +269,20 @@ public class Following : MonoBehaviour
                         //==================================================================
                         else
                         {
-                            if (i < playernum - 2)
-                            {
-                                //i가 플레이어-2보다 작으면 
-                                //i가 stoplist.count-4 보다 작다는 가정하에 i+4로 이동
-                                if (i <= Stop_List.Count - 4)
-                                {
-                                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 4].transform.position + Vector3.forward);
-                                }
-                                if (i >= Stop_List.Count + 4)
-                                {
-                                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.transform.position);     
+                            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.transform.position);
 
-                                }
-
-                                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.transform.position);
-                            }
-                            if (i > playernum + 2)
-                            {
-                                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.transform.position);
-                            }
                         }
 
 
                     }
 
-                    if (Stop_List[i] != pc.gameObject && Stop_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 2.5f)
+                    if (Stop_List[i] != pc.gameObject && Stop_List[i].GetComponent<NavMeshAgent>().remainingDistance <= 3f)
                     {
                         // StartCoroutine(Timer());
                         Stop_List[i].GetComponent<NavMeshAgent>().isStopped = true;
-                        Stop_List[i].GetComponent<UnitAttack2>().isClose = true;
+                        anim.SetBool("Move", false);
                     }
-                    #region 기존
-                    //if (Stop_List[i] != pc.gameObject)
-                    //{
-                    //    Debug.Log("플레이어는.." + playernum + "번이야..");
-                    //    Debug.Log(Stop_List.Count);
-                    //    //Debug.Log(i + " 번째" + "플레이어는.." + playernum + "번이야..");
 
-                    //    if (playernum + 2 >= i && playernum - 2 <= i)
-                    //    {
-                    //        if (playernum + 2 >= i)
-                    //        {
-                    //            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[playernum].transform.position + (Vector3.left * (i - playernum)));
-                    //        }
-                    //        if (playernum - 2 <= i)
-                    //        {
-                    //            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[playernum].transform.position + (Vector3.right * (playernum - i)));
-                    //        }
-                    //    }
-
-                    //    //==================================================================
-                    //    else
-                    //    {
-                    //        if (i < playernum - 2)
-                    //        {
-                    //            //i가 플레이어-2보다 작으면 
-                    //            //i가 stoplist.count-4 보다 작다는 가정하에 i+4로 이동
-                    //            if (i <= Stop_List.Count - 4)
-                    //            {
-                    //                Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 4].transform.position + Vector3.forward);
-                    //            }
-                    //            if (i >= Stop_List.Count + 4)
-                    //            {
-                    //                if (i == 0)
-                    //                {
-                    //                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
-                    //                }
-                    //                if (i == 1)
-                    //                {
-                    //                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
-                    //                }
-                    //                if (i == 2)
-                    //                {
-                    //                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
-                    //                }
-                    //                if (i == 3)
-                    //                {
-                    //                    Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 2].transform.position + Vector3.forward);
-                    //                }
-
-                    //            }
-
-
-                    //            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i + 4].transform.position + Vector3.forward);
-                    //        }
-                    //        if (i > playernum + 2)
-                    //        {
-                    //            Stop_List[i].GetComponent<NavMeshAgent>().SetDestination(Stop_List[i - 4].transform.position + Vector3.back);
-                    //        }
-                    //    }
-
-
-                    //}
-
-                    #endregion
 
                 }
 
@@ -409,7 +329,7 @@ public class Following : MonoBehaviour
                     else
                     {
                         //pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.right);
-                        pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pm.GetDirection(pc.UnitList_List[i - 2].transform.position, pc.UnitList_List[i].transform.forward, "Right"));
+                        pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 2].transform.position + Vector3.right);
                     }
 
                 }
@@ -420,7 +340,7 @@ public class Following : MonoBehaviour
                 //nearestMinion 의 index 5번째부터
 
                 pc.UnitList_List[i].GetComponent<NavMeshAgent>().SetDestination(pc.UnitList_List[i - 5].transform.position + Vector3.back);
-                
+
             }
 
 

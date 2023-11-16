@@ -24,6 +24,31 @@ public class LineUpSet : MonoBehaviour
     private Image[] lineupSprite;
     private bool isCanStart;
     private Color originalColor;
+
+    #region 병사 선택 버튼
+    [SerializeField]
+    private Button Swordman_Btn;
+
+    [SerializeField]
+    private Button Knight_Btn;
+
+    [SerializeField]
+    private Button Archer_Btn;
+
+    [SerializeField]
+    private Button Prist_Btn;
+
+    [SerializeField]
+    private Button Spearman_Btn;
+
+    [SerializeField]
+    private Button Halberdier_Btn;
+
+
+    #endregion
+
+
+
     void Start()
     {
      
@@ -42,7 +67,7 @@ public class LineUpSet : MonoBehaviour
 
 
 
-
+        Init_Button();
     }
     private void Update()
     {
@@ -73,6 +98,42 @@ public class LineUpSet : MonoBehaviour
             startButton.interactable = false;
         }
     }
+    private void Init_Button()
+    {
+      
+        Swordman_Btn = gameObject.transform.GetChild(0).GetComponent<Button>();
+        Knight_Btn = gameObject.transform.GetChild(1).GetComponent<Button>();
+        Archer_Btn = gameObject.transform.GetChild(2).GetComponent<Button>();
+        Prist_Btn = gameObject.transform.GetChild(3).GetComponent<Button>();
+        Spearman_Btn = gameObject.transform.GetChild(4).GetComponent<Button>();
+        Halberdier_Btn = gameObject.transform.GetChild(5).GetComponent<Button>();
+
+
+        Set_Buttons(ref Swordman_Btn, GameManager.instance.isCanUse_SwordMan);
+        Set_Buttons(ref Knight_Btn, GameManager.instance.isCanUse_Knight);
+        Set_Buttons(ref Archer_Btn, GameManager.instance.isCanUse_Archer);
+        Set_Buttons(ref Spearman_Btn, GameManager.instance.isCanUse_SpearMan);
+        Set_Buttons(ref Halberdier_Btn, GameManager.instance.isCanUse_Halberdier);
+        Set_Buttons(ref Prist_Btn, GameManager.instance.isCanUse_Prist);
+
+    }
+
+    private void Set_Buttons(ref Button button, bool iscanuse)
+    {
+        if (iscanuse)
+        {
+            button.enabled = true;
+            button.GetComponent<Image>().color = Color.white;
+        }
+        else
+        {
+            button.enabled = false;
+
+            button.GetComponent<Image>().color = Color.black;
+        }
+    }
+
+
 
     public void ButtonClicked(int buttonIndex)
     {

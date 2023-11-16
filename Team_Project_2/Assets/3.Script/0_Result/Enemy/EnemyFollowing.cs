@@ -90,7 +90,7 @@ public class EnemyFollowing : MonoBehaviour
 
 
 
-        if (!leaderState.isDead)
+        if (!leaderState.data.isDie)
         {
 
 

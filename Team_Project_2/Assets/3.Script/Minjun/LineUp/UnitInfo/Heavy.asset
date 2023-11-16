@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitObject: {fileID: 150198, guid: b4a1d0e6439682a4e958fb7c874ccb8c, type: 3}
   ishealer: 0
-  unitName: "\uAE30\uC0AC"
+  unitName: Knight
   description: "\uAE30\uC0AC\uC784\uB2E4"
   damage: 20
   maxHP: 100

@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class Flag : MonoBehaviour
 {
-    // Á¡·É
-    // 1. Á¡·É ÈÄ ±ê¹ß »ö º¯°æ       
+    // ì ë ¹
+    // 1. ì ë ¹ í›„ ê¹ƒë°œ ìƒ‰ ë³€ê²½       
 
-    public float Total_Gauge = 100f; // ÀüÃ¼ Á¡·É °ÔÀÌÁö
-    public float Current_Gauge = 0;  // ÇöÀç Á¡·É °ÔÀÌÁö
+    public float Total_Gauge = 100f; // ì „ì²´ ì ë ¹ ê²Œì´ì§€
+    public float Current_Gauge = 0;  // í˜„ì¬ ì ë ¹ ê²Œì´ì§€
     private int TeamColor_Temp;
 
-    public float Soldier_Multi = 1.03f; // »ç¶÷ ¼ö¿¡ µû¸¥ ¹èÀ²
-    public float occu_Speed = 12f; // Á¡·É ¼Óµµ
+    public float Soldier_Multi = 1.03f; // ì‚¬ëŒ ìˆ˜ì— ë”°ë¥¸ ë°°ìœ¨
+    public float occu_Speed = 12f; // ì ë ¹ ì†ë„
 
-    public bool isOccupating = false; // Á¡·É ÁßÀÎÁö
-    public bool isOccupied = false; // Á¡·ÉÀÌ ³¡³µ´ÂÁö
+    public bool isOccupating = false; // ì ë ¹ ì¤‘ì¸ì§€
+    public bool isOccupied = false; // ì ë ¹ì´ ëë‚¬ëŠ”ì§€
 
     public int Flag_Num;
 
@@ -95,16 +95,13 @@ public class Flag : MonoBehaviour
 
     public IEnumerator OnOccu_co(int TeamColor, int Teamlayer)
     {
-        // Case1 ´Ù¸¥Áø¿µ -> Áß¸³ / Áß¸³ -> º»ÀÎÁø¿µ
-        // Case2 Áß¸³ -> º»ÀÎÁø¿µ
-
-        // Á¡·É Áß
-
-
-        // Á¡·ÉÁö¿ªÀ» Á¡·ÉÇÒ ¶§
+        // Case1 ë‹¤ë¥¸ì§„ì˜ -> ì¤‘ë¦½ / ì¤‘ë¦½ -> ë³¸ì¸ì§„ì˜
+        // Case2 ì¤‘ë¦½ -> ë³¸ì¸ì§„ì˜
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         while (isOccupied && isOccupating && Current_Gauge >= 0f) 
         {
-            Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20); // ³ªÁß¿¡ ÀÎ¿ø¼ö¿¡ µû¸¥ ¹èÀ² ³Ö¾î¾ßÇØ¿ë
+            Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20); // ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½Ø¿ï¿½
             OccuHUD.Ply_Slider(TeamColor_Temp, Flag_Num, Current_Gauge, Total_Gauge);
             Debug.Log(Current_Gauge);
             yield return null;
@@ -112,17 +109,17 @@ public class Flag : MonoBehaviour
 
         if (Current_Gauge <= 0f && isOccupied)
         {
-            isOccupied = false;   // »ó´ëÁø¿µ -> Áß¸³
+            isOccupied = false;   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -> ï¿½ß¸ï¿½
             OccuHUD.Ply_Slider((int)ColorIdx.White, Flag_Num,Current_Gauge,Total_Gauge);
             OccuHUD.Change_Color((int)ColorIdx.White, Flag_Num);
 
             this.transform.parent.gameObject.layer = 0;
         }
 
-        // Áß¸³Áö¿ªÀ» Á¡·ÉÇÒ ¶§
+        // ì¤‘ë¦½ì§€ì—­ì„ ì ë ¹í•  ë•Œ
         while (!isOccupied && isOccupating && Current_Gauge <= Total_Gauge) 
         {
-            Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20); // ³ªÁß¿¡ ÀÎ¿ø¼ö¿¡ µû¸¥ ¹èÀ² ³Ö¾î¾ßÇØ¿ë
+            Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20); // ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½Ø¿ï¿½
             OccuHUD.Ply_Slider(TeamColor,Flag_Num, Current_Gauge, Total_Gauge);
             Debug.Log(Current_Gauge);
             yield return null;
@@ -130,7 +127,7 @@ public class Flag : MonoBehaviour
 
         if (Current_Gauge >= Total_Gauge && !isOccupied)
         {
-            isOccupied = true;   // Áß¸³ -> º»ÀÎÁø¿µ
+            isOccupied = true;   // ì¤‘ë¦½ -> ë³¸ì¸ì§„ì˜
             TeamColor_Temp = TeamColor;
             OccuHUD.Change_Color(TeamColor, Flag_Num);
            
@@ -148,12 +145,12 @@ public class Flag : MonoBehaviour
         }
         yield return new WaitForSeconds(3.0f);
 
-        // Á¡·ÉµÈ °÷¿¡¼­ Á¡·ÉÇÏ´Ù°¡ ³ª¿ÔÀ» ¶§
+        // ì ë ¹ëœ ê³³ì—ì„œ ì ë ¹í•˜ë‹¤ê°€ ë‚˜ì™”ì„ ë•Œ
         while (isOccupied && !isOccupating && Current_Gauge <= 100f)
         {
             Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20);
         }
-        // Áß¸³¿¡¼­ Á¡·É ÇÏ´Ù°¡ ³ª°¬À» ¶§
+        // ì¤‘ë¦½ì—ì„œ ì ë ¹ í•˜ë‹¤ê°€ ë‚˜ê°”ì„ ë•Œ
         while (!isOccupied && !isOccupating && Current_Gauge >= 0f) 
         {
             Current_Gauge -= Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20);

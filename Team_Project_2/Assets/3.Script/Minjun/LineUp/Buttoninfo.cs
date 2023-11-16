@@ -9,6 +9,11 @@ public class Buttoninfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public Unit_Information unitInfo;
     public GameObject infoPanel;
     public Text[] texts;
+
+ 
+
+
+
     //public float offsetX = f; // 왼쪽과 오른쪽으로의 오프셋
     //public float offsetY = 0f; // 위쪽과 아래쪽으로의 오프셋
     private void Start()
@@ -16,6 +21,8 @@ public class Buttoninfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         infoPanel.SetActive(false);
         texts = infoPanel.GetComponentsInChildren<Text>();
     }
+
+  
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -53,12 +60,8 @@ public class Buttoninfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //5 : 사거리
 
         texts[0].text = info.unitName;
-        texts[1].text = info.description;
-        texts[2].text = $"체력     {info.maxHP}";
-        texts[3].text = $"공격력  {info.damage}";
-        texts[4].text = $"비용     {info.cost}";
-        texts[5].text = $"사거리  {info.attackRange}";
-
+        texts[2].text = $"{info.maxHP}\n{info.damage}\n{info.cost}\n{info.attackRange}";
+        texts[3].text = $"{info.description}";
     }
 
     private void HideUnitInfo()

@@ -6,7 +6,7 @@ using Pathfinding;
 
 public class LeaderController : MonoBehaviour
 {
-    // ÇÏ »ì·ÁÁÖ¼¼¿ä Á¦¹ß
+    // í•˜ ì‚´ë ¤ì£¼ì„¸ìš” ì œë°œ
 
     public Targetsetting Targetset;
 
@@ -23,7 +23,7 @@ public class LeaderController : MonoBehaviour
 
 
 
-    // ÇÏ.. ÇÏ..
+    // í•˜.. í•˜..
 
     private void Start()
     {
@@ -39,21 +39,21 @@ public class LeaderController : MonoBehaviour
 
         if (isStart) 
         {
-            #region BaseÀÏ ¶§
-            // ÇöÀç À§Ä¡°¡ º£ÀÌ½ºÀÏ ¶§
+            #region Baseì¼ ë•Œ
+            // í˜„ì¬ ìœ„ì¹˜ê°€ ë² ì´ìŠ¤ì¼ ë•Œ
             if (Target.gameObject.CompareTag("Base") && isArrive(Target))
             {
-                // ÇöÀç À§Ä¡°¡ º»ÀÎ Áø¿µÀÏ ¶§
+                // í˜„ì¬ ìœ„ì¹˜ê°€ ë³¸ì¸ ì§„ì˜ì¼ ë•Œ
                 if (Target.gameObject.layer.Equals(gameObject.layer))
                 {
-                    // ÇöÀç º´»ç ¼ö°¡ 15¸í ÀÌ»óÀÏ ¶§
+                    // í˜„ì¬ ë³‘ì‚¬ ìˆ˜ê°€ 15ëª… ì´ìƒì¼ ë•Œ
                     if (AI.currentUnitCount >= 15)
                     {
                         Targetset = GetComponent<TargetFlag>();
                         NextTarget = Targetset.Target(transform);
 
-                        // ÇöÀç Áß¾Ó Áö¿ª ±ê¹ßÀ» ³»°¡ ´Ù ¸Ô°íÀÖÀ» ¶§
-                        // ±×·³ µ· ¸ğÀÏ ¶§±îÁö ±â´Ù¸®±â..
+                        // í˜„ì¬ ì¤‘ì•™ ì§€ì—­ ê¹ƒë°œì„ ë‚´ê°€ ë‹¤ ë¨¹ê³ ìˆì„ ë•Œ
+                        // ê·¸ëŸ¼ ëˆ ëª¨ì¼ ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¬ê¸°..
                         if (NextTarget.Equals(null))  
                         {
 
@@ -84,11 +84,11 @@ public class LeaderController : MonoBehaviour
                         return;
                     }
                 }
-                // ÇöÀç À§Ä¡°¡ »ó´ë Áø¿µÀÏ ¶§
+                // í˜„ì¬ ìœ„ì¹˜ê°€ ìƒëŒ€ ì§„ì˜ì¼ ë•Œ
                 else
                 {
-                    // ±ê¹ßÁ¡·É
-                    // ¾îÂ÷ÇÇ ±ê¹ß Á¡·ÉÇÏ¸é º£ÀÌ½º°¡ º»ÀÎ Áø¿µÀ¸·Î ¹Ù²î¾î¼­ À§ if¹®À¸·Î ÀÌµ¿
+                    // ê¹ƒë°œì ë ¹
+                    // ì–´ì°¨í”¼ ê¹ƒë°œ ì ë ¹í•˜ë©´ ë² ì´ìŠ¤ê°€ ë³¸ì¸ ì§„ì˜ìœ¼ë¡œ ë°”ë€Œì–´ì„œ ìœ„ ifë¬¸ìœ¼ë¡œ ì´ë™
                     if (!Target.GetComponentInChildren<Flag>().transform.parent.gameObject.layer.Equals(gameObject.layer))
                     {
                         Target = Target.gameObject.GetComponentInChildren<Flag>().transform.parent.transform;
@@ -101,16 +101,16 @@ public class LeaderController : MonoBehaviour
             }
             #endregion
 
-            #region FlagÀÏ ¶§
+            #region Flagì¼ ë•Œ
             if (Target.CompareTag("Flag") && isArrive(Target))
             {
-                // ³» ±ê¹ßÀÌ ¾Æ´Ò ¶§
-                // Á¡·ÉÇÏ·Á¸é °¡¸¸È÷ ÀÖ¾î¾ßÁö..
+                // ë‚´ ê¹ƒë°œì´ ì•„ë‹ ë•Œ
+                // ì ë ¹í•˜ë ¤ë©´ ê°€ë§Œíˆ ìˆì–´ì•¼ì§€..
                 if(!Target.gameObject.layer.Equals(gameObject.layer)) 
                 {
                     return;
                 }
-                // ³» ±ê¹ßÀÏ ¶§
+                // ë‚´ ê¹ƒë°œì¼ ë•Œ
                 else
                 {
                     if (AI.currentUnitCount > 13)
@@ -128,8 +128,8 @@ public class LeaderController : MonoBehaviour
             #endregion
 
 
-            #region GateÀÏ ¶§
-            // °ÔÀÌÆ®¿¡ ¼­ÀÖÀ» ¶§
+            #region Gateì¼ ë•Œ
+            // ê²Œì´íŠ¸ì— ì„œìˆì„ ë•Œ
             if (Target.gameObject.CompareTag("Gate") && isArrive(Target))
             {
                 if (NextTarget.Equals(null))
@@ -167,7 +167,7 @@ public class LeaderController : MonoBehaviour
 
 
         // --------------------------------------------------------------------------------------------
-        else  // Ã³À½ ÇÑ ¹ø¸¸ ½ÇÇà
+        else  // ì²˜ìŒ í•œ ë²ˆë§Œ ì‹¤í–‰
         {
             GoMyBase(transform, ref Target);
             isStart = true;

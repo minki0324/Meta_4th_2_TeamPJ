@@ -1,0 +1,24 @@
+{
+  "playerData": [
+    {
+      "ID": "sunny",
+      "Coin": 50,
+      "SwordMan": false,
+      "Knight": true,
+      "Archer": false,
+      "SpearMan": false,
+      "Halberdier": false,
+      "Prist": false
+    },
+    {
+      "ID": "asdf",
+      "Coin": 30,
+      "SwordMan": true,
+      "Knight": true,
+      "Archer": false,
+      "SpearMan": false,
+      "Halberdier": false,
+      "Prist": false
+    }
+  ]
+}

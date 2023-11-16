@@ -11,6 +11,8 @@ TagManager:
   - SpawnPoint
   - Gate
   - Base
+  - Soilder
+  - Line
   layers:
   - Default
   - TransparentFX
