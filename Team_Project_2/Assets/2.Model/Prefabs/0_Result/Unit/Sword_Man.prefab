@@ -11485,10 +11485,7 @@ GameObject:
   - component: {fileID: 1843400025330777904}
   - component: {fileID: 1843400025330777905}
   - component: {fileID: 2046472129491521936}
-  - component: {fileID: 1843400025330777914}
-  - component: {fileID: 1843400025330777915}
   - component: {fileID: 3077217372575218644}
-  - component: {fileID: 1843400025330777908}
   - component: {fileID: -91776194968146134}
   - component: {fileID: 406563541980887975}
   - component: {fileID: -8083865837556993197}
@@ -11565,9 +11562,11 @@ MonoBehaviour:
   data:
     currentHP: 0
     maxHP: 0
-    Damage: 0
+    damage: 0
     isDie: 0
   target: {fileID: 0}
+  leaderState: {fileID: 0}
+  leader: {fileID: 0}
   scanRange: 13
   AttackRange: 1.5
   HitBox_col: {fileID: 3077217372575218644}
@@ -11576,40 +11575,7 @@ MonoBehaviour:
   isClose: 0
   infodata: {fileID: 0}
   isHealer: 0
---- !u!114 &1843400025330777914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843400025330777912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e49248fff41efe34daa6abbfb855b2e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!195 &1843400025330777915
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843400025330777912}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 7
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  isNear: 0
 --- !u!136 &3077217372575218644
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -11624,19 +11590,6 @@ CapsuleCollider:
   m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 0.7, z: 0}
---- !u!65 &1843400025330777908
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843400025330777912}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.45741272, y: 1.5, z: 0.45181465}
-  m_Center: {x: 0.028999329, y: 0.70000005, z: -0.024092674}
 --- !u!114 &-91776194968146134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11700,13 +11653,13 @@ MonoBehaviour:
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
   rotationSpeed: 360
-  slowdownDistance: 0.6
+  slowdownDistance: 1.5
   pickNextWaypointDist: 2
-  endReachedDistance: 0.2
-  alwaysDrawGizmos: 0
+  endReachedDistance: 0.4
+  alwaysDrawGizmos: 1
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
-  constrainInsideGraph: 0
+  constrainInsideGraph: 1
 --- !u!114 &-8083865837556993197
 MonoBehaviour:
   m_ObjectHideFlags: 0
