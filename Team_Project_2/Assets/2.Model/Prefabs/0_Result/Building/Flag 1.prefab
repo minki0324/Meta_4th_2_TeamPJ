@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 5805590287774594476}
   - component: {fileID: 5805590287774594451}
   - component: {fileID: 5805590287774594450}
+  - component: {fileID: 4764869947871711171}
   m_Layer: 0
   m_Name: Flag 1
   m_TagString: Flag
@@ -201,6 +202,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!114 &4764869947871711171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5805590287774594477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9814d3af0b00a445bbb5f07b98bca95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Total_Gauge: 100
+  Current_Gauge: 0
+  Soldier_Multi: 1.03
+  occu_Speed: 12
+  isOccupating: 0
+  isOccupied: 0
+  Flag_Num: 0
+  skinnedmesh: {fileID: 5805590287779870909}
 --- !u!1 &5805590287774594481
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +400,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5805590287774689685}
   - component: {fileID: 5805590287779870909}
-  - component: {fileID: 6581486797689249986}
   m_Layer: 0
   m_Name: Flag_A
   m_TagString: Untagged
@@ -458,25 +478,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -3.037315, y: -0.16242945, z: 0.0017783642}
     m_Extent: {x: 1.6850129, y: 0.013213582, z: 0.91438246}
   m_DirtyAABB: 0
---- !u!114 &6581486797689249986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5805590287774594485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9814d3af0b00a445bbb5f07b98bca95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Total_Gauge: 100
-  Current_Gauge: 0
-  Soldier_Multi: 1.03
-  occu_Speed: 12
-  isOccupating: 0
-  isOccupied: 0
-  unit_O: {fileID: 0}
 --- !u!1 &5805590287774594487
 GameObject:
   m_ObjectHideFlags: 0
