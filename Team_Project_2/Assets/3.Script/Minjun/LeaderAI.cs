@@ -106,6 +106,7 @@ public class LeaderAI : LeaderState
         //isDead true하기
         ani.SetLayerWeight(1, 0);
         ani.SetTrigger("Dead"); // 죽는모션재생
+        col.enabled = false;
         aipath.canMove = false;
         aipath.canSearch = false;
         SetRespawnPoint();
