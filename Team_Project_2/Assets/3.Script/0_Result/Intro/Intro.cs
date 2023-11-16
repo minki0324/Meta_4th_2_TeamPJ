@@ -702,12 +702,13 @@ public class Intro : MonoBehaviour
        
         for(int i = 0; i< playerData.playerData.Count; i++)
         {
-            if (playerData.playerData[i].ID != SignUp_inputField.text || SignUp_inputField.text != "")
+            if (playerData.playerData[i].ID != SignUp_inputField.text)
             {
                 dataManager.Save_playerData(SignUp_inputField.text, 0, true, true, true, false, false, false);
             }
             else
             {
+                
                 Warning_Panel.SetActive(true);
             }
         }

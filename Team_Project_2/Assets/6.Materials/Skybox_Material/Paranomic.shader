@@ -1,9 +1,15 @@
 Shader "SkyBox/Panoramic" {
     Properties{
+        [NoScaleOffset] _Tex("Spherical  (HDR)", 2D) = "grey" {}
+
+        [NoScaleOffset] _Texture("Texture",2D) = "grey"{}
+        [NoScaleOffset] _Texture2("Texture2",2D) = "grey"{}
+      
+         _LerpControl("LerpControl", Range(0,1)) = 0
         _Tint("Tint Color", Color) = (.5, .5, .5, .5)
         [Gamma] _Exposure("Exposure", Range(0, 8)) = 1.0
         _Rotation("Rotation", Range(0, 360)) = 0
-        [NoScaleOffset] _Tex("Spherical  (HDR)", 2D) = "grey" {}
+        
         [KeywordEnum(6 Frames Layout, Latitude Longitude Layout)] _Mapping("Mapping", Float) = 1
         [Enum(360 Degrees, 0, 180 Degrees, 1)] _ImageType("Image Type", Float) = 0
         [Toggle] _MirrorOnBack("Mirror on Back", Float) = 0
@@ -24,12 +30,22 @@ Shader "SkyBox/Panoramic" {
 
                 #include "UnityCG.cginc"
 
+                   sampler2D _Texture;
+                   float4 _Texture_TexelSize;
+                   half4 _Texture_HDR;
+
+                   sampler2D _Texture2;
+                   float4 _Texture2_TexelSize;
+                   half4 _Texture2_HDR;
+
+
                 sampler2D _Tex;
                 float4 _Tex_TexelSize;
                 half4 _Tex_HDR;
                 half4 _Tint;
                 half _Exposure;
                 float _Rotation;
+                float _LerpControl;
         #ifndef _MAPPING_6_FRAMES_LAYOUT
                 bool _MirrorOnBack;
                 int _ImageType;
@@ -189,9 +205,16 @@ Shader "SkyBox/Panoramic" {
                     tc.x = fmod(tc.x * i.image180ScaleAndCutoff[0], 1);
                     tc = (tc + i.layout3DScaleAndOffset.xy) * i.layout3DScaleAndOffset.zw;
         #endif
+                    float4 col_B = tex2D(_Texture, i.texcoord);
+                    float4 col_A = tex2D(_Texture2, i.texcoord);
 
-                    half4 tex = tex2D(_Tex, tc);
-                    half3 c = DecodeHDR(tex, _Tex_HDR);
+
+                     float4 tex = tex2D(_Texture, tc);
+                     float4 tex2 = tex2D(_Texture2, tc);
+
+                     float4 final_C = lerp(col_A, col_B, _LerpControl);
+                    //half4 tex = tex2D(_Tex, tc);
+                    half3 c = DecodeHDR(final_C, _Tex_HDR);
                     c = c * _Tint.rgb * unity_ColorSpaceDouble.rgb;
                     c *= _Exposure;
                     return half4(c, 1);
