@@ -82,13 +82,13 @@ public class EnemySpawn : MonoBehaviour
        
 
 
-        //중립깃발이 아닐때
+      
         if (targetLeader != null)
         {
 
             if (targetLeader.layer == LayerMask.NameToLayer("Die"))
             {
-                if (leaderState.isDead && !isRespawning)
+                if (leaderState.data.isDie && !isRespawning)
                 {
                     StartCoroutine(RespawnAfterDelay(5f));
                 }
@@ -268,7 +268,7 @@ public class EnemySpawn : MonoBehaviour
     }
     private void AIspawn()
     {
-        if (leaderState.isDead)
+        if (leaderState.data.isDie)
         {
             leaderState.canSpawn = false;
 
@@ -295,7 +295,7 @@ public class EnemySpawn : MonoBehaviour
         // 예를 들면, 죽었던 유닛을 다시 생성하는 등의 동작을 수행
 
         // 부활이 완료되면 다시 살아난 것으로 플래그를 변경
-        leaderState.Respawn();
+        leaderState.Respawn(targetLeader);
 
         // 다음 부활을 위해 플래그를 초기화
         isRespawning = false;

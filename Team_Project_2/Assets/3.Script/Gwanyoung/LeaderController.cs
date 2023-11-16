@@ -37,7 +37,7 @@ public class LeaderController : MonoBehaviour
 
         if (!GameManager.instance.isLive) return;
 
-        if (isStart && AI.GetNearestTarget().Equals(null)) 
+        if (isStart /*&& AI.GetNearestTarget().Equals(null)*/) 
         {
             #region Base일 때
             // 현재 위치가 베이스일 때
