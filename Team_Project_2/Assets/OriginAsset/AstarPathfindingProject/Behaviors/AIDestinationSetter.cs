@@ -19,6 +19,7 @@ namespace Pathfinding {
 		/// <summary>The object that the AI should move to</summary>
 		public Transform target;
 		IAstarAI ai;
+		
 
 		void OnEnable () {
 			ai = GetComponent<IAstarAI>();
@@ -36,7 +37,7 @@ namespace Pathfinding {
 
 		/// <summary>매 프레임 AI의 목적지를 업데이트합니다</summary>
 		void Update () {
-			if (target != null && ai != null) ai.destination = target.position;
-		}
+            if (target != null && ai != null) ai.destination = target.position;
+        }
 	}
 }

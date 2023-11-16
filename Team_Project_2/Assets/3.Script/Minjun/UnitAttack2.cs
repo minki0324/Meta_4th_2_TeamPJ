@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
+
 public class UnitAttack2 : Unit
 {
     //[SerializeField] private Ply_Controller player;
@@ -45,6 +46,9 @@ public class UnitAttack2 : Unit
     public Unit_Information infodata;
     public bool isHealer = false;
 
+
+    public bool isNear = false;
+
     private Following following;
     protected override void Awake()
     {
@@ -82,6 +86,14 @@ public class UnitAttack2 : Unit
         }
       
 }
+
+    private void OnEnable()
+    {
+        if(!GameManager.instance.isLive)
+        {
+            return;
+        }
+    }
 
     private void Update()
     {
@@ -130,6 +142,7 @@ public class UnitAttack2 : Unit
             }
         }
       
+
         if(!GameManager.instance.isDead && leader == player.gameObject)
         {
             switch (player.CurrentMode)
@@ -160,6 +173,7 @@ public class UnitAttack2 : Unit
         {
 
             AttackOrder();
+
         }
 
 
@@ -282,7 +296,10 @@ public class UnitAttack2 : Unit
             }
         }
 
+       
     }
+
+    
     //공격코루틴메소드
 
 

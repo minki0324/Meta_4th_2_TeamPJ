@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8058749bdb9a96947beea6bd0876c4da, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: 
-  unitObject: {fileID: 1843400025330777912, guid: 345fdb404ae102d4289e4dc4b4a877b0, type: 3}
+  unitObject: {fileID: 9159112012165647531, guid: a0b8cc87fa7c34842b2ccbbb6ab9861e, type: 3}
   ishealer: 0
-  unitName: "\uAE30\uBCF8\uBCD1\uC0AC"
+  unitName: Infantry
   description: "\uAE30\uBCF8\uBCD1\uC0AC\uC785\uB2C8\uB2E4"
   damage: 20
   maxHP: 90
