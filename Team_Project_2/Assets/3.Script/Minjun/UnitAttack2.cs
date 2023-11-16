@@ -55,7 +55,8 @@ public class UnitAttack2 : Unit
         base.Awake();
         
         ani = GetComponent<Animator>();
-        
+        rigid = GetComponent<Rigidbody>();
+     
     }
 
     protected override void Start()
@@ -63,7 +64,7 @@ public class UnitAttack2 : Unit
 
         base.Start();
         //자신의 레이어를 제외한 적팀레이어를 담은 배열 계산하는 메소드
-        myLayer = gameObject.layer;
+        myLayer = gameObject.layer; 
         TeamLayer = LayerMask.NameToLayer("Team");
         combinedMask = TargetLayers();
 
@@ -151,14 +152,14 @@ public class UnitAttack2 : Unit
                     
                     if (player.CurrentMode == Ply_Controller.Mode.Follow)
                     {
-                        if (isClose == true)
-                        {
-                            ani.SetBool("Move", false);
-                        }
-                        else
-                        {
-                            ani.SetBool("Move", true);
-                        }
+                        //if (isClose == true)
+                        //{
+                        //    ani.SetBool("Move", false);
+                        //}
+                        //else
+                        //{
+                        //    ani.SetBool("Move", true);
+                        //}
                     }
                   
                     break;
