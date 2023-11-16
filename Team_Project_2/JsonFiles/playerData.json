@@ -3,9 +3,9 @@
     {
       "ID": "sunny",
       "Coin": 50,
-      "SwordMan": false,
+      "SwordMan": true,
       "Knight": true,
-      "Archer": false,
+      "Archer": true,
       "SpearMan": false,
       "Halberdier": false,
       "Prist": false
@@ -15,7 +15,7 @@
       "Coin": 30,
       "SwordMan": true,
       "Knight": true,
-      "Archer": false,
+      "Archer": true,
       "SpearMan": false,
       "Halberdier": false,
       "Prist": false

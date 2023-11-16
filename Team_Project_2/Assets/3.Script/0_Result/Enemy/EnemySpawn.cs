@@ -191,9 +191,11 @@ public class EnemySpawn : MonoBehaviour
 
         }
 
-        UnitAttack2 unitAttack2 = newUnit.GetComponent<UnitAttack2>();
-        unitAttack2.infodata = currentUnit;
-        unitAttack2.Setunit();
+        
+        
+        Soilder_Controller soilder_Con = newUnit.GetComponent<Soilder_Controller>();
+        soilder_Con.infodata = currentUnit;
+        soilder_Con.Setunit();
         leaderState.UnitList.Add(newUnit);
         leaderState.Gold -= currentUnit.cost;
         SpawnIndex++;

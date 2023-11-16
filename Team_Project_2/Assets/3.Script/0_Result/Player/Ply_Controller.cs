@@ -22,9 +22,6 @@ public class Ply_Controller : MonoBehaviour
     public Mode CurrentMode;
 
     //다른 클래스 객체=====================
-    private Minion_Controller[] minionController;
-
-    private Following following;
 
     //플레이어 정보========================
    
@@ -78,7 +75,6 @@ public class Ply_Controller : MonoBehaviour
 
     private void Awake()
     {
-        following = GetComponent<Following>();
         CurrentMode = Mode.Follow;
 
     }
@@ -232,10 +228,10 @@ public class Ply_Controller : MonoBehaviour
         //}
         //스폰포인트영역 들어가면 spawnPoint 참조받고 스폰위치 받아서 그위치로 소환.
         GameObject newUnit = Instantiate(unit.unitObject, spawnPoint.SpawnPoint[spawnIndex].position, Quaternion.identity);
-        UnitAttack2 unitAttack2 = newUnit.GetComponent<UnitAttack2>();
+        Soilder_Controller Soilder_Con = newUnit.GetComponent<Soilder_Controller>();
         ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.Color_Index);
-        unitAttack2.infodata = unit;
-        unitAttack2.Setunit();
+        Soilder_Con.infodata = unit;
+        Soilder_Con.Setunit();
 
         spawnPoint.SetLayerRecursively(newUnit, gameObject.layer);
 
