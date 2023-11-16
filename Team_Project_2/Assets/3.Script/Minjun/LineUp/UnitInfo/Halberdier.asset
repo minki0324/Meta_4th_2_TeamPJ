@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitObject: {fileID: 163764, guid: 148322894bbd52e488116a8616dfbe4c, type: 3}
   ishealer: 0
-  unitName: "\uD3F4\uC554\uBCD1"
+  unitName: Halberdier
   description: "\uCC3D\uBCD1\uBCF4\uB2E4 \uB354\uAC15\uD568 \uBAB0?\uB8E8"
   damage: 30
   maxHP: 100

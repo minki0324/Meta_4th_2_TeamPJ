@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8007907597938107752}
   - component: {fileID: 8007907597939547136}
   - component: {fileID: 9114167789538694192}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Pine_tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,6 +93,6 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1.3698573
-  m_Height: 5.446314
+  m_Height: 7.1398296
   m_Direction: 1
-  m_Center: {x: 0.005192041, y: 2.718274, z: -0.012346149}
+  m_Center: {x: 0.005192041, y: 1.8715162, z: -0.012346149}

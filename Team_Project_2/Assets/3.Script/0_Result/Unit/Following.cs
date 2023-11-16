@@ -194,7 +194,6 @@ public class Following : MonoBehaviour
                 {
                    
                     //줄세우기
-                    Debug.Log("플레이어가 StopList 0번");
 
                     if (i <= 4)
                     {

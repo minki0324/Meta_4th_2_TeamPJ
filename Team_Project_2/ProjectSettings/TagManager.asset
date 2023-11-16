@@ -10,6 +10,9 @@ TagManager:
   - Leader
   - SpawnPoint
   - Gate
+  - Base
+  - Soilder
+  - Line
   layers:
   - Default
   - TransparentFX
@@ -24,7 +27,7 @@ TagManager:
   - TeamTarget
   - EnemyTarget
   - Die
-  - 
+  - Obstacle
   - 
   - 
   - 
