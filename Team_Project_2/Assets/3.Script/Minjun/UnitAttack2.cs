@@ -55,7 +55,6 @@ public class UnitAttack2 : Unit
         base.Awake();
         
         ani = GetComponent<Animator>();
-        rigid = GetComponent<Rigidbody>();
      
     }
 

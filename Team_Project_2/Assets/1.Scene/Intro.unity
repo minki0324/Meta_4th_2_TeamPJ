@@ -3041,7 +3041,7 @@ MonoBehaviour:
   Leader_B: {fileID: 7938536281042328518}
   isLogined: 0
   id: sunny
-  timer: 3
+  playerID_index: 0
   audioMixer: {fileID: 24100000, guid: 9f13e184e489da04fb017a183914a246, type: 2}
   TeamColors:
   - {fileID: 2100000, guid: 2e7b2736d0629354282180f395c00a99, type: 2}
@@ -6964,6 +6964,9 @@ MonoBehaviour:
   Option: {fileID: 0}
   PlayerID: 
   PlayerCoin: 0
+  isCanUse_SwordMan: 0
+  isCanUse_Knight: 0
+  isCanUse_Archer: 0
   isCanUse_SpearMan: 0
   isCanUse_Halberdier: 0
   isCanUse_Prist: 0
@@ -6996,6 +6999,7 @@ MonoBehaviour:
   unit0: {fileID: 0}
   unit1: {fileID: 0}
   unit2: {fileID: 0}
+  leaders: []
   T1_Color: 0
   T2_Color: 0
   T3_Color: 0
@@ -24452,9 +24456,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59f0d7f888654b448d7f19fcaa25db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    currentHP: 0
+    maxHP: 0
+    damage: 0
+    isDie: 0
+  target: {fileID: 0}
+  leaderState: {fileID: 0}
+  leader: {fileID: 0}
+  scanRange: 13
+  AttackRange: 1.5
+  HitBox_col: {fileID: 0}
+  Ob_Weapon_col: {fileID: 7938536280104760248}
+  nearestTarget: {fileID: 0}
   Gold: 500
-  Current_HP: 1e+9
-  Max_Hp: 1e+9
   Regeneration: 0.5
   maxUnitCount: 19
   currentUnitCount: 0
@@ -24463,16 +24478,10 @@ MonoBehaviour:
   unitValue: 0
   unitCost: 0
   canSpawn: 0
-  isDead: 0
   isMoving: 0
+  respawnPoint: {fileID: 0}
   bat_State: 0
   UnitList: []
-  HitBox_col: {fileID: 0}
-  Ob_Weapon_col: {fileID: 7938536280104760248}
-  nearestTarget: {fileID: 0}
-  target:
-    serializedVersion: 2
-    m_Bits: 0
   targetFlag: {fileID: 0}
   isEnermyChecked: 0
 --- !u!195 &7938536280104752939
@@ -31361,9 +31370,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59f0d7f888654b448d7f19fcaa25db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    currentHP: 0
+    maxHP: 0
+    damage: 0
+    isDie: 0
+  target: {fileID: 0}
+  leaderState: {fileID: 0}
+  leader: {fileID: 0}
+  scanRange: 13
+  AttackRange: 1.5
+  HitBox_col: {fileID: 0}
+  Ob_Weapon_col: {fileID: 7938536281042337627}
+  nearestTarget: {fileID: 0}
   Gold: 500
-  Current_HP: 1e+10
-  Max_Hp: 1e+10
   Regeneration: 0.5
   maxUnitCount: 19
   currentUnitCount: 0
@@ -31372,16 +31392,10 @@ MonoBehaviour:
   unitValue: 0
   unitCost: 0
   canSpawn: 0
-  isDead: 0
   isMoving: 0
+  respawnPoint: {fileID: 0}
   bat_State: 0
   UnitList: []
-  HitBox_col: {fileID: 0}
-  Ob_Weapon_col: {fileID: 7938536281042337627}
-  nearestTarget: {fileID: 0}
-  target:
-    serializedVersion: 2
-    m_Bits: 0
   targetFlag: {fileID: 0}
   isEnermyChecked: 0
 --- !u!114 &7938536281042328522

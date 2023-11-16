@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 23348771}
   - component: {fileID: 23348770}
   - component: {fileID: 23348769}
+  - component: {fileID: 23348774}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -340,8 +341,17 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!45 &23348774
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23348768}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 39737dec886c0af478df5fd6716f5323, type: 2}
 --- !u!1 &49664454
 GameObject:
   m_ObjectHideFlags: 0
@@ -4431,6 +4441,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Option: {fileID: 5212849661891370861}
+  PlayerID: 
+  PlayerCoin: 0
+  isCanUse_SwordMan: 0
+  isCanUse_Knight: 0
+  isCanUse_Archer: 0
+  isCanUse_SpearMan: 0
+  isCanUse_Halberdier: 0
+  isCanUse_Prist: 0
   currentTime: 0
   EndTime: 1800
   Occupied_Area: 1
@@ -8125,6 +8143,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1342af43a0c4d5b49a370537ffe16f2c, type: 3}
   - {fileID: 21300000, guid: faa0e6bcc795b494f96923b7bb065de5, type: 3}
   lineupUI: {fileID: 1078153861}
+  Swordman_Btn: {fileID: 0}
+  Knight_Btn: {fileID: 0}
+  Archer_Btn: {fileID: 0}
+  Prist_Btn: {fileID: 0}
+  Spearman_Btn: {fileID: 0}
+  Halberdier_Btn: {fileID: 0}
 --- !u!222 &981694446598992788
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15436,12 +15460,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3034958654339198264}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3053118416981632340
 MonoBehaviour:

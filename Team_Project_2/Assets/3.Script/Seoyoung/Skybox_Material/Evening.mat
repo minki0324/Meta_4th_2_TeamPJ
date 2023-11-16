@@ -133,7 +133,7 @@ Material:
     - _ImageType: 0
     - _InvertColors: 0
     - _Layout: 0
-    - _LerpControl: 1
+    - _LerpControl: 0.612
     - _Mapping: 1
     - _Metallic: 0
     - _MirrorOnBack: 0

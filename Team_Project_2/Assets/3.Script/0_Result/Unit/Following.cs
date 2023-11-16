@@ -239,7 +239,6 @@ public class Following : MonoBehaviour
                         Stop_List[i].GetComponent<NavMeshAgent>().isStopped = true;
                         Stop_List[i].GetComponent<NavMeshAgent>().obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
                        
-                        Stop_List[i].GetComponent<UnitAttack2>().isStop = true;
                        // Stop_List[i].GetComponent<NavMeshAgent>().avoidancePriority = 50 - i;
                         //Stop_List[i].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
                         anim.SetBool("Move", false);
