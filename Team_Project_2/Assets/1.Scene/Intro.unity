@@ -3727,28 +3727,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20b57359a8bc03438e5fb794762ddf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Gold: 500
-  Current_HP: 150
-  Max_Hp: 150
-  Regeneration: 0.5
-  maxUnitCount: 19
-  currentUnitCount: 0
-  killCount: 0
-  deathCount: 0
-  unitValue: 0
-  unitCost: 16
-  canSpawn: 0
-  isDead: 0
-  isMoving: 0
-  respawnPoint: {fileID: 0}
-  bat_State: 0
-  UnitList: []
-  HitBox_col: {fileID: 0}
-  Ob_Weapon_col: {fileID: 0}
-  nearestTarget: {fileID: 0}
-  target:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!4 &895103403
 Transform:
   m_ObjectHideFlags: 0
@@ -22843,6 +22821,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59f0d7f888654b448d7f19fcaa25db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    currentHP: 0
+    maxHP: 0
+    Damage: 0
+    isDie: 0
+  target: {fileID: 0}
+  scanRange: 13
+  AttackRange: 1.5
+  HitBox_col: {fileID: 0}
+  Ob_Weapon_col: {fileID: 7938536280104760248}
+  nearestTarget: {fileID: 0}
   Gold: 500
   Current_HP: 1e+9
   Max_Hp: 1e+9
@@ -22859,12 +22848,6 @@ MonoBehaviour:
   respawnPoint: {fileID: 0}
   bat_State: 0
   UnitList: []
-  HitBox_col: {fileID: 0}
-  Ob_Weapon_col: {fileID: 7938536280104760248}
-  nearestTarget: {fileID: 0}
-  target:
-    serializedVersion: 2
-    m_Bits: 0
   targetFlag: {fileID: 0}
   isEnermyChecked: 0
 --- !u!195 &7938536280104752939
@@ -29753,6 +29736,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59f0d7f888654b448d7f19fcaa25db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    currentHP: 0
+    maxHP: 0
+    Damage: 0
+    isDie: 0
+  target: {fileID: 0}
+  scanRange: 13
+  AttackRange: 1.5
+  HitBox_col: {fileID: 0}
+  Ob_Weapon_col: {fileID: 7938536281042337627}
+  nearestTarget: {fileID: 0}
   Gold: 500
   Current_HP: 1e+10
   Max_Hp: 1e+10
@@ -29769,12 +29763,6 @@ MonoBehaviour:
   respawnPoint: {fileID: 0}
   bat_State: 0
   UnitList: []
-  HitBox_col: {fileID: 0}
-  Ob_Weapon_col: {fileID: 7938536281042337627}
-  nearestTarget: {fileID: 0}
-  target:
-    serializedVersion: 2
-    m_Bits: 0
   targetFlag: {fileID: 0}
   isEnermyChecked: 0
 --- !u!114 &7938536281042328522
