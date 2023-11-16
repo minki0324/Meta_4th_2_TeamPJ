@@ -3,46 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class LeaderAI : LeaderState 
+public class LeaderAI : LeaderState
 {
     private LayerMask targetLayer;
     private GameObject[] flag;
     SphereCollider col;
     bool isStart = false;
-    [SerializeField] private GameObject targetFlag;
-
+    private Formation_enemy formation;
     public bool isEnermyChecked = false;
-
-    //public Transform nearestTarget;
+    private float attackOrederRange = 8;
+    private LeaderController leaderController;
+    public Vector3 leaderAIDirection;
     protected override void Awake()
     {
         base.Awake();
         combinedMask = TargetLayers();
         flag = GameObject.FindGameObjectsWithTag("Flag");
-        targetFlag = TargetFlag();
+        leaderController = GetComponent<LeaderController>();
         bat_State = BattleState.Move;
         col = GetComponent<SphereCollider>();
         col.enabled = false;
-        
+
     }
     protected override void Start()
     {
         base.Start();
         GameManager.instance.leaders.Add(gameObject.GetComponent<LeaderState>());
+        formation = GetComponent<Formation_enemy>();
+
         SetLeaderState();
-        
+
     }
     private void Update()
     {
+
         if (!GameManager.instance.isLive)
         {
             return;
         }
-        if(!isStart)
+
+        if (!isStart)
         {
             col.enabled = true;
             isStart = true;
         }
+
 
         if (data.currentHP <= 0)
         {
@@ -53,39 +58,72 @@ public class LeaderAI : LeaderState
         }
         // 항상 주변에 적이있는지 탐지
         EnemyDitect();
-
+        if (!holdingShield)
+        {
+            if (isMove)
+            {
+                speed += 1f * Time.deltaTime;
+            }
+            else
+            {
+                speed -= 1f * Time.deltaTime;
+            }
+        }
+        if (holdingShield)
+        {
+            speed -= 1f * Time.deltaTime;
+            speed = Mathf.Clamp(speed, 0.3f, 1f);
+        }
+        else
+        {
+            speed = Mathf.Clamp01(speed);
+        }
+        ani.SetBool("Shield", holdingShield);
+        ani.SetFloat("Speed", speed);
+        ani.SetBool("Move", isMove);
 
         switch (bat_State)
         {
 
+            case BattleState.Move:
+                holdingShield = false;
+                isMove = true;
+                //target.target = leaderController.Target;
+                aipath.canMove = true;
+                aipath.canSearch = true;
+
+
+                break;
             case BattleState.Attack:
+                holdingShield = false;
+                isMove = true;
+                //느려졌던 이동속도 초기화
+                aipath.maxSpeed = defalutSpeed;
                 AttackOrder();
+                break;
+            case BattleState.Detect:
+                //리더가 타겟에게 가능 이동속도 줄이기 , 방패들기
+                target.target = nearestTarget;
+                holdingShield = true;
+                aipath.maxSpeed = 1.5f; // 이동속도줄이기
+                leaderAIDirection = transform.TransformDirection(Vector3.forward);
+                formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
+
                 break;
             case BattleState.Search:
                 break;
-            case BattleState.Move:
-                if (targetFlag.transform.position != null)
-                {
-                    ani.SetBool("Move", true);
-                }
-                else
-                {
-                    bat_State = BattleState.Search;
-                }
-                break;
             case BattleState.Defense:
                 break;
-
-            case BattleState.Detect:
-                //ani.SetBool("Move", true);
-                //navMesh.SetDestination(NearestTarget.position);
+            default:
+                holdingShield = false;
                 break;
+
 
         }
 
         if (data.currentHP <= 0)
         {
-            
+
             //공격정지 ,이동정지 
             if (!data.isDie)
             {
@@ -95,6 +133,15 @@ public class LeaderAI : LeaderState
 
         }
 
+
+      
+
+
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, scanRange);
     }
     public override void Die()
     {
@@ -125,10 +172,10 @@ public class LeaderAI : LeaderState
         data.currentHP = data.maxHP;
         data.damage = 20;
         data.isDie = false;
-     
+
 
     }
-    
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -143,7 +190,7 @@ public class LeaderAI : LeaderState
             if (gameObject.layer != ob.layer) //공격하는 오브젝트가 적일때 
             {
 
-               enemy = FindParentComponent(other.gameObject);
+                enemy = FindParentComponent(other.gameObject);
 
 
                 //병사들
@@ -178,40 +225,40 @@ public class LeaderAI : LeaderState
                     //enemy ==null  -> 플레이어
 
                     //우리팀을 적팀이 죽였을때 
-                    
-                        //병사끼리의 킬계산
-                        if (enemy != null)
+
+                    //병사끼리의 킬계산
+                    if (enemy != null)
+                    {
+                        //적팀을 우리팀이 죽였을때
+                        if (enemy.leader == player.gameObject)
                         {
-                            //적팀을 우리팀이 죽였을때
-                            if (enemy.leader == player.gameObject)
-                            {
-                                GameManager.instance.killCount++;
-                                leaderState.deathCount++;
-                            }
-                            //적팀끼리 죽였을때
-                            else
-                            {
-                                enemy.leaderState.killCount++;
-                                deathCount++;
-                            }
+                            GameManager.instance.killCount++;
+                            leaderState.deathCount++;
                         }
-                        else//리더가죽였을때 킬계산
-                        {  //적팀을 내가 죽였을때 (enemy ==null)
-                            if (other.gameObject == player.gameObject)
-                            {
-                                GameManager.instance.killCount++;
-                                deathCount++;
-                            }
-                            else
-                            {
-                                LeaderAI _leader = ob.GetComponent<LeaderAI>();
-                                _leader.killCount++;
-                                leaderState.deathCount++;
-                            }
-
+                        //적팀끼리 죽였을때
+                        else
+                        {
+                            enemy.leaderState.killCount++;
+                            deathCount++;
+                        }
+                    }
+                    else//리더가죽였을때 킬계산
+                    {  //적팀을 내가 죽였을때 (enemy ==null)
+                        if (other.gameObject.layer == player.gameObject.layer)
+                        {
+                            GameManager.instance.killCount++;
+                            deathCount++;
+                        }
+                        else
+                        {
+                            LeaderAI _leader = ob.GetComponent<LeaderAI>();
+                            _leader.killCount++;
+                            deathCount++;
                         }
 
-                    
+                    }
+
+
                 }
             }
         }
@@ -229,7 +276,7 @@ public class LeaderAI : LeaderState
             bat_State = BattleState.Detect;
 
             //DItect 상태일때 방패를 들며 천천히 접근
-            if (attackDistance <= AttackRange)
+            if (attackDistance <= attackOrederRange)
             {
                 bat_State = BattleState.Attack;
             }
@@ -238,20 +285,9 @@ public class LeaderAI : LeaderState
         }
         else
         {
-            if (bat_State == BattleState.Attack)
-            {
-                if (targetFlag == null)
-                {
-                    bat_State = BattleState.Search;
-                }
-                else
-                {
-                    bat_State = BattleState.Move;
-                }
 
-
-            }
             bat_State = BattleState.Move;
+
             isEnermyChecked = false;
         }
 
@@ -279,7 +315,7 @@ public class LeaderAI : LeaderState
         {
             // _flag 주변에서 trigger에 닿아 있는 객체 검출
             Collider[] colliders = Physics.OverlapSphere(_flag.transform.position, radius, layerMask, QueryTriggerInteraction.Collide);
-            
+
 
             // 최소 카운트 갱신
             if (colliders.Length < minTouchingCount)
@@ -294,7 +330,7 @@ public class LeaderAI : LeaderState
             return selectedFlag;
         }
         else
-        { 
+        {
             Debug.Log("깃발못찾음");
             return null;
 
@@ -311,6 +347,26 @@ public class LeaderAI : LeaderState
         leaderState.bat_State = LeaderState.BattleState.Move;
     }
 
-    
+    public void Respawn(GameObject leader)
+    {
+        //애니메이션초기화
+        //HP , 콜라이더 , isDead ,레이어 다시설정
+        //저장한 리스폰 위치로 이동
+        data.currentHP = data.maxHP;
+        data.isDie = false;
+        aipath.canMove = true;
+        aipath.canSearch = true;
+        Debug.Log(respawnPoint.parent.gameObject.layer);
+        leader.layer = respawnPoint.parent.gameObject.layer;
+        leader.transform.position = respawnPoint.position;
+        ani.SetTrigger("Reset");
+        ani.SetLayerWeight(1, 1);
+        col.enabled = true;
+        bat_State = BattleState.Move;
+
+
+    }
   
+
+   
 }

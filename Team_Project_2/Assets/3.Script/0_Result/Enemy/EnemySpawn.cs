@@ -7,7 +7,7 @@ public class EnemySpawn : MonoBehaviour
     //unitValue에 따라 소환되는 unit
     [SerializeField] private GameObject[] unit;
     [SerializeField] private Ply_Controller player;
-    private LeaderState leaderState;
+    private LeaderAI leaderAI;
     [SerializeField] private GameObject targetLeader;
 
     //스폰위치 3개
@@ -67,7 +67,7 @@ public class EnemySpawn : MonoBehaviour
                 try
                 {
                     targetLeader = SetLeader();
-                    targetLeader.TryGetComponent(out leaderState);
+                    targetLeader.TryGetComponent(out leaderAI);
                 }
                 catch
                 {
@@ -88,7 +88,7 @@ public class EnemySpawn : MonoBehaviour
 
             if (targetLeader.layer == LayerMask.NameToLayer("Die"))
             {
-                if (leaderState.data.isDie && !isRespawning)
+                if (leaderAI.data.isDie && !isRespawning)
                 {
                     StartCoroutine(RespawnAfterDelay(5f));
                 }
@@ -124,14 +124,14 @@ public class EnemySpawn : MonoBehaviour
     {
         if (isAI)
         {
-            if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderState.canSpawn)
+            if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderAI.canSpawn)
             {
 
                 InvokeRepeating("UnitSpawn", 0f, Spawninterval);
 
 
             }
-            else if (!leaderState.canSpawn)
+            else if (!leaderAI.canSpawn)
             {
 
                 CancelInvoke("UnitSpawn");
@@ -170,13 +170,13 @@ public class EnemySpawn : MonoBehaviour
     }
     private void UnitSpawn()
     {
-        if (leaderState.currentUnitCount > 19)
+        if (leaderAI.currentUnitCount > 19)
         {
             return;
         }
-        Unit_Information currentUnit = GameManager.instance.units[leaderState.unitValue];
+        Unit_Information currentUnit = GameManager.instance.units[leaderAI.unitValue];
         GameObject newUnit = Instantiate(currentUnit.unitObject, SpawnPoint[SpawnIndex].position, Quaternion.identity);
-        SetLayerRecursively(newUnit, leaderState.gameObject.layer);
+        SetLayerRecursively(newUnit, leaderAI.gameObject.layer);
         switch (targetLeader.gameObject.layer)
         {
             case 7:
@@ -196,11 +196,11 @@ public class EnemySpawn : MonoBehaviour
         Soilder_Controller soilder_Con = newUnit.GetComponent<Soilder_Controller>();
         soilder_Con.infodata = currentUnit;
         soilder_Con.Setunit();
-        leaderState.UnitList.Add(newUnit);
-        leaderState.Gold -= currentUnit.cost;
+        leaderAI.UnitList.Add(newUnit);
+        leaderAI.Gold -= currentUnit.cost;
         SpawnIndex++;
 
-        leaderState.currentUnitCount++;
+        leaderAI.currentUnitCount++;
         //스폰위치를 차례대로 나오게하기위한 메소드 
         if (SpawnIndex > 2)
         {
@@ -208,7 +208,7 @@ public class EnemySpawn : MonoBehaviour
         }
 
     }
-    private LeaderState FindLeader()
+    private LeaderAI FindLeader()
     {
         GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTag에는 LeaderState 컴포넌트가 있는 오브젝트의 태그를 넣습니다.
 
@@ -219,17 +219,17 @@ public class EnemySpawn : MonoBehaviour
         {
             if (obj.gameObject.layer == gameObject.layer)
             {
-                leaderState = obj.GetComponent<LeaderState>();
+                leaderAI = obj.GetComponent<LeaderAI>();
 
-                if (leaderState != null)
+                if (leaderAI != null)
                 {
-                    return leaderState;
+                    return leaderAI;
                     // LeaderState를 찾으면 루프를 종료합니다.
                 }
             }
         }
 
-        if (leaderState == null)
+        if (leaderAI == null)
         {
             Debug.LogWarning("LeaderState 컴포넌트를 가진 오브젝트를 찾을 수 없습니다.");
         }
@@ -252,10 +252,10 @@ public class EnemySpawn : MonoBehaviour
         if (myLayer != TeamLayer)
         {
 
-            leaderState = FindLeader();
-            if (leaderState != null)
+            leaderAI = FindLeader();
+            if (leaderAI != null)
             {
-                targetLeader = leaderState.gameObject;
+                targetLeader = leaderAI.gameObject;
 
             }
         }
@@ -270,20 +270,20 @@ public class EnemySpawn : MonoBehaviour
     }
     private void AIspawn()
     {
-        if (leaderState.data.isDie)
+        if (leaderAI.data.isDie)
         {
-            leaderState.canSpawn = false;
+            leaderAI.canSpawn = false;
 
             return;
         }
         //유닛카운트가 맥스가 됐거나 , 유닛비용보다 가진 골드가 적을때 false;
-        if (leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost)
+        if (leaderAI.maxUnitCount <= leaderAI.currentUnitCount || leaderAI.Gold <= leaderAI.unitCost)
         {
-            leaderState.canSpawn = false;
+            leaderAI.canSpawn = false;
         }
         else
         {
-            leaderState.canSpawn = true;
+            leaderAI.canSpawn = true;
         }
     }
 
@@ -297,25 +297,10 @@ public class EnemySpawn : MonoBehaviour
         // 예를 들면, 죽었던 유닛을 다시 생성하는 등의 동작을 수행
 
         // 부활이 완료되면 다시 살아난 것으로 플래그를 변경
-        leaderState.Respawn(targetLeader);
+        leaderAI.       Respawn(targetLeader);
 
         // 다음 부활을 위해 플래그를 초기화
         isRespawning = false;
     }
-    //private void Respawn()
-    //{
-    //    Debug.Log(targetLeader);
 
-       
-    //    //레이어 원래대로 바꿔주기 -> 스폰포인트의 레이어로
-    //    //isDead불값 초기화해주기 -> false;
-    //    //리더위치를 가장가까운 팀 스폰포인트로 이동시키기
-    //    //리더의 currentHP 를 maxHP만큼 회복시켜주기
-    //    targetLeader.layer = gameObject.layer;
-    //    leaderState.isDead = false;
-
-    //    targetLeader.transform.position = leaderState.respawnPoint.position;
-    //    leaderState.Current_HP = leaderState.Max_Hp;
-
-    //}
 }

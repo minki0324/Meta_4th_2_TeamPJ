@@ -11563,6 +11563,7 @@ GameObject:
   - component: {fileID: -4631484934897724047}
   - component: {fileID: 4643609815274536730}
   - component: {fileID: 1686098295777629251}
+  - component: {fileID: -7241441996915175343}
   m_Layer: 6
   m_Name: EnemyLeader
   m_TagString: Leader
@@ -11665,17 +11666,18 @@ MonoBehaviour:
   data:
     currentHP: 0
     maxHP: 0
-    Damage: 0
+    damage: 0
     isDie: 0
   target: {fileID: 0}
-  scanRange: 13
+  ani: {fileID: 0}
+  leaderState: {fileID: 0}
+  leader: {fileID: 0}
+  scanRange: 30
   AttackRange: 1.5
   HitBox_col: {fileID: 1803586442092828233}
   Ob_Weapon_col: {fileID: 8132295210802871309}
   nearestTarget: {fileID: 0}
   Gold: 500
-  Current_HP: 150
-  Max_Hp: 150
   Regeneration: 0.5
   maxUnitCount: 19
   currentUnitCount: 0
@@ -11684,13 +11686,13 @@ MonoBehaviour:
   unitValue: 0
   unitCost: 16
   canSpawn: 1
-  isDead: 0
   isMoving: 0
   respawnPoint: {fileID: 0}
   bat_State: 0
   UnitList: []
   targetFlag: {fileID: 0}
   isEnermyChecked: 0
+  leaderAIDirection: {x: 0, y: 0, z: 0}
 --- !u!195 &8132295210802862238
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -11739,9 +11741,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f96b4b4679455c49bb41a37f9a2642d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OccuHUD: {fileID: 0}
-  Flag_Num: 0
-  Team_Color: 0
 --- !u!114 &7674037152790838645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11900,9 +11899,9 @@ MonoBehaviour:
     maximumInterval: 2
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
-  maxAcceleration: -2.5
+  maxAcceleration: 30
   rotationSpeed: 360
-  slowdownDistance: 0.6
+  slowdownDistance: 0
   pickNextWaypointDist: 2
   endReachedDistance: 0.2
   alwaysDrawGizmos: 1
@@ -11935,6 +11934,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &-7241441996915175343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7078fc23f4f1ed41a505b4217cc8a26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parents_Pos: []
+  Count: []
 --- !u!1 &8132295210802862830
 GameObject:
   m_ObjectHideFlags: 0

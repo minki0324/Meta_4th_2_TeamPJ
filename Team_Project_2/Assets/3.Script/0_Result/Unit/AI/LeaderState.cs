@@ -11,9 +11,9 @@ public class LeaderState : Unit
         //Follow, //점령지 이동할때 
         Attack,  // AI가 적을 인지하고 일정시간 또는 거리가됬을때 
         Search,
-        Move,
+        Move, //상체 아이들상태로 뛰어가기
         Defense,
-        Detect
+        Detect //방패들기
 
 
     }
@@ -54,23 +54,7 @@ public class LeaderState : Unit
      2. 아무도없을시 점령
      
      */
-    public void Respawn(GameObject leader)
-    {
-        //애니메이션초기화
-        //HP , 콜라이더 , isDead ,레이어 다시설정
-        //저장한 리스폰 위치로 이동
-        aipath.canMove = false;
-        aipath.canSearch = false;
-        ani.SetTrigger("Reset");
-        ani.SetLayerWeight(1, 1);
-        data.currentHP = data.maxHP;
-        data.isDie = false;
-        Debug.Log(respawnPoint.parent.gameObject.layer);
-        leader.layer = respawnPoint.parent.gameObject.layer;
-        leader.transform.position = respawnPoint.position;
-
-
-    }
+   
     public override void HitDamage(float damage)
     {
        
