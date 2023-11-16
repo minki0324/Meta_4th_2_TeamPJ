@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitObject: {fileID: 123088, guid: 0755a95e2e1b5f44e8226989fb76f2cf, type: 3}
   ishealer: 0
-  unitName: "\uCC3D\uBCD1"
+  unitName: Spearman
   description: "\uCC3D\uBCD1\uC785\uB2C8\uB2E4"
   damage: 25
   maxHP: 90

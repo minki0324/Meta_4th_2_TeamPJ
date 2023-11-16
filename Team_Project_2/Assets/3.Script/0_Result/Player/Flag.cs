@@ -81,7 +81,7 @@ public class Flag : MonoBehaviour
         {
             Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, 20); // 나중에 인원수에 따른 배율 넣어야해용
             OccuHUD.Ply_Slider(TeamColor, unit_O.Flag_Num, Current_Gauge, Total_Gauge);
-            Debug.Log(Current_Gauge);
+            /*Debug.Log(Current_Gauge);*/
             yield return null;
         }
 
