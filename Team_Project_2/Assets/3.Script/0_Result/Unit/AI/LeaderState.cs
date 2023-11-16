@@ -37,6 +37,8 @@ public class LeaderState : Unit
     public bool canSpawn;
     public bool isMoving;
     public Transform respawnPoint;
+    public int Team_Color;
+    public int has_Flag = 0;
     //EnemySpawn respawnPoint;
     public BattleState bat_State;
     public int has_Flag = 0;
@@ -49,7 +51,29 @@ public class LeaderState : Unit
     public List<int> Upgrade_List = new List<int>();
     public List<GameObject> UnitList = new List<GameObject>();
 
-   
+
+    private void Start()
+    {
+        switch (this.gameObject.layer)
+        {
+            case (int)TeamLayerIdx.Player:
+                Team_Color = GameManager.instance.Color_Index;
+                break;
+            case (int)TeamLayerIdx.Team1:
+                Team_Color = GameManager.instance.T1_Color;
+                break;
+            case (int)TeamLayerIdx.Team2:
+                Team_Color = GameManager.instance.T2_Color;
+                break;
+            case (int)TeamLayerIdx.Team3:
+                Team_Color = GameManager.instance.T3_Color;
+                break;
+            default:
+                return;
+        }
+    }
+
+
     public override void Die()
     {
      

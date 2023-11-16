@@ -9,11 +9,12 @@ public class OccupationHUD : MonoBehaviour
     // 1. 점령이 끝나면 인게임 상단에 점령현황 ImageColor 변경
     // 2. 플레이어한테는 점령 중 Slider와 UI 표시되도록   
 
-    [SerializeField] GameObject[] Occu_image = null;
-    [SerializeField] private Image[] Occu_Img_Color; // 점령 중인 팀 색
-    public Flag[] FlagArray;  // 플래그 컴포넌트 배열
-    public Slider[] OccuSlider;
+    private GameObject[] Occu_image;
+    private Image[] Occu_Img_Color; // 점령 중인 팀 색
+    private Flag[] FlagArray;  // 플래그 컴포넌트 배열
+    private Slider[] OccuSlider;
     private Color ColorTemp;
+   
 
     private void Start()
     {
@@ -43,6 +44,11 @@ public class OccupationHUD : MonoBehaviour
         {
             Occu_image[i] = Occu_Img_Color[i * 4].transform.parent.gameObject;
             Occu_image[i].transform.localPosition = new Vector3((-50 * FlagArray.Length * 0.5f) + (50 * i), 0, 0);
+            Change_Color((int)ColorIdx.White, i);
+            if (FlagArray[i].transform.parent == null) 
+            {
+                Debug.Log("1");
+            }
         }
 
         // 상단 점령현황 setActive 
