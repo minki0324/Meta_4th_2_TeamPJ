@@ -171,7 +171,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 5, z: 4}
+  m_Size: {x: 6, y: 5, z: 6}
   m_Center: {x: 0, y: 2.6, z: 0}
 --- !u!65 &5805590287774594451
 BoxCollider:
@@ -222,6 +222,9 @@ MonoBehaviour:
   isOccupied: 0
   Flag_Num: 0
   skinnedmesh: {fileID: 5805590287779870909}
+  OccuHUD: {fileID: 0}
+  Units: 
+  Value: 
 --- !u!1 &5805590287774594481
 GameObject:
   m_ObjectHideFlags: 0

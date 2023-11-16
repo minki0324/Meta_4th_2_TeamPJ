@@ -22,12 +22,12 @@ public class Flag : MonoBehaviour
 
 
     [SerializeField] private SkinnedMeshRenderer skinnedmesh;
-    private OccupationHUD OccuHUD;
-    private List<int> Units = new List<int>();
+    public OccupationHUD OccuHUD;
+    public List<int> Units = new List<int>();
     public int[] Value;
     private int Team1Minion = 0;
     private int Team2Minion = 0;
-
+    int TeamColor;
 
 
 
@@ -54,7 +54,25 @@ public class Flag : MonoBehaviour
             switch (Value.Length)
             {
                 case 1:
-                    StartCoroutine(OnOccu_co(Value[0], Units.Count));
+                    if (Value[0] != this.gameObject.layer)
+                    {                        
+                        switch (Value[0])
+                        {
+                            case (int)TeamLayerIdx.Player:
+                                TeamColor = GameManager.instance.Color_Index;
+                                break;
+                            case (int)TeamLayerIdx.Team1:
+                                TeamColor = GameManager.instance.T1_Color;
+                                break;
+                            case (int)TeamLayerIdx.Team2:
+                                TeamColor = GameManager.instance.T2_Color;
+                                break;
+                            case (int)TeamLayerIdx.Team3:
+                                TeamColor = GameManager.instance.T3_Color;
+                                break;
+                        }
+                        StartCoroutine(OnOccu_co(TeamColor, Units.Count));
+                    }
                     break;
                 case 2:
                     for (int i = 0; i < Units.Count; i++)
@@ -64,8 +82,7 @@ public class Flag : MonoBehaviour
                     }
                     if (Team1Minion.Equals(Team2Minion)) return;
                     int CurrentMinion = (Team1Minion > Team2Minion) ? Team1Minion - Team2Minion : Team2Minion - Team1Minion;
-                    int TeamColor = (Team1Minion > Team2Minion) ? Value[0] : Value[1];
-
+                    Value[0] = (Team1Minion > Team2Minion) ? Value[0] : Value[1];
                     switch(TeamColor)
                     {
                         case (int)TeamLayerIdx.Player:
@@ -81,8 +98,10 @@ public class Flag : MonoBehaviour
                             TeamColor = GameManager.instance.T3_Color;
                             break;
                     }
-
-                    StartCoroutine(OnOccu_co(TeamColor, CurrentMinion));            
+                    if (Value[0].Equals(gameObject.layer))
+                    {
+                        StartCoroutine(OnOccu_co(TeamColor, CurrentMinion));
+                    }
                     break;
                 default:
                     return;
@@ -92,29 +111,6 @@ public class Flag : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (GameManager.instance.isLive)
-        {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                OccuHUD.Ply_OccuHUD(Flag_Num, true);
-            }
-            Units.Add(other.gameObject.layer);
-
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (GameManager.instance.isLive)
-        {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                OccuHUD.Ply_OccuHUD(Flag_Num, false);
-            }
-            Units.Remove(other.gameObject.layer);
-        }
-    }
 
     public void Change_Flag_Color(int TeamNum)
     {
@@ -125,17 +121,53 @@ public class Flag : MonoBehaviour
     {
         return this.transform.parent.gameObject.layer;
     }
+    private int otherLayer(Collider other)
+    {
+        return other.gameObject.layer;
+    }
 
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (GameManager.instance.isLive)
+        {
+            if (other.gameObject.layer.Equals((int)TeamLayerIdx.Player) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team2) ||
+                other.gameObject.layer.Equals((int)TeamLayerIdx.Team1) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team3)) 
+            {
+                if (other.gameObject.CompareTag("Player"))
+                {
+                    OccuHUD.Ply_OccuHUD(Flag_Num, true);
+                }
+                Units.Add(other.gameObject.layer);
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (GameManager.instance.isLive)
+        {
+            if (other.gameObject.layer.Equals((int)TeamLayerIdx.Player) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team2) ||
+               other.gameObject.layer.Equals((int)TeamLayerIdx.Team1) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team3))
+            {
+                if (other.gameObject.CompareTag("Player"))
+                {
+                    OccuHUD.Ply_OccuHUD(Flag_Num, false);
+                }
+                Units.Remove(other.gameObject.layer);
+            }
+        }
+    }
 
     public IEnumerator OnOccu_co(int TeamColor, int Current_Minion)
     {
         // Case1 다른진영 -> 중립 / 중립 -> 본인진영
         // Case2 중립 -> 본인진영
         isOccupating = true;
-        while (isOccupied && isOccupating && Current_Gauge >= 0f) 
+        while (isOccupied && isOccupating && Current_Gauge >= 0f && !Value[0].Equals(gameObject.layer)) 
         {
-            Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, Current_Minion);
+            Current_Gauge -= Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, Current_Minion);
             OccuHUD.Ply_Slider(TeamColor_Temp, Flag_Num, Current_Gauge, Total_Gauge);
+            Debug.Log(Current_Gauge);
             yield return null;
         }
 
@@ -145,7 +177,7 @@ public class Flag : MonoBehaviour
             OccuHUD.Ply_Slider((int)ColorIdx.White, Flag_Num,Current_Gauge,Total_Gauge);
             OccuHUD.Change_Color((int)ColorIdx.White, Flag_Num);
 
-            this.transform.parent.gameObject.layer = 0;
+            gameObject.layer = 0;
         }
 
         // 중립지역을 점령할 때
@@ -153,6 +185,7 @@ public class Flag : MonoBehaviour
         {
             Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, Current_Minion); 
             OccuHUD.Ply_Slider(TeamColor,Flag_Num, Current_Gauge, Total_Gauge);
+            Debug.Log(Current_Gauge);
             yield return null;
         }
 
@@ -160,6 +193,7 @@ public class Flag : MonoBehaviour
         {
             isOccupied = true;   // 중립 -> 본인진영
             TeamColor_Temp = TeamColor;
+            gameObject.layer = Value[0];
             OccuHUD.Change_Color(TeamColor, Flag_Num);
            
         }
@@ -180,7 +214,7 @@ public class Flag : MonoBehaviour
         }
         // 중립에서 점령 하다가 나갔을 때
         while (!isOccupied && !isOccupating && Current_Gauge >= 0f) 
-        {
+        {            
             Current_Gauge -= Time.deltaTime * occu_Speed;
             yield return null;
         }
@@ -190,11 +224,6 @@ public class Flag : MonoBehaviour
     }
 
 
-
-    private void Triggercol(Collider other, bool isComein)
-    {
-
-    }
 
 
 }
