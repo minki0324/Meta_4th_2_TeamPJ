@@ -14,7 +14,7 @@ public class OccupationHUD : MonoBehaviour
     private Flag[] FlagArray;  // 플래그 컴포넌트 배열
     private Slider[] OccuSlider;
     private Color ColorTemp;
-   
+    int TeamColor;
 
     private void Start()
     {
@@ -40,14 +40,37 @@ public class OccupationHUD : MonoBehaviour
         }
 
         // 상단 점령현황 위치조정
+
+       
+
         for (int i = 0; i < FlagArray.Length; i++)
         {
             Occu_image[i] = Occu_Img_Color[i * 4].transform.parent.gameObject;
             Occu_image[i].transform.localPosition = new Vector3((-50 * FlagArray.Length * 0.5f) + (50 * i), 0, 0);
             Change_Color((int)ColorIdx.White, i);
-            if (FlagArray[i].transform.parent == null) 
+            if (FlagArray[i].transform.parent != null) 
             {
-                Debug.Log("1");
+                FlagArray[i].Current_Gauge = 100f;
+                FlagArray[i].isOccupied = true;
+                switch (FlagArray[i].gameObject.layer)
+                {
+                    case (int)TeamLayerIdx.Player:
+                        TeamColor = GameManager.instance.Color_Index;
+                        break;
+                    case (int)TeamLayerIdx.Team1:
+                        TeamColor = GameManager.instance.T1_Color;
+                        break;
+                    case (int)TeamLayerIdx.Team2:
+                        TeamColor = GameManager.instance.T2_Color;
+                        break;
+                    case (int)TeamLayerIdx.Team3:
+                        TeamColor = GameManager.instance.T3_Color;
+                        break;
+                    default:
+                        break;
+                }
+
+                FlagArray[i].OccuHUD.Change_Color(TeamColor, i);
             }
         }
 

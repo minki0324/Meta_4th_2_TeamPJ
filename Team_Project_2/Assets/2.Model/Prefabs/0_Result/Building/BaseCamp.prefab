@@ -2311,7 +2311,9 @@ MonoBehaviour:
   isOccupied: 0
   Flag_Num: 0
   skinnedmesh: {fileID: 3461648979841676759}
-  Leaders: []
+  OccuHUD: {fileID: 0}
+  Units: 
+  Value: 
 --- !u!1 &3461648979838564561
 GameObject:
   m_ObjectHideFlags: 0
