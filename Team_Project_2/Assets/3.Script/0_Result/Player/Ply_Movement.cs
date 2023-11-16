@@ -28,7 +28,7 @@ public class Ply_Movement : MonoBehaviour
     [SerializeField] private Rigidbody rb;
 
     [Header("이동")]
-    [SerializeField] private float MoveSpeed = 5f;
+    [SerializeField] private float MoveSpeed = 10f;
 
     [Header("점프")]
     [SerializeField] private float JumpForce = 10f;
@@ -145,9 +145,16 @@ public class Ply_Movement : MonoBehaviour
 
         if (MoveDir != Vector3.zero)
         {
-            // 회전
-            transform.rotation = Quaternion.LookRotation(MoveDir);
+            if (Input.GetMouseButton(1))
+            {
+                transform.rotation = Quaternion.LookRotation(playerRotate);
+            }
+            else
+            {
+               transform.rotation = Quaternion.LookRotation(MoveDir);
 
+            }
+            // 회전
             playerRotation = transform.rotation;    //added
 
             // 이동

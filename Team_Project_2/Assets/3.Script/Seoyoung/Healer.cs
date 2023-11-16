@@ -38,18 +38,18 @@ public class Healer : MonoBehaviour
             ani.SetTrigger("Heal");
 
             lessHPMinion = pc.UnitList_List[0];
-            lessHP = lessHPMinion.GetComponent<UnitAttack2>().currentHP;
+            lessHP = lessHPMinion.GetComponent<UnitAttack2>().data.currentHP;
             for (int i = 0; i < pc.UnitList_List.Count; i++)
             {
-                if (pc.UnitList_List[i].GetComponent<UnitAttack2>().currentHP <= lessHP)
+                if (pc.UnitList_List[i].GetComponent<UnitAttack2>().data.currentHP <= lessHP)
                 {
                     lessHPMinion = pc.UnitList_List[i];
 
                 }
-                lessHP = lessHPMinion.GetComponent<UnitAttack2>().currentHP;
+                lessHP = lessHPMinion.GetComponent<UnitAttack2>().data.currentHP;
             }
 
-            lessHPMinion.GetComponent<UnitAttack2>().currentHP += 1;
+            lessHPMinion.GetComponent<UnitAttack2>().data.currentHP += 1;
             HealEffect.transform.position = lessHPMinion.transform.position;
             HealEffect.Play();
 

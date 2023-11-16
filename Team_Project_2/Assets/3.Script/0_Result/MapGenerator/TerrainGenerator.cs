@@ -78,11 +78,11 @@ namespace SimpleProceduralTerrainProject
         public GameObject[] Base_PreFabs;
         public int Ply_Num;
         public int Base_Num = 0;
-        List<GameObject> baseCampPositions = new List<GameObject>();
+        public List<GameObject> baseCampPositions = new List<GameObject>();
 
         public GameObject[] flag;
         public int flag_Num;
-        List<GameObject> flagPositions_List = new List<GameObject>();
+        public List<GameObject> flagPositions_List = new List<GameObject>();
         private Dictionary<string, List<Vector3>> cachedPaths = new Dictionary<string, List<Vector3>>();
 
         public GameObject[] Leader_Prefabs;
@@ -245,7 +245,6 @@ namespace SimpleProceduralTerrainProject
                 terrainList[i].GetComponent<TerrainCollider>().enabled = true;
             }
             GameManager.instance.isLive = true;
-            Terra.GetComponent<InitNavMesh>().GenerateNavmesh();
             hud.Occu_Set();
             start_Btn.SetActive(false);
             
@@ -746,25 +745,25 @@ namespace SimpleProceduralTerrainProject
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.Color_Index);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.Color_Index);
                         ColorManager.instance.Change_SolidColor(baseCamps[i].GetComponentInChildren<SpriteRenderer>(), GameManager.instance.Color_Index);
-                        baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 6;
+                        baseCamps[i].transform.GetChild(0).gameObject.layer = 6;
                         break;
                     case (int)TeamLayerIdx.Team1:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T1_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T1_Color);
                         ColorManager.instance.Change_SolidColor(baseCamps[i].GetComponentInChildren<SpriteRenderer>(), GameManager.instance.T1_Color);
-                        baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 7;
+                        baseCamps[i].transform.GetChild(0).gameObject.layer = 7;
                         break;
                     case (int)TeamLayerIdx.Team2:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T2_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T2_Color);
                         ColorManager.instance.Change_SolidColor(baseCamps[i].GetComponentInChildren<SpriteRenderer>(), GameManager.instance.T2_Color);
-                        baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 8;
+                        baseCamps[i].transform.GetChild(0).gameObject.layer = 8;
                         break;
                     case (int)TeamLayerIdx.Team3:
                         ColorManager.instance.RecursiveSearchAndSetBuilding(baseCamps[i].transform, GameManager.instance.T3_Color);
                         baseCamps[i].GetComponentInChildren<Flag>().Change_Flag_Color(GameManager.instance.T3_Color);
                         ColorManager.instance.Change_SolidColor(baseCamps[i].GetComponentInChildren<SpriteRenderer>(), GameManager.instance.T3_Color);
-                        baseCamps[i].GetComponentInChildren<Flag>().gameObject.layer = 9;
+                        baseCamps[i].transform.GetChild(0).gameObject.layer = 9;
                         break;
                 }
             }

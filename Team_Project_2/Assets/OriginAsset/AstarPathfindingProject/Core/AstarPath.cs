@@ -15,38 +15,38 @@ using Thread = System.Threading.Thread;
 [ExecuteInEditMode]
 [AddComponentMenu("Pathfinding/Pathfinder")]
 /// <summary>
-/// A* °æ·Î Ã£±â ½Ã½ºÅÛÀÇ ÇÙ½É ÄÄÆ÷³ÍÆ®ÀÔ´Ï´Ù.
-/// ÀÌ Å¬·¡½º´Â ¸ðµç °æ·Î Ã£±â ½Ã½ºÅÛÀ» Ã³¸®ÇÏ°í ¸ðµç °æ·Î¸¦ °è»êÇÏ¸ç Á¤º¸¸¦ ÀúÀåÇÕ´Ï´Ù.
-/// ÀÌ Å¬·¡½º´Â ½Ì±ÛÅæ Å¬·¡½º·Î, Àå¸é¿¡¼­ ÃÖ´ë ÇÏ³ªÀÇ È°¼º ÀÎ½ºÅÏ½º¸¸ ÀÖ¾î¾ß ÇÕ´Ï´Ù.
-/// ÀÏ¹ÝÀûÀ¸·Î Á÷Á¢ »ç¿ëÇÏ±â´Â ¾î·Æ°í ÁÖ·Î <see cref="Pathfinding.Seeker"/> Å¬·¡½º¸¦ ÅëÇØ °æ·Î Ã£±â ½Ã½ºÅÛÀ» »ç¿ëÇÕ´Ï´Ù.
+/// A* ê²½ë¡œ ì°¾ê¸° ì‹œìŠ¤í…œì˜ í•µì‹¬ ì»´í¬ë„ŒíŠ¸ìž…ë‹ˆë‹¤.
+/// ì´ í´ëž˜ìŠ¤ëŠ” ëª¨ë“  ê²½ë¡œ ì°¾ê¸° ì‹œìŠ¤í…œì„ ì²˜ë¦¬í•˜ê³  ëª¨ë“  ê²½ë¡œë¥¼ ê³„ì‚°í•˜ë©° ì •ë³´ë¥¼ ì €ìž¥í•©ë‹ˆë‹¤.
+/// ì´ í´ëž˜ìŠ¤ëŠ” ì‹±ê¸€í†¤ í´ëž˜ìŠ¤ë¡œ, ìž¥ë©´ì—ì„œ ìµœëŒ€ í•˜ë‚˜ì˜ í™œì„± ì¸ìŠ¤í„´ìŠ¤ë§Œ ìžˆì–´ì•¼ í•©ë‹ˆë‹¤.
+/// ì¼ë°˜ì ìœ¼ë¡œ ì§ì ‘ ì‚¬ìš©í•˜ê¸°ëŠ” ì–´ë µê³  ì£¼ë¡œ <see cref="Pathfinding.Seeker"/> í´ëž˜ìŠ¤ë¥¼ í†µí•´ ê²½ë¡œ ì°¾ê¸° ì‹œìŠ¤í…œì„ ì‚¬ìš©í•©ë‹ˆë‹¤.
 ///
 /// \nosubgrouping
 /// \ingroup relevant
 /// </summary>
 [HelpURL("http://arongranberg.com/astar/docs/class_astar_path.php")]
 public class AstarPath : VersionedMonoBehaviour {
-	/// <summary>A* %Pathfinding ProjectÀÇ ¹öÀü ¹øÈ£ÀÔ´Ï´Ù.</summary>
+	/// <summary>A* %Pathfinding Projectì˜ ë²„ì „ ë²ˆí˜¸ìž…ë‹ˆë‹¤.</summary>
 	public static readonly System.Version Version = new System.Version(4, 2, 17);
 
-	/// <summary>ÆÐÅ°Áö ´Ù¿î·Îµå À§Ä¡¿¡ ´ëÇÑ Á¤º¸ÀÔ´Ï´Ù.</summary>
+	/// <summary>íŒ¨í‚¤ì§€ ë‹¤ìš´ë¡œë“œ ìœ„ì¹˜ì— ëŒ€í•œ ì •ë³´ìž…ë‹ˆë‹¤.</summary>
 	public enum AstarDistribution { WebsiteDownload, AssetStore, PackageManager };
 
-	/// <summary>»ç¿ëÀÚ¸¦ ¿Ã¹Ù¸¥ ¾÷µ¥ÀÌÆ® ´Ù¿î·Îµå À§Ä¡·Î ¾È³»ÇÏ±â À§ÇØ ¿¡µðÅÍ¿¡¼­ »ç¿ëµË´Ï´Ù.</summary>
+	/// <summary>ì‚¬ìš©ìžë¥¼ ì˜¬ë°”ë¥¸ ì—…ë°ì´íŠ¸ ë‹¤ìš´ë¡œë“œ ìœ„ì¹˜ë¡œ ì•ˆë‚´í•˜ê¸° ìœ„í•´ ì—ë””í„°ì—ì„œ ì‚¬ìš©ë©ë‹ˆë‹¤.</summary>
 	public static readonly AstarDistribution Distribution = AstarDistribution.WebsiteDownload;
 
 	/// <summary>
-	/// ÀÌ ¸±¸®½ºÀÇ A* %Pathfinding Project ºê·£Ä¡ÀÔ´Ï´Ù.
-	/// ¾÷µ¥ÀÌÆ®¸¦ È®ÀÎÇÏ¿© °³¹ß ¹öÀüÀÇ »ç¿ëÀÚ°¡ °³¹ß ¾÷µ¥ÀÌÆ® ¾Ë¸²À» ¹ÞÀ» ¼ö ÀÖµµ·Ï »ç¿ëµË´Ï´Ù.
+	/// ì´ ë¦´ë¦¬ìŠ¤ì˜ A* %Pathfinding Project ë¸Œëžœì¹˜ìž…ë‹ˆë‹¤.
+	/// ì—…ë°ì´íŠ¸ë¥¼ í™•ì¸í•˜ì—¬ ê°œë°œ ë²„ì „ì˜ ì‚¬ìš©ìžê°€ ê°œë°œ ì—…ë°ì´íŠ¸ ì•Œë¦¼ì„ ë°›ì„ ìˆ˜ ìžˆë„ë¡ ì‚¬ìš©ë©ë‹ˆë‹¤.
 	/// </summary>
 	public static readonly string Branch = "master";
 
-	/// <summary>¸ðµç ±×·¡ÇÁ µ¥ÀÌÅÍ¸¦ º¸À¯ÇÕ´Ï´Ù.</summary>
+	/// <summary>ëª¨ë“  ê·¸ëž˜í”„ ë°ì´í„°ë¥¼ ë³´ìœ í•©ë‹ˆë‹¤.</summary>
 	[UnityEngine.Serialization.FormerlySerializedAs("astarData")]
 	public AstarData data;
 
 	/// <summary>
-	/// Àå¸é¿¡¼­ È°¼º AstarPath °³Ã¼¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// Âü°í: AstarPath °³Ã¼°¡ ÃÊ±âÈ­µÇ¾î¾ß¸¸ ÀÌ °ªÀÌ ¼³Á¤µË´Ï´Ù (ÀÌ´Â Awake¿¡¼­ ¹ß»ýÇÕ´Ï´Ù).
+	/// ìž¥ë©´ì—ì„œ í™œì„± AstarPath ê°œì²´ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ì°¸ê³ : AstarPath ê°œì²´ê°€ ì´ˆê¸°í™”ë˜ì–´ì•¼ë§Œ ì´ ê°’ì´ ì„¤ì •ë©ë‹ˆë‹¤ (ì´ëŠ” Awakeì—ì„œ ë°œìƒí•©ë‹ˆë‹¤).
 	/// </summary>
 #if UNITY_4_6 || UNITY_4_3
 	public static new AstarPath active;
@@ -54,7 +54,7 @@ public class AstarPath : VersionedMonoBehaviour {
 	public static AstarPath active;
 #endif
 
-	/// <summary>Pathfinding.AstarData.graphs¿¡ ´ëÇÑ ´ÜÃà °æ·ÎÀÔ´Ï´Ù.</summary>
+	/// <summary>Pathfinding.AstarData.graphsì— ëŒ€í•œ ë‹¨ì¶• ê²½ë¡œìž…ë‹ˆë‹¤.</summary>
 	public NavGraph[] graphs {
 		get {
 			if (data == null)
@@ -65,91 +65,91 @@ public class AstarPath : VersionedMonoBehaviour {
 
 	#region InspectorDebug
 	/// <summary>
-	/// @name Inspector - µð¹ö±×
+	/// @name Inspector - ë””ë²„ê·¸
 	/// @{
 	/// </summary>
 
 	/// <summary>
-	/// ½Ã°¢ÀûÀ¸·Î ±×·¡ÇÁ¸¦ ¾À ºä¿¡ Ç¥½ÃÇÕ´Ï´Ù (¿¡µðÅÍ Àü¿ë).
+	/// ì‹œê°ì ìœ¼ë¡œ ê·¸ëž˜í”„ë¥¼ ì”¬ ë·°ì— í‘œì‹œí•©ë‹ˆë‹¤ (ì—ë””í„° ì „ìš©).
 	/// </summary>
 	public bool showNavGraphs = true;
 
 	/// <summary>
-	/// »êÃ¥ÇÒ ¼ö ¾ø´Â ³ëµå¸¦ Ç¥½Ã/¼û±é´Ï´Ù.
+	/// ì‚°ì±…í•  ìˆ˜ ì—†ëŠ” ë…¸ë“œë¥¼ í‘œì‹œ/ìˆ¨ê¹ë‹ˆë‹¤.
 	///
-	/// Âü°í: ¿¡µðÅÍ¿¡¼­¸¸ °ü·ÃµË´Ï´Ù.
+	/// ì°¸ê³ : ì—ë””í„°ì—ì„œë§Œ ê´€ë ¨ë©ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: <see cref="unwalkableNodeDebugSize"/>
+	/// ì°¸ì¡°: <see cref="unwalkableNodeDebugSize"/>
 	/// </summary>
 	public bool showUnwalkableNodes = true;
 
 	/// <summary>
-	/// ¾À ºä¿¡¼­ ³ëµå¸¦ ±×¸± ¶§ »ç¿ëÇÒ ¸ðµåÀÔ´Ï´Ù.
+	/// ì”¬ ë·°ì—ì„œ ë…¸ë“œë¥¼ ê·¸ë¦´ ë•Œ ì‚¬ìš©í•  ëª¨ë“œìž…ë‹ˆë‹¤.
 	///
-	/// Âü°í: ¿¡µðÅÍ¿¡¼­¸¸ °ü·ÃµË´Ï´Ù.
+	/// ì°¸ê³ : ì—ë””í„°ì—ì„œë§Œ ê´€ë ¨ë©ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: Pathfinding.GraphDebugMode
+	/// ì°¸ì¡°: Pathfinding.GraphDebugMode
 	/// </summary>
 	public GraphDebugMode debugMode;
 
 	/// <summary>
-	/// ÀÏºÎ <see cref="debugMode"/> ¸ðµå¿¡ »ç¿ëÇÒ ³·Àº °ªÀÔ´Ï´Ù.
-	/// ¿¹¸¦ µé¾î, <see cref="debugMode"/>°¡ G·Î ¼³Á¤µÈ °æ¿ì, ÀÌ °ªÀº ³ëµå°¡ ¿ÏÀüÈ÷ »¡°£»öÀÌ µÉ ¶§¸¦ °áÁ¤ÇÕ´Ï´Ù.
+	/// ì¼ë¶€ <see cref="debugMode"/> ëª¨ë“œì— ì‚¬ìš©í•  ë‚®ì€ ê°’ìž…ë‹ˆë‹¤.
+	/// ì˜ˆë¥¼ ë“¤ì–´, <see cref="debugMode"/>ê°€ Gë¡œ ì„¤ì •ëœ ê²½ìš°, ì´ ê°’ì€ ë…¸ë“œê°€ ì™„ì „ížˆ ë¹¨ê°„ìƒ‰ì´ ë  ë•Œë¥¼ ê²°ì •í•©ë‹ˆë‹¤.
 	///
-	/// Âü°í: ¿¡µðÅÍ¿¡¼­¸¸ °ü·ÃµË´Ï´Ù.
+	/// ì°¸ê³ : ì—ë””í„°ì—ì„œë§Œ ê´€ë ¨ë©ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: <see cref="debugRoof"/>
-	/// ÂüÁ¶: <see cref="debugMode"/>
+	/// ì°¸ì¡°: <see cref="debugRoof"/>
+	/// ì°¸ì¡°: <see cref="debugMode"/>
 	/// </summary>
 	public float debugFloor = 0;
 
 	/// <summary>
-	/// ÀÏºÎ <see cref="debugMode"/> ¸ðµå¿¡ »ç¿ëÇÒ ³ôÀº °ªÀÔ´Ï´Ù.
-	/// ¿¹¸¦ µé¾î, <see cref="debugMode"/>°¡ G·Î ¼³Á¤µÈ °æ¿ì, ÀÌ °ªÀº ³ëµå°¡ ¿ÏÀüÈ÷ ³ì»öÀÌ µÉ ¶§¸¦ °áÁ¤ÇÕ´Ï´Ù.
+	/// ì¼ë¶€ <see cref="debugMode"/> ëª¨ë“œì— ì‚¬ìš©í•  ë†’ì€ ê°’ìž…ë‹ˆë‹¤.
+	/// ì˜ˆë¥¼ ë“¤ì–´, <see cref="debugMode"/>ê°€ Gë¡œ ì„¤ì •ëœ ê²½ìš°, ì´ ê°’ì€ ë…¸ë“œê°€ ì™„ì „ížˆ ë…¹ìƒ‰ì´ ë  ë•Œë¥¼ ê²°ì •í•©ë‹ˆë‹¤.
 	///
-	/// ÆÐ³ÎÆ¼ µð¹ö±× ¸ðµåÀÇ °æ¿ì, ÆÐ³ÎÆ¼°¡ <see cref="debugFloor"/>º¸´Ù ÀÛÀ» ¶§ ³ëµå´Â ³ì»öÀ¸·Î »ö»óÀÌ ÁöÁ¤µÇ°í,
-	/// ÆÐ³ÎÆ¼°¡ ÀÌ °ªº¸´Ù Å©°Å³ª °°À» ¶§´Â »¡°£»öÀ¸·Î ÁöÁ¤µÇ¸ç »¡°£»ö°ú ³ì»ö »çÀÌÀÇ °ªÀ¸·Î ÁöÁ¤µË´Ï´Ù.
+	/// íŒ¨ë„í‹° ë””ë²„ê·¸ ëª¨ë“œì˜ ê²½ìš°, íŒ¨ë„í‹°ê°€ <see cref="debugFloor"/>ë³´ë‹¤ ìž‘ì„ ë•Œ ë…¸ë“œëŠ” ë…¹ìƒ‰ìœ¼ë¡œ ìƒ‰ìƒì´ ì§€ì •ë˜ê³ ,
+	/// íŒ¨ë„í‹°ê°€ ì´ ê°’ë³´ë‹¤ í¬ê±°ë‚˜ ê°™ì„ ë•ŒëŠ” ë¹¨ê°„ìƒ‰ìœ¼ë¡œ ì§€ì •ë˜ë©° ë¹¨ê°„ìƒ‰ê³¼ ë…¹ìƒ‰ ì‚¬ì´ì˜ ê°’ìœ¼ë¡œ ì§€ì •ë©ë‹ˆë‹¤.
 	///
-	/// Âü°í: ¿¡µðÅÍ¿¡¼­¸¸ °ü·ÃµË´Ï´Ù.
+	/// ì°¸ê³ : ì—ë””í„°ì—ì„œë§Œ ê´€ë ¨ë©ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: <see cref="debugFloor"/>
-	/// ÂüÁ¶: <see cref="debugMode"/>
+	/// ì°¸ì¡°: <see cref="debugFloor"/>
+	/// ì°¸ì¡°: <see cref="debugMode"/>
 	/// </summary>
 	public float debugRoof = 20000;
 
 	/// <summary>
-	/// ¼³Á¤µÇ¸é <see cref="debugFloor"/> ¹× <see cref="debugRoof"/> °ªÀÌ ÀÚµ¿À¸·Î ´Ù½Ã °è»êµÇÁö ¾Ê½À´Ï´Ù.
+	/// ì„¤ì •ë˜ë©´ <see cref="debugFloor"/> ë° <see cref="debugRoof"/> ê°’ì´ ìžë™ìœ¼ë¡œ ë‹¤ì‹œ ê³„ì‚°ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	///
-	/// Âü°í: ÆíÁý±â¿¡¼­¸¸ °ü·ÃµË´Ï´Ù.
+	/// ì°¸ê³ : íŽ¸ì§‘ê¸°ì—ì„œë§Œ ê´€ë ¨ë©ë‹ˆë‹¤.
 	/// </summary>
 	public bool manualDebugFloorRoof = false;
 
 
 	/// <summary>
-	/// ¸¸¾à È°¼ºÈ­µÇ¸é, ³ëµå´Â 'ºÎ¸ð'¿¡ ´ëÇÑ ¼±À» ±×¸³´Ï´Ù.
-	/// ÀÌ°ÍÀº °¡Àå ÃÖ±Ù °æ·Î¸¦ µð¹ö±×ÇÏ±â À§ÇØ ³ëµå¸¦ »ç¿ëÇÏ¿© °Ë»ö Æ®¸®¸¦ º¸¿©ÁÝ´Ï´Ù.
+	/// ë§Œì•½ í™œì„±í™”ë˜ë©´, ë…¸ë“œëŠ” 'ë¶€ëª¨'ì— ëŒ€í•œ ì„ ì„ ê·¸ë¦½ë‹ˆë‹¤.
+	/// ì´ê²ƒì€ ê°€ìž¥ ìµœê·¼ ê²½ë¡œë¥¼ ë””ë²„ê·¸í•˜ê¸° ìœ„í•´ ë…¸ë“œë¥¼ ì‚¬ìš©í•˜ì—¬ ê²€ìƒ‰ íŠ¸ë¦¬ë¥¼ ë³´ì—¬ì¤ë‹ˆë‹¤.
 	///
-	/// Âü°í: ¿¡µðÅÍ¿¡¼­¸¸ °ü·ÃµË´Ï´Ù.
+	/// ì°¸ê³ : ì—ë””í„°ì—ì„œë§Œ ê´€ë ¨ë©ë‹ˆë‹¤.
 	///
-	/// TODO: showOnlyLastPath ÇÃ·¡±×¸¦ Ãß°¡ÇÏ¿© ¸ðµç ³ëµå¸¦ ±×¸®´Â °Í ´ë½Å °¡Àå ÃÖ±Ù °æ·Î¿¡¼­ ¹æ¹®ÇÑ ³ëµå¸¸ ±×¸±Áö ¿©ºÎ¸¦ ÁöÁ¤ÇÕ´Ï´Ù.
+	/// TODO: showOnlyLastPath í”Œëž˜ê·¸ë¥¼ ì¶”ê°€í•˜ì—¬ ëª¨ë“  ë…¸ë“œë¥¼ ê·¸ë¦¬ëŠ” ê²ƒ ëŒ€ì‹  ê°€ìž¥ ìµœê·¼ ê²½ë¡œì—ì„œ ë°©ë¬¸í•œ ë…¸ë“œë§Œ ê·¸ë¦´ì§€ ì—¬ë¶€ë¥¼ ì§€ì •í•©ë‹ˆë‹¤.
 	/// </summary>
 	public bool showSearchTree = false;
 
 	/// <summary>
-	/// »êÃ¥ÇÒ ¼ö ¾ø´Â ³ëµå ´ë½Å »¡°£»ö Å¥ºêÀÇ Å©±âÀÔ´Ï´Ù.
+	/// ì‚°ì±…í•  ìˆ˜ ì—†ëŠ” ë…¸ë“œ ëŒ€ì‹  ë¹¨ê°„ìƒ‰ íë¸Œì˜ í¬ê¸°ìž…ë‹ˆë‹¤.
 	///
-	/// Âü°í: ¿¡µðÅÍ¿¡¼­¸¸ °ü·ÃµË´Ï´Ù. ±×¸®µå ±×·¡ÇÁ¿¡´Â Àû¿ëµÇÁö ¾Ê½À´Ï´Ù.
-	/// ÂüÁ¶: <see cref="showUnwalkableNodes"/>
+	/// ì°¸ê³ : ì—ë””í„°ì—ì„œë§Œ ê´€ë ¨ë©ë‹ˆë‹¤. ê·¸ë¦¬ë“œ ê·¸ëž˜í”„ì—ëŠ” ì ìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
+	/// ì°¸ì¡°: <see cref="showUnwalkableNodes"/>
 	/// </summary>
 	public float unwalkableNodeDebugSize = 0.3F;
 
 	/// <summary>
-	/// µð¹ö±ë ¸Þ½ÃÁöÀÇ ¾çÀÔ´Ï´Ù.
-	/// ¼º´ÉÀ» °³¼±ÇÏ·Á¸é (¾à°£) ´ú µð¹ö±ëÇÏ°Å³ª ÄÜ¼Ö ½ºÆÔÀ» Á¦°ÅÇÏ·Á¸é ´ú µð¹ö±ëÇÕ´Ï´Ù.
-	/// ¼¼ºÎ Á¤º¸¸¦ ¾ò°Å³ª °æ·Î Ã£±â ½ºÅ©¸³Æ®°¡ ¼öÇàÇÏ´Â ÀÛ¾÷¿¡ ´ëÇÑ ´õ ¸¹Àº Á¤º¸¸¦ ¿øÇÒ °æ¿ì (¹«°Å¿î) ´õ ¸¹Àº µð¹ö±ëÀ» »ç¿ëÇÕ´Ï´Ù.
-	/// InGame ¿É¼ÇÀº ÃÖ½Å °æ·Î ·Î±×¸¦ °ÔÀÓ ³» GUI¸¦ »ç¿ëÇÏ¿© Ç¥½ÃÇÕ´Ï´Ù.
+	/// ë””ë²„ê¹… ë©”ì‹œì§€ì˜ ì–‘ìž…ë‹ˆë‹¤.
+	/// ì„±ëŠ¥ì„ ê°œì„ í•˜ë ¤ë©´ (ì•½ê°„) ëœ ë””ë²„ê¹…í•˜ê±°ë‚˜ ì½˜ì†” ìŠ¤íŒ¸ì„ ì œê±°í•˜ë ¤ë©´ ëœ ë””ë²„ê¹…í•©ë‹ˆë‹¤.
+	/// ì„¸ë¶€ ì •ë³´ë¥¼ ì–»ê±°ë‚˜ ê²½ë¡œ ì°¾ê¸° ìŠ¤í¬ë¦½íŠ¸ê°€ ìˆ˜í–‰í•˜ëŠ” ìž‘ì—…ì— ëŒ€í•œ ë” ë§Žì€ ì •ë³´ë¥¼ ì›í•  ê²½ìš° (ë¬´ê±°ìš´) ë” ë§Žì€ ë””ë²„ê¹…ì„ ì‚¬ìš©í•©ë‹ˆë‹¤.
+	/// InGame ì˜µì…˜ì€ ìµœì‹  ê²½ë¡œ ë¡œê·¸ë¥¼ ê²Œìž„ ë‚´ GUIë¥¼ ì‚¬ìš©í•˜ì—¬ í‘œì‹œí•©ë‹ˆë‹¤.
 	///
-	/// [¿Â¶óÀÎ ¹®¼­¿¡¼­ ÀÌ¹ÌÁö¸¦ º¸·Á¸é ¿©±â¸¦ Å¬¸¯ÇÏ¼¼¿ä]
+	/// [ì˜¨ë¼ì¸ ë¬¸ì„œì—ì„œ ì´ë¯¸ì§€ë¥¼ ë³´ë ¤ë©´ ì—¬ê¸°ë¥¼ í´ë¦­í•˜ì„¸ìš”]
 	/// </summary>
 	public PathLog logPathResults = PathLog.Normal;
 
@@ -158,179 +158,179 @@ public class AstarPath : VersionedMonoBehaviour {
 
 	#region InspectorSettings
 	/// <summary>
-	/// @name Inspector - ¼³Á¤
+	/// @name Inspector - ì„¤ì •
 	/// @{
 	/// </summary>
 
 	/// <summary>
-	/// ³ëµå¸¦ °Ë»öÇÏ´Â ÃÖ´ë °Å¸®ÀÔ´Ï´Ù.
-	/// ÁöÁ¡¿¡ °¡Àå °¡±î¿î ³ëµå¸¦ °Ë»öÇÒ ¶§ ÀÌ´Â (¼¼°è ´ÜÀ§·Î) Çã¿ëµÇ´Â ÃÖ´ë °Å¸®ÀÔ´Ï´Ù.
+	/// ë…¸ë“œë¥¼ ê²€ìƒ‰í•˜ëŠ” ìµœëŒ€ ê±°ë¦¬ìž…ë‹ˆë‹¤.
+	/// ì§€ì ì— ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ê²€ìƒ‰í•  ë•Œ ì´ëŠ” (ì„¸ê³„ ë‹¨ìœ„ë¡œ) í—ˆìš©ë˜ëŠ” ìµœëŒ€ ê±°ë¦¬ìž…ë‹ˆë‹¤.
 	///
-	/// ÀÌ°ÍÀº Á¢±ÙÇÒ ¼ö ¾ø´Â ÁöÁ¡À¸·Î °æ·Î¸¦ ¿äÃ»ÇÏ´Â °æ¿ì ÇØ´ç ÁöÁ¡¿¡ µµ´ÞÇÒ ¼ö ÀÖ´Â °¡Àå °¡±î¿î ³ëµå¸¦ °Ë»öÇØ¾ß ÇÏ´Â °æ¿ì °ü·ÃµË´Ï´Ù.
-	/// ÀÌ °Å¸® ³»¿¡¼­ ³ëµå¸¦ Ã£À» ¼ö ¾øÀ¸¸é °æ·Î ¿äÃ»ÀÌ ½ÇÆÐÇÕ´Ï´Ù.
+	/// ì´ê²ƒì€ ì ‘ê·¼í•  ìˆ˜ ì—†ëŠ” ì§€ì ìœ¼ë¡œ ê²½ë¡œë¥¼ ìš”ì²­í•˜ëŠ” ê²½ìš° í•´ë‹¹ ì§€ì ì— ë„ë‹¬í•  ìˆ˜ ìžˆëŠ” ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ê²€ìƒ‰í•´ì•¼ í•˜ëŠ” ê²½ìš° ê´€ë ¨ë©ë‹ˆë‹¤.
+	/// ì´ ê±°ë¦¬ ë‚´ì—ì„œ ë…¸ë“œë¥¼ ì°¾ì„ ìˆ˜ ì—†ìœ¼ë©´ ê²½ë¡œ ìš”ì²­ì´ ì‹¤íŒ¨í•©ë‹ˆë‹¤.
 	///
-	/// Âü°í: <see cref="Pathfinding.NNConstraint.constrainDistance"/>
+	/// ì°¸ê³ : <see cref="Pathfinding.NNConstraint.constrainDistance"/>
 	/// </summary>
 	public float maxNearestNodeDistance = 100;
 
 	/// <summary>
-	/// ÃÖ´ë ÀÎÁ¢ ³ëµå °Å¸®ÀÇ Á¦°öÀÔ´Ï´Ù.
-	/// ÂüÁ¶: <see cref="maxNearestNodeDistance"/>
+	/// ìµœëŒ€ ì¸ì ‘ ë…¸ë“œ ê±°ë¦¬ì˜ ì œê³±ìž…ë‹ˆë‹¤.
+	/// ì°¸ì¡°: <see cref="maxNearestNodeDistance"/>
 	/// </summary>
 	public float maxNearestNodeDistanceSqr {
 		get { return maxNearestNodeDistance*maxNearestNodeDistance; }
 	}
 
 	/// <summary>
-	/// ½ÃÀÛÇÒ ¶§ ¸ðµç ±×·¡ÇÁ¸¦ ½ºÄµÇØ¾ß ÇÏ´ÂÁö ¿©ºÎÀÔ´Ï´Ù.
-	/// ÀÌ°ÍÀº Ä³½Ã¿¡¼­ ·ÎµåÇÏ´Â °ÍÀ» Á¦¿ÜÇÏ°í ¸ðµç ±×·¡ÇÁ¸¦ ½ºÄµÇØ¾ß ÇÏ´ÂÁö ¿©ºÎ¸¦ °áÁ¤ÇÕ´Ï´Ù.
-	/// ÀÌ °ªÀ» ºñÈ°¼ºÈ­ÇÏ¸é <see cref="Scan"/>À» Á÷Á¢ È£ÃâÇÏ°Å³ª ÆÄÀÏ¿¡¼­ ÀúÀåµÈ ±×·¡ÇÁ¸¦ ·ÎµåÇØ¾ß ÇÕ´Ï´Ù.
+	/// ì‹œìž‘í•  ë•Œ ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ìŠ¤ìº”í•´ì•¼ í•˜ëŠ”ì§€ ì—¬ë¶€ìž…ë‹ˆë‹¤.
+	/// ì´ê²ƒì€ ìºì‹œì—ì„œ ë¡œë“œí•˜ëŠ” ê²ƒì„ ì œì™¸í•˜ê³  ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ìŠ¤ìº”í•´ì•¼ í•˜ëŠ”ì§€ ì—¬ë¶€ë¥¼ ê²°ì •í•©ë‹ˆë‹¤.
+	/// ì´ ê°’ì„ ë¹„í™œì„±í™”í•˜ë©´ <see cref="Scan"/>ì„ ì§ì ‘ í˜¸ì¶œí•˜ê±°ë‚˜ íŒŒì¼ì—ì„œ ì €ìž¥ëœ ê·¸ëž˜í”„ë¥¼ ë¡œë“œí•´ì•¼ í•©ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: <see cref="Scan"/>
-	/// ÂüÁ¶: <see cref="ScanAsync"/>
+	/// ì°¸ì¡°: <see cref="Scan"/>
+	/// ì°¸ì¡°: <see cref="ScanAsync"/>
 	/// </summary>
 	public bool scanOnStartup = true;
 
 	/// <summary>
-	/// ¸ðµç ±×·¡ÇÁ¿¡ ´ëÇÑ ¿ÏÀüÇÑ GetNearest °Ë»öÀ» ¼öÇàÇØ¾ß ÇÏ´ÂÁö ¿©ºÎÀÔ´Ï´Ù.
-	/// ÀÏ¹ÝÀûÀ¸·Î Ãß°¡ °Ë»öÀº Ã¹ ¹øÂ° ºü¸¥ °Ë»ö¿¡¼­ °¡Àå °¡±î¿î ³ëµå¸¦ Ã£Àº ±×·¡ÇÁ¿¡¼­¸¸ ¼öÇàµË´Ï´Ù.
-	/// ÀÌ ¼³Á¤À» ÄÑ¸é Ãß°¡ °Ë»öÀÌ ¸ðµç ±×·¡ÇÁ¿¡¼­ ¼öÇàµË´Ï´Ù.
+	/// ëª¨ë“  ê·¸ëž˜í”„ì— ëŒ€í•œ ì™„ì „í•œ GetNearest ê²€ìƒ‰ì„ ìˆ˜í–‰í•´ì•¼ í•˜ëŠ”ì§€ ì—¬ë¶€ìž…ë‹ˆë‹¤.
+	/// ì¼ë°˜ì ìœ¼ë¡œ ì¶”ê°€ ê²€ìƒ‰ì€ ì²« ë²ˆì§¸ ë¹ ë¥¸ ê²€ìƒ‰ì—ì„œ ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ì°¾ì€ ê·¸ëž˜í”„ì—ì„œë§Œ ìˆ˜í–‰ë©ë‹ˆë‹¤.
+	/// ì´ ì„¤ì •ì„ ì¼œë©´ ì¶”ê°€ ê²€ìƒ‰ì´ ëª¨ë“  ê·¸ëž˜í”„ì—ì„œ ìˆ˜í–‰ë©ë‹ˆë‹¤.
 	///
-	/// º¸Åë ºñÈ°¼ºÈ­µÉ ¶§ ´õ ºü¸£Áö¸¸ Ç°ÁúÀÌ ´õ ³ôÀº °Ë»öÀÌ °¡´ÉÇÕ´Ï´Ù.
-	/// 1°³ ¶Ç´Â 2°³ ÀÌ»óÀÇ ÄÚ¾î¸¦ °¡Áø ÄÄÇ»ÅÍ¿¡¼­ ´õ ºü¸¥ ½º·çÇ²À» ¿øÇÏÁö ¾Ê´Â ÇÑ, ´ëºÎºÐÀÇ °æ¿ì ºñÈ°¼ºÈ­ÇÏ´Â °ÍÀÌ ÁÁ½À´Ï´Ù.
-	/// ¿©·¯ ÄÚ¾î¸¦ °¡Áø ÄÄÇ»ÅÍ¿¡¼­´Â ´õ ºü¸¥ ½º·çÇ²À» ¾òÀ» ¼ö ÀÖÀ¸¸ç °æ·Î°¡ µ¿ÀÏÇÑ ±æÀÌÀÇ ¿©·¯ °³¸¦ µû¶ó°¡Áö ¾Ê½À´Ï´Ù.
+	/// ë³´í†µ ë¹„í™œì„±í™”ë  ë•Œ ë” ë¹ ë¥´ì§€ë§Œ í’ˆì§ˆì´ ë” ë†’ì€ ê²€ìƒ‰ì´ ê°€ëŠ¥í•©ë‹ˆë‹¤.
+	/// 1ê°œ ë˜ëŠ” 2ê°œ ì´ìƒì˜ ì½”ì–´ë¥¼ ê°€ì§„ ì»´í“¨í„°ì—ì„œ ë” ë¹ ë¥¸ ìŠ¤ë£¨í’‹ì„ ì›í•˜ì§€ ì•ŠëŠ” í•œ, ëŒ€ë¶€ë¶„ì˜ ê²½ìš° ë¹„í™œì„±í™”í•˜ëŠ” ê²ƒì´ ì¢‹ìŠµë‹ˆë‹¤.
+	/// ì—¬ëŸ¬ ì½”ì–´ë¥¼ ê°€ì§„ ì»´í“¨í„°ì—ì„œëŠ” ë” ë¹ ë¥¸ ìŠ¤ë£¨í’‹ì„ ì–»ì„ ìˆ˜ ìžˆìœ¼ë©° ê²½ë¡œê°€ ë™ì¼í•œ ê¸¸ì´ì˜ ì—¬ëŸ¬ ê°œë¥¼ ë”°ë¼ê°€ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	///
-	/// ÁÖÀÇ: ±×¸®µå ±×·¡ÇÁ¿¡ »ç¿ëÇÒ °æ¿ì ÀÌ ¼³Á¤Àº Å©°Ô Áß¿äÇÏÁö ¾Ê½À´Ï´Ù. ±×·¡ÇÁ¿¡ ´ëÇÑ ´ÜÀÏ °Ë»ö ¸ðµå¸¸ »ç¿ëÇÕ´Ï´Ù.
+	/// ì£¼ì˜: ê·¸ë¦¬ë“œ ê·¸ëž˜í”„ì— ì‚¬ìš©í•  ê²½ìš° ì´ ì„¤ì •ì€ í¬ê²Œ ì¤‘ìš”í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤. ê·¸ëž˜í”„ì— ëŒ€í•œ ë‹¨ì¼ ê²€ìƒ‰ ëª¨ë“œë§Œ ì‚¬ìš©í•©ë‹ˆë‹¤.
 	/// </summary>
 	public bool fullGetNearestSearch = false;
 
 	/// <summary>
-	/// ±×·¡ÇÁ¸¦ ¿ì¼± ¼øÀ§¿¡ µû¶ó Á¤·ÄÇÕ´Ï´Ù.
-	/// ±×·¡ÇÁ´Â ÀÎ½ºÆåÅÍ¿¡¼­ÀÇ ¼ø¼­¸¦ ±âÁØÀ¸·Î ¿ì¼± ¼øÀ§°¡ ÁöÁ¤µË´Ï´Ù.
-	/// <see cref="prioritizeGraphsLimit"/>º¸´Ù °¡±î¿î ³ëµå¸¦ °¡Áø ±×·¡ÇÁ Áß Ã¹ ¹øÂ° ±×·¡ÇÁ°¡ ¸ðµç ±×·¡ÇÁ¸¦ °Ë»öÇÏ´Â ´ë½Å ¼±ÅÃµË´Ï´Ù.
+	/// ê·¸ëž˜í”„ë¥¼ ìš°ì„  ìˆœìœ„ì— ë”°ë¼ ì •ë ¬í•©ë‹ˆë‹¤.
+	/// ê·¸ëž˜í”„ëŠ” ì¸ìŠ¤íŽ™í„°ì—ì„œì˜ ìˆœì„œë¥¼ ê¸°ì¤€ìœ¼ë¡œ ìš°ì„  ìˆœìœ„ê°€ ì§€ì •ë©ë‹ˆë‹¤.
+	/// <see cref="prioritizeGraphsLimit"/>ë³´ë‹¤ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ê°€ì§„ ê·¸ëž˜í”„ ì¤‘ ì²« ë²ˆì§¸ ê·¸ëž˜í”„ê°€ ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ê²€ìƒ‰í•˜ëŠ” ëŒ€ì‹  ì„ íƒë©ë‹ˆë‹¤.
 	/// </summary>
 	public bool prioritizeGraphs = false;
 
 	/// <summary>
-	/// <see cref="prioritizeGraphs"/>¿¡ ´ëÇÑ °Å¸® Á¦ÇÑÀÔ´Ï´Ù.
-	/// Âü°í: <see cref="prioritizeGraphs"/>
+	/// <see cref="prioritizeGraphs"/>ì— ëŒ€í•œ ê±°ë¦¬ ì œí•œìž…ë‹ˆë‹¤.
+	/// ì°¸ê³ : <see cref="prioritizeGraphs"/>
 	/// </summary>
 	public float prioritizeGraphsLimit = 1F;
 
 	/// <summary>
-	/// ÀÌ AstarPath °´Ã¼ÀÇ »ö»ó ¼³Á¤¿¡ ´ëÇÑ ÂüÁ¶ÀÔ´Ï´Ù.
-	/// »ö»ó ¼³Á¤¿¡´Â ¿¹¸¦ µé¾î ¾À ºä¿¡¼­ ³ëµåÀÇ »ö»óÀÌ¾î¾ß ÇÏ´ÂÁö ¿©ºÎ µîÀÌ Æ÷ÇÔµË´Ï´Ù.
+	/// ì´ AstarPath ê°ì²´ì˜ ìƒ‰ìƒ ì„¤ì •ì— ëŒ€í•œ ì°¸ì¡°ìž…ë‹ˆë‹¤.
+	/// ìƒ‰ìƒ ì„¤ì •ì—ëŠ” ì˜ˆë¥¼ ë“¤ì–´ ì”¬ ë·°ì—ì„œ ë…¸ë“œì˜ ìƒ‰ìƒì´ì–´ì•¼ í•˜ëŠ”ì§€ ì—¬ë¶€ ë“±ì´ í¬í•¨ë©ë‹ˆë‹¤.
 	/// </summary>
 	public AstarColor colorSettings;
 
 	/// <summary>
-	/// ÀúÀåµÈ ÅÂ±× ÀÌ¸§ÀÔ´Ï´Ù.
-	/// ÂüÁ¶: AstarPath.FindTagNames
-	/// ÂüÁ¶: AstarPath.GetTagNames
+	/// ì €ìž¥ëœ íƒœê·¸ ì´ë¦„ìž…ë‹ˆë‹¤.
+	/// ì°¸ì¡°: AstarPath.FindTagNames
+	/// ì°¸ì¡°: AstarPath.GetTagNames
 	/// </summary>
 	[SerializeField]
 	protected string[] tagNames = null;
 
 	/// <summary>
-	/// ÈÞ¸®½ºÆ½(Heuristic)À¸·Î »ç¿ëÇÒ °Å¸® ÇÔ¼öÀÔ´Ï´Ù.
-	/// ÈÞ¸®½ºÆ½Àº ³ëµå¿¡¼­ ¸ñÇ¥ ÁöÁ¡±îÁöÀÇ ¿¹»ó ºñ¿ëÀ» ³ªÅ¸³À´Ï´Ù.
-	/// ´Ù¸¥ ÈÞ¸®½ºÆ½Àº µ¿ÀÏÇÑ ±æÀÌÀÇ ´Ù¸¥ °æ·Î Áß¿¡¼­ ¾î¶² °æ·Î¸¦ ¼±ÅÃÇÒÁö¿¡ ¿µÇâÀ» ¹ÌÄ¨´Ï´Ù.
-	/// ´Ù¾çÇÑ ÈÞ¸®½ºÆ½¿¡ ´ëÇÑ ÀÚ¼¼ÇÑ ³»¿ë ¹× ¼³¸íÀº <see cref="Pathfinding.Heuristic"/>À» ÂüÁ¶ÇÏ¼¼¿ä.
+	/// íœ´ë¦¬ìŠ¤í‹±(Heuristic)ìœ¼ë¡œ ì‚¬ìš©í•  ê±°ë¦¬ í•¨ìˆ˜ìž…ë‹ˆë‹¤.
+	/// íœ´ë¦¬ìŠ¤í‹±ì€ ë…¸ë“œì—ì„œ ëª©í‘œ ì§€ì ê¹Œì§€ì˜ ì˜ˆìƒ ë¹„ìš©ì„ ë‚˜íƒ€ëƒ…ë‹ˆë‹¤.
+	/// ë‹¤ë¥¸ íœ´ë¦¬ìŠ¤í‹±ì€ ë™ì¼í•œ ê¸¸ì´ì˜ ë‹¤ë¥¸ ê²½ë¡œ ì¤‘ì—ì„œ ì–´ë–¤ ê²½ë¡œë¥¼ ì„ íƒí• ì§€ì— ì˜í–¥ì„ ë¯¸ì¹©ë‹ˆë‹¤.
+	/// ë‹¤ì–‘í•œ íœ´ë¦¬ìŠ¤í‹±ì— ëŒ€í•œ ìžì„¸í•œ ë‚´ìš© ë° ì„¤ëª…ì€ <see cref="Pathfinding.Heuristic"/>ì„ ì°¸ì¡°í•˜ì„¸ìš”.
 	/// </summary>
 	public Heuristic heuristic = Heuristic.Euclidean;
 
 	/// <summary>
-	/// ÈÞ¸®½ºÆ½ÀÇ ½ºÄÉÀÏÀÔ´Ï´Ù.
-	/// 1º¸´Ù ÀÛÀº °ªÀº ÆÐ½ºÆÄÀÎ´õ°¡ ´õ ¸¹Àº ³ëµå¸¦ °Ë»öÇÏ°Ô ÇÏ¹Ç·Î ´À·ÁÁý´Ï´Ù.
-	/// 0À» »ç¿ëÇÏ¸é ÆÐ½ºÆÄÀÎµù ¾Ë°í¸®ÁòÀÌ Dijkstra ¾Ë°í¸®ÁòÀ¸·Î °¨¼ÒµË´Ï´Ù. ÀÌ°ÍÀº <see cref="heuristic"/>À» NoneÀ¸·Î ¼³Á¤ÇÑ °Í°ú µ¿ÀÏÇÕ´Ï´Ù.
-	/// 1º¸´Ù Å« °ªÀ» »ç¿ëÇÏ¸é ÆÐ½ºÆÄÀÎµùÀÌ (ÀÏ¹ÝÀûÀ¸·Î) ´õ »¡¶óÁöÁö¸¸ °æ·Î°¡ ÃÖÀû(Áï, °¡´ÉÇÑ ÃÖ´Ü °æ·Î)ÀÌ ¾Æ´Ò ¼ö ÀÖ½À´Ï´Ù.
+	/// íœ´ë¦¬ìŠ¤í‹±ì˜ ìŠ¤ì¼€ì¼ìž…ë‹ˆë‹¤.
+	/// 1ë³´ë‹¤ ìž‘ì€ ê°’ì€ íŒ¨ìŠ¤íŒŒì¸ë”ê°€ ë” ë§Žì€ ë…¸ë“œë¥¼ ê²€ìƒ‰í•˜ê²Œ í•˜ë¯€ë¡œ ëŠë ¤ì§‘ë‹ˆë‹¤.
+	/// 0ì„ ì‚¬ìš©í•˜ë©´ íŒ¨ìŠ¤íŒŒì¸ë”© ì•Œê³ ë¦¬ì¦˜ì´ Dijkstra ì•Œê³ ë¦¬ì¦˜ìœ¼ë¡œ ê°ì†Œë©ë‹ˆë‹¤. ì´ê²ƒì€ <see cref="heuristic"/>ì„ Noneìœ¼ë¡œ ì„¤ì •í•œ ê²ƒê³¼ ë™ì¼í•©ë‹ˆë‹¤.
+	/// 1ë³´ë‹¤ í° ê°’ì„ ì‚¬ìš©í•˜ë©´ íŒ¨ìŠ¤íŒŒì¸ë”©ì´ (ì¼ë°˜ì ìœ¼ë¡œ) ë” ë¹¨ë¼ì§€ì§€ë§Œ ê²½ë¡œê°€ ìµœì (ì¦‰, ê°€ëŠ¥í•œ ìµœë‹¨ ê²½ë¡œ)ì´ ì•„ë‹ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 	///
-	/// º¸Åë ÀÌ °ªÀ» 1·Î µÎ´Â °ÍÀÌ ÁÁ½À´Ï´Ù.
+	/// ë³´í†µ ì´ ê°’ì„ 1ë¡œ ë‘ëŠ” ê²ƒì´ ì¢‹ìŠµë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: https://en.wikipedia.org/wiki/Admissible_heuristic
+	/// ì°¸ì¡°: https://en.wikipedia.org/wiki/Admissible_heuristic
 	/// </summary>
 	public float heuristicScale = 1F;
 
 	/// <summary>
-	/// »ç¿ëÇÒ ÆÐ½ºÆÄÀÎµù ½º·¹µå ¼öÀÔ´Ï´Ù.
-	/// ¸ÖÆ¼½º·¹µùÀº ÆÐ½ºÆÄÀÎµùÀ» ´Ù¸¥ ½º·¹µå·Î ÀÌµ¿ÇÏ¿© 2°³ ÀÌ»óÀÇ ÄÚ¾î ÄÄÇ»ÅÍ¿¡¼­ ¼º´É¿¡ °ÅÀÇ ¿µÇâÀ» ÁÖÁö ¾Ê°í ÇÁ·¹ÀÓ·üÀ» À¯ÁöÇÒ ¼ö ÀÖ°Ô ÇÕ´Ï´Ù.
-	/// - NoneÀº ÆÐ½ºÆÄÀÎµùÀ» Unity ½º·¹µå¿¡¼­ ÄÚ·çÆ¾À¸·Î ½ÇÇàÇÔÀ» ÀÇ¹ÌÇÕ´Ï´Ù.
-	/// - AutomaticÀº ½º·¹µå ¼ö¸¦ ÄÄÇ»ÅÍÀÇ ÄÚ¾î ¼ö¿Í ¸Þ¸ð¸®¿¡ ¸Â°Ô Á¶Á¤ÇÏ·Á°í ½ÃµµÇÕ´Ï´Ù.
-	///   512MB ¹Ì¸¸ÀÇ ¸Þ¸ð¸® ¶Ç´Â ´ÜÀÏ ÄÚ¾î ÄÄÇ»ÅÍÀÇ °æ¿ì ¸ÖÆ¼½º·¹µùÀ» »ç¿ëÇÏÁö ¾Êµµ·Ï µÇµ¹¸³´Ï´Ù.
+	/// ì‚¬ìš©í•  íŒ¨ìŠ¤íŒŒì¸ë”© ìŠ¤ë ˆë“œ ìˆ˜ìž…ë‹ˆë‹¤.
+	/// ë©€í‹°ìŠ¤ë ˆë”©ì€ íŒ¨ìŠ¤íŒŒì¸ë”©ì„ ë‹¤ë¥¸ ìŠ¤ë ˆë“œë¡œ ì´ë™í•˜ì—¬ 2ê°œ ì´ìƒì˜ ì½”ì–´ ì»´í“¨í„°ì—ì„œ ì„±ëŠ¥ì— ê±°ì˜ ì˜í–¥ì„ ì£¼ì§€ ì•Šê³  í”„ë ˆìž„ë¥ ì„ ìœ ì§€í•  ìˆ˜ ìžˆê²Œ í•©ë‹ˆë‹¤.
+	/// - Noneì€ íŒ¨ìŠ¤íŒŒì¸ë”©ì„ Unity ìŠ¤ë ˆë“œì—ì„œ ì½”ë£¨í‹´ìœ¼ë¡œ ì‹¤í–‰í•¨ì„ ì˜ë¯¸í•©ë‹ˆë‹¤.
+	/// - Automaticì€ ìŠ¤ë ˆë“œ ìˆ˜ë¥¼ ì»´í“¨í„°ì˜ ì½”ì–´ ìˆ˜ì™€ ë©”ëª¨ë¦¬ì— ë§žê²Œ ì¡°ì •í•˜ë ¤ê³  ì‹œë„í•©ë‹ˆë‹¤.
+	///   512MB ë¯¸ë§Œì˜ ë©”ëª¨ë¦¬ ë˜ëŠ” ë‹¨ì¼ ì½”ì–´ ì»´í“¨í„°ì˜ ê²½ìš° ë©€í‹°ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•˜ì§€ ì•Šë„ë¡ ë˜ëŒë¦½ë‹ˆë‹¤.
 	///
-	/// °¡´ÉÇÑ °æ¿ì "Auto" ¼³Á¤ Áß ÇÏ³ª¸¦ »ç¿ëÇÏ´Â °ÍÀÌ ÁÁ½À´Ï´Ù.
-	/// ÀÌÀ¯´Â ÄÄÇ»ÅÍ°¡ °­·ÂÇÏ°í 8°³ÀÇ ÄÚ¾î°¡ ÀÖ´Â °æ¿ì¿¡µµ
-	/// ´Ù¸¥ ÄÄÇ»ÅÍ´Â Äõµå ÄÚ¾î ¶Ç´Â µà¾ó ÄÚ¾îÀÌ¹Ç·Î 1 ¶Ç´Â 3°³ÀÇ ½º·¹µå ÀÌ»ó »ç¿ëÇÏÁö ¾Ê½À´Ï´Ù (ÀÏ¹ÝÀûÀ¸·Î Unity ½º·¹µå¿¡ ÇÏ³ª¸¦ ³²°Ü µÎ·Á°í ÇÔ).
-	/// ½º·¹µå ¼ö¸¦ ÄÄÇ»ÅÍÀÇ ÄÚ¾î ¼öº¸´Ù ¸¹ÀÌ »ç¿ëÇÏ¸é ÁÖ·Î ¸Þ¸ð¸®¸¦ ³¶ºñÇÏ°Ô µÇ¾î ´õ ºü¸£°Ô ½ÇÇàµÇÁö ¾Ê½À´Ï´Ù.
-	/// Ãß°¡ ¸Þ¸ð¸® »ç¿ë·®Àº ¹«½ÃÇÒ ¼ö ¾øÀ» Á¤µµ·Î ÀûÁö ¾Ê½À´Ï´Ù. °¢ ½º·¹µå´Â ¸ðµç ±×·¡ÇÁÀÇ ¸ðµç ³ëµå¿¡ ´ëÇÑ ÀÛÀº ¾çÀÇ µ¥ÀÌÅÍ¸¦ À¯ÁöÇØ¾ß ÇÕ´Ï´Ù.
-	/// ÀüÃ¼ ±×·¡ÇÁ µ¥ÀÌÅÍ°¡ ¾Æ´ÏÁö¸¸ ³ëµå ¼ö¿¡ ºñ·ÊÇÕ´Ï´Ù.
-	/// ÀÚµ¿ ¼³Á¤Àº ½ÇÇà ÁßÀÎ ±â±â¸¦ Á¶»çÇÏ°í ¸Þ¸ð¸®¸¦ ³¶ºñÇÏÁö ¾Êµµ·Ï ½º·¹µå ¼ö¸¦ °áÁ¤ÇÕ´Ï´Ù.
+	/// ê°€ëŠ¥í•œ ê²½ìš° "Auto" ì„¤ì • ì¤‘ í•˜ë‚˜ë¥¼ ì‚¬ìš©í•˜ëŠ” ê²ƒì´ ì¢‹ìŠµë‹ˆë‹¤.
+	/// ì´ìœ ëŠ” ì»´í“¨í„°ê°€ ê°•ë ¥í•˜ê³  8ê°œì˜ ì½”ì–´ê°€ ìžˆëŠ” ê²½ìš°ì—ë„
+	/// ë‹¤ë¥¸ ì»´í“¨í„°ëŠ” ì¿¼ë“œ ì½”ì–´ ë˜ëŠ” ë“€ì–¼ ì½”ì–´ì´ë¯€ë¡œ 1 ë˜ëŠ” 3ê°œì˜ ìŠ¤ë ˆë“œ ì´ìƒ ì‚¬ìš©í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤ (ì¼ë°˜ì ìœ¼ë¡œ Unity ìŠ¤ë ˆë“œì— í•˜ë‚˜ë¥¼ ë‚¨ê²¨ ë‘ë ¤ê³  í•¨).
+	/// ìŠ¤ë ˆë“œ ìˆ˜ë¥¼ ì»´í“¨í„°ì˜ ì½”ì–´ ìˆ˜ë³´ë‹¤ ë§Žì´ ì‚¬ìš©í•˜ë©´ ì£¼ë¡œ ë©”ëª¨ë¦¬ë¥¼ ë‚­ë¹„í•˜ê²Œ ë˜ì–´ ë” ë¹ ë¥´ê²Œ ì‹¤í–‰ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
+	/// ì¶”ê°€ ë©”ëª¨ë¦¬ ì‚¬ìš©ëŸ‰ì€ ë¬´ì‹œí•  ìˆ˜ ì—†ì„ ì •ë„ë¡œ ì ì§€ ì•ŠìŠµë‹ˆë‹¤. ê° ìŠ¤ë ˆë“œëŠ” ëª¨ë“  ê·¸ëž˜í”„ì˜ ëª¨ë“  ë…¸ë“œì— ëŒ€í•œ ìž‘ì€ ì–‘ì˜ ë°ì´í„°ë¥¼ ìœ ì§€í•´ì•¼ í•©ë‹ˆë‹¤.
+	/// ì „ì²´ ê·¸ëž˜í”„ ë°ì´í„°ê°€ ì•„ë‹ˆì§€ë§Œ ë…¸ë“œ ìˆ˜ì— ë¹„ë¡€í•©ë‹ˆë‹¤.
+	/// ìžë™ ì„¤ì •ì€ ì‹¤í–‰ ì¤‘ì¸ ê¸°ê¸°ë¥¼ ì¡°ì‚¬í•˜ê³  ë©”ëª¨ë¦¬ë¥¼ ë‚­ë¹„í•˜ì§€ ì•Šë„ë¡ ìŠ¤ë ˆë“œ ìˆ˜ë¥¼ ê²°ì •í•©ë‹ˆë‹¤.
 	///
-	/// ¿¹¿Ü´Â ÇÑ ¹ø¿¡ ÇÏ³ª ¶Ç´Â µÎ °³ÀÇ Ä³¸¯ÅÍ¸¸ È°¼ºÈ­ÇÏ´Â °æ¿ìÀÔ´Ï´Ù. ±×·± ´ÙÀ½ ÀÏ¹ÝÀûÀ¸·Î ½º·¹µå°¡ ÇÏ³ªÀÏ ¶§ ÃæºÐÇÑµ¥,
-	/// ´õ ¸¹Àº ½º·¹µå°¡ Á¦°øÇÏ´Â Ãß°¡ Ã³¸®·®ÀÌ ÇÊ¿äÇÒ °¡´É¼ºÀº °ÅÀÇ ¾ø½À´Ï´Ù. ´õ ¸¹Àº ½º·¹µå°¡ Á¦°øÇÏ´Â ÁÖ¿ä ÀÌÁ¡Àº ´Ù¸¥ ½º·¹µå¿¡¼­ ´Ù¸¥ °æ·Î¸¦ °è»êÇÏ±â ¶§¹®ÀÔ´Ï´Ù.
-	/// °³º° °æ·Î °è»êÀº ½º·¹µå ¼ö°¡ ´Ã¾î³ªµµ µ¿ÀÏÇÑ ¼Óµµ·Î °è»êµÇÁö ¾Ê½À´Ï´Ù.
+	/// ì˜ˆì™¸ëŠ” í•œ ë²ˆì— í•˜ë‚˜ ë˜ëŠ” ë‘ ê°œì˜ ìºë¦­í„°ë§Œ í™œì„±í™”í•˜ëŠ” ê²½ìš°ìž…ë‹ˆë‹¤. ê·¸ëŸ° ë‹¤ìŒ ì¼ë°˜ì ìœ¼ë¡œ ìŠ¤ë ˆë“œê°€ í•˜ë‚˜ì¼ ë•Œ ì¶©ë¶„í•œë°,
+	/// ë” ë§Žì€ ìŠ¤ë ˆë“œê°€ ì œê³µí•˜ëŠ” ì¶”ê°€ ì²˜ë¦¬ëŸ‰ì´ í•„ìš”í•  ê°€ëŠ¥ì„±ì€ ê±°ì˜ ì—†ìŠµë‹ˆë‹¤. ë” ë§Žì€ ìŠ¤ë ˆë“œê°€ ì œê³µí•˜ëŠ” ì£¼ìš” ì´ì ì€ ë‹¤ë¥¸ ìŠ¤ë ˆë“œì—ì„œ ë‹¤ë¥¸ ê²½ë¡œë¥¼ ê³„ì‚°í•˜ê¸° ë•Œë¬¸ìž…ë‹ˆë‹¤.
+	/// ê°œë³„ ê²½ë¡œ ê³„ì‚°ì€ ìŠ¤ë ˆë“œ ìˆ˜ê°€ ëŠ˜ì–´ë‚˜ë„ ë™ì¼í•œ ì†ë„ë¡œ ê³„ì‚°ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	///
-	/// Âü°í: ½º·¹µùÀ» »ç¿ëÀÚ ÁöÁ¤ÇÏ´Â °æ¿ì ¶Ç´Â ¾ÈÀüÇÑ ·¡ÆÛ¸¦ »ç¿ëÇÏÁö ¾Ê°í ±×·¡ÇÁ µ¥ÀÌÅÍ¸¦ Á÷Á¢ ¼öÁ¤ÇÏ´Â °æ¿ì,
-	/// ¸ÖÆ¼½º·¹µùÀº ÀÌ»óÇÑ ¿À·ù¸¦ À¯¹ßÇÏ°í ÁÖÀÇÇÏÁö ¾ÊÀ¸¸é ÆÐ½ºÆÄÀÎµùÀÌ ÀÛµ¿À» ¸ØÃâ ¼ö ÀÖ½À´Ï´Ù.
-	/// ±âº» »ç¿ë¹ý(ÆÐ½ºÆÄÀÎµù ÄÚ¾î ¼öÁ¤ÇÏÁö ¾ÊÀ½)¿¡ ´ëÇØ¼­´Â ¾ÈÀüÇÕ´Ï´Ù.
+	/// ì°¸ê³ : ìŠ¤ë ˆë”©ì„ ì‚¬ìš©ìž ì§€ì •í•˜ëŠ” ê²½ìš° ë˜ëŠ” ì•ˆì „í•œ ëž˜í¼ë¥¼ ì‚¬ìš©í•˜ì§€ ì•Šê³  ê·¸ëž˜í”„ ë°ì´í„°ë¥¼ ì§ì ‘ ìˆ˜ì •í•˜ëŠ” ê²½ìš°,
+	/// ë©€í‹°ìŠ¤ë ˆë”©ì€ ì´ìƒí•œ ì˜¤ë¥˜ë¥¼ ìœ ë°œí•˜ê³  ì£¼ì˜í•˜ì§€ ì•Šìœ¼ë©´ íŒ¨ìŠ¤íŒŒì¸ë”©ì´ ìž‘ë™ì„ ë©ˆì¶œ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+	/// ê¸°ë³¸ ì‚¬ìš©ë²•(íŒ¨ìŠ¤íŒŒì¸ë”© ì½”ì–´ ìˆ˜ì •í•˜ì§€ ì•ŠìŒ)ì— ëŒ€í•´ì„œëŠ” ì•ˆì „í•©ë‹ˆë‹¤.
 	///
-	/// Âü°í: WebGLÀº ½º·¹µå¸¦ ÀüÇô Áö¿øÇÏÁö ¾ÊÀ¸¹Ç·Î ÇØ´ç ÇÃ·§Æû¿¡¼­´Â ½º·¹µå¸¦ »ç¿ëÇÏÁö ¾Ê½À´Ï´Ù.
+	/// ì°¸ê³ : WebGLì€ ìŠ¤ë ˆë“œë¥¼ ì „í˜€ ì§€ì›í•˜ì§€ ì•Šìœ¼ë¯€ë¡œ í•´ë‹¹ í”Œëž«í¼ì—ì„œëŠ” ìŠ¤ë ˆë“œë¥¼ ì‚¬ìš©í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: CalculateThreadCount
+	/// ì°¸ì¡°: CalculateThreadCount
 	/// </summary>
 	public ThreadCount threadCount = ThreadCount.One;
 
 	/// <summary>
-	/// °¢ ÇÁ·¹ÀÓ¿¡¼­ ÆÐ½ºÆÄÀÎµù¿¡ ¼Ò¿äµÉ ¼ö ÀÖ´Â ÃÖ´ë ½Ã°£(¹Ð¸®ÃÊ)ÀÔ´Ï´Ù.
-	/// ÃÖ¼Ò 500°³ÀÇ ³ëµå°¡ °¢ ÇÁ·¹ÀÓ¿¡¼­ °Ë»öµË´Ï´Ù (¸¸¾à °Ë»öÇÒ ³ëµå°¡ ±×¸¸Å­ ÀÖ´Ù¸é).
-	/// ¸ÖÆ¼½º·¹µùÀ» »ç¿ëÇÏ´Â °æ¿ì ÀÌ °ªÀº ¹«½ÃµË´Ï´Ù.
+	/// ê° í”„ë ˆìž„ì—ì„œ íŒ¨ìŠ¤íŒŒì¸ë”©ì— ì†Œìš”ë  ìˆ˜ ìžˆëŠ” ìµœëŒ€ ì‹œê°„(ë°€ë¦¬ì´ˆ)ìž…ë‹ˆë‹¤.
+	/// ìµœì†Œ 500ê°œì˜ ë…¸ë“œê°€ ê° í”„ë ˆìž„ì—ì„œ ê²€ìƒ‰ë©ë‹ˆë‹¤ (ë§Œì•½ ê²€ìƒ‰í•  ë…¸ë“œê°€ ê·¸ë§Œí¼ ìžˆë‹¤ë©´).
+	/// ë©€í‹°ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•˜ëŠ” ê²½ìš° ì´ ê°’ì€ ë¬´ì‹œë©ë‹ˆë‹¤.
 	/// </summary>
 	public float maxFrameTime = 1F;
 
 	/// <summary>
-	/// ¼º´ÉÀ» Çâ»ó½ÃÅ°±â À§ÇØ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ Á¦ÇÑÇÏ°í ¹èÄ¡ÇÕ´Ï´Ù.
-	/// ÄÑ¸é ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®°¡ ¹èÄ¡µÇ¾î ´ú ÀÚÁÖ ½ÇÇàµË´Ï´Ù (±×·¡ÇÁ ¾÷µ¥ÀÌÆ® °£°ÝÀº <see cref="graphUpdateBatchingInterval)"/>·Î ÁöÁ¤µÊ).
+	/// ì„±ëŠ¥ì„ í–¥ìƒì‹œí‚¤ê¸° ìœ„í•´ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ì œí•œí•˜ê³  ë°°ì¹˜í•©ë‹ˆë‹¤.
+	/// ì¼œë©´ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ê°€ ë°°ì¹˜ë˜ì–´ ëœ ìžì£¼ ì‹¤í–‰ë©ë‹ˆë‹¤ (ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ê°„ê²©ì€ <see cref="graphUpdateBatchingInterval)"/>ë¡œ ì§€ì •ë¨).
 	///
-	/// ÆÐ½ºÆÄÀÎµù ½º·¹µå¸¦ ÀÚÁÖ ÁßÁöÇÒ ÇÊ¿ä°¡ ¾øÀ¸¹Ç·Î ÆÐ½ºÆÄÀÎµù Ã³¸®·®¿¡ ±àÁ¤ÀûÀÎ ¿µÇâÀ» ¹ÌÄ¥ ¼ö ÀÖÀ¸¸ç,
-	/// ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®´ç ¿À¹öÇìµå¸¦ ÁÙÀÏ ¼ö ÀÖ½À´Ï´Ù.
-	/// ¸ðµç ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®´Â Àû¿ëµÇÁö¸¸, ¸ðµÎ ÇÔ²² ¹èÄ¡µÇ¾î ´õ ¸¹ÀÌ Àû¿ëµË´Ï´Ù.
+	/// íŒ¨ìŠ¤íŒŒì¸ë”© ìŠ¤ë ˆë“œë¥¼ ìžì£¼ ì¤‘ì§€í•  í•„ìš”ê°€ ì—†ìœ¼ë¯€ë¡œ íŒ¨ìŠ¤íŒŒì¸ë”© ì²˜ë¦¬ëŸ‰ì— ê¸ì •ì ì¸ ì˜í–¥ì„ ë¯¸ì¹  ìˆ˜ ìžˆìœ¼ë©°,
+	/// ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë‹¹ ì˜¤ë²„í—¤ë“œë¥¼ ì¤„ì¼ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+	/// ëª¨ë“  ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ëŠ” ì ìš©ë˜ì§€ë§Œ, ëª¨ë‘ í•¨ê»˜ ë°°ì¹˜ë˜ì–´ ë” ë§Žì´ ì ìš©ë©ë‹ˆë‹¤.
 	///
-	/// ±×·¯³ª ÃÖ¼ÒÇÑÀÇ ´ë±â ½Ã°£À» ¿øÇÏ´Â °æ¿ì »ç¿ëÇÏÁö ¸¶¼¼¿ä.
+	/// ê·¸ëŸ¬ë‚˜ ìµœì†Œí•œì˜ ëŒ€ê¸° ì‹œê°„ì„ ì›í•˜ëŠ” ê²½ìš° ì‚¬ìš©í•˜ì§€ ë§ˆì„¸ìš”.
 	///
-	/// ÀÌ°ÍÀº <see cref="UpdateGraphs"/> ¸Þ¼­µå¸¦ »ç¿ëÇÏ¿© ¿äÃ»µÈ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¿¡¸¸ Àû¿ëµË´Ï´Ù. <see cref="RegisterSafeUpdate"/> ¶Ç´Â <see cref="AddWorkItem"/>À» »ç¿ëÇÏ¿© ¿äÃ»µÈ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¿¡´Â Àû¿ëµÇÁö ¾Ê½À´Ï´Ù.
+	/// ì´ê²ƒì€ <see cref="UpdateGraphs"/> ë©”ì„œë“œë¥¼ ì‚¬ìš©í•˜ì—¬ ìš”ì²­ëœ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ì—ë§Œ ì ìš©ë©ë‹ˆë‹¤. <see cref="RegisterSafeUpdate"/> ë˜ëŠ” <see cref="AddWorkItem"/>ì„ ì‚¬ìš©í•˜ì—¬ ìš”ì²­ëœ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ì—ëŠ” ì ìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	///
-	/// ¾ðÁ¦µçÁö ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ Áï½Ã Àû¿ëÇÏ·Á¸é <see cref="FlushGraphUpdates"/>¸¦ È£ÃâÇÒ ¼ö ÀÖ½À´Ï´Ù.
+	/// ì–¸ì œë“ ì§€ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ì¦‰ì‹œ ì ìš©í•˜ë ¤ë©´ <see cref="FlushGraphUpdates"/>ë¥¼ í˜¸ì¶œí•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® (¿Â¶óÀÎ ¹®¼­¿¡¼­ ÀÛµ¿ ¸µÅ© º¸±â)
+	/// ì°¸ì¡°: ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ (ì˜¨ë¼ì¸ ë¬¸ì„œì—ì„œ ìž‘ë™ ë§í¬ ë³´ê¸°)
 	/// </summary>
 	public bool batchGraphUpdates = false;
 
 	/// <summary>
-	/// °¢ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® ¹èÄ¡ °£ÀÇ ÃÖ¼Ò ÃÊ ´ÜÀ§ ½Ã°£ÀÔ´Ï´Ù.
-	/// <see cref="batchGraphUpdates"/>°¡ true·Î ¼³Á¤µÈ °æ¿ì, ÀÌ°ÍÀº °¢ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® ¹èÄ¡ °£ÀÇ ÃÖ¼Ò ÃÊ ´ÜÀ§ ½Ã°£À» Á¤ÀÇÇÕ´Ï´Ù.
+	/// ê° ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ë°°ì¹˜ ê°„ì˜ ìµœì†Œ ì´ˆ ë‹¨ìœ„ ì‹œê°„ìž…ë‹ˆë‹¤.
+	/// <see cref="batchGraphUpdates"/>ê°€ trueë¡œ ì„¤ì •ëœ ê²½ìš°, ì´ê²ƒì€ ê° ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ë°°ì¹˜ ê°„ì˜ ìµœì†Œ ì´ˆ ë‹¨ìœ„ ì‹œê°„ì„ ì •ì˜í•©ë‹ˆë‹¤.
 	///
-	/// ÆÐ½ºÆÄÀÎµù ½º·¹µå¸¦ ÀÚÁÖ ÁßÁöÇÒ ÇÊ¿ä°¡ ¾øÀ¸¹Ç·Î ÆÐ½ºÆÄÀÎµù Ã³¸®·®¿¡ ±àÁ¤ÀûÀÎ ¿µÇâÀ» ¹ÌÄ¥ ¼ö ÀÖÀ¸¸ç,
-	/// ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®´ç ¿À¹öÇìµå¸¦ ÁÙÀÏ ¼ö ÀÖ½À´Ï´Ù.
-	/// ¸ðµç ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®´Â Àû¿ëµÇÁö¸¸, ¸ðµÎ ÇÔ²² ¹èÄ¡µÇ¾î ´õ ¸¹ÀÌ Àû¿ëµË´Ï´Ù.
+	/// íŒ¨ìŠ¤íŒŒì¸ë”© ìŠ¤ë ˆë“œë¥¼ ìžì£¼ ì¤‘ì§€í•  í•„ìš”ê°€ ì—†ìœ¼ë¯€ë¡œ íŒ¨ìŠ¤íŒŒì¸ë”© ì²˜ë¦¬ëŸ‰ì— ê¸ì •ì ì¸ ì˜í–¥ì„ ë¯¸ì¹  ìˆ˜ ìžˆìœ¼ë©°,
+	/// ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë‹¹ ì˜¤ë²„í—¤ë“œë¥¼ ì¤„ì¼ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+	/// ëª¨ë“  ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ëŠ” ì ìš©ë˜ì§€ë§Œ, ëª¨ë‘ í•¨ê»˜ ë°°ì¹˜ë˜ì–´ ë” ë§Žì´ ì ìš©ë©ë‹ˆë‹¤.
 	///
-	/// ÃÖ¼ÒÇÑÀÇ ´ë±â ½Ã°£À» ¿øÇÏ´Â °æ¿ì »ç¿ëÇÏÁö ¸¶¼¼¿ä.
+	/// ìµœì†Œí•œì˜ ëŒ€ê¸° ì‹œê°„ì„ ì›í•˜ëŠ” ê²½ìš° ì‚¬ìš©í•˜ì§€ ë§ˆì„¸ìš”.
 	///
-	/// ÀÌ°ÍÀº <see cref="UpdateGraphs"/> ¸Þ¼­µå¸¦ »ç¿ëÇÏ¿© ¿äÃ»µÈ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¿¡¸¸ Àû¿ëµË´Ï´Ù. <see cref="RegisterSafeUpdate"/> ¶Ç´Â <see cref="AddWorkItem"/>À» »ç¿ëÇÏ¿© ¿äÃ»µÈ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¿¡´Â Àû¿ëµÇÁö ¾Ê½À´Ï´Ù.
+	/// ì´ê²ƒì€ <see cref="UpdateGraphs"/> ë©”ì„œë“œë¥¼ ì‚¬ìš©í•˜ì—¬ ìš”ì²­ëœ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ì—ë§Œ ì ìš©ë©ë‹ˆë‹¤. <see cref="RegisterSafeUpdate"/> ë˜ëŠ” <see cref="AddWorkItem"/>ì„ ì‚¬ìš©í•˜ì—¬ ìš”ì²­ëœ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ì—ëŠ” ì ìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® (¿Â¶óÀÎ ¹®¼­¿¡¼­ ÀÛµ¿ ¸µÅ© º¸±â)
+	/// ì°¸ì¡°: ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ (ì˜¨ë¼ì¸ ë¬¸ì„œì—ì„œ ìž‘ë™ ë§í¬ ë³´ê¸°)
 	/// </summary>
 	public float graphUpdateBatchingInterval = 0.2F;
 
 	/// <summary>
-	/// ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® ¹èÄ¡¸¦ Á¦ÇÑÇÕ´Ï´Ù.
-	/// Deprecated: ÀÌ ÇÊµå´Â 'batchGraphUpdates'·Î ÀÌ¸§ÀÌ º¯°æµÇ¾ú½À´Ï´Ù.
+	/// ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ë°°ì¹˜ë¥¼ ì œí•œí•©ë‹ˆë‹¤.
+	/// Deprecated: ì´ í•„ë“œëŠ” 'batchGraphUpdates'ë¡œ ì´ë¦„ì´ ë³€ê²½ë˜ì—ˆìŠµë‹ˆë‹¤.
 	/// </summary>
 	[System.Obsolete("This field has been renamed to 'batchGraphUpdates'")]
 	public bool limitGraphUpdates { get { return batchGraphUpdates; } set { batchGraphUpdates = value; } }
 
 	/// <summary>
-	/// ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® ÃÖ´ë ºóµµ¿¡ ´ëÇÑ Á¦ÇÑÀÔ´Ï´Ù.
-	/// Deprecated: ÀÌ ÇÊµå´Â 'graphUpdateBatchingInterval'·Î ÀÌ¸§ÀÌ º¯°æµÇ¾ú½À´Ï´Ù.
+	/// ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ìµœëŒ€ ë¹ˆë„ì— ëŒ€í•œ ì œí•œìž…ë‹ˆë‹¤.
+	/// Deprecated: ì´ í•„ë“œëŠ” 'graphUpdateBatchingInterval'ë¡œ ì´ë¦„ì´ ë³€ê²½ë˜ì—ˆìŠµë‹ˆë‹¤.
 	/// </summary>
 	[System.Obsolete("This field has been renamed to 'graphUpdateBatchingInterval'")]
 	public float maxGraphUpdateFreq { get { return graphUpdateBatchingInterval; } set { graphUpdateBatchingInterval = value; } }
@@ -340,14 +340,14 @@ public class AstarPath : VersionedMonoBehaviour {
 
 	#region DebugVariables
 	/// <summary>
-	/// @name µð¹ö±× ¸â¹ö
+	/// @name ë””ë²„ê·¸ ë©¤ë²„
 	/// @{
 	/// </summary>
 
 #if ProfileAstar
 /// <summary>
-/// ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ½ÃÀÛºÎÅÍ ½ÇÇàµÈ °æ·Î ¼öÀÔ´Ï´Ù.\n
-/// µð¹ö±ë º¯¼ö
+/// ì• í”Œë¦¬ì¼€ì´ì…˜ ì‹œìž‘ë¶€í„° ì‹¤í–‰ëœ ê²½ë¡œ ìˆ˜ìž…ë‹ˆë‹¤.\n
+/// ë””ë²„ê¹… ë³€ìˆ˜
 /// </summary>
 	public static int PathsCompleted = 0;
 
@@ -356,26 +356,26 @@ public class AstarPath : VersionedMonoBehaviour {
 #endif
 
 	/// <summary>
-	/// ¸¶Áö¸·À¸·Î Scan() È£ÃâÀÌ ¿Ï·áµÈ µ¥ °É¸° ½Ã°£ÀÔ´Ï´Ù.
-	/// ±×·¡ÇÁ¸¦ ³Ê¹« ÀÚÁÖ ÀÚµ¿À¸·Î ´Ù½Ã ½ºÄµÇÏ´Â °ÍÀ» ¹æÁöÇÏ´Â µ¥ »ç¿ëµË´Ï´Ù (¿¡µðÅÍ Àü¿ë)
+	/// ë§ˆì§€ë§‰ìœ¼ë¡œ Scan() í˜¸ì¶œì´ ì™„ë£Œëœ ë° ê±¸ë¦° ì‹œê°„ìž…ë‹ˆë‹¤.
+	/// ê·¸ëž˜í”„ë¥¼ ë„ˆë¬´ ìžì£¼ ìžë™ìœ¼ë¡œ ë‹¤ì‹œ ìŠ¤ìº”í•˜ëŠ” ê²ƒì„ ë°©ì§€í•˜ëŠ” ë° ì‚¬ìš©ë©ë‹ˆë‹¤ (ì—ë””í„° ì „ìš©)
 	/// </summary>
 	public float lastScanTime { get; private set; }
 
 	/// <summary>
-	/// ÁöÁ¡À» µð¹ö±ëÇÏ±â À§ÇØ »ç¿ëµÇ´Â °æ·ÎÀÔ´Ï´Ù.
-	/// ÀÌ °æ·Î ÇÚµé·¯´Â ¸¶Áö¸· °æ·Î¸¦ °è»êÇÏ´Â µ¥ »ç¿ëµË´Ï´Ù.
-	/// ¿¡µðÅÍ¿¡¼­ gizmo¸¦ »ç¿ëÇÏ¿© µð¹ö±× Á¤º¸¸¦ ±×¸± ¶§ »ç¿ëµË´Ï´Ù.
+	/// ì§€ì ì„ ë””ë²„ê¹…í•˜ê¸° ìœ„í•´ ì‚¬ìš©ë˜ëŠ” ê²½ë¡œìž…ë‹ˆë‹¤.
+	/// ì´ ê²½ë¡œ í•¸ë“¤ëŸ¬ëŠ” ë§ˆì§€ë§‰ ê²½ë¡œë¥¼ ê³„ì‚°í•˜ëŠ” ë° ì‚¬ìš©ë©ë‹ˆë‹¤.
+	/// ì—ë””í„°ì—ì„œ gizmoë¥¼ ì‚¬ìš©í•˜ì—¬ ë””ë²„ê·¸ ì •ë³´ë¥¼ ê·¸ë¦´ ë•Œ ì‚¬ìš©ë©ë‹ˆë‹¤.
 	/// </summary>
 	[System.NonSerialized]
 	public PathHandler debugPathData;
 
-	/// <summary>gizmo¸¦ »ç¿ëÇÏ¿© µð¹ö±ëÇÒ °æ·Î IDÀÔ´Ï´Ù</summary>
+	/// <summary>gizmoë¥¼ ì‚¬ìš©í•˜ì—¬ ë””ë²„ê¹…í•  ê²½ë¡œ IDìž…ë‹ˆë‹¤</summary>
 	[System.NonSerialized]
 	public ushort debugPathID;
 
 	/// <summary>
-	/// ¸¶Áö¸· ¿Ï·áµÈ °æ·Î¿¡¼­ µð¹ö±× ¹®ÀÚ¿­ÀÔ´Ï´Ù.
-	/// <see cref="logPathResults"/> == PathLog.InGameÀÎ °æ¿ì ¾÷µ¥ÀÌÆ®µË´Ï´Ù.
+	/// ë§ˆì§€ë§‰ ì™„ë£Œëœ ê²½ë¡œì—ì„œ ë””ë²„ê·¸ ë¬¸ìžì—´ìž…ë‹ˆë‹¤.
+	/// <see cref="logPathResults"/> == PathLog.InGameì¸ ê²½ìš° ì—…ë°ì´íŠ¸ë©ë‹ˆë‹¤.
 	/// </summary>
 	string inGameDebugPath;
 
@@ -385,30 +385,30 @@ public class AstarPath : VersionedMonoBehaviour {
 	#region StatusVariables
 
 	/// <summary>
-	/// <see cref="isScanning"/>¿¡ ´ëÇÑ ¹é¾÷ ÇÊµåÀÔ´Ï´Ù.
-	/// System.NonSerialized·Î Ç¥½ÃÇÒ ¼ö ¾ø±â ¶§¹®¿¡ ÀÚµ¿ ¼Ó¼ºÀ» »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.
+	/// <see cref="isScanning"/>ì— ëŒ€í•œ ë°±ì—… í•„ë“œìž…ë‹ˆë‹¤.
+	/// System.NonSerializedë¡œ í‘œì‹œí•  ìˆ˜ ì—†ê¸° ë•Œë¬¸ì— ìžë™ ì†ì„±ì„ ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.
 	/// </summary>
 	[System.NonSerialized]
 	bool isScanningBacking;
 
 	/// <summary>
-	/// ±×·¡ÇÁ°¡ ½ºÄµ ÁßÀÏ ¶§ ¼³Á¤µË´Ï´Ù.
-	/// FloodFillÀÌ ¿Ï·áµÉ ¶§±îÁö true°¡ µË´Ï´Ù.
+	/// ê·¸ëž˜í”„ê°€ ìŠ¤ìº” ì¤‘ì¼ ë•Œ ì„¤ì •ë©ë‹ˆë‹¤.
+	/// FloodFillì´ ì™„ë£Œë  ë•Œê¹Œì§€ trueê°€ ë©ë‹ˆë‹¤.
 	///
-	/// Âü°í: ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¿Í È¥µ¿ÇÏÁö ¸¶½Ê½Ã¿À.
+	/// ì°¸ê³ : ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ì™€ í˜¼ë™í•˜ì§€ ë§ˆì‹­ì‹œì˜¤.
 	///
-	/// OnPostScan¿¡¼­ È£ÃâµÇ´Â Graph Update Object¸¦ ´õ Àß Áö¿øÇÏ±â À§ÇØ »ç¿ëµË´Ï´Ù.
+	/// OnPostScanì—ì„œ í˜¸ì¶œë˜ëŠ” Graph Update Objectë¥¼ ë” ìž˜ ì§€ì›í•˜ê¸° ìœ„í•´ ì‚¬ìš©ë©ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: IsAnyGraphUpdateQueued
-	/// ÂüÁ¶: IsAnyGraphUpdateInProgress
+	/// ì°¸ì¡°: IsAnyGraphUpdateQueued
+	/// ì°¸ì¡°: IsAnyGraphUpdateInProgress
 	/// </summary>
 	public bool isScanning { get { return isScanningBacking; } private set { isScanningBacking = value; } }
 
 	/// <summary>
-	/// º´·Ä ÆÐ½ºÆÄÀÎ´õ ¼öÀÔ´Ï´Ù.
-	/// ÇÑ ¹ø¿¡ °æ·Î¸¦ °è»êÇÒ ¼ö ÀÖ´Â µ¿½Ã ÇÁ·Î¼¼½º ¼ö¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// ¸ÖÆ¼½º·¹µùÀ» »ç¿ëÇÏ´Â °æ¿ì ÀÌ´Â ½º·¹µå ¼öÀÏ °ÍÀÌ¸ç, ¸ÖÆ¼½º·¹µùÀ» »ç¿ëÇÏÁö ¾Ê´Â °æ¿ì Ç×»ó 1ÀÔ´Ï´Ù (ÄÚ·çÆ¾¸¸ »ç¿ëÇÏ±â ¶§¹®).
-	/// ÂüÁ¶: IsUsingMultithreading
+	/// ë³‘ë ¬ íŒ¨ìŠ¤íŒŒì¸ë” ìˆ˜ìž…ë‹ˆë‹¤.
+	/// í•œ ë²ˆì— ê²½ë¡œë¥¼ ê³„ì‚°í•  ìˆ˜ ìžˆëŠ” ë™ì‹œ í”„ë¡œì„¸ìŠ¤ ìˆ˜ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ë©€í‹°ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•˜ëŠ” ê²½ìš° ì´ëŠ” ìŠ¤ë ˆë“œ ìˆ˜ì¼ ê²ƒì´ë©°, ë©€í‹°ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•˜ì§€ ì•ŠëŠ” ê²½ìš° í•­ìƒ 1ìž…ë‹ˆë‹¤ (ì½”ë£¨í‹´ë§Œ ì‚¬ìš©í•˜ê¸° ë•Œë¬¸).
+	/// ì°¸ì¡°: IsUsingMultithreading
 	/// </summary>
 	public int NumParallelThreads {
 		get {
@@ -417,10 +417,10 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// ¸ÖÆ¼½º·¹µùÀ» »ç¿ëÇÏ´ÂÁö ¿©ºÎ¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// \exception System.Exception ¸ÖÆ¼½º·¹µùÀ» »ç¿ëÇÏ´ÂÁö ¿©ºÎ¸¦ °áÁ¤ÇÒ ¼ö ¾øÀ» ¶§ throwµË´Ï´Ù.
-	/// ÀÌ´Â °æ·Î Ã£±â°¡ ¿Ã¹Ù¸£°Ô ¼³Á¤µÇÁö ¾Ê¾ÒÀ» ¶§ ¹ß»ýÇÏÁö ¾Ê¾Æ¾ß ÇÕ´Ï´Ù.
-	/// Âü°í: ÀÌ´Â ÇöÀç ½º·¹µå°¡ ½ÇÇà ÁßÀÎÁö ¿©ºÎ¿¡ ´ëÇÑ Á¤º¸¸¦ »ç¿ëÇÕ´Ï´Ù. A* °´Ã¼ÀÇ ¼³Á¤¿¡¼­ÀÇ Á¤º¸´Â »ç¿ëÇÏÁö ¾Ê½À´Ï´Ù.
+	/// ë©€í‹°ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•˜ëŠ”ì§€ ì—¬ë¶€ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// \exception System.Exception ë©€í‹°ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•˜ëŠ”ì§€ ì—¬ë¶€ë¥¼ ê²°ì •í•  ìˆ˜ ì—†ì„ ë•Œ throwë©ë‹ˆë‹¤.
+	/// ì´ëŠ” ê²½ë¡œ ì°¾ê¸°ê°€ ì˜¬ë°”ë¥´ê²Œ ì„¤ì •ë˜ì§€ ì•Šì•˜ì„ ë•Œ ë°œìƒí•˜ì§€ ì•Šì•„ì•¼ í•©ë‹ˆë‹¤.
+	/// ì°¸ê³ : ì´ëŠ” í˜„ìž¬ ìŠ¤ë ˆë“œê°€ ì‹¤í–‰ ì¤‘ì¸ì§€ ì—¬ë¶€ì— ëŒ€í•œ ì •ë³´ë¥¼ ì‚¬ìš©í•©ë‹ˆë‹¤. A* ê°ì²´ì˜ ì„¤ì •ì—ì„œì˜ ì •ë³´ëŠ” ì‚¬ìš©í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	/// </summary>
 	public bool IsUsingMultithreading {
 		get {
@@ -429,111 +429,111 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// ´ë±â ÁßÀÎ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®°¡ ÀÖ´ÂÁö ¿©ºÎ¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// <see cref="IsAnyGraphUpdateQueued"/>¸¦ ´ë½Å »ç¿ëÇÏ¼¼¿ä.
+	/// ëŒ€ê¸° ì¤‘ì¸ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ê°€ ìžˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// <see cref="IsAnyGraphUpdateQueued"/>ë¥¼ ëŒ€ì‹  ì‚¬ìš©í•˜ì„¸ìš”.
 	/// </summary>
 	[System.Obsolete("Fixed grammar, use IsAnyGraphUpdateQueued instead")]
 	public bool IsAnyGraphUpdatesQueued { get { return IsAnyGraphUpdateQueued; } }
 
 	/// <summary>
-	/// ´ë±â ÁßÀÎ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®°¡ ÀÖ´ÂÁö ¿©ºÎ¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// Âü°í: ¾÷µ¥ÀÌÆ®°¡ ¼öÇà ÁßÀÎ µ¿¾È falseÀÔ´Ï´Ù.
-	/// Âü°í: ÀÌ°ÍÀº ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¿¡¸¸ ÇØ´çµË´Ï´Ù. <see cref="RegisterSafeUpdate"/> ¶Ç´Â <see cref="AddWorkItem"/>·Î Ãß°¡µÈ ´Ù¸¥ À¯ÇüÀÇ ÀÛ¾÷ Ç×¸ñÀº Æ÷ÇÔÇÏÁö ¾Ê½À´Ï´Ù.
+	/// ëŒ€ê¸° ì¤‘ì¸ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ê°€ ìžˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ì°¸ê³ : ì—…ë°ì´íŠ¸ê°€ ìˆ˜í–‰ ì¤‘ì¸ ë™ì•ˆ falseìž…ë‹ˆë‹¤.
+	/// ì°¸ê³ : ì´ê²ƒì€ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ì—ë§Œ í•´ë‹¹ë©ë‹ˆë‹¤. <see cref="RegisterSafeUpdate"/> ë˜ëŠ” <see cref="AddWorkItem"/>ë¡œ ì¶”ê°€ëœ ë‹¤ë¥¸ ìœ í˜•ì˜ ìž‘ì—… í•­ëª©ì€ í¬í•¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	/// </summary>
 	public bool IsAnyGraphUpdateQueued { get { return graphUpdates.IsAnyGraphUpdateQueued; } }
 
 	/// <summary>
-	/// ÇöÀç ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®°¡ ÁøÇà ÁßÀÎÁö ¿©ºÎ¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// Âü°í: ÀÌ°ÍÀº ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¿¡¸¸ ÇØ´çµË´Ï´Ù. <see cref="RegisterSafeUpdate"/> ¶Ç´Â <see cref="AddWorkItem"/>·Î Ãß°¡µÈ ´Ù¸¥ À¯ÇüÀÇ ÀÛ¾÷ Ç×¸ñÀº Æ÷ÇÔÇÏÁö ¾Ê½À´Ï´Ù.
+	/// í˜„ìž¬ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ê°€ ì§„í–‰ ì¤‘ì¸ì§€ ì—¬ë¶€ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ì°¸ê³ : ì´ê²ƒì€ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ì—ë§Œ í•´ë‹¹ë©ë‹ˆë‹¤. <see cref="RegisterSafeUpdate"/> ë˜ëŠ” <see cref="AddWorkItem"/>ë¡œ ì¶”ê°€ëœ ë‹¤ë¥¸ ìœ í˜•ì˜ ìž‘ì—… í•­ëª©ì€ í¬í•¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: IsAnyWorkItemInProgress
+	/// ì°¸ì¡°: IsAnyWorkItemInProgress
 	/// </summary>
 	public bool IsAnyGraphUpdateInProgress { get { return graphUpdates.IsAnyGraphUpdateInProgress; } }
 
 	/// <summary>
-	/// ÇöÀç ÀÛ¾÷ Ç×¸ñÀÌ ÁøÇà ÁßÀÎÁö ¿©ºÎ¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// Âü°í: ÀÌ°ÍÀº ´ëºÎºÐÀÇ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® À¯ÇüÀ» Æ÷ÇÔÇÕ´Ï´Ù.
-	/// ÀÏ¹Ý ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®, ³×ºñ¸Þ½Ã ÀÚ¸£±â ¹× <see cref="RegisterSafeUpdate"/> ¶Ç´Â <see cref="AddWorkItem"/>·Î Ãß°¡µÈ ¸ðµç ÀÛ¾÷ Ç×¸ñ°ú °°½À´Ï´Ù.
+	/// í˜„ìž¬ ìž‘ì—… í•­ëª©ì´ ì§„í–‰ ì¤‘ì¸ì§€ ì—¬ë¶€ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ì°¸ê³ : ì´ê²ƒì€ ëŒ€ë¶€ë¶„ì˜ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ìœ í˜•ì„ í¬í•¨í•©ë‹ˆë‹¤.
+	/// ì¼ë°˜ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸, ë„¤ë¹„ë©”ì‹œ ìžë¥´ê¸° ë° <see cref="RegisterSafeUpdate"/> ë˜ëŠ” <see cref="AddWorkItem"/>ë¡œ ì¶”ê°€ëœ ëª¨ë“  ìž‘ì—… í•­ëª©ê³¼ ê°™ìŠµë‹ˆë‹¤.
 	/// </summary>
 	public bool IsAnyWorkItemInProgress { get { return workItems.workItemsInProgress; } }
 
 	/// <summary>
-	/// ÇöÀç ÀÌ ÄÚµå°¡ ÀÛ¾÷ Ç×¸ñ ³»¿¡¼­ ½ÇÇàµÇ°í ÀÖ´ÂÁö ¿©ºÎ¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// Âü°í: ÀÌ°ÍÀº ´ëºÎºÐÀÇ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® À¯ÇüÀ» Æ÷ÇÔÇÕ´Ï´Ù.
-	/// ÀÏ¹Ý ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®, ³×ºñ¸Þ½Ã ÀÚ¸£±â ¹× <see cref="RegisterSafeUpdate"/> ¶Ç´Â <see cref="AddWorkItem"/>·Î Ãß°¡µÈ ¸ðµç ÀÛ¾÷ Ç×¸ñ°ú °°½À´Ï´Ù.
+	/// í˜„ìž¬ ì´ ì½”ë“œê°€ ìž‘ì—… í•­ëª© ë‚´ì—ì„œ ì‹¤í–‰ë˜ê³  ìžˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ì°¸ê³ : ì´ê²ƒì€ ëŒ€ë¶€ë¶„ì˜ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ìœ í˜•ì„ í¬í•¨í•©ë‹ˆë‹¤.
+	/// ì¼ë°˜ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸, ë„¤ë¹„ë©”ì‹œ ìžë¥´ê¸° ë° <see cref="RegisterSafeUpdate"/> ë˜ëŠ” <see cref="AddWorkItem"/>ë¡œ ì¶”ê°€ëœ ëª¨ë“  ìž‘ì—… í•­ëª©ê³¼ ê°™ìŠµë‹ˆë‹¤.
 	///
-	/// <see cref="IsAnyWorkItemInProgress"/>¿Í ´Þ¸® ÀÌ °ªÀº ÀÛ¾÷ Ç×¸ñ ÄÚµå°¡ ½ÇÇà ÁßÀÏ ¶§¸¸ trueÀÌ¸ç, ¿©·¯ ÇÁ·¹ÀÓ¿¡ °ÉÃÄ ÀÛ¾÷ Ç×¸ñÀ» ¾÷µ¥ÀÌÆ®ÇÏ´Â µ¿¾È true°¡ ¾Æ´Õ´Ï´Ù.
+	/// <see cref="IsAnyWorkItemInProgress"/>ì™€ ë‹¬ë¦¬ ì´ ê°’ì€ ìž‘ì—… í•­ëª© ì½”ë“œê°€ ì‹¤í–‰ ì¤‘ì¼ ë•Œë§Œ trueì´ë©°, ì—¬ëŸ¬ í”„ë ˆìž„ì— ê±¸ì³ ìž‘ì—… í•­ëª©ì„ ì—…ë°ì´íŠ¸í•˜ëŠ” ë™ì•ˆ trueê°€ ì•„ë‹™ë‹ˆë‹¤.
 	/// </summary>
 	internal bool IsInsideWorkItem { get { return workItems.workItemsInProgressRightNow; } }
 
 	#endregion
 
 	#region Callbacks
-	/// <summary>@name ÄÝ¹é</summary>
-	/* °æ·Î Ã£±â ÀÌº¥Æ®¿¡ ´ëÇÑ ÄÝ¹éÀÔ´Ï´Ù.
-	 * ÀÌ¸¦ ÅëÇØ °æ·Î Ã£±â ÇÁ·Î¼¼½º¿¡ ÈÅÇÒ ¼ö ÀÖ½À´Ï´Ù.
-	 * ÄÝ¹éÀº ´ÙÀ½°ú °°ÀÌ »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù:
+	/// <summary>@name ì½œë°±</summary>
+	/* ê²½ë¡œ ì°¾ê¸° ì´ë²¤íŠ¸ì— ëŒ€í•œ ì½œë°±ìž…ë‹ˆë‹¤.
+	 * ì´ë¥¼ í†µí•´ ê²½ë¡œ ì°¾ê¸° í”„ë¡œì„¸ìŠ¤ì— í›…í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+	 * ì½œë°±ì€ ë‹¤ìŒê³¼ ê°™ì´ ì‚¬ìš©í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤:
 	 * \snippet MiscSnippets.cs AstarPath.Callbacks
 	 */
 	/// <summary>@{</summary>
 
 	/// <summary>
-	/// Awake ÀÌÈÄ¿¡ ¸ðµç ÀÛ¾÷À» ½ÃÀÛÇÏ±â Àü¿¡ È£ÃâµË´Ï´Ù.
-	/// ÀÌ Awake È£ÃâÀÇ ½ÃÀÛ¿¡¼­ È£ÃâµÇ¸ç <see cref="active"/>°¡ ¼³Á¤µÈ Á÷ÈÄÀÌÁö¸¸ ÀÌ°Í ¿Ü¿¡´Â ¾Æ¹«°Íµµ ¼öÇàµÇÁö ¾Ê¾Ò½À´Ï´Ù.
-	/// ·±Å¸ÀÓ Áß¿¡ »ý¼ºµÈ AstarPath ±¸¼º ¿ä¼Ò¿¡ ´ëÇÑ ±âº» ¼³Á¤À» ¼³Á¤ÇÏ·Á¸éÀÌ Awake¿¡¼­¸¸ º¯°æÇÒ ¼öÀÖ´Â ¸î °¡Áö ¼³Á¤À» »ç¿ëÇÏ½Ê½Ã¿À
-	/// (¸ÖÆ¼½º·¹µù °ü·Ã ¼³Á¤ µî)
+	/// Awake ì´í›„ì— ëª¨ë“  ìž‘ì—…ì„ ì‹œìž‘í•˜ê¸° ì „ì— í˜¸ì¶œë©ë‹ˆë‹¤.
+	/// ì´ Awake í˜¸ì¶œì˜ ì‹œìž‘ì—ì„œ í˜¸ì¶œë˜ë©° <see cref="active"/>ê°€ ì„¤ì •ëœ ì§í›„ì´ì§€ë§Œ ì´ê²ƒ ì™¸ì—ëŠ” ì•„ë¬´ê²ƒë„ ìˆ˜í–‰ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.
+	/// ëŸ°íƒ€ìž„ ì¤‘ì— ìƒì„±ëœ AstarPath êµ¬ì„± ìš”ì†Œì— ëŒ€í•œ ê¸°ë³¸ ì„¤ì •ì„ ì„¤ì •í•˜ë ¤ë©´ì´ Awakeì—ì„œë§Œ ë³€ê²½í•  ìˆ˜ìžˆëŠ” ëª‡ ê°€ì§€ ì„¤ì •ì„ ì‚¬ìš©í•˜ì‹­ì‹œì˜¤
+	/// (ë©€í‹°ìŠ¤ë ˆë”© ê´€ë ¨ ì„¤ì • ë“±)
 	/// <code>
-	/// // ½ÃÀÛ ½Ã »õ AstarPath °³Ã¼¸¦ ¸¸µé°í ±âº» ¼³Á¤À» Àû¿ëÇÕ´Ï´Ù
+	/// // ì‹œìž‘ ì‹œ ìƒˆ AstarPath ê°œì²´ë¥¼ ë§Œë“¤ê³  ê¸°ë³¸ ì„¤ì •ì„ ì ìš©í•©ë‹ˆë‹¤
 	/// public void Start () {
 	///     AstarPath.OnAwakeSettings += ApplySettings;
 	///     AstarPath astar = gameObject.AddComponent<AstarPath>();
 	/// }
 	///
 	/// public void ApplySettings () {
-	///     // ´ë¸®ÀÚ¿¡¼­ µî·Ï ÇØÁ¦
+	///     // ëŒ€ë¦¬ìžì—ì„œ ë“±ë¡ í•´ì œ
 	///     AstarPath.OnAwakeSettings -= ApplySettings;
-	///     // ¿¹¸¦ µé¾î Awake È£Ãâ ÀÌÈÄ¿¡ threadCount¸¦ º¯°æÇÒ ¼ö ¾øÀ¸¹Ç·Î ¿©±â¿¡¼­¸¸ ¼³Á¤ÇÒ ¼ö ÀÖ½À´Ï´Ù.
+	///     // ì˜ˆë¥¼ ë“¤ì–´ Awake í˜¸ì¶œ ì´í›„ì— threadCountë¥¼ ë³€ê²½í•  ìˆ˜ ì—†ìœ¼ë¯€ë¡œ ì—¬ê¸°ì—ì„œë§Œ ì„¤ì •í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 	///     AstarPath.active.threadCount = ThreadCount.One;
 	/// }
 	/// </code>
 	/// </summary>
 	public static System.Action OnAwakeSettings;
 
-	/// <summary>±×·¡ÇÁ°¡ ½ºÄµµÇ±â Àü¿¡ °¢ ±×·¡ÇÁ¿¡ ´ëÇØ È£ÃâµË´Ï´Ù.</summary>
+	/// <summary>ê·¸ëž˜í”„ê°€ ìŠ¤ìº”ë˜ê¸° ì „ì— ê° ê·¸ëž˜í”„ì— ëŒ€í•´ í˜¸ì¶œë©ë‹ˆë‹¤.</summary>
 	public static OnGraphDelegate OnGraphPreScan;
 
-	/// <summary>±×·¡ÇÁ°¡ ½ºÄµµÈ ÈÄ¿¡ °¢ ±×·¡ÇÁ¿¡ ´ëÇØ È£ÃâµË´Ï´Ù. ´Ù¸¥ ±×·¡ÇÁ´Â ¾ÆÁ÷ ½ºÄµµÇÁö ¾Ê¾ÒÀ» ¼ö ÀÖ½À´Ï´Ù.</summary>
+	/// <summary>ê·¸ëž˜í”„ê°€ ìŠ¤ìº”ëœ í›„ì— ê° ê·¸ëž˜í”„ì— ëŒ€í•´ í˜¸ì¶œë©ë‹ˆë‹¤. ë‹¤ë¥¸ ê·¸ëž˜í”„ëŠ” ì•„ì§ ìŠ¤ìº”ë˜ì§€ ì•Šì•˜ì„ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.</summary>
 	public static OnGraphDelegate OnGraphPostScan;
 
-	/// <summary>°Ë»öÇÏ±â Àü¿¡ °¢ °æ·Î¿¡ ´ëÇØ È£ÃâµË´Ï´Ù. ¸ÖÆ¼½º·¹µùÀ» »ç¿ëÇÒ ¶§ ÁÖÀÇÇÏ½Ê½Ã¿À. ÀÌ°ÍÀº ´Ù¸¥ ½º·¹µå¿¡¼­ È£ÃâµË´Ï´Ù.</summary>
+	/// <summary>ê²€ìƒ‰í•˜ê¸° ì „ì— ê° ê²½ë¡œì— ëŒ€í•´ í˜¸ì¶œë©ë‹ˆë‹¤. ë©€í‹°ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•  ë•Œ ì£¼ì˜í•˜ì‹­ì‹œì˜¤. ì´ê²ƒì€ ë‹¤ë¥¸ ìŠ¤ë ˆë“œì—ì„œ í˜¸ì¶œë©ë‹ˆë‹¤.</summary>
 	public static OnPathDelegate OnPathPreSearch;
 
-	/// <summary>°Ë»ö ÈÄ °¢ °æ·Î¿¡ ´ëÇØ È£ÃâµË´Ï´Ù. ¸ÖÆ¼½º·¹µùÀ» »ç¿ëÇÒ ¶§ ÁÖÀÇÇÏ½Ê½Ã¿À. ÀÌ°ÍÀº ´Ù¸¥ ½º·¹µå¿¡¼­ È£ÃâµË´Ï´Ù.</summary>
+	/// <summary>ê²€ìƒ‰ í›„ ê° ê²½ë¡œì— ëŒ€í•´ í˜¸ì¶œë©ë‹ˆë‹¤. ë©€í‹°ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•  ë•Œ ì£¼ì˜í•˜ì‹­ì‹œì˜¤. ì´ê²ƒì€ ë‹¤ë¥¸ ìŠ¤ë ˆë“œì—ì„œ í˜¸ì¶œë©ë‹ˆë‹¤.</summary>
 	public static OnPathDelegate OnPathPostSearch;
 
-	/// <summary>½ºÄµ ½ÃÀÛ Àü¿¡ È£ÃâµË´Ï´Ù.</summary>
+	/// <summary>ìŠ¤ìº” ì‹œìž‘ ì „ì— í˜¸ì¶œë©ë‹ˆë‹¤.</summary>
 	public static OnScanDelegate OnPreScan;
 
-	/// <summary>½ºÄµ ÈÄ¿¡ È£ÃâµË´Ï´Ù. ÀÌ°ÍÀº ¸µÅ©¸¦ Àû¿ëÇÏ°í ±×·¡ÇÁ¸¦ Ä§¼ö Ã¤¿ì±â ¹× ±âÅ¸ ÈÄ Ã³¸®¸¦ ¼öÇàÇÏ±â Àü¿¡ È£ÃâµË´Ï´Ù.</summary>
+	/// <summary>ìŠ¤ìº” í›„ì— í˜¸ì¶œë©ë‹ˆë‹¤. ì´ê²ƒì€ ë§í¬ë¥¼ ì ìš©í•˜ê³  ê·¸ëž˜í”„ë¥¼ ì¹¨ìˆ˜ ì±„ìš°ê¸° ë° ê¸°íƒ€ í›„ ì²˜ë¦¬ë¥¼ ìˆ˜í–‰í•˜ê¸° ì „ì— í˜¸ì¶œë©ë‹ˆë‹¤.</summary>
 	public static OnScanDelegate OnPostScan;
 
-	/// <summary>½ºÄµÀÌ ¿ÏÀüÈ÷ ¿Ï·áµÇ¸é È£ÃâµË´Ï´Ù. ÀÌ°ÍÀº Scan ÇÔ¼ö¿¡¼­ ¸¶Áö¸·À¸·Î È£ÃâµÇ´Â °ÍÀ¸·Î È£ÃâµË´Ï´Ù.</summary>
+	/// <summary>ìŠ¤ìº”ì´ ì™„ì „ížˆ ì™„ë£Œë˜ë©´ í˜¸ì¶œë©ë‹ˆë‹¤. ì´ê²ƒì€ Scan í•¨ìˆ˜ì—ì„œ ë§ˆì§€ë§‰ìœ¼ë¡œ í˜¸ì¶œë˜ëŠ” ê²ƒìœ¼ë¡œ í˜¸ì¶œë©ë‹ˆë‹¤.</summary>
 	public static OnScanDelegate OnLatePostScan;
 
-	/// <summary>±×·¡ÇÁ°¡ ¾÷µ¥ÀÌÆ® µÉ ¶§ È£ÃâµË´Ï´Ù. ¿¹¸¦ µé¾î ±×·¡ÇÁ°¡ º¯°æµÉ ¶§¸¶´Ù °æ·Î¸¦ ´Ù½Ã °è»êÇÏµµ·Ï µî·ÏÇÕ´Ï´Ù.</summary>
+	/// <summary>ê·¸ëž˜í”„ê°€ ì—…ë°ì´íŠ¸ ë  ë•Œ í˜¸ì¶œë©ë‹ˆë‹¤. ì˜ˆë¥¼ ë“¤ì–´ ê·¸ëž˜í”„ê°€ ë³€ê²½ë  ë•Œë§ˆë‹¤ ê²½ë¡œë¥¼ ë‹¤ì‹œ ê³„ì‚°í•˜ë„ë¡ ë“±ë¡í•©ë‹ˆë‹¤.</summary>
 	public static OnScanDelegate OnGraphsUpdated;
 
 	/// <summary>
-	/// pathID°¡ 65536À» ³Ñ¾î¼­¸é 0À¸·Î Àç¼³Á¤µÉ ¶§ È£ÃâµË´Ï´Ù.
-	/// Âü°í: ÀÌ ÄÝ¹éÀº È£ÃâµÉ ¶§¸¶´Ù Áö¿öÁö¹Ç·Î ´Ù½Ã µî·ÏÇÏ·Á¸é ¹Ù·Î ÄÝ¹éÀ» ¹ÞÀº ÈÄ¿¡ Á÷Á¢ µî·ÏÇÏ½Ê½Ã¿À.
+	/// pathIDê°€ 65536ì„ ë„˜ì–´ì„œë©´ 0ìœ¼ë¡œ ìž¬ì„¤ì •ë  ë•Œ í˜¸ì¶œë©ë‹ˆë‹¤.
+	/// ì°¸ê³ : ì´ ì½œë°±ì€ í˜¸ì¶œë  ë•Œë§ˆë‹¤ ì§€ì›Œì§€ë¯€ë¡œ ë‹¤ì‹œ ë“±ë¡í•˜ë ¤ë©´ ë°”ë¡œ ì½œë°±ì„ ë°›ì€ í›„ì— ì§ì ‘ ë“±ë¡í•˜ì‹­ì‹œì˜¤.
 	/// </summary>
 	public static System.Action On65KOverflow;
 
-	/// <summary>»ç¿ëÇÏÁö ¾ÊÀ½:</summary>
+	/// <summary>ì‚¬ìš©í•˜ì§€ ì•ŠìŒ:</summary>
 	[System.ObsoleteAttribute]
 	public System.Action OnGraphsWillBeUpdated;
 
-	/// <summary>»ç¿ëÇÏÁö ¾ÊÀ½:</summary>
+	/// <summary>ì‚¬ìš©í•˜ì§€ ì•ŠìŒ:</summary>
 	[System.ObsoleteAttribute]
 	public System.Action OnGraphsWillBeUpdated2;
 
@@ -542,71 +542,71 @@ public class AstarPath : VersionedMonoBehaviour {
 
 	#region MemoryStructures
 
-	/// <summary>±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ Ã³¸®ÇÕ´Ï´Ù.</summary>
+	/// <summary>ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ì²˜ë¦¬í•©ë‹ˆë‹¤.</summary>
 	readonly GraphUpdateProcessor graphUpdates;
 
-	/// <summary>µÎ ³ëµå »çÀÌ¿¡ °æ·Î°¡ ÀÖ´ÂÁö¿Í °°Àº ÀÏºÎ Äõ¸®¸¦ °¡¼ÓÈ­ÇÏ±â À§ÇØ °èÃþ ±×·¡ÇÁ¸¦ º¸°üÇÕ´Ï´Ù.</summary>
+	/// <summary>ë‘ ë…¸ë“œ ì‚¬ì´ì— ê²½ë¡œê°€ ìžˆëŠ”ì§€ì™€ ê°™ì€ ì¼ë¶€ ì¿¼ë¦¬ë¥¼ ê°€ì†í™”í•˜ê¸° ìœ„í•´ ê³„ì¸µ ê·¸ëž˜í”„ë¥¼ ë³´ê´€í•©ë‹ˆë‹¤.</summary>
 	internal readonly HierarchicalGraph hierarchicalGraph = new HierarchicalGraph();
 
 	/// <summary>
-	/// ³×ºñ¸Þ½Ã ÄÆÀ» Ã³¸®ÇÕ´Ï´Ù.
-	/// ÂüÁ¶: <see cref="Pathfinding.NavmeshCut"/>
+	/// ë„¤ë¹„ë©”ì‹œ ì»·ì„ ì²˜ë¦¬í•©ë‹ˆë‹¤.
+	/// ì°¸ì¡°: <see cref="Pathfinding.NavmeshCut"/>
 	/// </summary>
 	public readonly NavmeshUpdates navmeshUpdates = new NavmeshUpdates();
 
-	/// <summary>ÀÛ¾÷ Ç×¸ñÀ» Ã³¸®ÇÕ´Ï´Ù.</summary>
+	/// <summary>ìž‘ì—… í•­ëª©ì„ ì²˜ë¦¬í•©ë‹ˆë‹¤.</summary>
 	readonly WorkItemProcessor workItems;
 
-	/// <summary>´ë±â ÁßÀÎ ¸ðµç °æ·Î¸¦ º¸°üÇÏ°í °è»êÇÕ´Ï´Ù.</summary>
+	/// <summary>ëŒ€ê¸° ì¤‘ì¸ ëª¨ë“  ê²½ë¡œë¥¼ ë³´ê´€í•˜ê³  ê³„ì‚°í•©ë‹ˆë‹¤.</summary>
 	PathProcessor pathProcessor;
 
 	bool graphUpdateRoutineRunning = false;
 
-	/// <summary>QueueGraphUpdates°¡ ¿©·¯ ¹ø ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® ¸í·ÉÀ» ´ë±â¿­¿¡ Ãß°¡ÇÏÁö ¾Êµµ·Ï ÇÕ´Ï´Ù.</summary>
+	/// <summary>QueueGraphUpdatesê°€ ì—¬ëŸ¬ ë²ˆ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ëª…ë ¹ì„ ëŒ€ê¸°ì—´ì— ì¶”ê°€í•˜ì§€ ì•Šë„ë¡ í•©ë‹ˆë‹¤.</summary>
 	bool graphUpdatesWorkItemAdded = false;
 
 	/// <summary>
-	/// ¸¶Áö¸· ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®°¡ ¿Ï·áµÈ ½Ã°£ÀÔ´Ï´Ù.
-	/// ÀÚÁÖ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ ¹­¾î ¹èÄ¡·Î ±×·ìÈ­ÇÏ±â À§ÇØ »ç¿ëµË´Ï´Ù.
+	/// ë§ˆì§€ë§‰ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ê°€ ì™„ë£Œëœ ì‹œê°„ìž…ë‹ˆë‹¤.
+	/// ìžì£¼ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ë¬¶ì–´ ë°°ì¹˜ë¡œ ê·¸ë£¹í™”í•˜ê¸° ìœ„í•´ ì‚¬ìš©ë©ë‹ˆë‹¤.
 	/// </summary>
 	float lastGraphUpdate = -9999F;
 
-	/// <summary>ÇöÀç ´ë±â ÁßÀÎ ÀÛ¾÷ Ç×¸ñÀÌ ÀÖ´Â °æ¿ì º¸°üÇÕ´Ï´Ù.</summary>
+	/// <summary>í˜„ìž¬ ëŒ€ê¸° ì¤‘ì¸ ìž‘ì—… í•­ëª©ì´ ìžˆëŠ” ê²½ìš° ë³´ê´€í•©ë‹ˆë‹¤.</summary>
 	PathProcessor.GraphUpdateLock workItemLock;
 
-	/// <summary>º¸°üµÈ ¸ðµç ¿Ï·áµÈ °æ·Î¸¦ ¹ÝÈ¯ÇÏµµ·Ï ´ë±âÇÕ´Ï´Ù.</summary>
+	/// <summary>ë³´ê´€ëœ ëª¨ë“  ì™„ë£Œëœ ê²½ë¡œë¥¼ ë°˜í™˜í•˜ë„ë¡ ëŒ€ê¸°í•©ë‹ˆë‹¤.</summary>
 	internal readonly PathReturnQueue pathReturnQueue;
 
 	/// <summary>
-	/// ÈÞ¸®½ºÆ½ ÃÖÀûÈ­¸¦À§ÇÑ ¼³Á¤À» º¸°üÇÕ´Ï´Ù.
-	/// ÂüÁ¶: heuristic-opt (ÀÛµ¿ ¸µÅ©´Â ¿Â¶óÀÎ ¼³¸í¼­¿¡¼­ È®ÀÎÇÏ½Ê½Ã¿À)
+	/// íœ´ë¦¬ìŠ¤í‹± ìµœì í™”ë¥¼ìœ„í•œ ì„¤ì •ì„ ë³´ê´€í•©ë‹ˆë‹¤.
+	/// ì°¸ì¡°: heuristic-opt (ìž‘ë™ ë§í¬ëŠ” ì˜¨ë¼ì¸ ì„¤ëª…ì„œì—ì„œ í™•ì¸í•˜ì‹­ì‹œì˜¤)
 	/// </summary>
 	public EuclideanEmbedding euclideanEmbedding = new EuclideanEmbedding();
 
 	#endregion
 
 	/// <summary>
-	/// ±×·¡ÇÁ °Ë»ç±â¸¦ Ç¥½ÃÇÏ°Å³ª ¼û±é´Ï´Ù.
-	/// ³»ºÎ¿¡¼­ ¿¡µðÅÍ¿¡ ÀÇÇØ »ç¿ëµË´Ï´Ù.
+	/// ê·¸ëž˜í”„ ê²€ì‚¬ê¸°ë¥¼ í‘œì‹œí•˜ê±°ë‚˜ ìˆ¨ê¹ë‹ˆë‹¤.
+	/// ë‚´ë¶€ì—ì„œ ì—ë””í„°ì— ì˜í•´ ì‚¬ìš©ë©ë‹ˆë‹¤.
 	/// </summary>
 	public bool showGraphs = false;
 
 	/// <summary>
-	/// ±×·¡ÇÁ °Ë»ç±â¸¦ Ç¥½ÃÇÏ°Å³ª ¼û±é´Ï´Ù.
-	/// ³»ºÎ¿¡¼­ ¿¡µðÅÍ¿¡ ÀÇÇØ »ç¿ëµË´Ï´Ù.
+	/// ê·¸ëž˜í”„ ê²€ì‚¬ê¸°ë¥¼ í‘œì‹œí•˜ê±°ë‚˜ ìˆ¨ê¹ë‹ˆë‹¤.
+	/// ë‚´ë¶€ì—ì„œ ì—ë””í„°ì— ì˜í•´ ì‚¬ìš©ë©ë‹ˆë‹¤.
 	/// </summary>
 	private ushort nextFreePathID = 1;
 
 	private AstarPath () {
 		pathReturnQueue = new PathReturnQueue(this);
 
-		// pathProcessor°¡ nullÀÌ µÇÁö ¾Êµµ·Ï ÇÕ´Ï´Ù.
+		// pathProcessorê°€ nullì´ ë˜ì§€ ì•Šë„ë¡ í•©ë‹ˆë‹¤.
 		pathProcessor = new PathProcessor(this, pathReturnQueue, 1, false);
 
 		workItems = new WorkItemProcessor(this);
 		graphUpdates = new GraphUpdateProcessor(this);
 
-		// graphUpdates.OnGraphsUpdated¸¦ AstarPath.OnGraphsUpdated·Î Àü´ÞÇÕ´Ï´Ù.
+		// graphUpdates.OnGraphsUpdatedë¥¼ AstarPath.OnGraphsUpdatedë¡œ ì „ë‹¬í•©ë‹ˆë‹¤.
 		graphUpdates.OnGraphsUpdated += () => {
 			if (OnGraphsUpdated != null) {
 				OnGraphsUpdated(this);
@@ -615,8 +615,8 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// ÅÂ±× ÀÌ¸§À» ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// ÅÂ±× ÀÌ¸§ ¹è¿­ÀÌ nullÀÌ°Å³ª ±æÀÌ°¡ 32°¡ ¾Æ´Ñ °æ¿ì »õ ¹è¿­À» ¸¸µé°í 0,1,2,3,4 µîÀ¸·Î Ã¤¿ó´Ï´Ù.
+	/// íƒœê·¸ ì´ë¦„ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// íƒœê·¸ ì´ë¦„ ë°°ì—´ì´ nullì´ê±°ë‚˜ ê¸¸ì´ê°€ 32ê°€ ì•„ë‹Œ ê²½ìš° ìƒˆ ë°°ì—´ì„ ë§Œë“¤ê³  0,1,2,3,4 ë“±ìœ¼ë¡œ ì±„ì›ë‹ˆë‹¤.
 	/// </summary>
 	public string[] GetTagNames () {
 		if (tagNames == null || tagNames.Length != 32) {
@@ -630,11 +630,11 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// ½ÇÇà ¸ðµå ¿ÜºÎ¿¡¼­ AstarPath °³Ã¼¸¦ ¼±ÅÃµÇÁö ¾Ê¾Ò´õ¶óµµ ÃÊ±âÈ­ÇÕ´Ï´Ù.
-	/// ÀÌ·¸°ÔÇÏ¸é <see cref="active"/> ¼Ó¼ºÀÌ ¼³Á¤µÇ°í ¸ðµç ±×·¡ÇÁ°¡ ¿ªÁ÷·ÄÈ­µË´Ï´Ù.
+	/// ì‹¤í–‰ ëª¨ë“œ ì™¸ë¶€ì—ì„œ AstarPath ê°œì²´ë¥¼ ì„ íƒë˜ì§€ ì•Šì•˜ë”ë¼ë„ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
+	/// ì´ë ‡ê²Œí•˜ë©´ <see cref="active"/> ì†ì„±ì´ ì„¤ì •ë˜ê³  ëª¨ë“  ê·¸ëž˜í”„ê°€ ì—­ì§ë ¬í™”ë©ë‹ˆë‹¤.
 	///
-	/// ÀÌ°ÍÀº ½ÇÇà ¸ðµå¿¡¼­ ±×·¡ÇÁ¸¦ ÆíÁýÇÏ·Á°íÇÏÁö¸¸ ±×·¡ÇÁ°¡ ¾ÆÁ÷ ¿ªÁ÷·ÄÈ­µÇÁö ¾Ê¾ÒÀ» ¶§ À¯¿ëÇÕ´Ï´Ù.
-	/// ½ÇÇà ¸ðµå¿¡¼­ÀÌ ¸Þ¼­µå´Â ¾Æ¹« ÀÛ¾÷µµ ¼öÇàÇÏÁö ¾Ê½À´Ï´Ù.
+	/// ì´ê²ƒì€ ì‹¤í–‰ ëª¨ë“œì—ì„œ ê·¸ëž˜í”„ë¥¼ íŽ¸ì§‘í•˜ë ¤ê³ í•˜ì§€ë§Œ ê·¸ëž˜í”„ê°€ ì•„ì§ ì—­ì§ë ¬í™”ë˜ì§€ ì•Šì•˜ì„ ë•Œ ìœ ìš©í•©ë‹ˆë‹¤.
+	/// ì‹¤í–‰ ëª¨ë“œì—ì„œì´ ë©”ì„œë“œëŠ” ì•„ë¬´ ìž‘ì—…ë„ ìˆ˜í–‰í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	/// </summary>
 	public static void FindAstarPath () {
 		if (Application.isPlaying) return;
@@ -643,15 +643,15 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// AstarPath °³Ã¼¸¦ Ã£°í ÅÂ±× ÀÌ¸§À» ¹ÝÈ¯ÇÏ·Á°í ½ÃµµÇÕ´Ï´Ù.
-	/// AstarPath °³Ã¼¸¦ Ã£À» ¼ö ¾øÀ¸¸é ±æÀÌ°¡ 1ÀÎ ¿À·ù ¸Þ½ÃÁö¸¦ Æ÷ÇÔÇÏ´Â ¹è¿­À» ¹ÝÈ¯ÇÕ´Ï´Ù.
+	/// AstarPath ê°œì²´ë¥¼ ì°¾ê³  íƒœê·¸ ì´ë¦„ì„ ë°˜í™˜í•˜ë ¤ê³  ì‹œë„í•©ë‹ˆë‹¤.
+	/// AstarPath ê°œì²´ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìœ¼ë©´ ê¸¸ì´ê°€ 1ì¸ ì˜¤ë¥˜ ë©”ì‹œì§€ë¥¼ í¬í•¨í•˜ëŠ” ë°°ì—´ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
 	/// </summary>
 	public static string[] FindTagNames () {
 		FindAstarPath();
 		return active != null? active.GetTagNames () : new string[1] { "There is no AstarPath component in the scene" };
 	}
 
-	/// <summary>´ÙÀ½ ¹«·á °æ·Î ID¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù</summary>
+	/// <summary>ë‹¤ìŒ ë¬´ë£Œ ê²½ë¡œ IDë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤</summary>
 	internal ushort GetNextPathID () {
 		if (nextFreePathID == 0) {
 			nextFreePathID++;
@@ -704,32 +704,32 @@ public class AstarPath : VersionedMonoBehaviour {
 			debugRoof = 1;
 		}
 
-		// µÎ °ªÀÌ µ¿ÀÏÇÏÁö ¾Êµµ·ÏÇÏ½Ê½Ã¿À. ÀÌ·¸°ÔÇÏ¸é »ö»ó º¸°£ÀÌ ½ÇÆÐÇÕ´Ï´Ù.
+		// ë‘ ê°’ì´ ë™ì¼í•˜ì§€ ì•Šë„ë¡í•˜ì‹­ì‹œì˜¤. ì´ë ‡ê²Œí•˜ë©´ ìƒ‰ìƒ ë³´ê°„ì´ ì‹¤íŒ¨í•©ë‹ˆë‹¤.
 		if (debugRoof-debugFloor < 1) debugRoof += 1;
 	}
 
 	Pathfinding.Util.RetainedGizmos gizmos = new Pathfinding.Util.RetainedGizmos();
 
 	/// <summary>
-	/// ±×·¡ÇÁ »ý¼º±â¿¡¼­ OnDrawGizmos¸¦ È£ÃâÇÕ´Ï´Ù.
+	/// ê·¸ëž˜í”„ ìƒì„±ê¸°ì—ì„œ OnDrawGizmosë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.
 	/// </summary>
 	private void OnDrawGizmos () {
-		// ½Ì±ÛÅæ ÆÐÅÏÀÌ À¯ÁöµÇµµ·Ï ÇÕ´Ï´Ù.
-		// Awake ¸Þ¼­µå°¡ È£ÃâµÇÁö ¾ÊÀº °æ¿ì¿¡¸¸ ÇØ´çÇÒ ¼ö ÀÖ½À´Ï´Ù.
+		// ì‹±ê¸€í†¤ íŒ¨í„´ì´ ìœ ì§€ë˜ë„ë¡ í•©ë‹ˆë‹¤.
+		// Awake ë©”ì„œë“œê°€ í˜¸ì¶œë˜ì§€ ì•Šì€ ê²½ìš°ì—ë§Œ í•´ë‹¹í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 		if (active == null) active = this;
 
 		if (active != this || graphs == null) {
 			return;
 		}
 
-		// Unity¿¡¼­´Â ¸¶¿ì½º·Î °³Ã¼¸¦ Å¬¸¯ÇÏ¿© ¾À ºä¿¡¼­ °³Ã¼¸¦ ¼±ÅÃÇÒ ¼ö ÀÖ½À´Ï´Ù.
-		// ±×·¯³ª ±×·¡ÇÁ ±âÁî¸ð´Â ÀÌ¸¦ ¹æÇØÇÕ´Ï´Ù. ¿©±â¿¡¼­ ¸Þ½Ã¸¦ ±×¸± °æ¿ì »ç¿ëÀÚ´Â µÚ¿¡ ÀÖ´Â °³Ã¼¸¦ ¼±ÅÃÇÒ ¼ö ¾ø½À´Ï´Ù.
-		// (¾Æ¸¶µµ Unity´Â ´ëºÎºÐÀÇ ±âÁî¸ð¸¦ ±×¸®±â À§ÇØ Graphics.DrawMeshNow¸¦ »ç¿ëÇÏ°í ÀÖ±â ¶§¹®¿¡
-		// AstarPath ±¸¼º ¿ä¼Ò¿Í ±âÁî¸ð¸¦ ¿¬°áÇÏÁö ¸øÇÒ °ÍÀÔ´Ï´Ù). ½ÇÁ¦·Î ¾À ÇÇÅ·ÀÌ ¹ß»ýÇÏ´Â °æ¿ì
-		// Event.current.typeÀÌ 'mouseUp'ÀÌ µÉ °ÍÀ¸·Î ¿¹»óµË´Ï´Ù. µû¶ó¼­ OnDrawGizmos Áß¿¡´Â
-		// ÀÓÀÇ ÀÌº¥Æ®¸¦ ¹«½ÃÇÏ¿© ±âÁî¸ð°¡ ¾À ÇÇÅ·°ú »óÈ£ ÀÛ¿ëÇÏÁö ¾Êµµ·ÏÇÕ´Ï´Ù.
-		// ÀÌ·¯ÇÑ º¯°æ »çÇ×ÀÌ È­¸é¿¡ ¿µÇâÀ» ¹ÌÄ¡´Â °æ¿ì¿¡¸¸ ¹ß»ýÇÏ±â ¶§¹®¿¡ ½Ã°¢ÀûÀÎ ¿µÇâÀº ¾ø½À´Ï´Ù.
-		// Å×½ºÆ® °á°ú OnDrawGizmos Áß¿¡ ¹ß»ýÇÒ ¼ö ÀÖ´Â ÀÌº¥Æ®´Â mouseUp ¹× repaint ÀÌº¥Æ®¸¸ ÀÖ´Â °ÍÀ¸·Î º¸ÀÔ´Ï´Ù.
+		// Unityì—ì„œëŠ” ë§ˆìš°ìŠ¤ë¡œ ê°œì²´ë¥¼ í´ë¦­í•˜ì—¬ ì”¬ ë·°ì—ì„œ ê°œì²´ë¥¼ ì„ íƒí•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+		// ê·¸ëŸ¬ë‚˜ ê·¸ëž˜í”„ ê¸°ì¦ˆëª¨ëŠ” ì´ë¥¼ ë°©í•´í•©ë‹ˆë‹¤. ì—¬ê¸°ì—ì„œ ë©”ì‹œë¥¼ ê·¸ë¦´ ê²½ìš° ì‚¬ìš©ìžëŠ” ë’¤ì— ìžˆëŠ” ê°œì²´ë¥¼ ì„ íƒí•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.
+		// (ì•„ë§ˆë„ UnityëŠ” ëŒ€ë¶€ë¶„ì˜ ê¸°ì¦ˆëª¨ë¥¼ ê·¸ë¦¬ê¸° ìœ„í•´ Graphics.DrawMeshNowë¥¼ ì‚¬ìš©í•˜ê³  ìžˆê¸° ë•Œë¬¸ì—
+		// AstarPath êµ¬ì„± ìš”ì†Œì™€ ê¸°ì¦ˆëª¨ë¥¼ ì—°ê²°í•˜ì§€ ëª»í•  ê²ƒìž…ë‹ˆë‹¤). ì‹¤ì œë¡œ ì”¬ í”¼í‚¹ì´ ë°œìƒí•˜ëŠ” ê²½ìš°
+		// Event.current.typeì´ 'mouseUp'ì´ ë  ê²ƒìœ¼ë¡œ ì˜ˆìƒë©ë‹ˆë‹¤. ë”°ë¼ì„œ OnDrawGizmos ì¤‘ì—ëŠ”
+		// ìž„ì˜ ì´ë²¤íŠ¸ë¥¼ ë¬´ì‹œí•˜ì—¬ ê¸°ì¦ˆëª¨ê°€ ì”¬ í”¼í‚¹ê³¼ ìƒí˜¸ ìž‘ìš©í•˜ì§€ ì•Šë„ë¡í•©ë‹ˆë‹¤.
+		// ì´ëŸ¬í•œ ë³€ê²½ ì‚¬í•­ì´ í™”ë©´ì— ì˜í–¥ì„ ë¯¸ì¹˜ëŠ” ê²½ìš°ì—ë§Œ ë°œìƒí•˜ê¸° ë•Œë¬¸ì— ì‹œê°ì ì¸ ì˜í–¥ì€ ì—†ìŠµë‹ˆë‹¤.
+		// í…ŒìŠ¤íŠ¸ ê²°ê³¼ OnDrawGizmos ì¤‘ì— ë°œìƒí•  ìˆ˜ ìžˆëŠ” ì´ë²¤íŠ¸ëŠ” mouseUp ë° repaint ì´ë²¤íŠ¸ë§Œ ìžˆëŠ” ê²ƒìœ¼ë¡œ ë³´ìž…ë‹ˆë‹¤.
 		if (Event.current.type != EventType.Repaint) return;
 
 		colorSettings.PushToStatic(this);
@@ -737,11 +737,11 @@ public class AstarPath : VersionedMonoBehaviour {
 		AstarProfiler.StartProfile("OnDrawGizmos");
 
 		if (workItems.workItemsInProgress || isScanning) {
-			// ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® ÁßÀÌ¹Ç·Î ±×·¡ÇÁ Á¤º¸°¡ ÇöÀç À¯È¿ÇÏÁö ¾ÊÀ» ¼ö ÀÖ½À´Ï´Ù.
-			// µû¶ó¼­ ÀÌÀü ÇÁ·¹ÀÓ°ú µ¿ÀÏÇÑ °ÍÀ» ±×¸³´Ï´Ù.
-			// ¶ÇÇÑ ¾À¿¡ ¿©·¯ °³ÀÇ Ä«¸Þ¶ó°¡ ÀÖ°Å³ª (¶Ç´Â ¿¡µðÅÍ¿¡¼­ ¾À ºä¿Í °ÔÀÓ ºä°¡ ÀÖ´Â °æ¿ì) ¿ì¸®´Â
-			// ¸Þ½¬¸¦ ÇÑ ¹ø °è»êÇÑ ´ÙÀ½ ´Ù¸¥ Ä«¸Þ¶ó¿¡ ´ëÇØ ±âÁ¸ ¸Þ½¬¸¦ ´Ù½Ã ±×¸³´Ï´Ù.
-			// ÀÌ°ÍÀº ¼º´ÉÀ» »ó´çÈ÷ Çâ»ó½ÃÅµ´Ï´Ù.
+			// ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ì¤‘ì´ë¯€ë¡œ ê·¸ëž˜í”„ ì •ë³´ê°€ í˜„ìž¬ ìœ íš¨í•˜ì§€ ì•Šì„ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+			// ë”°ë¼ì„œ ì´ì „ í”„ë ˆìž„ê³¼ ë™ì¼í•œ ê²ƒì„ ê·¸ë¦½ë‹ˆë‹¤.
+			// ë˜í•œ ì”¬ì— ì—¬ëŸ¬ ê°œì˜ ì¹´ë©”ë¼ê°€ ìžˆê±°ë‚˜ (ë˜ëŠ” ì—ë””í„°ì—ì„œ ì”¬ ë·°ì™€ ê²Œìž„ ë·°ê°€ ìžˆëŠ” ê²½ìš°) ìš°ë¦¬ëŠ”
+			// ë©”ì‰¬ë¥¼ í•œ ë²ˆ ê³„ì‚°í•œ ë‹¤ìŒ ë‹¤ë¥¸ ì¹´ë©”ë¼ì— ëŒ€í•´ ê¸°ì¡´ ë©”ì‰¬ë¥¼ ë‹¤ì‹œ ê·¸ë¦½ë‹ˆë‹¤.
+			// ì´ê²ƒì€ ì„±ëŠ¥ì„ ìƒë‹¹ížˆ í–¥ìƒì‹œí‚µë‹ˆë‹¤.
 			gizmos.DrawExisting();
 		} else {
 			if (showNavGraphs && !manualDebugFloorRoof) {
@@ -749,7 +749,7 @@ public class AstarPath : VersionedMonoBehaviour {
 			}
 
 			Profiler.BeginSample("Graph.OnDrawGizmos");
-			// ¸ðµç ±×·¡ÇÁ¸¦ ¼øÈ¯ÇÏ°í ±âÁî¸ð¸¦ ±×¸³´Ï´Ù.
+			// ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ìˆœí™˜í•˜ê³  ê¸°ì¦ˆëª¨ë¥¼ ê·¸ë¦½ë‹ˆë‹¤.
 			for (int i = 0; i < graphs.Length; i++) {
 				if (graphs[i] != null && graphs[i].drawGizmos)
 					graphs[i].OnDrawGizmos(gizmos, showNavGraphs);
@@ -769,7 +769,7 @@ public class AstarPath : VersionedMonoBehaviour {
 
 #if !ASTAR_NO_GUI
 	/// <summary>
-	/// InGame µð¹ö±ëÀ» ±×¸³´Ï´Ù (È°¼ºÈ­ µÈ °æ¿ì), 'L' Å°¸¦ ´©¸£¸é fpsµµ Ç¥½ÃµË´Ï´Ù.
+	/// InGame ë””ë²„ê¹…ì„ ê·¸ë¦½ë‹ˆë‹¤ (í™œì„±í™” ëœ ê²½ìš°), 'L' í‚¤ë¥¼ ëˆ„ë¥´ë©´ fpsë„ í‘œì‹œë©ë‹ˆë‹¤.
 	/// See: <see cref="logPathResults"/> PathLog
 	/// </summary>
 	private void OnGUI () {
@@ -780,7 +780,7 @@ public class AstarPath : VersionedMonoBehaviour {
 #endif
 
 	/// <summary>
-	/// °æ·Î °á°ú¸¦ ·Î±×¿¡ Ãâ·ÂÇÕ´Ï´Ù. Ãâ·Â ³»¿ëÀº <see cref="logPathResults"/>¸¦ »ç¿ëÇÏ¿© Á¦¾îÇÒ ¼ö ÀÖ½À´Ï´Ù.
+	/// ê²½ë¡œ ê²°ê³¼ë¥¼ ë¡œê·¸ì— ì¶œë ¥í•©ë‹ˆë‹¤. ì¶œë ¥ ë‚´ìš©ì€ <see cref="logPathResults"/>ë¥¼ ì‚¬ìš©í•˜ì—¬ ì œì–´í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 	/// See: <see cref="logPathResults"/>
 	/// See: PathLog
 	/// See: Pathfinding.Path.DebugString
@@ -794,49 +794,49 @@ public class AstarPath : VersionedMonoBehaviour {
 			} else if (path.error) {
 				//Debug.LogWarning(debug);
 			} else {
-				//Debug.Log(debug);
+
 			}
 		}
 	}
 
 	/// <summary>
-	/// ÀÛ¾÷ Ç×¸ñÀÌ ½ÇÇàµÇ¾î¾ß ÇÏ´ÂÁö È®ÀÎÇÑ ´ÙÀ½ °æ·Î Ã£±â¸¦ ½ÇÇàÇÏ°í,
-	/// ´ÙÀ½ ¿äÃ»ÇÑ ½ºÅ©¸³Æ®·Î °è»êµÈ °æ·Î¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
+	/// ìž‘ì—… í•­ëª©ì´ ì‹¤í–‰ë˜ì–´ì•¼ í•˜ëŠ”ì§€ í™•ì¸í•œ ë‹¤ìŒ ê²½ë¡œ ì°¾ê¸°ë¥¼ ì‹¤í–‰í•˜ê³ ,
+	/// ë‹¤ìŒ ìš”ì²­í•œ ìŠ¤í¬ë¦½íŠ¸ë¡œ ê³„ì‚°ëœ ê²½ë¡œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	///
 	/// See: PerformBlockingActions
 	/// See: PathProcessor.TickNonMultithreaded
 	/// See: PathReturnQueue.ReturnPaths
 	/// </summary>
 	private void Update () {
-		// ÀÌ Å¬·¡½º´Â [ExecuteInEditMode] ¼Ó¼ºÀ» »ç¿ëÇÕ´Ï´Ù.
-		// µû¶ó¼­ Update´Â ½ÇÇà ÁßÀÌÁö ¾Ê¾Æµµ È£ÃâµË´Ï´Ù.
-		// ÇÃ·¹ÀÌ ¸ðµå°¡ ¾Æ´Ñ °æ¿ì ¾Æ¹« ÀÛ¾÷µµ ¼öÇàÇÏÁö ¸¶½Ê½Ã¿À.
+		// ì´ í´ëž˜ìŠ¤ëŠ” [ExecuteInEditMode] ì†ì„±ì„ ì‚¬ìš©í•©ë‹ˆë‹¤.
+		// ë”°ë¼ì„œ UpdateëŠ” ì‹¤í–‰ ì¤‘ì´ì§€ ì•Šì•„ë„ í˜¸ì¶œë©ë‹ˆë‹¤.
+		// í”Œë ˆì´ ëª¨ë“œê°€ ì•„ë‹Œ ê²½ìš° ì•„ë¬´ ìž‘ì—…ë„ ìˆ˜í–‰í•˜ì§€ ë§ˆì‹­ì‹œì˜¤.
 		if (!Application.isPlaying) return;
 
 		navmeshUpdates.Update();
 
-		// ½ºÄ³´× ÁßÀÌ ¾Æ´Ñ °æ¿ì ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¿Í °°Àº ºí·ÎÅ· ÀÛ¾÷ ½ÇÇà
+		// ìŠ¤ìºë‹ ì¤‘ì´ ì•„ë‹Œ ê²½ìš° ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ì™€ ê°™ì€ ë¸”ë¡œí‚¹ ìž‘ì—… ì‹¤í–‰
 		if (!isScanning) {
 			PerformBlockingActions();
 		}
 
-		// ´ÙÁß ½º·¹µùÀ» »ç¿ëÇÏÁö ¾Ê´Â °æ¿ì °æ·Î °è»ê
+		// ë‹¤ì¤‘ ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•˜ì§€ ì•ŠëŠ” ê²½ìš° ê²½ë¡œ ê³„ì‚°
 		pathProcessor.TickNonMultithreaded();
 
-		// °è»êµÈ °æ·Î ¹ÝÈ¯
+		// ê³„ì‚°ëœ ê²½ë¡œ ë°˜í™˜
 		pathReturnQueue.ReturnPaths(true);
 	}
 
 	private void PerformBlockingActions (bool force = false) {
 		if (workItemLock.Held && pathProcessor.queue.AllReceiversBlocked) {
-			// ºí·ÎÅ· ÀÛ¾÷À» ½ÃÀÛÇÏ±â Àü¿¡ ¸ðµç °æ·Î¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-			// ÀÌ·¸°ÔÇÏ¸é ±×·¡ÇÁ°¡ º¯°æµÇ¾î ¹ÝÈ¯µÈ °æ·Î°¡ ¹«È¿È­µÉ ¼ö ÀÖÀ¸¹Ç·Î(ÃÖ¼ÒÇÑ ³ëµå¸¸)
-			// °æ·Î°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+			// ë¸”ë¡œí‚¹ ìž‘ì—…ì„ ì‹œìž‘í•˜ê¸° ì „ì— ëª¨ë“  ê²½ë¡œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+			// ì´ë ‡ê²Œí•˜ë©´ ê·¸ëž˜í”„ê°€ ë³€ê²½ë˜ì–´ ë°˜í™˜ëœ ê²½ë¡œê°€ ë¬´íš¨í™”ë  ìˆ˜ ìžˆìœ¼ë¯€ë¡œ(ìµœì†Œí•œ ë…¸ë“œë§Œ)
+			// ê²½ë¡œê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.
 			pathReturnQueue.ReturnPaths(false);
 
 			Profiler.BeginSample("Work Items");
 			if (workItems.ProcessWorkItems(force)) {
-				// ÀÌ ´Ü°è¿¡¼­ ´õ ÀÌ»ó ÀÛ¾÷ Ç×¸ñÀÌ ¾øÀ¸¹Ç·Î °æ·Î Ã£±â ½º·¹µå¸¦ ´Ù½Ã ½ÃÀÛÇÕ´Ï´Ù.
+				// ì´ ë‹¨ê³„ì—ì„œ ë” ì´ìƒ ìž‘ì—… í•­ëª©ì´ ì—†ìœ¼ë¯€ë¡œ ê²½ë¡œ ì°¾ê¸° ìŠ¤ë ˆë“œë¥¼ ë‹¤ì‹œ ì‹œìž‘í•©ë‹ˆë‹¤.
 				workItemLock.Release();
 			}
 			Profiler.EndSample();
@@ -844,8 +844,8 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// °æ·Î Ã£±â°¡ ÀÏ½Ã ÁßÁöµÉ ¶§ Ã³¸®µÇµµ·Ï ´ë±â¿­¿¡ ÀÛ¾÷ Ç×¸ñÀ» Ãß°¡ÇÕ´Ï´Ù.
-	/// Æí¸®ÇÑ ¸Þ¼­µå·Î ´ÙÀ½°ú µ¿ÀÏÇÕ´Ï´Ù.
+	/// ê²½ë¡œ ì°¾ê¸°ê°€ ì¼ì‹œ ì¤‘ì§€ë  ë•Œ ì²˜ë¦¬ë˜ë„ë¡ ëŒ€ê¸°ì—´ì— ìž‘ì—… í•­ëª©ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
+	/// íŽ¸ë¦¬í•œ ë©”ì„œë“œë¡œ ë‹¤ìŒê³¼ ë™ì¼í•©ë‹ˆë‹¤.
 	/// <code>
 	/// AddWorkItem(new AstarWorkItem(callback));
 	/// </code>
@@ -857,8 +857,8 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// °æ·Î Ã£±â°¡ ÀÏ½Ã ÁßÁöµÉ ¶§ Ã³¸®µÇµµ·Ï ´ë±â¿­¿¡ ÀÛ¾÷ Ç×¸ñÀ» Ãß°¡ÇÕ´Ï´Ù.
-	/// Æí¸®ÇÑ ¸Þ¼­µå·Î ´ÙÀ½°ú µ¿ÀÏÇÕ´Ï´Ù.
+	/// ê²½ë¡œ ì°¾ê¸°ê°€ ì¼ì‹œ ì¤‘ì§€ë  ë•Œ ì²˜ë¦¬ë˜ë„ë¡ ëŒ€ê¸°ì—´ì— ìž‘ì—… í•­ëª©ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
+	/// íŽ¸ë¦¬í•œ ë©”ì„œë“œë¡œ ë‹¤ìŒê³¼ ë™ì¼í•©ë‹ˆë‹¤.
 	/// <code>
 	/// AddWorkItem(new AstarWorkItem(callback));
 	/// </code>
@@ -870,18 +870,18 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// °æ·Î Ã£±â°¡ ÀÏ½Ã ÁßÁöµÉ ¶§ Ã³¸®µÇµµ·Ï ´ë±â¿­¿¡ ÀÛ¾÷ Ç×¸ñÀ» Ãß°¡ÇÕ´Ï´Ù.
+	/// ê²½ë¡œ ì°¾ê¸°ê°€ ì¼ì‹œ ì¤‘ì§€ë  ë•Œ ì²˜ë¦¬ë˜ë„ë¡ ëŒ€ê¸°ì—´ì— ìž‘ì—… í•­ëª©ì„ ì¶”ê°€í•©ë‹ˆë‹¤.
 	///
-	/// ÀÛ¾÷ Ç×¸ñÀº ³ëµå¸¦ ¾÷µ¥ÀÌÆ®ÇÏ´Â °ÍÀÌ ¾ÈÀüÇÑ °æ¿ì¿¡ ½ÇÇàµË´Ï´Ù. ÀÌ´Â °æ·Î °Ë»ö »çÀÌ¿¡¼­ Á¤ÀÇµË´Ï´Ù.
-	/// ´õ ¸¹Àº ½º·¹µå¸¦ »ç¿ëÇÏ´Â °æ¿ì ÀÌ ¸Þ¼­µå¸¦ ÀÚÁÖ È£ÃâÇÏ¸é ½º·¹µå¿¡¼­ ¸¹Àº ´ë±â½Ã°£À¸·Î ÀÎÇØ °æ·Î Ã£±â ¼º´ÉÀÌ ÀúÇÏµÉ ¼ö ÀÖ½À´Ï´Ù.
-	/// ¿©±â¼­ ¼º´ÉÀº CPU ¼º´ÉÀ» ¸¹ÀÌ »ç¿ëÇÏÁö ¾Ê´Â´Ù´Â ÀÇ¹Ì°¡ ¾Æ´Ï¶ó ÃÊ´ç °æ·Î ¼ö°¡ ¾Æ¸¶µµ ÁÙ¾î µé °ÍÀÔ´Ï´Ù
-	/// (±×·¯³ª ÇÁ·¹ÀÓ ¼Óµµ´Â ¾à°£ Áõ°¡ÇÒ ¼ö ÀÖÀ½).
+	/// ìž‘ì—… í•­ëª©ì€ ë…¸ë“œë¥¼ ì—…ë°ì´íŠ¸í•˜ëŠ” ê²ƒì´ ì•ˆì „í•œ ê²½ìš°ì— ì‹¤í–‰ë©ë‹ˆë‹¤. ì´ëŠ” ê²½ë¡œ ê²€ìƒ‰ ì‚¬ì´ì—ì„œ ì •ì˜ë©ë‹ˆë‹¤.
+	/// ë” ë§Žì€ ìŠ¤ë ˆë“œë¥¼ ì‚¬ìš©í•˜ëŠ” ê²½ìš° ì´ ë©”ì„œë“œë¥¼ ìžì£¼ í˜¸ì¶œí•˜ë©´ ìŠ¤ë ˆë“œì—ì„œ ë§Žì€ ëŒ€ê¸°ì‹œê°„ìœ¼ë¡œ ì¸í•´ ê²½ë¡œ ì°¾ê¸° ì„±ëŠ¥ì´ ì €í•˜ë  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+	/// ì—¬ê¸°ì„œ ì„±ëŠ¥ì€ CPU ì„±ëŠ¥ì„ ë§Žì´ ì‚¬ìš©í•˜ì§€ ì•ŠëŠ”ë‹¤ëŠ” ì˜ë¯¸ê°€ ì•„ë‹ˆë¼ ì´ˆë‹¹ ê²½ë¡œ ìˆ˜ê°€ ì•„ë§ˆë„ ì¤„ì–´ ë“¤ ê²ƒìž…ë‹ˆë‹¤
+	/// (ê·¸ëŸ¬ë‚˜ í”„ë ˆìž„ ì†ë„ëŠ” ì•½ê°„ ì¦ê°€í•  ìˆ˜ ìžˆìŒ).
 	///
-	/// ÀÌ ÇÔ¼ö´Â ÁÖ·Î UnityÀÇ ¸ÞÀÎ ½º·¹µå¿¡¼­¸¸ È£ÃâÇØ¾ß ÇÕ´Ï´Ù (Áï, ÀÏ¹ÝÀûÀÎ °ÔÀÓ ÄÚµå).
+	/// ì´ í•¨ìˆ˜ëŠ” ì£¼ë¡œ Unityì˜ ë©”ì¸ ìŠ¤ë ˆë“œì—ì„œë§Œ í˜¸ì¶œí•´ì•¼ í•©ë‹ˆë‹¤ (ì¦‰, ì¼ë°˜ì ì¸ ê²Œìž„ ì½”ë“œ).
 	///
 	/// <code>
 	/// AstarPath.active.AddWorkItem(new AstarWorkItem(() => {
-	///     // ¿©±â¿¡¼­ ±×·¡ÇÁ¸¦ ¾÷µ¥ÀÌÆ®ÇØµµ ¾ÈÀüÇÕ´Ï´Ù.
+	///     // ì—¬ê¸°ì—ì„œ ê·¸ëž˜í”„ë¥¼ ì—…ë°ì´íŠ¸í•´ë„ ì•ˆì „í•©ë‹ˆë‹¤.
 	///     var node = AstarPath.active.GetNearest(transform.position).node;
 	///     node.Walkable = false;
 	/// }));
@@ -889,7 +889,7 @@ public class AstarPath : VersionedMonoBehaviour {
 	///
 	/// <code>
 	/// AstarPath.active.AddWorkItem(() => {
-	///     // ¿©±â¿¡¼­ ±×·¡ÇÁ¸¦ ¾÷µ¥ÀÌÆ®ÇØµµ ¾ÈÀüÇÕ´Ï´Ù.
+	///     // ì—¬ê¸°ì—ì„œ ê·¸ëž˜í”„ë¥¼ ì—…ë°ì´íŠ¸í•´ë„ ì•ˆì „í•©ë‹ˆë‹¤.
 	///     var node = AstarPath.active.GetNearest(transform.position).node;
 	///     node.position = (Int3)transform.position;
 	/// });
@@ -900,13 +900,13 @@ public class AstarPath : VersionedMonoBehaviour {
 	public void AddWorkItem (AstarWorkItem item) {
 		workItems.AddWorkItem(item);
 
-		// °æ·Î Ã£±â¸¦ ÁßÁöÇÏ°í ÀÛ¾÷ Ç×¸ñÀ» Ã³¸®ÇÕ´Ï´Ù.
+		// ê²½ë¡œ ì°¾ê¸°ë¥¼ ì¤‘ì§€í•˜ê³  ìž‘ì—… í•­ëª©ì„ ì²˜ë¦¬í•©ë‹ˆë‹¤.
 		if (!workItemLock.Held) {
 			workItemLock = PausePathfindingSoon();
 		}
 
 #if UNITY_EDITOR
-		// ÇÃ·¹ÀÌ ÁßÀÌ ¾Æ´Ñ °æ¿ì Áï½Ã ½ÇÇà
+		// í”Œë ˆì´ ì¤‘ì´ ì•„ë‹Œ ê²½ìš° ì¦‰ì‹œ ì‹¤í–‰
 		if (!Application.isPlaying) {
 			FlushWorkItems();
 		}
@@ -916,19 +916,19 @@ public class AstarPath : VersionedMonoBehaviour {
 	#region GraphUpdateMethods
 
 	/// <summary>
-	/// °¡´ÉÇÑ ÇÑ »¡¸® ´ë±â ÁßÀÎ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ Àû¿ëÇÕ´Ï´Ù. <see cref="batchGraphUpdates"/>¿Í °ü°è¾øÀÌ È£ÃâµË´Ï´Ù.
-	/// ¿©·¯ ¹ø È£ÃâÇØµµ ¿©·¯ °³ÀÇ ÄÝ¹éÀ» »ý¼ºÇÏÁö ¾Ê½À´Ï´Ù.
-	/// ÀÌ ÇÔ¼ö´Â ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® ½Ã°£ Á¦ÇÑ°ú °ü°è¾øÀÌ Æ¯Á¤ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ °¡´ÉÇÑ ÇÑ »¡¸® Àû¿ëÇÏ·Á´Â °æ¿ì À¯¿ëÇÕ´Ï´Ù.
-	/// Âü°í·Î ÀÌ ÇÔ¼ö´Â ¾÷µ¥ÀÌÆ®°¡ ¿Ï·áµÉ ¶§±îÁö Â÷´ÜµÇÁö ¾ÊÀ¸¸ç, <see cref="batchGraphUpdates"/> Á¦ÇÑ ½Ã°£À» ¿ìÈ¸ÇÏ±â¸¸ ÇÕ´Ï´Ù.
+	/// ê°€ëŠ¥í•œ í•œ ë¹¨ë¦¬ ëŒ€ê¸° ì¤‘ì¸ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ì ìš©í•©ë‹ˆë‹¤. <see cref="batchGraphUpdates"/>ì™€ ê´€ê³„ì—†ì´ í˜¸ì¶œë©ë‹ˆë‹¤.
+	/// ì—¬ëŸ¬ ë²ˆ í˜¸ì¶œí•´ë„ ì—¬ëŸ¬ ê°œì˜ ì½œë°±ì„ ìƒì„±í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
+	/// ì´ í•¨ìˆ˜ëŠ” ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ì‹œê°„ ì œí•œê³¼ ê´€ê³„ì—†ì´ íŠ¹ì • ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ê°€ëŠ¥í•œ í•œ ë¹¨ë¦¬ ì ìš©í•˜ë ¤ëŠ” ê²½ìš° ìœ ìš©í•©ë‹ˆë‹¤.
+	/// ì°¸ê³ ë¡œ ì´ í•¨ìˆ˜ëŠ” ì—…ë°ì´íŠ¸ê°€ ì™„ë£Œë  ë•Œê¹Œì§€ ì°¨ë‹¨ë˜ì§€ ì•Šìœ¼ë©°, <see cref="batchGraphUpdates"/> ì œí•œ ì‹œê°„ì„ ìš°íšŒí•˜ê¸°ë§Œ í•©ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: <see cref="FlushGraphUpdates"/>
+	/// ì°¸ì¡°: <see cref="FlushGraphUpdates"/>
 	/// </summary>
 	public void QueueGraphUpdates () {
 		if (!graphUpdatesWorkItemAdded) {
 			graphUpdatesWorkItemAdded = true;
 			var workItem = graphUpdates.GetWorkItem();
 
-			// ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® ÀÛ¾÷ Ç×¸ñÀ» Ãß°¡ÇÕ´Ï´Ù. ¸ÕÀú graphUpdatesWorkItemAdded ÇÃ·¡±×¸¦ false·Î ¼³Á¤ÇÑ ´ÙÀ½ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ Ã³¸®ÇÕ´Ï´Ù.
+			// ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ìž‘ì—… í•­ëª©ì„ ì¶”ê°€í•©ë‹ˆë‹¤. ë¨¼ì € graphUpdatesWorkItemAdded í”Œëž˜ê·¸ë¥¼ falseë¡œ ì„¤ì •í•œ ë‹¤ìŒ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ì²˜ë¦¬í•©ë‹ˆë‹¤.
 			AddWorkItem(new AstarWorkItem(() => {
 				graphUpdatesWorkItemAdded = false;
 				lastGraphUpdate = Time.realtimeSinceStartup;
@@ -939,8 +939,8 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ Áö¿¬½ÃÄÑ ÀÏÁ¤ ½Ã°£ µ¿¾È ´ë±âÇÕ´Ï´Ù.
-	/// batchGraphUpdates°¡ ¼³Á¤µÈ °æ¿ì °æ·Î Ã£±â ½º·¹µå¸¦ °è¼Ó ½ÇÇàÇÏ°í Å¥¿¡ ´ë±â ÁßÀÎ È£ÃâÀ» ÇÑ ¹ø¿¡ °è»êÇÏ·Á°í ÇÕ´Ï´Ù.
+	/// ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ì§€ì—°ì‹œì¼œ ì¼ì • ì‹œê°„ ë™ì•ˆ ëŒ€ê¸°í•©ë‹ˆë‹¤.
+	/// batchGraphUpdatesê°€ ì„¤ì •ëœ ê²½ìš° ê²½ë¡œ ì°¾ê¸° ìŠ¤ë ˆë“œë¥¼ ê³„ì† ì‹¤í–‰í•˜ê³  íì— ëŒ€ê¸° ì¤‘ì¸ í˜¸ì¶œì„ í•œ ë²ˆì— ê³„ì‚°í•˜ë ¤ê³  í•©ë‹ˆë‹¤.
 	/// </summary>
 	IEnumerator DelayedGraphUpdate () {
 		graphUpdateRoutineRunning = true;
@@ -951,60 +951,60 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// ÀÏÁ¤ ½Ã°£ ÈÄ¿¡ bounds ³»ÀÇ ¸ðµç ±×·¡ÇÁ¸¦ ¾÷µ¥ÀÌÆ®ÇÕ´Ï´Ù.
-	/// ±×·¡ÇÁ´Â °¡´ÉÇÑ ÇÑ »¡¸® ¾÷µ¥ÀÌÆ®µË´Ï´Ù.
+	/// ì¼ì • ì‹œê°„ í›„ì— bounds ë‚´ì˜ ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ì—…ë°ì´íŠ¸í•©ë‹ˆë‹¤.
+	/// ê·¸ëž˜í”„ëŠ” ê°€ëŠ¥í•œ í•œ ë¹¨ë¦¬ ì—…ë°ì´íŠ¸ë©ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: <see cref="FlushGraphUpdates"/>
-	/// ÂüÁ¶: batchGraphUpdates
-	/// ÂüÁ¶: graph-updates(ÀÛµ¿ ¸µÅ© ¿Â¶óÀÎ ¼³¸í¼­¿¡¼­ º¸±â)
+	/// ì°¸ì¡°: <see cref="FlushGraphUpdates"/>
+	/// ì°¸ì¡°: batchGraphUpdates
+	/// ì°¸ì¡°: graph-updates(ìž‘ë™ ë§í¬ ì˜¨ë¼ì¸ ì„¤ëª…ì„œì—ì„œ ë³´ê¸°)
 	/// </summary>
 	public void UpdateGraphs (Bounds bounds, float delay) {
 		UpdateGraphs(new GraphUpdateObject(bounds), delay);
 	}
 
 	/// <summary>
-	/// delay ÃÊ ÈÄ¿¡ GraphUpdateObject¸¦ »ç¿ëÇÏ¿© ¸ðµç ±×·¡ÇÁ¸¦ ¾÷µ¥ÀÌÆ®ÇÕ´Ï´Ù.
-	/// ÀÌ¸¦ »ç¿ëÇÏ¿© ¿¹¸¦ µé¾î Áö¿ª ³»ÀÇ ¸ðµç ³ëµå¸¦ °ÈÁö ¸øÇÏµµ·Ï ¸¸µé°Å³ª ´õ ³ôÀº ÆÐ³ÎÆ¼·Î ¼³Á¤ÇÒ ¼ö ÀÖ½À´Ï´Ù.
+	/// delay ì´ˆ í›„ì— GraphUpdateObjectë¥¼ ì‚¬ìš©í•˜ì—¬ ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ì—…ë°ì´íŠ¸í•©ë‹ˆë‹¤.
+	/// ì´ë¥¼ ì‚¬ìš©í•˜ì—¬ ì˜ˆë¥¼ ë“¤ì–´ ì§€ì—­ ë‚´ì˜ ëª¨ë“  ë…¸ë“œë¥¼ ê±·ì§€ ëª»í•˜ë„ë¡ ë§Œë“¤ê±°ë‚˜ ë” ë†’ì€ íŒ¨ë„í‹°ë¡œ ì„¤ì •í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: <see cref="FlushGraphUpdates"/>
-	/// ÂüÁ¶: batchGraphUpdates
-	/// ÂüÁ¶: graph-updates(ÀÛµ¿ ¸µÅ© ¿Â¶óÀÎ ¼³¸í¼­¿¡¼­ º¸±â)
+	/// ì°¸ì¡°: <see cref="FlushGraphUpdates"/>
+	/// ì°¸ì¡°: batchGraphUpdates
+	/// ì°¸ì¡°: graph-updates(ìž‘ë™ ë§í¬ ì˜¨ë¼ì¸ ì„¤ëª…ì„œì—ì„œ ë³´ê¸°)
 	/// </summary>
 	public void UpdateGraphs (GraphUpdateObject ob, float delay) {
 		StartCoroutine(UpdateGraphsInternal(ob, delay));
 	}
 
-	/// <summary>ÀÏÁ¤ ½Ã°£ ÈÄ¿¡ ¸ðµç ±×·¡ÇÁ¸¦ ¾÷µ¥ÀÌÆ®ÇÕ´Ï´Ù.</summary>
+	/// <summary>ì¼ì • ì‹œê°„ í›„ì— ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ì—…ë°ì´íŠ¸í•©ë‹ˆë‹¤.</summary>
 	IEnumerator UpdateGraphsInternal (GraphUpdateObject ob, float delay) {
 		yield return new WaitForSeconds(delay);
 		UpdateGraphs(ob);
 	}
 
 	/// <summary>
-	/// bounds ³»ÀÇ ¸ðµç ±×·¡ÇÁ¸¦ ¾÷µ¥ÀÌÆ®ÇÕ´Ï´Ù.
-	/// ±×·¡ÇÁ´Â °¡´ÉÇÑ ÇÑ »¡¸® ¾÷µ¥ÀÌÆ®µË´Ï´Ù.
+	/// bounds ë‚´ì˜ ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ì—…ë°ì´íŠ¸í•©ë‹ˆë‹¤.
+	/// ê·¸ëž˜í”„ëŠ” ê°€ëŠ¥í•œ í•œ ë¹¨ë¦¬ ì—…ë°ì´íŠ¸ë©ë‹ˆë‹¤.
 	///
-	/// ÀÌ°ÍÀº ´ÙÀ½°ú µ¿ÀÏÇÕ´Ï´Ù.
+	/// ì´ê²ƒì€ ë‹¤ìŒê³¼ ë™ì¼í•©ë‹ˆë‹¤.
 	/// <code>
 	/// UpdateGraphs(new GraphUpdateObject(bounds));
 	/// </code>
 	///
-	/// ÂüÁ¶: <see cref="FlushGraphUpdates"/>
-	/// ÂüÁ¶: batchGraphUpdates
-	/// ÂüÁ¶: graph-updates(ÀÛµ¿ ¸µÅ© ¿Â¶óÀÎ ¼³¸í¼­¿¡¼­ º¸±â)
+	/// ì°¸ì¡°: <see cref="FlushGraphUpdates"/>
+	/// ì°¸ì¡°: batchGraphUpdates
+	/// ì°¸ì¡°: graph-updates(ìž‘ë™ ë§í¬ ì˜¨ë¼ì¸ ì„¤ëª…ì„œì—ì„œ ë³´ê¸°)
 	/// </summary>
 	public void UpdateGraphs (Bounds bounds) {
 		UpdateGraphs(new GraphUpdateObject(bounds));
 	}
 
 	/// <summary>
-	/// GraphUpdateObject¸¦ »ç¿ëÇÏ¿© ¸ðµç ±×·¡ÇÁ¸¦ ¾÷µ¥ÀÌÆ®ÇÕ´Ï´Ù.
-	/// ¿¹¸¦ µé¾î Áö¿ª ³»ÀÇ ¸ðµç ³ëµå¸¦ °ÈÁö ¸øÇÏ°Ô ¸¸µé°Å³ª ´õ ³ôÀº ÆÐ³ÎÆ¼·Î ¼³Á¤ÇÏ´Â µ¥ »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù.
-	/// ±×·¡ÇÁ´Â °¡´ÉÇÑ ÇÑ »¡¸® (batchGraphUpdates¿¡ µû¶ó) ¾÷µ¥ÀÌÆ®µË´Ï´Ù.
+	/// GraphUpdateObjectë¥¼ ì‚¬ìš©í•˜ì—¬ ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ì—…ë°ì´íŠ¸í•©ë‹ˆë‹¤.
+	/// ì˜ˆë¥¼ ë“¤ì–´ ì§€ì—­ ë‚´ì˜ ëª¨ë“  ë…¸ë“œë¥¼ ê±·ì§€ ëª»í•˜ê²Œ ë§Œë“¤ê±°ë‚˜ ë” ë†’ì€ íŒ¨ë„í‹°ë¡œ ì„¤ì •í•˜ëŠ” ë° ì‚¬ìš©í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+	/// ê·¸ëž˜í”„ëŠ” ê°€ëŠ¥í•œ í•œ ë¹¨ë¦¬ (batchGraphUpdatesì— ë”°ë¼) ì—…ë°ì´íŠ¸ë©ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: <see cref="FlushGraphUpdates"/>
-	/// ÂüÁ¶: batchGraphUpdates
-	/// ÂüÁ¶: graph-updates(ÀÛµ¿ ¸µÅ© ¿Â¶óÀÎ ¼³¸í¼­¿¡¼­ º¸±â)
+	/// ì°¸ì¡°: <see cref="FlushGraphUpdates"/>
+	/// ì°¸ì¡°: batchGraphUpdates
+	/// ì°¸ì¡°: graph-updates(ìž‘ë™ ë§í¬ ì˜¨ë¼ì¸ ì„¤ëª…ì„œì—ì„œ ë³´ê¸°)
 	/// </summary>
 	public void UpdateGraphs (GraphUpdateObject ob) {
 		if (ob.internalStage != GraphUpdateObject.STAGE_CREATED) {
@@ -1013,30 +1013,30 @@ public class AstarPath : VersionedMonoBehaviour {
 		ob.internalStage = GraphUpdateObject.STAGE_PENDING;
 		graphUpdates.AddToQueue(ob);
 
-		// ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ Á¦ÇÑÇØ¾ß ÇÏ´Â °æ¿ì, ±×·¡ÇÁ¸¦ ¾÷µ¥ÀÌÆ®ÇØ¾ß ÇÒ ¶§±îÁö ´ë±âÇÏ´Â ÄÚ·çÆ¾À» ½ÃÀÛÇÕ´Ï´Ù.
+		// ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ì œí•œí•´ì•¼ í•˜ëŠ” ê²½ìš°, ê·¸ëž˜í”„ë¥¼ ì—…ë°ì´íŠ¸í•´ì•¼ í•  ë•Œê¹Œì§€ ëŒ€ê¸°í•˜ëŠ” ì½”ë£¨í‹´ì„ ì‹œìž‘í•©ë‹ˆë‹¤.
 		if (batchGraphUpdates && Time.realtimeSinceStartup-lastGraphUpdate < graphUpdateBatchingInterval) {
 			if (!graphUpdateRoutineRunning) {
 				StartCoroutine(DelayedGraphUpdate());
 			}
 		} else {
-			// ±×·¸Áö ¾ÊÀ¸¸é ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®´Â °¡´ÉÇÑ ÇÑ »¡¸® ¼öÇàµÇ¾î¾ß ÇÕ´Ï´Ù.
+			// ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ëŠ” ê°€ëŠ¥í•œ í•œ ë¹¨ë¦¬ ìˆ˜í–‰ë˜ì–´ì•¼ í•©ë‹ˆë‹¤.
 			QueueGraphUpdates();
 		}
 	}
 
 	/// <summary>
-	/// ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ ´ÜÀÏ ÇÁ·¹ÀÓ¿¡¼­ ¿Ï·áÇÏµµ·Ï °­Á¦ÇÕ´Ï´Ù.
-	/// ÀÌ·¸°Ô ÇÏ¸é °æ·Î Ã£±â ½º·¹µå°¡ ÇöÀç °è»ê ÁßÀÎ °æ·Î¸¦ °è»êÇÏµµ·Ï °­Á¦ÇÏ°í ÀÏ½Ã ÁßÁöÇÕ´Ï´Ù (ÀÖ´Â °æ¿ì) .
-	/// ¸ðµç ½º·¹µå°¡ ÀÏ½Ã ÁßÁöµÇ¸é ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®°¡ ¼öÇàµË´Ï´Ù.
-	/// °æ·Î Ã£±â ¼º´ÉÀ» ÀúÇÏ½ÃÅ³ ¼ö ÀÖ´Â (ÃÊ´ç ¸¹Àº ½º·¹µå°¡ ¼­·Î¸¦ ±â´Ù¸®´Â °æ¿ì) ÀÌ ÇÔ¼ö¸¦ ÀÚÁÖ (ÃÊ´ç ¿©·¯ ¹ø) »ç¿ëÇÏ¸é FPS°¡ °¨¼ÒÇÒ ¼ö ÀÖ½À´Ï´Ù.
-	/// ±×·¯³ª ½ÇÁ¦·Î ±×·¸°Ô °ÆÁ¤ÇÒ ÇÊ¿ä´Â ¾øÀ» °ÍÀÔ´Ï´Ù.
+	/// ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ë‹¨ì¼ í”„ë ˆìž„ì—ì„œ ì™„ë£Œí•˜ë„ë¡ ê°•ì œí•©ë‹ˆë‹¤.
+	/// ì´ë ‡ê²Œ í•˜ë©´ ê²½ë¡œ ì°¾ê¸° ìŠ¤ë ˆë“œê°€ í˜„ìž¬ ê³„ì‚° ì¤‘ì¸ ê²½ë¡œë¥¼ ê³„ì‚°í•˜ë„ë¡ ê°•ì œí•˜ê³  ì¼ì‹œ ì¤‘ì§€í•©ë‹ˆë‹¤ (ìžˆëŠ” ê²½ìš°) .
+	/// ëª¨ë“  ìŠ¤ë ˆë“œê°€ ì¼ì‹œ ì¤‘ì§€ë˜ë©´ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ê°€ ìˆ˜í–‰ë©ë‹ˆë‹¤.
+	/// ê²½ë¡œ ì°¾ê¸° ì„±ëŠ¥ì„ ì €í•˜ì‹œí‚¬ ìˆ˜ ìžˆëŠ” (ì´ˆë‹¹ ë§Žì€ ìŠ¤ë ˆë“œê°€ ì„œë¡œë¥¼ ê¸°ë‹¤ë¦¬ëŠ” ê²½ìš°) ì´ í•¨ìˆ˜ë¥¼ ìžì£¼ (ì´ˆë‹¹ ì—¬ëŸ¬ ë²ˆ) ì‚¬ìš©í•˜ë©´ FPSê°€ ê°ì†Œí•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+	/// ê·¸ëŸ¬ë‚˜ ì‹¤ì œë¡œ ê·¸ë ‡ê²Œ ê±±ì •í•  í•„ìš”ëŠ” ì—†ì„ ê²ƒìž…ë‹ˆë‹¤.
 	///
-	/// Âü°í: ÀÌ ÇÔ¼ö´Â °ÅÀÇ <see cref="FlushWorkItems"/>¿Í µ¿ÀÏÇÏÁö¸¸ ¼³¸íÀÌ ´õ ÀÚ¼¼ÇÕ´Ï´Ù.
-	/// ÀÌ ÇÔ¼ö´Â ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¿¡ ´ëÇÑ ½Ã°£ Á¦ÇÑ Áö¿¬µµ ÀçÁ¤ÀÇÇÕ´Ï´Ù.
-	/// ±× ÀÌÀ¯´Â ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®°¡ ÀÛ¾÷ Ç×¸ñÀ» »ç¿ëÇÏ¿© ±¸ÇöµÇ±â ¶§¹®ÀÔ´Ï´Ù.
-	/// µû¶ó¼­ ÀÌ ÇÔ¼ö¸¦ È£ÃâÇÏ¸é ´Ù¸¥ ÀÛ¾÷ Ç×¸ñ (ÀÖ´Â °æ¿ì)µµ ½ÇÇàµË´Ï´Ù.
+	/// ì°¸ê³ : ì´ í•¨ìˆ˜ëŠ” ê±°ì˜ <see cref="FlushWorkItems"/>ì™€ ë™ì¼í•˜ì§€ë§Œ ì„¤ëª…ì´ ë” ìžì„¸í•©ë‹ˆë‹¤.
+	/// ì´ í•¨ìˆ˜ëŠ” ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ì— ëŒ€í•œ ì‹œê°„ ì œí•œ ì§€ì—°ë„ ìž¬ì •ì˜í•©ë‹ˆë‹¤.
+	/// ê·¸ ì´ìœ ëŠ” ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ê°€ ìž‘ì—… í•­ëª©ì„ ì‚¬ìš©í•˜ì—¬ êµ¬í˜„ë˜ê¸° ë•Œë¬¸ìž…ë‹ˆë‹¤.
+	/// ë”°ë¼ì„œ ì´ í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ë©´ ë‹¤ë¥¸ ìž‘ì—… í•­ëª© (ìžˆëŠ” ê²½ìš°)ë„ ì‹¤í–‰ë©ë‹ˆë‹¤.
 	///
-	/// ´ë±â ÁßÀÎ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®°¡ ¾øÀ¸¸é (´Ù¸¥ ÀÛ¾÷ Ç×¸ñµµ ½ÇÇàµÇÁö ¾ÊÀ½) ¾Æ¹« ÀÛ¾÷µµ ¼öÇàÇÏÁö ¾Ê½À´Ï´Ù.
+	/// ëŒ€ê¸° ì¤‘ì¸ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ê°€ ì—†ìœ¼ë©´ (ë‹¤ë¥¸ ìž‘ì—… í•­ëª©ë„ ì‹¤í–‰ë˜ì§€ ì•ŠìŒ) ì•„ë¬´ ìž‘ì—…ë„ ìˆ˜í–‰í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	/// </summary>
 	public void FlushGraphUpdates () {
 		if (IsAnyGraphUpdateQueued) {
@@ -1048,17 +1048,17 @@ public class AstarPath : VersionedMonoBehaviour {
 	#endregion
 
 	/// <summary>
-	/// ÇöÀç ÇÁ·¹ÀÓ¿¡¼­ ¸ðµç ÀÛ¾÷ Ç×¸ñÀ» ¿Ï·áÇÏµµ·Ï °­Á¦ÇÕ´Ï´Ù.
-	/// ÀÌ·¸°Ô ÇÏ¸é ¸ðµç ÀÛ¾÷ Ç×¸ñÀÌ Áï½Ã ½ÇÇàµË´Ï´Ù.
-	/// °æ·Î Ã£±â ½º·¹µå°¡ ÇöÀç °è»ê ÁßÀÎ °æ·Î¸¦ °è»êÇÏµµ·Ï °­Á¦ÇÏ°í ÀÏ½Ã ÁßÁöÇÕ´Ï´Ù (ÀÖ´Â °æ¿ì).
-	/// ¸ðµç ½º·¹µå°¡ ÀÏ½Ã ÁßÁöµÇ¸é ÀÛ¾÷ Ç×¸ñÀÌ ½ÇÇàµË´Ï´Ù (¿¹: ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®).
+	/// í˜„ìž¬ í”„ë ˆìž„ì—ì„œ ëª¨ë“  ìž‘ì—… í•­ëª©ì„ ì™„ë£Œí•˜ë„ë¡ ê°•ì œí•©ë‹ˆë‹¤.
+	/// ì´ë ‡ê²Œ í•˜ë©´ ëª¨ë“  ìž‘ì—… í•­ëª©ì´ ì¦‰ì‹œ ì‹¤í–‰ë©ë‹ˆë‹¤.
+	/// ê²½ë¡œ ì°¾ê¸° ìŠ¤ë ˆë“œê°€ í˜„ìž¬ ê³„ì‚° ì¤‘ì¸ ê²½ë¡œë¥¼ ê³„ì‚°í•˜ë„ë¡ ê°•ì œí•˜ê³  ì¼ì‹œ ì¤‘ì§€í•©ë‹ˆë‹¤ (ìžˆëŠ” ê²½ìš°).
+	/// ëª¨ë“  ìŠ¤ë ˆë“œê°€ ì¼ì‹œ ì¤‘ì§€ë˜ë©´ ìž‘ì—… í•­ëª©ì´ ì‹¤í–‰ë©ë‹ˆë‹¤ (ì˜ˆ: ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸).
 	///
-	/// °æ°í: ÀÌ°ÍÀ» ÀÚÁÖ (ÃÊ´ç ¸¹Àº ¹ø) »ç¿ëÇÏ¸é ¼­·Î¸¦ ±â´Ù¸®´Â ¸¹Àº ½º·¹µå ¶§¹®¿¡ FPS°¡ °¨¼ÒÇÒ ¼ö ÀÖ½À´Ï´Ù.
-	/// ±×·¯³ª ¾Æ¸¶µµ ±×·¸°Ô °ÆÁ¤ÇÒ ÇÊ¿ä´Â ¾øÀ» °ÍÀÔ´Ï´Ù.
+	/// ê²½ê³ : ì´ê²ƒì„ ìžì£¼ (ì´ˆë‹¹ ë§Žì€ ë²ˆ) ì‚¬ìš©í•˜ë©´ ì„œë¡œë¥¼ ê¸°ë‹¤ë¦¬ëŠ” ë§Žì€ ìŠ¤ë ˆë“œ ë•Œë¬¸ì— FPSê°€ ê°ì†Œí•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+	/// ê·¸ëŸ¬ë‚˜ ì•„ë§ˆë„ ê·¸ë ‡ê²Œ ê±±ì •í•  í•„ìš”ëŠ” ì—†ì„ ê²ƒìž…ë‹ˆë‹¤.
 	///
-	/// Âü°í: ÀÌ°ÍÀº °ÅÀÇ (<see cref="FlushGraphUpdates"/>¿Í °ÅÀÇ µ¿ÀÏÇÔ) µ¿ÀÏÇÏÁö¸¸ ¼³¸íÀÌ ´õ ÀÚ¼¼ÇÕ´Ï´Ù.
+	/// ì°¸ê³ : ì´ê²ƒì€ ê±°ì˜ (<see cref="FlushGraphUpdates"/>ì™€ ê±°ì˜ ë™ì¼í•¨) ë™ì¼í•˜ì§€ë§Œ ì„¤ëª…ì´ ë” ìžì„¸í•©ë‹ˆë‹¤.
 	///
-	/// ´ë±â ÁßÀÎ ½ÇÇàÇÒ ÀÛ¾÷ Ç×¸ñÀÌ ¾øÀ¸¸é ¾Æ¹« ÀÛ¾÷µµ ¼öÇàÇÏÁö ¾Ê½À´Ï´Ù.
+	/// ëŒ€ê¸° ì¤‘ì¸ ì‹¤í–‰í•  ìž‘ì—… í•­ëª©ì´ ì—†ìœ¼ë©´ ì•„ë¬´ ìž‘ì—…ë„ ìˆ˜í–‰í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	/// </summary>
 	public void FlushWorkItems () {
 		if (workItems.anyQueued) {
@@ -1069,16 +1069,16 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// ÀÛ¾÷ Ç×¸ñÀÌ ½ÇÇàµÇµµ·Ï È®ÀÎÇÕ´Ï´Ù.
+	/// ìž‘ì—… í•­ëª©ì´ ì‹¤í–‰ë˜ë„ë¡ í™•ì¸í•©ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: AddWorkItem
+	/// ì°¸ì¡°: AddWorkItem
 	///
-	/// Deprecated: ´ë½Å <see cref="FlushWorkItems()"/>¸¦ »ç¿ëÇÕ´Ï´Ù.
+	/// Deprecated: ëŒ€ì‹  <see cref="FlushWorkItems()"/>ë¥¼ ì‚¬ìš©í•©ë‹ˆë‹¤.
 	/// </summary>
-	/// <param name="unblockOnComplete">trueÀÎ °æ¿ì ÀÛ¾÷ Ç×¸ñÀ» ¸ðµÎ ¿Ï·áÇÑ ÈÄ¿¡ Áï½Ã °æ·Î Ã£±â¸¦ ½ÃÀÛÇÒ ¼ö ÀÖ½À´Ï´Ù.</param>
-	/// <param name="block">trueÀÎ °æ¿ì ÀÏ¹ÝÀûÀ¸·Î ¿©·¯ ÇÁ·¹ÀÓ¿¡ °ÉÃÄ ¿Ï·áµÇ´Â ÀÛ¾÷ Ç×¸ñÀ»ÀÌ È£Ãâ Áß¿¡ ¿Ï·áÇÏµµ·Ï °­Á¦ÇÕ´Ï´Ù.
-	///              falseÀÌ¸éÀÌ È£Ãâ ÈÄ¿¡ ¾ÆÁ÷ ÀÛ¾÷ÀÌ ³²¾Æ ÀÖÀ» ¼ö ÀÖ½À´Ï´Ù.</param>
-	[System.Obsolete("FlushWorkItems() ´ë½Å »ç¿ëÇÏ¼¼¿ä")]
+	/// <param name="unblockOnComplete">trueì¸ ê²½ìš° ìž‘ì—… í•­ëª©ì„ ëª¨ë‘ ì™„ë£Œí•œ í›„ì— ì¦‰ì‹œ ê²½ë¡œ ì°¾ê¸°ë¥¼ ì‹œìž‘í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.</param>
+	/// <param name="block">trueì¸ ê²½ìš° ì¼ë°˜ì ìœ¼ë¡œ ì—¬ëŸ¬ í”„ë ˆìž„ì— ê±¸ì³ ì™„ë£Œë˜ëŠ” ìž‘ì—… í•­ëª©ì„ì´ í˜¸ì¶œ ì¤‘ì— ì™„ë£Œí•˜ë„ë¡ ê°•ì œí•©ë‹ˆë‹¤.
+	///              falseì´ë©´ì´ í˜¸ì¶œ í›„ì— ì•„ì§ ìž‘ì—…ì´ ë‚¨ì•„ ìžˆì„ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.</param>
+	[System.Obsolete("FlushWorkItems() ëŒ€ì‹  ì‚¬ìš©í•˜ì„¸ìš”")]
 	public void FlushWorkItems (bool unblockOnComplete, bool block) {
 		var graphLock = PausePathfinding();
 
@@ -1088,15 +1088,15 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// »ç¿ëÇÒ ½º·¹µå ¼ö¸¦ °è»êÇÕ´Ï´Ù.
-	/// count°¡ ÀÚµ¿ÀÌ ¾Æ´Ñ °æ¿ì, count¸¦ int·Î Ä³½ºÆÃÇÏ¿© ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// ¹ÝÈ¯ °ª: »ç¿ëÇÒ ½º·¹µå ¼ö¸¦ ÁöÁ¤ÇÏ´Â intÀÔ´Ï´Ù. 0Àº º°µµÀÇ ½º·¹µå ´ë½Å °æ·Î Ã£±â¿¡ ´ë±â¿­À» »ç¿ëÇØ¾ß ÇÔÀ» ÀÇ¹ÌÇÕ´Ï´Ù.
+	/// ì‚¬ìš©í•  ìŠ¤ë ˆë“œ ìˆ˜ë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤.
+	/// countê°€ ìžë™ì´ ì•„ë‹Œ ê²½ìš°, countë¥¼ intë¡œ ìºìŠ¤íŒ…í•˜ì—¬ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ë°˜í™˜ ê°’: ì‚¬ìš©í•  ìŠ¤ë ˆë“œ ìˆ˜ë¥¼ ì§€ì •í•˜ëŠ” intìž…ë‹ˆë‹¤. 0ì€ ë³„ë„ì˜ ìŠ¤ë ˆë“œ ëŒ€ì‹  ê²½ë¡œ ì°¾ê¸°ì— ëŒ€ê¸°ì—´ì„ ì‚¬ìš©í•´ì•¼ í•¨ì„ ì˜ë¯¸í•©ë‹ˆë‹¤.
 	///
-	/// count°¡ Automatic·Î ¼³Á¤µÈ °æ¿ì, ÇöÀç ½Ã½ºÅÛÀÇ ÇÁ·Î¼¼¼­ ¼ö¿Í ¸Þ¸ð¸®¿¡ ±â¹ÝÇÑ °ªÀ» ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// ¸Þ¸ð¸®°¡ <= 512MB ÀÌ°Å³ª ³í¸® ÄÚ¾î°¡ <= 1ÀÌ¸é 0À» ¹ÝÈ¯ÇÕ´Ï´Ù. ¸Þ¸ð¸®°¡ <= 1024ÀÌ¸é ½º·¹µå¸¦ ÃÖ´ë 2°³·Î Å¬·¥ÇÎÇÕ´Ï´Ù.
-	/// ±×·¸Áö ¾ÊÀ¸¸é ³í¸® ÄÚ¾î ¼ö¸¦ 6À¸·Î Å¬·¥ÇÎÇÕ´Ï´Ù.
+	/// countê°€ Automaticë¡œ ì„¤ì •ëœ ê²½ìš°, í˜„ìž¬ ì‹œìŠ¤í…œì˜ í”„ë¡œì„¸ì„œ ìˆ˜ì™€ ë©”ëª¨ë¦¬ì— ê¸°ë°˜í•œ ê°’ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ë©”ëª¨ë¦¬ê°€ <= 512MB ì´ê±°ë‚˜ ë…¼ë¦¬ ì½”ì–´ê°€ <= 1ì´ë©´ 0ì„ ë°˜í™˜í•©ë‹ˆë‹¤. ë©”ëª¨ë¦¬ê°€ <= 1024ì´ë©´ ìŠ¤ë ˆë“œë¥¼ ìµœëŒ€ 2ê°œë¡œ í´ëž¨í•‘í•©ë‹ˆë‹¤.
+	/// ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ ë…¼ë¦¬ ì½”ì–´ ìˆ˜ë¥¼ 6ìœ¼ë¡œ í´ëž¨í•‘í•©ë‹ˆë‹¤.
 	///
-	/// WebGL¿¡¼­´Â ÀÌ ¸Þ¼­µå´Â Ç×»ó 0À» ¹ÝÈ¯ÇÕ´Ï´Ù.
+	/// WebGLì—ì„œëŠ” ì´ ë©”ì„œë“œëŠ” í•­ìƒ 0ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
 	/// </summary>
 	public static int CalculateThreadCount (ThreadCount count) {
 #if UNITY_WEBGL
@@ -1122,33 +1122,33 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// ÇÊ¿äÇÑ º¯¼ö¸¦ ¼³Á¤ÇÏ°í ±×·¡ÇÁ¸¦ ½ºÄµÇÕ´Ï´Ù.
-	/// Initialize¸¦ È£ÃâÇÏ°í ReturnPaths ÄÚ·çÆ¾À» ½ÃÀÛÇÏ°í ¸ðµç ±×·¡ÇÁ¸¦ ½ºÄµÇÕ´Ï´Ù.
-	/// ¶ÇÇÑ ¸ÖÆ¼½º·¹µùÀ» »ç¿ëÇÏ´Â °æ¿ì ½º·¹µå¸¦ ½ÃÀÛÇÕ´Ï´Ù.
-	/// ÂüÁ¶: <see cref="OnAwakeSettings"/>
+	/// í•„ìš”í•œ ë³€ìˆ˜ë¥¼ ì„¤ì •í•˜ê³  ê·¸ëž˜í”„ë¥¼ ìŠ¤ìº”í•©ë‹ˆë‹¤.
+	/// Initializeë¥¼ í˜¸ì¶œí•˜ê³  ReturnPaths ì½”ë£¨í‹´ì„ ì‹œìž‘í•˜ê³  ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ìŠ¤ìº”í•©ë‹ˆë‹¤.
+	/// ë˜í•œ ë©€í‹°ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•˜ëŠ” ê²½ìš° ìŠ¤ë ˆë“œë¥¼ ì‹œìž‘í•©ë‹ˆë‹¤.
+	/// ì°¸ì¡°: <see cref="OnAwakeSettings"/>
 	/// </summary>
 	protected override void Awake () {
 		base.Awake();
-		// ½Ì±ÛÅæ ÆÐÅÏÀÌ À¯ÁöµÇµµ·Ï ¸Å¿ì Áß¿äÇÕ´Ï´Ù.
+		// ì‹±ê¸€í†¤ íŒ¨í„´ì´ ìœ ì§€ë˜ë„ë¡ ë§¤ìš° ì¤‘ìš”í•©ë‹ˆë‹¤.
 		active = this;
 
 		if (FindObjectsOfType(typeof(AstarPath)).Length > 1) {
-			Debug.LogError("ÇÑ ¹ø¿¡ ÇÏ³ª ÀÌ»óÀÇ AstarPath ±¸¼º ¿ä¼Ò¸¦ ¾À¿¡ µÎÁö ¸»¾Æ¾ß ÇÕ´Ï´Ù.\n" +
-		  "ÀÌ·¸°Ô ÇÏ¸é AstarPath ±¸¼º ¿ä¼Ò°¡ ½Ì±ÛÅæ ÆÐÅÏÀ» Áß½ÉÀ¸·Î ºôµåµÇ±â ¶§¹®¿¡ ½É°¢ÇÑ ¿À·ù°¡ ¹ß»ýÇÒ ¼ö ÀÖ½À´Ï´Ù.");
+			Debug.LogError("í•œ ë²ˆì— í•˜ë‚˜ ì´ìƒì˜ AstarPath êµ¬ì„± ìš”ì†Œë¥¼ ì”¬ì— ë‘ì§€ ë§ì•„ì•¼ í•©ë‹ˆë‹¤.\n" +
+		  "ì´ë ‡ê²Œ í•˜ë©´ AstarPath êµ¬ì„± ìš”ì†Œê°€ ì‹±ê¸€í†¤ íŒ¨í„´ì„ ì¤‘ì‹¬ìœ¼ë¡œ ë¹Œë“œë˜ê¸° ë•Œë¬¸ì— ì‹¬ê°í•œ ì˜¤ë¥˜ê°€ ë°œìƒí•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.");
 		}
 
-		// GUILayout¸¦ »ç¿ëÇÏÁö ¾Êµµ·Ï ¼³Á¤ÇÏ¿© ¼º´ÉÀ» ³ôÀÔ´Ï´Ù. OnGUI È£Ãâ¿¡¼­ »ç¿ëµÇÁö ¾Ê½À´Ï´Ù.
+		// GUILayoutë¥¼ ì‚¬ìš©í•˜ì§€ ì•Šë„ë¡ ì„¤ì •í•˜ì—¬ ì„±ëŠ¥ì„ ë†’ìž…ë‹ˆë‹¤. OnGUI í˜¸ì¶œì—ì„œ ì‚¬ìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 		useGUILayout = false;
 
-		// ÀÌ Å¬·¡½º´Â [ExecuteInEditMode] ¼Ó¼ºÀ» »ç¿ëÇÏ¹Ç·Î Awake´Â ½ÇÇà ÁßÀÌÁö ¾ÊÀ» ¶§µµ È£ÃâµË´Ï´Ù.
-		// ÇÃ·¹ÀÌ ¸ðµå°¡ ¾Æ´Ò ¶§´Â ¾Æ¹« ÀÛ¾÷µµ ¼öÇàÇÏÁö ¾Ê½À´Ï´Ù.
+		// ì´ í´ëž˜ìŠ¤ëŠ” [ExecuteInEditMode] ì†ì„±ì„ ì‚¬ìš©í•˜ë¯€ë¡œ AwakeëŠ” ì‹¤í–‰ ì¤‘ì´ì§€ ì•Šì„ ë•Œë„ í˜¸ì¶œë©ë‹ˆë‹¤.
+		// í”Œë ˆì´ ëª¨ë“œê°€ ì•„ë‹ ë•ŒëŠ” ì•„ë¬´ ìž‘ì—…ë„ ìˆ˜í–‰í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 		if (!Application.isPlaying) return;
 
 		if (OnAwakeSettings != null) {
 			OnAwakeSettings();
 		}
 
-		// ½ºÄµÇÏ±â Àü¿¡ ¸ðµç ±×·¡ÇÁ ¼öÁ¤ÀÚ°¡ È°¼ºÈ­µÇ¾ú´ÂÁö È®ÀÎ (½ºÅ©¸³Æ® ½ÇÇà ¼ø¼­ ¹®Á¦ ¹æÁö)
+		// ìŠ¤ìº”í•˜ê¸° ì „ì— ëª¨ë“  ê·¸ëž˜í”„ ìˆ˜ì •ìžê°€ í™œì„±í™”ë˜ì—ˆëŠ”ì§€ í™•ì¸ (ìŠ¤í¬ë¦½íŠ¸ ì‹¤í–‰ ìˆœì„œ ë¬¸ì œ ë°©ì§€)
 		GraphModifier.FindAllModifiers();
 		RelevantGraphSurface.FindAllGraphSurfaces();
 
@@ -1157,7 +1157,7 @@ public class AstarPath : VersionedMonoBehaviour {
 		ConfigureReferencesInternal();
 		InitializeAstarData();
 
-		// ÀÛ¾÷ Ç×¸ñ ÇÃ·¯½Ã, ±×·¡ÇÁ µ¥ÀÌÅÍ ·Îµå¸¦À§ÇÑ InitializeAstarData¿¡ Ãß°¡ µÉ ¼ö ÀÖÀ½
+		// ìž‘ì—… í•­ëª© í”ŒëŸ¬ì‹œ, ê·¸ëž˜í”„ ë°ì´í„° ë¡œë“œë¥¼ìœ„í•œ InitializeAstarDataì— ì¶”ê°€ ë  ìˆ˜ ìžˆìŒ
 		FlushWorkItems();
 
 		euclideanEmbedding.dirty = true;
@@ -1169,14 +1169,14 @@ public class AstarPath : VersionedMonoBehaviour {
 		}
 	}
 
-	/// <summary><see cref="pathProcessor"/> ÇÊµå¸¦ ÃÊ±âÈ­ÇÕ´Ï´Ù.</summary>
+	/// <summary><see cref="pathProcessor"/> í•„ë“œë¥¼ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.</summary>
 	void InitializePathProcessor () {
 		int numThreads = CalculateThreadCount(threadCount);
 
-		// ÇÃ·¹ÀÌ ¸ðµå ÀÌ¿Ü¿¡¼­´Â ¸ðµç °ÍÀÌ µ¿±âÀûÀÌ¹Ç·Î ½º·¹µå¸¦ »ç¿ëÇÏÁö ¾Ê½À´Ï´Ù.
+		// í”Œë ˆì´ ëª¨ë“œ ì´ì™¸ì—ì„œëŠ” ëª¨ë“  ê²ƒì´ ë™ê¸°ì ì´ë¯€ë¡œ ìŠ¤ë ˆë“œë¥¼ ì‚¬ìš©í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 		if (!Application.isPlaying) numThreads = 0;
 
-		// ´Ü¼øÇÑ ¸ðµùÀ¸·Î ¿©·¯ ½º·¹µå¸¦ Áö¿øÇÏ·Á´Â ½Ãµµ ¹æÁö
+		// ë‹¨ìˆœí•œ ëª¨ë”©ìœ¼ë¡œ ì—¬ëŸ¬ ìŠ¤ë ˆë“œë¥¼ ì§€ì›í•˜ë ¤ëŠ” ì‹œë„ ë°©ì§€
 		if (numThreads > 1) {
 			threadCount = ThreadCount.One;
 			numThreads = 1;
@@ -1209,16 +1209,16 @@ public class AstarPath : VersionedMonoBehaviour {
 		}
 	}
 
-	/// <summary>°£´ÜÇÑ ¿À·ù È®ÀÎÀ» ¼öÇàÇÕ´Ï´Ù.</summary>
+	/// <summary>ê°„ë‹¨í•œ ì˜¤ë¥˜ í™•ì¸ì„ ìˆ˜í–‰í•©ë‹ˆë‹¤.</summary>
 	internal void VerifyIntegrity () {
 		if (active != this)
 		{
-			throw new System.Exception("½Ì±ÛÅæ ÆÐÅÏÀÌ ±úÁ³½À´Ï´Ù. ¾À¿¡ AstarPath °³Ã¼¸¦ ÇÏ³ª¸¸ µÎ½Ê½Ã¿À.");
+			throw new System.Exception("ì‹±ê¸€í†¤ íŒ¨í„´ì´ ê¹¨ì¡ŒìŠµë‹ˆë‹¤. ì”¬ì— AstarPath ê°œì²´ë¥¼ í•˜ë‚˜ë§Œ ë‘ì‹­ì‹œì˜¤.");
 		}
 
 		if (data == null)
 		{
-			throw new System.NullReferenceException("µ¥ÀÌÅÍ°¡ nullÀÔ´Ï´Ù... A*°¡ Á¦´ë·Î ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï±î?");
+			throw new System.NullReferenceException("ë°ì´í„°ê°€ nullìž…ë‹ˆë‹¤... A*ê°€ ì œëŒ€ë¡œ ì„¤ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆê¹Œ?");
 		}
 
 		if (data.graphs == null) {
@@ -1229,10 +1229,10 @@ public class AstarPath : VersionedMonoBehaviour {
 
 	/// <summary>\cond internal</summary>
 	/// <summary>
-	/// <see cref="active"/>°¡ ÀÌ °³Ã¼·Î ¼³Á¤µÇ°í <see cref="data"/>°¡ nullÀÌ ¾Æ´ÑÁö È®ÀÎÇÏ´Â ³»ºÎ ¸Þ¼­µåÀÔ´Ï´Ù.
-	/// ¶ÇÇÑ <see cref="colorSettings"/>ÀÇ OnEnableÀ» È£ÃâÇÏ°í µ¥ÀÌÅÍ.userConnections¸¦ ÃÊ±âÈ­ÇÏÁö ¾ÊÀº °æ¿ì ÃÊ±âÈ­ÇÕ´Ï´Ù.
+	/// <see cref="active"/>ê°€ ì´ ê°œì²´ë¡œ ì„¤ì •ë˜ê³  <see cref="data"/>ê°€ nullì´ ì•„ë‹Œì§€ í™•ì¸í•˜ëŠ” ë‚´ë¶€ ë©”ì„œë“œìž…ë‹ˆë‹¤.
+	/// ë˜í•œ <see cref="colorSettings"/>ì˜ OnEnableì„ í˜¸ì¶œí•˜ê³  ë°ì´í„°.userConnectionsë¥¼ ì´ˆê¸°í™”í•˜ì§€ ì•Šì€ ê²½ìš° ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
 	///
-	/// °æ°í: ÁÖ·Î ½Ã½ºÅÛ ³»ºÎ¿¡¼­ »ç¿ëÇÏµµ·Ï µÇ¾î ÀÖ½À´Ï´Ù.
+	/// ê²½ê³ : ì£¼ë¡œ ì‹œìŠ¤í…œ ë‚´ë¶€ì—ì„œ ì‚¬ìš©í•˜ë„ë¡ ë˜ì–´ ìžˆìŠµë‹ˆë‹¤.
 	/// </summary>
 	public void ConfigureReferencesInternal () {
 		active = this;
@@ -1242,7 +1242,7 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 	/// <summary>\endcond</summary>
 
-	/// <summary>AstarProfiler.InitializeFastProfile¸¦ È£ÃâÇÕ´Ï´Ù.</summary>
+	/// <summary>AstarProfiler.InitializeFastProfileë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.</summary>
 	void InitializeProfiler () {
 		AstarProfiler.InitializeFastProfile(new string[14] {
 			"Prepare",          //0
@@ -1263,10 +1263,10 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// AstarData Å¬·¡½º¸¦ ÃÊ±âÈ­ÇÕ´Ï´Ù.
-	/// ±×·¡ÇÁ À¯ÇüÀ» °Ë»öÇÏ°í <see cref="data"/> ¹× ¸ðµç ±×·¡ÇÁÀÇ Awake¸¦ È£ÃâÇÕ´Ï´Ù.
+	/// AstarData í´ëž˜ìŠ¤ë¥¼ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
+	/// ê·¸ëž˜í”„ ìœ í˜•ì„ ê²€ìƒ‰í•˜ê³  <see cref="data"/> ë° ëª¨ë“  ê·¸ëž˜í”„ì˜ Awakeë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: AstarData.FindGraphTypes
+	/// ì°¸ì¡°: AstarData.FindGraphTypes
 	/// </summary>
 	void InitializeAstarData () {
 		data.FindGraphTypes();
@@ -1274,18 +1274,18 @@ public class AstarPath : VersionedMonoBehaviour {
 		data.UpdateShortcuts();
 	}
 
-	/// <summary>¸Þ¸ð¸® ´©¼ö¸¦ ¹æÁöÇÏ±â À§ÇØ ¸Þ½Ã¸¦ Á¤¸®ÇÕ´Ï´Ù.</summary>
+	/// <summary>ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ë¥¼ ë°©ì§€í•˜ê¸° ìœ„í•´ ë©”ì‹œë¥¼ ì •ë¦¬í•©ë‹ˆë‹¤.</summary>
 	void OnDisable () {
 		gizmos.ClearCache();
 	}
 
 	/// <summary>
-	/// º¯¼ö ¹× ±âÅ¸ Ç×¸ñÀ» Á¤¸®ÇÏ°í ±×·¡ÇÁ¸¦ Á¦°ÅÇÕ´Ï´Ù.
-	/// AstarPath °³Ã¼¸¦ ÆÄ±«ÇÒ ¶§ ¸ðµç ÄÝ¹é°ú °°Àº Á¤Àû º¯¼ö°¡ Áö¿öÁý´Ï´Ù.
+	/// ë³€ìˆ˜ ë° ê¸°íƒ€ í•­ëª©ì„ ì •ë¦¬í•˜ê³  ê·¸ëž˜í”„ë¥¼ ì œê±°í•©ë‹ˆë‹¤.
+	/// AstarPath ê°œì²´ë¥¼ íŒŒê´´í•  ë•Œ ëª¨ë“  ì½œë°±ê³¼ ê°™ì€ ì •ì  ë³€ìˆ˜ê°€ ì§€ì›Œì§‘ë‹ˆë‹¤.
 	/// </summary>
 	void OnDestroy () {
-		// ÀÌ Å¬·¡½º´Â [ExecuteInEditMode] ¼Ó¼ºÀ» »ç¿ëÇÏ¹Ç·Î OnDestroy´Â ½ÇÇà ÁßÀÌÁö ¾ÊÀ» ¶§µµ È£ÃâµË´Ï´Ù.
-		// ÇÃ·¹ÀÌ ¸ðµå°¡ ¾Æ´Ò ¶§´Â ¾Æ¹« ÀÛ¾÷µµ ¼öÇàÇÏÁö ¾Ê½À´Ï´Ù.
+		// ì´ í´ëž˜ìŠ¤ëŠ” [ExecuteInEditMode] ì†ì„±ì„ ì‚¬ìš©í•˜ë¯€ë¡œ OnDestroyëŠ” ì‹¤í–‰ ì¤‘ì´ì§€ ì•Šì„ ë•Œë„ í˜¸ì¶œë©ë‹ˆë‹¤.
+		// í”Œë ˆì´ ëª¨ë“œê°€ ì•„ë‹ ë•ŒëŠ” ì•„ë¬´ ìž‘ì—…ë„ ìˆ˜í–‰í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 		if (!Application.isPlaying) return;
 
 		if (logPathResults == PathLog.Heavy)
@@ -1293,7 +1293,7 @@ public class AstarPath : VersionedMonoBehaviour {
 
 		if (active != this) return;
 
-		// ÇöÀç °æ·Î °è»êÀÌ ¿Ï·á µÉ ¶§±îÁö °æ·Î Ã£±â ½º·¹µå Â÷´Ü
+		// í˜„ìž¬ ê²½ë¡œ ê³„ì‚°ì´ ì™„ë£Œ ë  ë•Œê¹Œì§€ ê²½ë¡œ ì°¾ê¸° ìŠ¤ë ˆë“œ ì°¨ë‹¨
 		PausePathfinding();
 
 		navmeshUpdates.OnDisable();
@@ -1301,39 +1301,39 @@ public class AstarPath : VersionedMonoBehaviour {
 		euclideanEmbedding.dirty = false;
 		FlushWorkItems();
 
-		// ÀÌ AstarPath ÀÎ½ºÅÏ½º¿¡ ´õ ÀÌ»ó °æ·Î È£ÃâÀ» ¼ö¿ëÇÏÁö ¾Ê½À´Ï´Ù.
-		// ÀÌ·Î ÀÎÇØ ¸ðµç °æ·Î Ã£±â ½º·¹µå°¡ Á¾·áµË´Ï´Ù (ÀÖ´Â °æ¿ì)
+		// ì´ AstarPath ì¸ìŠ¤í„´ìŠ¤ì— ë” ì´ìƒ ê²½ë¡œ í˜¸ì¶œì„ ìˆ˜ìš©í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
+		// ì´ë¡œ ì¸í•´ ëª¨ë“  ê²½ë¡œ ì°¾ê¸° ìŠ¤ë ˆë“œê°€ ì¢…ë£Œë©ë‹ˆë‹¤ (ìžˆëŠ” ê²½ìš°)
 		pathProcessor.queue.TerminateReceivers();
 
 		if (logPathResults == PathLog.Heavy)
 			Debug.Log("Processing Possible Work Items");
 
-		// ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® ½º·¹µå ÁßÁö (½ÇÇà ÁßÀÎ °æ¿ì)
+		// ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ìŠ¤ë ˆë“œ ì¤‘ì§€ (ì‹¤í–‰ ì¤‘ì¸ ê²½ìš°)
 		graphUpdates.DisableMultithreading();
 
-		// °æ·Î Ã£±â ½º·¹µå °¡ÀÔ ½Ãµµ
+		// ê²½ë¡œ ì°¾ê¸° ìŠ¤ë ˆë“œ ê°€ìž… ì‹œë„
 		pathProcessor.JoinThreads();
 
 		if (logPathResults == PathLog.Heavy)
 			Debug.Log("Returning Paths");
 
 
-		// ¸ðµç °æ·Î ¹ÝÈ¯
+		// ëª¨ë“  ê²½ë¡œ ë°˜í™˜
 		pathReturnQueue.ReturnPaths(false);
 
 		if (logPathResults == PathLog.Heavy)
 			Debug.Log("Destroying Graphs");
 
 
-		// ±×·¡ÇÁ µ¥ÀÌÅÍ Á¤¸®
+		// ê·¸ëž˜í”„ ë°ì´í„° ì •ë¦¬
 		data.OnDestroy();
 
 		if (logPathResults == PathLog.Heavy)
 			Debug.Log("Cleaning up variables");
 
-		// º¯¼ö Á¤¸®, Á¤Àû º¯¼ö´Â Á¤¸®ÇØ¾ß ´ÙÀ½ ¾À¿¡¼­ ÀÌ»óÇÑ µ¥ÀÌÅÍ¸¦ ¹ÞÁö ¾ÊÀ» °ÍÀÔ´Ï´Ù.
+		// ë³€ìˆ˜ ì •ë¦¬, ì •ì  ë³€ìˆ˜ëŠ” ì •ë¦¬í•´ì•¼ ë‹¤ìŒ ì”¬ì—ì„œ ì´ìƒí•œ ë°ì´í„°ë¥¼ ë°›ì§€ ì•Šì„ ê²ƒìž…ë‹ˆë‹¤.
 
-		// ¸ðµç ÄÝ¹é Áö¿ì±â
+		// ëª¨ë“  ì½œë°± ì§€ìš°ê¸°
 		OnAwakeSettings			= null;
 		OnGraphPreScan          = null;
 		OnGraphPostScan         = null;
@@ -1348,81 +1348,81 @@ public class AstarPath : VersionedMonoBehaviour {
 		active = null;
 	}
 
-	#region ½ºÄµ ¸Þ¼­µå
+	#region ìŠ¤ìº” ë©”ì„œë“œ
 
 	/// <summary>
-	/// »õ·Î¿î Àü¿ª ³ëµå ÀÎµ¦½º¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// °æ°í: ÀÌ ¸Þ¼­µå´Â Á÷Á¢ È£ÃâÇØ¼­´Â ¾ÈµË´Ï´Ù. GraphNode »ý¼ºÀÚ¿¡¼­ »ç¿ëµË´Ï´Ù.
+	/// ìƒˆë¡œìš´ ì „ì—­ ë…¸ë“œ ì¸ë±ìŠ¤ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ê²½ê³ : ì´ ë©”ì„œë“œëŠ” ì§ì ‘ í˜¸ì¶œí•´ì„œëŠ” ì•ˆë©ë‹ˆë‹¤. GraphNode ìƒì„±ìžì—ì„œ ì‚¬ìš©ë©ë‹ˆë‹¤.
 	/// </summary>
 	internal int GetNewNodeIndex () {
 		return pathProcessor.GetNewNodeIndex();
 	}
 
 	/// <summary>
-	/// ³ëµåÀÇ ÀÓ½Ã °æ·Î µ¥ÀÌÅÍ¸¦ ÃÊ±âÈ­ÇÕ´Ï´Ù.
-	/// °æ°í: ÀÌ ¸Þ¼­µå´Â Á÷Á¢ È£ÃâÇØ¼­´Â ¾ÈµË´Ï´Ù. GraphNode »ý¼ºÀÚ¿¡¼­ »ç¿ëµË´Ï´Ù.
+	/// ë…¸ë“œì˜ ìž„ì‹œ ê²½ë¡œ ë°ì´í„°ë¥¼ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
+	/// ê²½ê³ : ì´ ë©”ì„œë“œëŠ” ì§ì ‘ í˜¸ì¶œí•´ì„œëŠ” ì•ˆë©ë‹ˆë‹¤. GraphNode ìƒì„±ìžì—ì„œ ì‚¬ìš©ë©ë‹ˆë‹¤.
 	/// </summary>
 	internal void InitializeNode (GraphNode node) {
 		pathProcessor.InitializeNode(node);
 	}
 
 	/// <summary>
-	/// ÁÖ¾îÁø ³ëµå¸¦ ÆÄ±«ÇÏ±â À§ÇÑ ³»ºÎ ¸Þ¼­µåÀÔ´Ï´Ù.
-	/// ÀÌ ¸Þ¼­µå´Â ³ëµå°¡ ±×·¡ÇÁ¿¡¼­ ºÐ¸®µÈ ÈÄ¿¡ È£ÃâµÇ¾î ´Ù¸¥ ³ëµå¿¡¼­ µµ´ÞÇÒ ¼ö ¾øµµ·ÏÇÕ´Ï´Ù.
-	/// ÀÌ ¸Þ¼­µå´Â ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® Áß¿¡¸¸ È£ÃâµÇ¾î¾ß ÇÕ´Ï´Ù. Áï, °æ·Î Ã£±â ½º·¹µå°¡ ½ÇÇà ÁßÀÌÁö ¾Ê°Å³ª ÀÏ½Ã ÁßÁöµÈ °æ¿ì¿¡¸¸ È£ÃâµÇ¾î¾ß ÇÕ´Ï´Ù.
+	/// ì£¼ì–´ì§„ ë…¸ë“œë¥¼ íŒŒê´´í•˜ê¸° ìœ„í•œ ë‚´ë¶€ ë©”ì„œë“œìž…ë‹ˆë‹¤.
+	/// ì´ ë©”ì„œë“œëŠ” ë…¸ë“œê°€ ê·¸ëž˜í”„ì—ì„œ ë¶„ë¦¬ëœ í›„ì— í˜¸ì¶œë˜ì–´ ë‹¤ë¥¸ ë…¸ë“œì—ì„œ ë„ë‹¬í•  ìˆ˜ ì—†ë„ë¡í•©ë‹ˆë‹¤.
+	/// ì´ ë©”ì„œë“œëŠ” ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ì¤‘ì—ë§Œ í˜¸ì¶œë˜ì–´ì•¼ í•©ë‹ˆë‹¤. ì¦‰, ê²½ë¡œ ì°¾ê¸° ìŠ¤ë ˆë“œê°€ ì‹¤í–‰ ì¤‘ì´ì§€ ì•Šê±°ë‚˜ ì¼ì‹œ ì¤‘ì§€ëœ ê²½ìš°ì—ë§Œ í˜¸ì¶œë˜ì–´ì•¼ í•©ë‹ˆë‹¤.
 	///
-	/// °æ°í: »ç¿ëÀÚ ÄÚµå¿¡¼­ ÀÌ ¸Þ¼­µå¸¦ Á÷Á¢ È£ÃâÇØ¼­´Â ¾ÈµË´Ï´Ù. ³»ºÎÀûÀ¸·Î ½Ã½ºÅÛ¿¡¼­ »ç¿ëµË´Ï´Ù.
+	/// ê²½ê³ : ì‚¬ìš©ìž ì½”ë“œì—ì„œ ì´ ë©”ì„œë“œë¥¼ ì§ì ‘ í˜¸ì¶œí•´ì„œëŠ” ì•ˆë©ë‹ˆë‹¤. ë‚´ë¶€ì ìœ¼ë¡œ ì‹œìŠ¤í…œì—ì„œ ì‚¬ìš©ë©ë‹ˆë‹¤.
 	/// </summary>
 	internal void DestroyNode (GraphNode node) {
 		pathProcessor.DestroyNode(node);
 	}
 
 	/// <summary>
-	/// ¸ðµç °æ·Î Ã£±â ½º·¹µå°¡ ÀÏ½Ã ÁßÁöµÇ°í Â÷´Ü µÉ ¶§±îÁö Â÷´ÜÇÕ´Ï´Ù.
+	/// ëª¨ë“  ê²½ë¡œ ì°¾ê¸° ìŠ¤ë ˆë“œê°€ ì¼ì‹œ ì¤‘ì§€ë˜ê³  ì°¨ë‹¨ ë  ë•Œê¹Œì§€ ì°¨ë‹¨í•©ë‹ˆë‹¤.
 	///
 	/// <code>
 	/// var graphLock = AstarPath.active.PausePathfinding();
-	/// // ¿©±â¿¡¼­ ±×·¡ÇÁ¸¦ ¾ÈÀüÇÏ°Ô ¼öÁ¤ÇÒ ¼ö ÀÖ½À´Ï´Ù. ¿¹¸¦ µé¾î Æ÷ÀÎÆ® ±×·¡ÇÁ¿¡ »õ·Î¿î ³ëµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	/// // ì—¬ê¸°ì—ì„œ ê·¸ëž˜í”„ë¥¼ ì•ˆì „í•˜ê²Œ ìˆ˜ì •í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤. ì˜ˆë¥¼ ë“¤ì–´ í¬ì¸íŠ¸ ê·¸ëž˜í”„ì— ìƒˆë¡œìš´ ë…¸ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	/// var node = AstarPath.active.data.pointGraph.AddNode((Int3) new Vector3(3, 1, 4));
 	///
-	/// // °æ·Î Ã£±â¸¦ Àç°³ÇÏ·Á¸é
+	/// // ê²½ë¡œ ì°¾ê¸°ë¥¼ ìž¬ê°œí•˜ë ¤ë©´
 	/// graphLock.Release();
 	/// </code>
 	///
-	/// ¹ÝÈ¯: Àá±Ý °³Ã¼ÀÔ´Ï´Ù. °æ·Î Ã£±â¸¦ ´Ù½Ã ½ÃÀÛÇÏ·Á¸é <see cref="Pathfinding.PathProcessor.GraphUpdateLock.Release"/>¸¦ È£ÃâÇØ¾ß ÇÕ´Ï´Ù.
-	/// Âü°í: ´ëºÎºÐÀÇ °æ¿ì »ç¿ëÀÚ ÄÚµå¿¡¼­ Á÷Á¢ È£ÃâÇØ¼­´Â ¾ÈµË´Ï´Ù. ´ë½Å <see cref="AddWorkItem"/> ¸Þ¼­µå¸¦ »ç¿ëÇÏ½Ê½Ã¿À.
+	/// ë°˜í™˜: ìž ê¸ˆ ê°œì²´ìž…ë‹ˆë‹¤. ê²½ë¡œ ì°¾ê¸°ë¥¼ ë‹¤ì‹œ ì‹œìž‘í•˜ë ¤ë©´ <see cref="Pathfinding.PathProcessor.GraphUpdateLock.Release"/>ë¥¼ í˜¸ì¶œí•´ì•¼ í•©ë‹ˆë‹¤.
+	/// ì°¸ê³ : ëŒ€ë¶€ë¶„ì˜ ê²½ìš° ì‚¬ìš©ìž ì½”ë“œì—ì„œ ì§ì ‘ í˜¸ì¶œí•´ì„œëŠ” ì•ˆë©ë‹ˆë‹¤. ëŒ€ì‹  <see cref="AddWorkItem"/> ë©”ì„œë“œë¥¼ ì‚¬ìš©í•˜ì‹­ì‹œì˜¤.
 	///
-	/// ÂüÁ¶: <see cref="AddWorkItem"/>
+	/// ì°¸ì¡°: <see cref="AddWorkItem"/>
 	/// </summary>
 	public PathProcessor.GraphUpdateLock PausePathfinding () {
 		return pathProcessor.PausePathfinding(true);
 	}
 
-	/// <summary>°æ·Î Å¥¸¦ Â÷´ÜÇÏ¿© ÀÛ¾÷ Ç×¸ñÀ» ¼öÇàÇÕ´Ï´Ù.</summary>
+	/// <summary>ê²½ë¡œ íë¥¼ ì°¨ë‹¨í•˜ì—¬ ìž‘ì—… í•­ëª©ì„ ìˆ˜í–‰í•©ë‹ˆë‹¤.</summary>
 	PathProcessor.GraphUpdateLock PausePathfindingSoon () {
 		return pathProcessor.PausePathfinding(false);
 	}
 
 	/// <summary>
-	/// Æ¯Á¤ ±×·¡ÇÁ¸¦ ½ºÄµÇÕ´Ï´Ù.
-	/// ÀÌ ¸Þ¼­µå¸¦ È£ÃâÇÏ¸é ÁöÁ¤µÈ ±×·¡ÇÁ¸¦ ´Ù½Ã °è»êÇÕ´Ï´Ù.
-	/// ÀÌ ¸Þ¼­µå´Â »ó´çÈ÷ ´À¸± ¼ö ÀÖÀ¸¹Ç·Î (±×·¡ÇÁ À¯Çü ¹× ±×·¡ÇÁ º¹Àâ¼º¿¡ µû¶ó ´Ù¸¨´Ï´Ù) °¡´ÉÇÑ ÀÛÀº ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ »ç¿ëÇÏ´Â °ÍÀÌ ÁÁ½À´Ï´Ù.
+	/// íŠ¹ì • ê·¸ëž˜í”„ë¥¼ ìŠ¤ìº”í•©ë‹ˆë‹¤.
+	/// ì´ ë©”ì„œë“œë¥¼ í˜¸ì¶œí•˜ë©´ ì§€ì •ëœ ê·¸ëž˜í”„ë¥¼ ë‹¤ì‹œ ê³„ì‚°í•©ë‹ˆë‹¤.
+	/// ì´ ë©”ì„œë“œëŠ” ìƒë‹¹ížˆ ëŠë¦´ ìˆ˜ ìžˆìœ¼ë¯€ë¡œ (ê·¸ëž˜í”„ ìœ í˜• ë° ê·¸ëž˜í”„ ë³µìž¡ì„±ì— ë”°ë¼ ë‹¤ë¦…ë‹ˆë‹¤) ê°€ëŠ¥í•œ ìž‘ì€ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ì‚¬ìš©í•˜ëŠ” ê²ƒì´ ì¢‹ìŠµë‹ˆë‹¤.
 	///
 	/// <code>
-	/// // ¸ðµç ±×·¡ÇÁ ´Ù½Ã °è»ê
+	/// // ëª¨ë“  ê·¸ëž˜í”„ ë‹¤ì‹œ ê³„ì‚°
 	/// AstarPath.active.Scan();
 	///
-	/// // Ã¹ ¹øÂ° ±×¸®µå ±×·¡ÇÁ¸¸ ´Ù½Ã °è»ê
+	/// // ì²« ë²ˆì§¸ ê·¸ë¦¬ë“œ ê·¸ëž˜í”„ë§Œ ë‹¤ì‹œ ê³„ì‚°
 	/// var graphToScan = AstarPath.active.data.gridGraph;
 	/// AstarPath.active.Scan(graphToScan);
 	///
-	/// // Ã¹ ¹øÂ° ¹× ¼¼ ¹øÂ° ±×·¡ÇÁ¸¸ ´Ù½Ã °è»ê
+	/// // ì²« ë²ˆì§¸ ë° ì„¸ ë²ˆì§¸ ê·¸ëž˜í”„ë§Œ ë‹¤ì‹œ ê³„ì‚°
 	/// var graphsToScan = new [] { AstarPath.active.data.graphs[0], AstarPath.active.data.graphs[2] };
 	/// AstarPath.active.Scan(graphsToScan);
 	/// </code>
 	///
-	/// ÂüÁ¶: ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® (¿Â¶óÀÎ ¹®¼­¿¡¼­ ÀÛµ¿ ¸µÅ© È®ÀÎ)
-	/// ÂüÁ¶: ScanAsync
+	/// ì°¸ì¡°: ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ (ì˜¨ë¼ì¸ ë¬¸ì„œì—ì„œ ìž‘ë™ ë§í¬ í™•ì¸)
+	/// ì°¸ì¡°: ScanAsync
 	/// </summary>
 	public void Scan (NavGraph graphToScan) {
 		if (graphToScan == null) throw new System.ArgumentNullException();
@@ -1430,28 +1430,28 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// ÁöÁ¤µÈ ¸ðµç ±×·¡ÇÁ¸¦ ½ºÄµÇÕ´Ï´Ù.
+	/// ì§€ì •ëœ ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ìŠ¤ìº”í•©ë‹ˆë‹¤.
 	///
-	/// ÀÌ ¸Þ¼­µå¸¦ È£ÃâÇÏ¸é ÁöÁ¤µÈ ¸ðµç ±×·¡ÇÁ ¶Ç´Â graphsToScan ¸Å°³º¯¼ö°¡ nullÀÎ °æ¿ì ¸ðµç ±×·¡ÇÁ¸¦ ´Ù½Ã °è»êÇÕ´Ï´Ù.
-	/// ÀÌ ¸Þ¼­µå´Â »ó´çÈ÷ ´À¸± ¼ö ÀÖÀ¸¹Ç·Î (±×·¡ÇÁ À¯Çü ¹× ±×·¡ÇÁ º¹Àâ¼º¿¡ µû¶ó ´Ù¸¨´Ï´Ù) °¡´ÉÇÑ ÀÛÀº ±×·¡ÇÁ ¾÷µ¥ÀÌÆ®¸¦ »ç¿ëÇÏ´Â °ÍÀÌ ÁÁ½À´Ï´Ù.
+	/// ì´ ë©”ì„œë“œë¥¼ í˜¸ì¶œí•˜ë©´ ì§€ì •ëœ ëª¨ë“  ê·¸ëž˜í”„ ë˜ëŠ” graphsToScan ë§¤ê°œë³€ìˆ˜ê°€ nullì¸ ê²½ìš° ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ë‹¤ì‹œ ê³„ì‚°í•©ë‹ˆë‹¤.
+	/// ì´ ë©”ì„œë“œëŠ” ìƒë‹¹ížˆ ëŠë¦´ ìˆ˜ ìžˆìœ¼ë¯€ë¡œ (ê·¸ëž˜í”„ ìœ í˜• ë° ê·¸ëž˜í”„ ë³µìž¡ì„±ì— ë”°ë¼ ë‹¤ë¦…ë‹ˆë‹¤) ê°€ëŠ¥í•œ ìž‘ì€ ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ë¥¼ ì‚¬ìš©í•˜ëŠ” ê²ƒì´ ì¢‹ìŠµë‹ˆë‹¤.
 	///
 	/// <code>
-	/// // ¸ðµç ±×·¡ÇÁ ´Ù½Ã °è»ê
+	/// // ëª¨ë“  ê·¸ëž˜í”„ ë‹¤ì‹œ ê³„ì‚°
 	/// AstarPath.active.Scan();
 	///
-	/// // Ã¹ ¹øÂ° ±×¸®µå ±×·¡ÇÁ¸¸ ´Ù½Ã °è»ê
+	/// // ì²« ë²ˆì§¸ ê·¸ë¦¬ë“œ ê·¸ëž˜í”„ë§Œ ë‹¤ì‹œ ê³„ì‚°
 	/// var graphToScan = AstarPath.active.data.gridGraph;
 	/// AstarPath.active.Scan(graphToScan);
 	///
-	/// // Ã¹ ¹øÂ° ¹× ¼¼ ¹øÂ° ±×·¡ÇÁ¸¸ ´Ù½Ã °è»ê
+	/// // ì²« ë²ˆì§¸ ë° ì„¸ ë²ˆì§¸ ê·¸ëž˜í”„ë§Œ ë‹¤ì‹œ ê³„ì‚°
 	/// var graphsToScan = new [] { AstarPath.active.data.graphs[0], AstarPath.active.data.graphs[2] };
 	/// AstarPath.active.Scan(graphsToScan);
 	/// </code>
 	///
-	/// ÂüÁ¶: ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® (¿Â¶óÀÎ ¹®¼­¿¡¼­ ÀÛµ¿ ¸µÅ© È®ÀÎ)
-	/// ÂüÁ¶: ScanAsync
+	/// ì°¸ì¡°: ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ (ì˜¨ë¼ì¸ ë¬¸ì„œì—ì„œ ìž‘ë™ ë§í¬ í™•ì¸)
+	/// ì°¸ì¡°: ScanAsync
 	/// </summary>
-	/// <param name="graphsToScan">½ºÄµÇÒ ±×·¡ÇÁÀÔ´Ï´Ù. ÀÌ ¸Å°³º¯¼ö°¡ nullÀÎ °æ¿ì ¸ðµç ±×·¡ÇÁ°¡ ½ºÄµµË´Ï´Ù.</param>
+	/// <param name="graphsToScan">ìŠ¤ìº”í•  ê·¸ëž˜í”„ìž…ë‹ˆë‹¤. ì´ ë§¤ê°œë³€ìˆ˜ê°€ nullì¸ ê²½ìš° ëª¨ë“  ê·¸ëž˜í”„ê°€ ìŠ¤ìº”ë©ë‹ˆë‹¤.</param>
 	public void Scan (NavGraph[] graphsToScan = null) {
 		var prevProgress = new Progress();
 
@@ -1473,14 +1473,14 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// Æ¯Á¤ ±×·¡ÇÁ¸¦ ºñµ¿±â·Î ½ºÄµÇÕ´Ï´Ù. ÀÌ´Â IEnumerableÀÌ¹Ç·Î ÁøÇà·üÀ» ¾òÀ¸·Á¸é ·çÇÁ¸¦ Åë°úÇÒ ¼ö ÀÖ½À´Ï´Ù.
+	/// íŠ¹ì • ê·¸ëž˜í”„ë¥¼ ë¹„ë™ê¸°ë¡œ ìŠ¤ìº”í•©ë‹ˆë‹¤. ì´ëŠ” IEnumerableì´ë¯€ë¡œ ì§„í–‰ë¥ ì„ ì–»ìœ¼ë ¤ë©´ ë£¨í”„ë¥¼ í†µê³¼í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 	/// <code>
 	/// foreach (Progress progress in AstarPath.active.ScanAsync()) {
 	///     Debug.Log("Scanning... " + progress.description + " - " + (progress.progress*100).ToString("0") + "%");
 	/// }
 	/// </code>
-	/// ÁøÇà·üÀ» Åë°úÇÒ ¶§ ºñµ¿±â·Î ±×·¡ÇÁ¸¦ ½ºÄµÇÒ ¼ö ÀÖ½À´Ï´Ù.
-	/// ÀÌ°ÍÀº ÁÁÀº ÇÁ·¹ÀÓ ¼Óµµ¸¦ º¸ÀåÇÏÁö´Â ¾ÊÁö¸¸ ½ºÄµ Áß¿¡ ÁøÇà·ü ¹Ù¸¦ Ç¥½ÃÇÒ ¼ö ÀÖ°Ô ÇÕ´Ï´Ù.
+	/// ì§„í–‰ë¥ ì„ í†µê³¼í•  ë•Œ ë¹„ë™ê¸°ë¡œ ê·¸ëž˜í”„ë¥¼ ìŠ¤ìº”í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+	/// ì´ê²ƒì€ ì¢‹ì€ í”„ë ˆìž„ ì†ë„ë¥¼ ë³´ìž¥í•˜ì§€ëŠ” ì•Šì§€ë§Œ ìŠ¤ìº” ì¤‘ì— ì§„í–‰ë¥  ë°”ë¥¼ í‘œì‹œí•  ìˆ˜ ìžˆê²Œ í•©ë‹ˆë‹¤.
 	/// <code>
 	/// IEnumerator Start () {
 	///     foreach (Progress progress in AstarPath.active.ScanAsync()) {
@@ -1490,7 +1490,7 @@ public class AstarPath : VersionedMonoBehaviour {
 	/// }
 	/// </code>
 	///
-	/// ÂüÁ¶: Scan
+	/// ì°¸ì¡°: Scan
 	/// </summary>
 	public IEnumerable<Progress> ScanAsync (NavGraph graphToScan) {
 		if (graphToScan == null) throw new System.ArgumentNullException();
@@ -1498,15 +1498,15 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// ÁöÁ¤µÈ ¸ðµç ±×·¡ÇÁ¸¦ ºñµ¿±â·Î ½ºÄµÇÕ´Ï´Ù. ÀÌ´Â IEnumerableÀÌ¹Ç·Î ÁøÇà·üÀ» ¾òÀ¸·Á¸é ·çÇÁ¸¦ Åë°úÇÒ ¼ö ÀÖ½À´Ï´Ù.
+	/// ì§€ì •ëœ ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ë¹„ë™ê¸°ë¡œ ìŠ¤ìº”í•©ë‹ˆë‹¤. ì´ëŠ” IEnumerableì´ë¯€ë¡œ ì§„í–‰ë¥ ì„ ì–»ìœ¼ë ¤ë©´ ë£¨í”„ë¥¼ í†µê³¼í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 	///
 	/// <code>
 	/// foreach (Progress progress in AstarPath.active.ScanAsync()) {
 	///     Debug.Log("Scanning... " + progress.description + " - " + (progress.progress*100).ToString("0") + "%");
 	/// }
 	/// </code>
-	/// ÁøÇà·üÀ» Åë°úÇÒ ¶§ ºñµ¿±â·Î ±×·¡ÇÁ¸¦ ½ºÄµÇÒ ¼ö ÀÖ½À´Ï´Ù.
-	/// ÀÌ°ÍÀº ÁÁÀº ÇÁ·¹ÀÓ ¼Óµµ¸¦ º¸ÀåÇÏÁö´Â ¾ÊÁö¸¸ ½ºÄµ Áß¿¡ ÁøÇà·ü ¹Ù¸¦ Ç¥½ÃÇÒ ¼ö ÀÖ°Ô ÇÕ´Ï´Ù.
+	/// ì§„í–‰ë¥ ì„ í†µê³¼í•  ë•Œ ë¹„ë™ê¸°ë¡œ ê·¸ëž˜í”„ë¥¼ ìŠ¤ìº”í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+	/// ì´ê²ƒì€ ì¢‹ì€ í”„ë ˆìž„ ì†ë„ë¥¼ ë³´ìž¥í•˜ì§€ëŠ” ì•Šì§€ë§Œ ìŠ¤ìº” ì¤‘ì— ì§„í–‰ë¥  ë°”ë¥¼ í‘œì‹œí•  ìˆ˜ ìžˆê²Œ í•©ë‹ˆë‹¤.
 	/// <code>
 	/// IEnumerator Start () {
 	///     foreach (Progress progress in AstarPath.active.ScanAsync()) {
@@ -1516,9 +1516,9 @@ public class AstarPath : VersionedMonoBehaviour {
 	/// }
 	/// </code>
 	///
-	/// ÂüÁ¶: Scan
+	/// ì°¸ì¡°: Scan
 	/// </summary>
-	/// <param name="graphsToScan">½ºÄµÇÒ ±×·¡ÇÁÀÔ´Ï´Ù. ÀÌ ¸Å°³º¯¼ö°¡ nullÀÎ °æ¿ì ¸ðµç ±×·¡ÇÁ°¡ ½ºÄµµË´Ï´Ù.</param>
+	/// <param name="graphsToScan">ìŠ¤ìº”í•  ê·¸ëž˜í”„ìž…ë‹ˆë‹¤. ì´ ë§¤ê°œë³€ìˆ˜ê°€ nullì¸ ê²½ìš° ëª¨ë“  ê·¸ëž˜í”„ê°€ ìŠ¤ìº”ë©ë‹ˆë‹¤.</param>
 	public IEnumerable<Progress> ScanAsync (NavGraph[] graphsToScan = null) {
 		if (graphsToScan == null) graphsToScan = graphs;
 
@@ -1526,7 +1526,7 @@ public class AstarPath : VersionedMonoBehaviour {
 			yield break;
 		}
 
-		if (isScanning) throw new System.InvalidOperationException("´Ù¸¥ ºñµ¿±â ½ºÄµÀÌ ÀÌ¹Ì ½ÇÇà ÁßÀÔ´Ï´Ù");
+		if (isScanning) throw new System.InvalidOperationException("ë‹¤ë¥¸ ë¹„ë™ê¸° ìŠ¤ìº”ì´ ì´ë¯¸ ì‹¤í–‰ ì¤‘ìž…ë‹ˆë‹¤");
 
 		isScanning = true;
 
@@ -1534,8 +1534,8 @@ public class AstarPath : VersionedMonoBehaviour {
 
 		var graphUpdateLock = PausePathfinding();
 
-		// Å¥¿¡ ¹ÝÈ¯ µÉ ¸ðµç °æ·Î°¡ Áï½Ã ¹ÝÈ¯µÇµµ·Ï ÇÕ´Ï´Ù
-		// ÀÏºÎ º¯°æ±â (¿¹: funnel º¯°æ±â)´Â °æ·Î°¡ ¹ÝÈ¯ µÉ ¶§ ³ëµå°¡ À¯È¿ÇÑ °ÍÀ¸·Î ÀÇÁ¸ÇÏ±â ¶§¹®ÀÔ´Ï´Ù.
+		// íì— ë°˜í™˜ ë  ëª¨ë“  ê²½ë¡œê°€ ì¦‰ì‹œ ë°˜í™˜ë˜ë„ë¡ í•©ë‹ˆë‹¤
+		// ì¼ë¶€ ë³€ê²½ê¸° (ì˜ˆ: funnel ë³€ê²½ê¸°)ëŠ” ê²½ë¡œê°€ ë°˜í™˜ ë  ë•Œ ë…¸ë“œê°€ ìœ íš¨í•œ ê²ƒìœ¼ë¡œ ì˜ì¡´í•˜ê¸° ë•Œë¬¸ìž…ë‹ˆë‹¤.
 		pathReturnQueue.ReturnPaths(false);
 
 		if (!Application.isPlaying) {
@@ -1547,12 +1547,12 @@ public class AstarPath : VersionedMonoBehaviour {
 
 		yield return new Progress(0.05F, "Pre processing graphs");
 
-		// ³×,ÀÌ Á¦ÇÑÀº ¹«½ÃÇÏ±â ½¬¿ò
-		// ÄÚµå´Â ¹«·á ¹öÀü°ú ¹«·á ¹öÀüÀ» À§ÇÑ º°µµÀÇ ÄÚµå¸¦ °®´Â °ÍÀÌ ±ÍÂú½À´Ï´Ù.
-		// ¿©±â¼­ ¹«¾ùÀ» ÇÒ ¼ö ÀÖ´ÂÁö Áñ°Ü ÁÖ½Ã¸é °¨»çÇÏ°Ú½À´Ï´Ù.
-		// A * °æ·Î Ã£±â ÇÁ·ÎÁ§Æ®ÀÇ ÇÁ·Î ¹öÀüÀ» ±¸ÀÔÇØ ÁÖ½Ã±â ¹Ù¶ø´Ï´Ù.
+		// ë„¤,ì´ ì œí•œì€ ë¬´ì‹œí•˜ê¸° ì‰¬ì›€
+		// ì½”ë“œëŠ” ë¬´ë£Œ ë²„ì „ê³¼ ë¬´ë£Œ ë²„ì „ì„ ìœ„í•œ ë³„ë„ì˜ ì½”ë“œë¥¼ ê°–ëŠ” ê²ƒì´ ê·€ì°®ìŠµë‹ˆë‹¤.
+		// ì—¬ê¸°ì„œ ë¬´ì—‡ì„ í•  ìˆ˜ ìžˆëŠ”ì§€ ì¦ê²¨ ì£¼ì‹œë©´ ê°ì‚¬í•˜ê² ìŠµë‹ˆë‹¤.
+		// A * ê²½ë¡œ ì°¾ê¸° í”„ë¡œì íŠ¸ì˜ í”„ë¡œ ë²„ì „ì„ êµ¬ìž…í•´ ì£¼ì‹œê¸° ë°”ëžë‹ˆë‹¤.
 		if (Time.frameCount != startFrame) {
-			throw new System.Exception("ºñµ¿±â ½ºÄµÀº A * °æ·Î Ã£±â ÇÁ·ÎÁ§Æ®ÀÇ ÇÁ·Î ¹öÀü¿¡¼­¸¸ ¼öÇàÇÒ ¼ö ÀÖ½À´Ï´Ù.");
+			throw new System.Exception("ë¹„ë™ê¸° ìŠ¤ìº”ì€ A * ê²½ë¡œ ì°¾ê¸° í”„ë¡œì íŠ¸ì˜ í”„ë¡œ ë²„ì „ì—ì„œë§Œ ìˆ˜í–‰í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.");
 		}
 
 		if (OnPreScan != null) {
@@ -1566,27 +1566,27 @@ public class AstarPath : VersionedMonoBehaviour {
 		Physics2D.SyncTransforms();
 		var watch = System.Diagnostics.Stopwatch.StartNew();
 
-		// ÀÌÀü ³ëµå¸¦ ÆÄ±«ÇÕ´Ï´Ù.
+		// ì´ì „ ë…¸ë“œë¥¼ íŒŒê´´í•©ë‹ˆë‹¤.
 		for (int i = 0; i < graphsToScan.Length; i++) {
 			if (graphsToScan[i] != null) {
 				((IGraphInternals)graphsToScan[i]).DestroyAllNodes();
 			}
 		}
 
-		// ±×·¡ÇÁ¸¦ ÇÏ³ª¾¿ ·çÇÁ¸¦ µ¹¸ç ½ºÄµÇÕ´Ï´Ù.
+		// ê·¸ëž˜í”„ë¥¼ í•˜ë‚˜ì”© ë£¨í”„ë¥¼ ëŒë©° ìŠ¤ìº”í•©ë‹ˆë‹¤.
 		for (int i = 0; i < graphsToScan.Length; i++) {
-			// ³Î ±×·¡ÇÁ °Ç³Ê ¶Ý´Ï´Ù.
+			// ë„ ê·¸ëž˜í”„ ê±´ë„ˆ ëœë‹ˆë‹¤.
 			if (graphsToScan[i] == null) continue;
 
-			// ÁøÇà Á¤º¸¸¦À§ÇÑ °Í
-			// ÀÌ ±×·¡ÇÁ´Â ÁøÇà ¸·´ë¸¦ minp¿¡¼­ maxp·Î ÀÌµ¿½ÃÅµ´Ï´Ù.
+			// ì§„í–‰ ì •ë³´ë¥¼ìœ„í•œ ê²ƒ
+			// ì´ ê·¸ëž˜í”„ëŠ” ì§„í–‰ ë§‰ëŒ€ë¥¼ minpì—ì„œ maxpë¡œ ì´ë™ì‹œí‚µë‹ˆë‹¤.
 			float minp = Mathf.Lerp(0.1F, 0.8F, (float)(i)/(graphsToScan.Length));
 			float maxp = Mathf.Lerp(0.1F, 0.8F, (float)(i+0.95F)/(graphsToScan.Length));
 
 			var progressDescriptionPrefix = "Scanning graph " + (i+1) + " of " + graphsToScan.Length + " - ";
 
-			// ¿¹¿Ü Ã³¸® ¶§¹®¿¡ ¾à°£ º¹ÀâÇØÁö´Â ¿¹¿Ü Ã³¸® ¶§¹®¿¡ foreach ·çÇÁ¿Í À¯»çÇÏÁö¸¸
-			// (try-except Àý ³»¿¡¼­ yield ÇÒ ¼ö ¾øÀ½) ¿¹¿Ü Ã³¸®ÀÔ´Ï´Ù.
+			// ì˜ˆì™¸ ì²˜ë¦¬ ë•Œë¬¸ì— ì•½ê°„ ë³µìž¡í•´ì§€ëŠ” ì˜ˆì™¸ ì²˜ë¦¬ ë•Œë¬¸ì— foreach ë£¨í”„ì™€ ìœ ì‚¬í•˜ì§€ë§Œ
+			// (try-except ì ˆ ë‚´ì—ì„œ yield í•  ìˆ˜ ì—†ìŒ) ì˜ˆì™¸ ì²˜ë¦¬ìž…ë‹ˆë‹¤.
 			var coroutine = ScanGraph(graphsToScan[i]).GetEnumerator();
 			while (true) {
 				try {
@@ -1617,9 +1617,9 @@ public class AstarPath : VersionedMonoBehaviour {
 
 		yield return new Progress(0.95F, "Late post processing");
 
-		// ¿©±â¿¡¼­ ½ºÄµÀ» ÁßÁö ÇÑ °ÍÀ» ½ÅÈ£·Î º¸³À´Ï´Ù
-		// ÀÌ ÁöÁ¡ ÀÌÈÄ¿¡´Â ¾î¶² ¼öÀÍµµ ÀÏ¾î³ª¼­´Â ¾ÈµË´Ï´Ù.
-		// ´Ù¸¥ ½Ã½ºÅÛÀÇ ÀÏºÎ°¡ °£¼·ÇÏ±â ½ÃÀÛÇÏ±â ¶§¹®ÀÔ´Ï´Ù.
+		// ì—¬ê¸°ì—ì„œ ìŠ¤ìº”ì„ ì¤‘ì§€ í•œ ê²ƒì„ ì‹ í˜¸ë¡œ ë³´ëƒ…ë‹ˆë‹¤
+		// ì´ ì§€ì  ì´í›„ì—ëŠ” ì–´ë–¤ ìˆ˜ìµë„ ì¼ì–´ë‚˜ì„œëŠ” ì•ˆë©ë‹ˆë‹¤.
+		// ë‹¤ë¥¸ ì‹œìŠ¤í…œì˜ ì¼ë¶€ê°€ ê°„ì„­í•˜ê¸° ì‹œìž‘í•˜ê¸° ë•Œë¬¸ìž…ë‹ˆë‹¤.
 		isScanning = false;
 
 		if (OnLatePostScan != null) {
@@ -1630,9 +1630,9 @@ public class AstarPath : VersionedMonoBehaviour {
 		euclideanEmbedding.dirty = true;
 		euclideanEmbedding.RecalculatePivots();
 
-		// Â÷´Ü ÀÛ¾÷ ¼öÇà
+		// ì°¨ë‹¨ ìž‘ì—… ìˆ˜í–‰
 		FlushWorkItems();
-		// °æ·Î Ã£±â ½º·¹µå Àç°³
+		// ê²½ë¡œ ì°¾ê¸° ìŠ¤ë ˆë“œ ìž¬ê°œ
 		graphUpdateLock.Release();
 
 		watch.Stop();
@@ -1659,7 +1659,7 @@ public class AstarPath : VersionedMonoBehaviour {
 
 		yield return new Progress(0.95f, "Assigning graph indices");
 
-		// ±×·¡ÇÁ ³» ¸ðµç ³ëµå¿¡ ±×·¡ÇÁ ÀÎµ¦½º ÇÒ´ç
+		// ê·¸ëž˜í”„ ë‚´ ëª¨ë“  ë…¸ë“œì— ê·¸ëž˜í”„ ì¸ë±ìŠ¤ í• ë‹¹
 		graph.GetNodes(node => node.GraphIndex = (uint)graph.graphIndex);
 
 		if (OnGraphPostScan != null) {
@@ -1673,51 +1673,51 @@ public class AstarPath : VersionedMonoBehaviour {
 	private static int waitForPathDepth = 0;
 
 	/// <summary>
-	/// °æ·Î°¡ °è»êµÉ ¶§±îÁö Â÷´ÜµË´Ï´Ù.
+	/// ê²½ë¡œê°€ ê³„ì‚°ë  ë•Œê¹Œì§€ ì°¨ë‹¨ë©ë‹ˆë‹¤.
 	///
-	/// ÀÏ¹ÝÀûÀ¸·Î °æ·Î°¡ °è»êµÇ°í ¹ÝÈ¯µÇ±â±îÁö ¸î ÇÁ·¹ÀÓÀÌ ¼Ò¿äµË´Ï´Ù.
-	/// ÀÌ ÇÔ¼ö´Â ÇÔ¼ö°¡ ¹ÝÈ¯µÇ¸é °æ·Î°¡ °è»êµÇ°í ÇØ´ç °æ·Î¿¡ ´ëÇÑ ÄÝ¹éÀÌ È£ÃâµÇµµ·Ï º¸ÀåÇÕ´Ï´Ù.
+	/// ì¼ë°˜ì ìœ¼ë¡œ ê²½ë¡œê°€ ê³„ì‚°ë˜ê³  ë°˜í™˜ë˜ê¸°ê¹Œì§€ ëª‡ í”„ë ˆìž„ì´ ì†Œìš”ë©ë‹ˆë‹¤.
+	/// ì´ í•¨ìˆ˜ëŠ” í•¨ìˆ˜ê°€ ë°˜í™˜ë˜ë©´ ê²½ë¡œê°€ ê³„ì‚°ë˜ê³  í•´ë‹¹ ê²½ë¡œì— ëŒ€í•œ ì½œë°±ì´ í˜¸ì¶œë˜ë„ë¡ ë³´ìž¥í•©ë‹ˆë‹¤.
 	///
-	/// ¿©·¯ °æ·Î¸¦ ÇÑ ¹ø¿¡ ¿äÃ»ÇÏ°í ¸¶Áö¸· °æ·Î°¡ ¿Ï·áµÉ ¶§±îÁö ´ë±âÇÏ´Â °æ¿ì,
-	/// Å¥¿¡ ÀÖ´Â °æ·Î ´ëºÎºÐÀ» °è»êÇÕ´Ï´Ù (¸ÖÆ¼½º·¹µùÀ» »ç¿ëÇÏ´Â °æ¿ì ´ëºÎºÐ¸¸ °è»êµÇ¸ç,
-	/// ¸ÖÆ¼½º·¹µùÀ» »ç¿ëÇÏÁö ¾Ê´Â °æ¿ì ¸ðµÎ °è»êµË´Ï´Ù).
+	/// ì—¬ëŸ¬ ê²½ë¡œë¥¼ í•œ ë²ˆì— ìš”ì²­í•˜ê³  ë§ˆì§€ë§‰ ê²½ë¡œê°€ ì™„ë£Œë  ë•Œê¹Œì§€ ëŒ€ê¸°í•˜ëŠ” ê²½ìš°,
+	/// íì— ìžˆëŠ” ê²½ë¡œ ëŒ€ë¶€ë¶„ì„ ê³„ì‚°í•©ë‹ˆë‹¤ (ë©€í‹°ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•˜ëŠ” ê²½ìš° ëŒ€ë¶€ë¶„ë§Œ ê³„ì‚°ë˜ë©°,
+	/// ë©€í‹°ìŠ¤ë ˆë”©ì„ ì‚¬ìš©í•˜ì§€ ì•ŠëŠ” ê²½ìš° ëª¨ë‘ ê³„ì‚°ë©ë‹ˆë‹¤).
 	///
-	/// ÀÌ ÇÔ¼ö´Â ½ÇÁ¦·Î ÇÊ¿äÇÑ °æ¿ì¿¡¸¸ »ç¿ëÇÏ½Ê½Ã¿À.
-	/// °æ·Î °è»êÀ» ¿©·¯ ÇÁ·¹ÀÓ¿¡ °ÉÃÄ ºÐ»êÇÏ´Â °ÍÀÌ ÁÁ½À´Ï´Ù.
-	/// ÀÌ·¸°Ô ÇÏ¸é ÇÁ·¹ÀÓ·üÀ» ºÎµå·´°Ô À¯ÁöÇÏ°í µ¿½Ã¿¡ ¿©·¯ °æ·Î¸¦ µ¿½Ã¿¡ ¿äÃ»ÇØµµ ·¢ÀÌ ¹ß»ýÇÏÁö ¾Ê½À´Ï´Ù.
+	/// ì´ í•¨ìˆ˜ëŠ” ì‹¤ì œë¡œ í•„ìš”í•œ ê²½ìš°ì—ë§Œ ì‚¬ìš©í•˜ì‹­ì‹œì˜¤.
+	/// ê²½ë¡œ ê³„ì‚°ì„ ì—¬ëŸ¬ í”„ë ˆìž„ì— ê±¸ì³ ë¶„ì‚°í•˜ëŠ” ê²ƒì´ ì¢‹ìŠµë‹ˆë‹¤.
+	/// ì´ë ‡ê²Œ í•˜ë©´ í”„ë ˆìž„ë¥ ì„ ë¶€ë“œëŸ½ê²Œ ìœ ì§€í•˜ê³  ë™ì‹œì— ì—¬ëŸ¬ ê²½ë¡œë¥¼ ë™ì‹œì— ìš”ì²­í•´ë„ ëž™ì´ ë°œìƒí•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	///
-	/// Âü°í: ÀÌ ÇÔ¼öÀÇ ½ÇÇà Áß¿¡ ±×·¡ÇÁ ¾÷µ¥ÀÌÆ® ¹× ±âÅ¸ ÄÝ¹éÀÌ È£ÃâµÉ ¼ö ÀÖ½À´Ï´Ù.
+	/// ì°¸ê³ : ì´ í•¨ìˆ˜ì˜ ì‹¤í–‰ ì¤‘ì— ê·¸ëž˜í”„ ì—…ë°ì´íŠ¸ ë° ê¸°íƒ€ ì½œë°±ì´ í˜¸ì¶œë  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 	///
-	/// ÆÐ½ºÆÄÀÎ´õ°¡ Á¾·á ÁßÀÎ °æ¿ì. Áï, OnDestroy¿¡¼­´Â ÀÌ ÇÔ¼ö°¡ ¾Æ¹« ÀÛ¾÷µµ ¼öÇàÇÏÁö ¾Ê½À´Ï´Ù.
+	/// íŒ¨ìŠ¤íŒŒì¸ë”ê°€ ì¢…ë£Œ ì¤‘ì¸ ê²½ìš°. ì¦‰, OnDestroyì—ì„œëŠ” ì´ í•¨ìˆ˜ê°€ ì•„ë¬´ ìž‘ì—…ë„ ìˆ˜í–‰í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	///
-	/// \throws Exception °æ·Î¸¦ ´ë±âÇÏ´Â µ¿¾È °æ·Î Ã£±â°¡ ÀÌ Àå¸é¿¡¼­ ¿Ã¹Ù¸£°Ô ÃÊ±âÈ­µÇÁö ¾Ê¾Ò°Å³ª (¾Æ¸¶µµ AstarPath °³Ã¼°¡ ¾øÀ½)
-	/// ¶Ç´Â °æ·Î°¡ ¾ÆÁ÷ ½ÃÀÛµÇÁö ¾Ê¾ÒÀ» ¶§ ¿¹¿Ü°¡ ¹ß»ýÇÕ´Ï´Ù.
-	/// ÀÏ¹ÝÀûÀÎ °æ¿ì ¹ß»ýÇÏÁö ¾Êµµ·Ï °æ·ÎÆÄÀÎµù ½º·¹µå°¡ Ãæµ¹ÇÑ °æ¿ì¿Í °°Àº ½É°¢ÇÑ ¿À·ù°¡ ¹ß»ýÇÏ¸é ¿¹¿Ü°¡ ¹ß»ýÇÕ´Ï´Ù (º¸Åë ÀÏ¹ÝÀûÀÎ °æ¿ì¿¡´Â ¹ß»ýÇÏÁö ¾Ê¾Æ¾ß ÇÕ´Ï´Ù).
-	/// °æ·Î ´ë±â Áß ¹«ÇÑ ·çÇÁ¸¦ ¹æÁöÇÏ±â À§ÇÑ Á¶Ä¡ÀÔ´Ï´Ù.
+	/// \throws Exception ê²½ë¡œë¥¼ ëŒ€ê¸°í•˜ëŠ” ë™ì•ˆ ê²½ë¡œ ì°¾ê¸°ê°€ ì´ ìž¥ë©´ì—ì„œ ì˜¬ë°”ë¥´ê²Œ ì´ˆê¸°í™”ë˜ì§€ ì•Šì•˜ê±°ë‚˜ (ì•„ë§ˆë„ AstarPath ê°œì²´ê°€ ì—†ìŒ)
+	/// ë˜ëŠ” ê²½ë¡œê°€ ì•„ì§ ì‹œìž‘ë˜ì§€ ì•Šì•˜ì„ ë•Œ ì˜ˆì™¸ê°€ ë°œìƒí•©ë‹ˆë‹¤.
+	/// ì¼ë°˜ì ì¸ ê²½ìš° ë°œìƒí•˜ì§€ ì•Šë„ë¡ ê²½ë¡œíŒŒì¸ë”© ìŠ¤ë ˆë“œê°€ ì¶©ëŒí•œ ê²½ìš°ì™€ ê°™ì€ ì‹¬ê°í•œ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ë©´ ì˜ˆì™¸ê°€ ë°œìƒí•©ë‹ˆë‹¤ (ë³´í†µ ì¼ë°˜ì ì¸ ê²½ìš°ì—ëŠ” ë°œìƒí•˜ì§€ ì•Šì•„ì•¼ í•©ë‹ˆë‹¤).
+	/// ê²½ë¡œ ëŒ€ê¸° ì¤‘ ë¬´í•œ ë£¨í”„ë¥¼ ë°©ì§€í•˜ê¸° ìœ„í•œ ì¡°ì¹˜ìž…ë‹ˆë‹¤.
 	///
-	/// ÂüÁ¶: Pathfinding.Path.WaitForPath
-	/// ÂüÁ¶: Pathfinding.Path.BlockUntilCalculated
+	/// ì°¸ì¡°: Pathfinding.Path.WaitForPath
+	/// ì°¸ì¡°: Pathfinding.Path.BlockUntilCalculated
 	/// </summary>
-	/// <param name="path">´ë±âÇÒ °æ·Î. °æ·Î°¡ ½ÃÀÛµÇÁö ¾Ê¾Ò´Ù¸é ¿¹¿Ü°¡ ¹ß»ýÇÕ´Ï´Ù.</param>
+	/// <param name="path">ëŒ€ê¸°í•  ê²½ë¡œ. ê²½ë¡œê°€ ì‹œìž‘ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì˜ˆì™¸ê°€ ë°œìƒí•©ë‹ˆë‹¤.</param>
 	public static void BlockUntilCalculated (Path path) {
 		if (active == null)
-			throw new System.Exception("ÀÌ Àå¸é¿¡¼­ °æ·Î Ã£±â°¡ ¿Ã¹Ù¸£°Ô ÃÊ±âÈ­µÇÁö ¾Ê¾Ò½À´Ï´Ù. " +
-		   "AstarPath.active°¡ nullÀÔ´Ï´Ù.\nAwake¿¡¼­ ÀÌ ÇÔ¼ö¸¦ È£ÃâÇÏÁö ¸¶½Ê½Ã¿À.");
+			throw new System.Exception("ì´ ìž¥ë©´ì—ì„œ ê²½ë¡œ ì°¾ê¸°ê°€ ì˜¬ë°”ë¥´ê²Œ ì´ˆê¸°í™”ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. " +
+		   "AstarPath.activeê°€ nullìž…ë‹ˆë‹¤.\nAwakeì—ì„œ ì´ í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ì§€ ë§ˆì‹­ì‹œì˜¤.");
 
-		if (path == null) throw new System.ArgumentNullException("°æ·Î´Â nullÀÌ µÉ ¼ö ¾ø½À´Ï´Ù");
+		if (path == null) throw new System.ArgumentNullException("ê²½ë¡œëŠ” nullì´ ë  ìˆ˜ ì—†ìŠµë‹ˆë‹¤");
 
 		if (active.pathProcessor.queue.IsTerminating) return;
 
 		if (path.PipelineState == PathState.Created)
 		{
-			throw new System.Exception("ÁöÁ¤µÈ °æ·Î°¡ ¾ÆÁ÷ ½ÃÀÛµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+			throw new System.Exception("ì§€ì •ëœ ê²½ë¡œê°€ ì•„ì§ ì‹œìž‘ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 		}
 
 		waitForPathDepth++;
 
 		if (waitForPathDepth == 5)
 		{
-			Debug.LogError("Àç±ÍÀûÀ¸·Î BlockUntilCalculated ÇÔ¼ö¸¦ È£ÃâÇÏ°í ÀÖ½À´Ï´Ù (¾Æ¸¶µµ °æ·Î ÄÝ¹é¿¡¼­). ÀÌ·¸°Ô ÇÏÁö ¸¶½Ê½Ã¿À.");
+			Debug.LogError("ìž¬ê·€ì ìœ¼ë¡œ BlockUntilCalculated í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ê³  ìžˆìŠµë‹ˆë‹¤ (ì•„ë§ˆë„ ê²½ë¡œ ì½œë°±ì—ì„œ). ì´ë ‡ê²Œ í•˜ì§€ ë§ˆì‹­ì‹œì˜¤.");
 		}
 
 		if (path.PipelineState < PathState.ReturnQueue) {
@@ -1726,10 +1726,10 @@ public class AstarPath : VersionedMonoBehaviour {
 					if (active.pathProcessor.queue.IsTerminating)
 					{
 						waitForPathDepth--;
-						throw new System.Exception("ÆÐ½ºÆÄÀÎµù ½º·¹µå°¡ Ãæµ¹ÇÑ °ÍÀ¸·Î º¸ÀÔ´Ï´Ù.");
+						throw new System.Exception("íŒ¨ìŠ¤íŒŒì¸ë”© ìŠ¤ë ˆë“œê°€ ì¶©ëŒí•œ ê²ƒìœ¼ë¡œ ë³´ìž…ë‹ˆë‹¤.");
 					}
 
-					// ½º·¹µå°¡ °æ·Î¸¦ °è»êÇÏ±â¸¦ ±â´Ù¸³´Ï´Ù
+					// ìŠ¤ë ˆë“œê°€ ê²½ë¡œë¥¼ ê³„ì‚°í•˜ê¸°ë¥¼ ê¸°ë‹¤ë¦½ë‹ˆë‹¤
 					Thread.Sleep(1);
 					active.PerformBlockingActions(true);
 				}
@@ -1738,10 +1738,10 @@ public class AstarPath : VersionedMonoBehaviour {
 					if (active.pathProcessor.queue.IsEmpty && path.PipelineState != PathState.Processing)
 					{
 						waitForPathDepth--;
-						throw new System.Exception("½É°¢ÇÑ ¿À·ùÀÔ´Ï´Ù. °æ·Î Å¥°¡ ºñ¾î ÀÖÁö¸¸ °æ·Î »óÅÂ´Â '" + path.PipelineState + "'ÀÔ´Ï´Ù.");
+						throw new System.Exception("ì‹¬ê°í•œ ì˜¤ë¥˜ìž…ë‹ˆë‹¤. ê²½ë¡œ íê°€ ë¹„ì–´ ìžˆì§€ë§Œ ê²½ë¡œ ìƒíƒœëŠ” '" + path.PipelineState + "'ìž…ë‹ˆë‹¤.");
 					}
 
-					// ÀÏºÎ °æ·Î °è»ê
+					// ì¼ë¶€ ê²½ë¡œ ê³„ì‚°
 					active.pathProcessor.TickNonMultithreaded();
 					active.PerformBlockingActions(true);
 				}
@@ -1753,47 +1753,47 @@ public class AstarPath : VersionedMonoBehaviour {
 	}
 
 	/// <summary>
-	/// °æ·Î¸¦ °¡´ÉÇÑ »¡¸® °è»êµÇµµ·Ï ´ë±â¿­¿¡ Ãß°¡ÇÕ´Ï´Ù.
-	/// °æ·Î°¡ °è»êµÉ ¶§ ÁöÁ¤µÈ ÄÝ¹éÀÌ È£ÃâµË´Ï´Ù.
-	/// ÀÏ¹ÝÀûÀ¸·Î Á÷Á¢ ÀÌ ÇÔ¼ö¸¦ È£ÃâÇÏ´Â ´ë½Å Seeker ÄÄÆ÷³ÍÆ®¸¦ »ç¿ëÇØ¾ß ÇÕ´Ï´Ù.
+	/// ê²½ë¡œë¥¼ ê°€ëŠ¥í•œ ë¹¨ë¦¬ ê³„ì‚°ë˜ë„ë¡ ëŒ€ê¸°ì—´ì— ì¶”ê°€í•©ë‹ˆë‹¤.
+	/// ê²½ë¡œê°€ ê³„ì‚°ë  ë•Œ ì§€ì •ëœ ì½œë°±ì´ í˜¸ì¶œë©ë‹ˆë‹¤.
+	/// ì¼ë°˜ì ìœ¼ë¡œ ì§ì ‘ ì´ í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ëŠ” ëŒ€ì‹  Seeker ì»´í¬ë„ŒíŠ¸ë¥¼ ì‚¬ìš©í•´ì•¼ í•©ë‹ˆë‹¤.
 	/// </summary>
-	/// <param name="path">´ë±â¿­¿¡ Ãß°¡ÇÒ °æ·ÎÀÔ´Ï´Ù.</param>
-	/// <param name="pushToFront">trueÀÎ °æ¿ì °æ·Î°¡ ´ë±â¿­ÀÇ ¾ÕÂÊÀ¸·Î Çª½ÃµÇ¾î ´ë±â ÁßÀÎ ´Ù¸¥ °æ·Î¸¦ ¿ìÈ¸ÇÏ°í ´ÙÀ½¿¡ °è»êµË´Ï´Ù.
-	/// ÀÌ°ÍÀº ´Ù¸¥ °æ·Îº¸´Ù ¿ì¼±ÇÏ¿© °è»êÇÏ·Á´Â °æ·Î°¡ ÀÖÀ» ¶§ À¯¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù. ±×·¯³ª °úµµÇÏ°Ô »ç¿ëÇÏ¸é Á¶½ÉÇØ¾ß ÇÕ´Ï´Ù.
-	/// ³Ê¹« ¸¹Àº °æ·Î°¡ ÀÚÁÖ ¾ÕÂÊ¿¡ Çª½ÃµÇ¸é °æ·Î°¡ °è»êµÇ±â±îÁö ´Ù¸¥ °æ·Î°¡ ¾ÆÁÖ ¿À·£ ½Ã°£À» ±â´Ù¸± ¼ö ÀÖ½À´Ï´Ù.</param>
+	/// <param name="path">ëŒ€ê¸°ì—´ì— ì¶”ê°€í•  ê²½ë¡œìž…ë‹ˆë‹¤.</param>
+	/// <param name="pushToFront">trueì¸ ê²½ìš° ê²½ë¡œê°€ ëŒ€ê¸°ì—´ì˜ ì•žìª½ìœ¼ë¡œ í‘¸ì‹œë˜ì–´ ëŒ€ê¸° ì¤‘ì¸ ë‹¤ë¥¸ ê²½ë¡œë¥¼ ìš°íšŒí•˜ê³  ë‹¤ìŒì— ê³„ì‚°ë©ë‹ˆë‹¤.
+	/// ì´ê²ƒì€ ë‹¤ë¥¸ ê²½ë¡œë³´ë‹¤ ìš°ì„ í•˜ì—¬ ê³„ì‚°í•˜ë ¤ëŠ” ê²½ë¡œê°€ ìžˆì„ ë•Œ ìœ ìš©í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤. ê·¸ëŸ¬ë‚˜ ê³¼ë„í•˜ê²Œ ì‚¬ìš©í•˜ë©´ ì¡°ì‹¬í•´ì•¼ í•©ë‹ˆë‹¤.
+	/// ë„ˆë¬´ ë§Žì€ ê²½ë¡œê°€ ìžì£¼ ì•žìª½ì— í‘¸ì‹œë˜ë©´ ê²½ë¡œê°€ ê³„ì‚°ë˜ê¸°ê¹Œì§€ ë‹¤ë¥¸ ê²½ë¡œê°€ ì•„ì£¼ ì˜¤ëžœ ì‹œê°„ì„ ê¸°ë‹¤ë¦´ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.</param>
 	public static void StartPath (Path path, bool pushToFront = false) {
-		// ´ÙÁß½º·¹µù ¹®Á¦¸¦ ÇÇÇÏ±â À§ÇØ ·ÎÄÃ º¯¼ö¿¡ º¹»çÇÕ´Ï´Ù.
+		// ë‹¤ì¤‘ìŠ¤ë ˆë”© ë¬¸ì œë¥¼ í”¼í•˜ê¸° ìœ„í•´ ë¡œì»¬ ë³€ìˆ˜ì— ë³µì‚¬í•©ë‹ˆë‹¤.
 		var astar = active;
 
 		if (System.Object.ReferenceEquals(astar, null))
 		{
-			Debug.LogError("ÀÌ Àå¸é¿¡´Â AstarPath °³Ã¼°¡ ¾ø°Å³ª ¾ÆÁ÷ ÃÊ±âÈ­µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+			Debug.LogError("ì´ ìž¥ë©´ì—ëŠ” AstarPath ê°œì²´ê°€ ì—†ê±°ë‚˜ ì•„ì§ ì´ˆê¸°í™”ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 			return;
 		}
 
 		if (path.PipelineState != PathState.Created)
 		{
-			throw new System.Exception("°æ·ÎÀÇ »óÅÂ°¡ Àß¸øµÇ¾ú½À´Ï´Ù. " + PathState.Created + " »óÅÂ°¡ ¿¹»óµÇ¾úÁö¸¸ " + path.PipelineState + " »óÅÂ¸¦ Ã£¾Ò½À´Ï´Ù.\n" +
-				"µ¿ÀÏÇÑ °æ·Î¸¦ µÎ ¹ø ¿äÃ»ÇÏÁö ¾Êµµ·Ï È®ÀÎÇÏ½Ê½Ã¿À.");
+			throw new System.Exception("ê²½ë¡œì˜ ìƒíƒœê°€ ìž˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤. " + PathState.Created + " ìƒíƒœê°€ ì˜ˆìƒë˜ì—ˆì§€ë§Œ " + path.PipelineState + " ìƒíƒœë¥¼ ì°¾ì•˜ìŠµë‹ˆë‹¤.\n" +
+				"ë™ì¼í•œ ê²½ë¡œë¥¼ ë‘ ë²ˆ ìš”ì²­í•˜ì§€ ì•Šë„ë¡ í™•ì¸í•˜ì‹­ì‹œì˜¤.");
 		}
 
 		if (astar.pathProcessor.queue.IsTerminating)
 		{
-			path.FailWithError("»õ °æ·Î´Â Çã¿ëµÇÁö ¾Ê½À´Ï´Ù");
+			path.FailWithError("ìƒˆ ê²½ë¡œëŠ” í—ˆìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤");
 			return;
 		}
 
 		if (astar.graphs == null || astar.graphs.Length == 0)
 		{
-			Debug.LogError("Àå¸é¿¡ ±×·¡ÇÁ°¡ ¾ø½À´Ï´Ù");
-			path.FailWithError("Àå¸é¿¡ ±×·¡ÇÁ°¡ ¾ø½À´Ï´Ù");
+			Debug.LogError("ìž¥ë©´ì— ê·¸ëž˜í”„ê°€ ì—†ìŠµë‹ˆë‹¤");
+			path.FailWithError("ìž¥ë©´ì— ê·¸ëž˜í”„ê°€ ì—†ìŠµë‹ˆë‹¤");
 			Debug.LogError(path.errorLog);
 			return;
 		}
 
 		path.Claim(astar);
 
-		// »óÅÂ¸¦ PathState.PathQueue·Î Áõ°¡½ÃÅµ´Ï´Ù
+		// ìƒíƒœë¥¼ PathState.PathQueueë¡œ ì¦ê°€ì‹œí‚µë‹ˆë‹¤
 		((IPathInternals)path).AdvanceState(PathState.PathQueue);
 		if (pushToFront) {
 			astar.pathProcessor.queue.PushFront(path);
@@ -1801,43 +1801,43 @@ public class AstarPath : VersionedMonoBehaviour {
 			astar.pathProcessor.queue.Push(path);
 		}
 
-		// ÇÃ·¹ÀÌ ¸ðµå ¿ÜºÎ¿¡¼­´Â ¸ðµç °æ·Î ¿äÃ»ÀÌ µ¿±âÀûÀÔ´Ï´Ù
+		// í”Œë ˆì´ ëª¨ë“œ ì™¸ë¶€ì—ì„œëŠ” ëª¨ë“  ê²½ë¡œ ìš”ì²­ì´ ë™ê¸°ì ìž…ë‹ˆë‹¤
 		if (!Application.isPlaying) {
 			BlockUntilCalculated(path);
 		}
 	}
 
 	/// <summary>
-	/// ºÒÇÊ¿äÇÑ ÇÒ´çÀ» ÇÇÇÏ±â À§ÇØ NNConstraint.NoneÀ» Ä³½ÃÇÕ´Ï´Ù.
-	/// ÀÌ ¹®Á¦´Â NNConstraint¸¦ ºÒº¯ Å¬·¡½º/±¸Á¶Ã¼·Î ¸¸µé¾î¼­ ÀÌ»óÀûÀ¸·Î ¼öÁ¤ÇØ¾ß ÇÕ´Ï´Ù.
+	/// ë¶ˆí•„ìš”í•œ í• ë‹¹ì„ í”¼í•˜ê¸° ìœ„í•´ NNConstraint.Noneì„ ìºì‹œí•©ë‹ˆë‹¤.
+	/// ì´ ë¬¸ì œëŠ” NNConstraintë¥¼ ë¶ˆë³€ í´ëž˜ìŠ¤/êµ¬ì¡°ì²´ë¡œ ë§Œë“¤ì–´ì„œ ì´ìƒì ìœ¼ë¡œ ìˆ˜ì •í•´ì•¼ í•©ë‹ˆë‹¤.
 	/// </summary>
 	static readonly NNConstraint NNConstraintNone = NNConstraint.None;
 
 	/// <summary>
-	/// À§Ä¡¿¡ °¡Àå °¡±î¿î ³ëµå¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// ÀÌ ¸Þ¼­µå´Â ¸ðµç ±×·¡ÇÁ¸¦ °Ë»öÇÏ¿© ÇØ´ç À§Ä¡¿¡ °¡Àå °¡±î¿î ³ëµå¸¦ ¼±ÅÃÇÏ°í ¹ÝÈ¯ÇÕ´Ï´Ù.
+	/// ìœ„ì¹˜ì— ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ì´ ë©”ì„œë“œëŠ” ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ê²€ìƒ‰í•˜ì—¬ í•´ë‹¹ ìœ„ì¹˜ì— ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ì„ íƒí•˜ê³  ë°˜í™˜í•©ë‹ˆë‹¤.
 	///
-	/// GetNearest(position, NNConstraint.None)°ú µ¿µîÇÕ´Ï´Ù.
+	/// GetNearest(position, NNConstraint.None)ê³¼ ë™ë“±í•©ë‹ˆë‹¤.
 	///
 	/// <code>
-	/// // ÀÌ °ÔÀÓ ¿ÀºêÁ§Æ® À§Ä¡¿¡ °¡Àå °¡±î¿î ³ëµå¸¦ Ã£½À´Ï´Ù.
+	/// // ì´ ê²Œìž„ ì˜¤ë¸Œì íŠ¸ ìœ„ì¹˜ì— ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ì°¾ìŠµë‹ˆë‹¤.
 	/// GraphNode node = AstarPath.active.GetNearest(transform.position).node;
 	///
 	/// if (node.Walkable) {
-	///     // ³ëµå°¡ °È±â °¡´ÉÇÏ¸é ¿©±â¿¡ Å¸¿ö¸¦ ¼³Ä¡ÇÏ°Å³ª ±âÅ¸ ÀÛ¾÷À» ¼öÇàÇÒ ¼ö ÀÖ½À´Ï´Ù.
+	///     // ë…¸ë“œê°€ ê±·ê¸° ê°€ëŠ¥í•˜ë©´ ì—¬ê¸°ì— íƒ€ì›Œë¥¼ ì„¤ì¹˜í•˜ê±°ë‚˜ ê¸°íƒ€ ìž‘ì—…ì„ ìˆ˜í–‰í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 	/// }
 	/// </code>
 	///
-	/// ÂüÁ¶: Pathfinding.NNConstraint
+	/// ì°¸ì¡°: Pathfinding.NNConstraint
 	/// </summary>
 	public NNInfo GetNearest (Vector3 position) {
 		return GetNearest(position, NNConstraintNone);
 	}
 
 	/// <summary>
-	/// ÁöÁ¤µÈ NNConstraint¸¦ »ç¿ëÇÏ¿© À§Ä¡¿¡ °¡Àå °¡±î¿î ³ëµå¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// ¸ðµç ±×·¡ÇÁ¸¦ °Ë»öÇÏ¿© ÁöÁ¤µÈ À§Ä¡¿¡ °¡Àå °¡±î¿î ³ëµå¸¦ ¼±ÅÃÇÕ´Ï´Ù.
-	/// NNConstraint´Â °È±â °¡´ÉÇÑ ³ëµå¸¸ ¼±ÅÃÇÏ´Â µî ¾î¶² ³ëµå¸¦ ¼±ÅÃÇÒÁö Á¦¾àÀ» ¼³Á¤ÇÏ´Â µ¥ »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù.
+	/// ì§€ì •ëœ NNConstraintë¥¼ ì‚¬ìš©í•˜ì—¬ ìœ„ì¹˜ì— ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ê²€ìƒ‰í•˜ì—¬ ì§€ì •ëœ ìœ„ì¹˜ì— ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ì„ íƒí•©ë‹ˆë‹¤.
+	/// NNConstraintëŠ” ê±·ê¸° ê°€ëŠ¥í•œ ë…¸ë“œë§Œ ì„ íƒí•˜ëŠ” ë“± ì–´ë–¤ ë…¸ë“œë¥¼ ì„ íƒí• ì§€ ì œì•½ì„ ì„¤ì •í•˜ëŠ” ë° ì‚¬ìš©í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 	///
 	/// <code>
 	/// GraphNode node = AstarPath.active.GetNearest(transform.position, NNConstraint.Default).node;
@@ -1846,12 +1846,12 @@ public class AstarPath : VersionedMonoBehaviour {
 	/// <code>
 	/// var constraint = NNConstraint.None;
 	///
-	/// // °È±â °¡´ÉÇÑ ³ëµå¸¸ °Ë»öÀ¸·Î Á¦¾à ¼³Á¤
+	/// // ê±·ê¸° ê°€ëŠ¥í•œ ë…¸ë“œë§Œ ê²€ìƒ‰ìœ¼ë¡œ ì œì•½ ì„¤ì •
 	/// constraint.constrainWalkability = true;
 	/// constraint.walkable = true;
 	///
-	/// // ÅÂ±× 3 ¶Ç´Â ÅÂ±× 5ÀÎ ³ëµå¸¸ °Ë»öÀ¸·Î Á¦¾à ¼³Á¤
-	/// // 'tags' ÇÊµå´Â ºñÆ®¸¶½ºÅ©ÀÔ´Ï´Ù.
+	/// // íƒœê·¸ 3 ë˜ëŠ” íƒœê·¸ 5ì¸ ë…¸ë“œë§Œ ê²€ìƒ‰ìœ¼ë¡œ ì œì•½ ì„¤ì •
+	/// // 'tags' í•„ë“œëŠ” ë¹„íŠ¸ë§ˆìŠ¤í¬ìž…ë‹ˆë‹¤.
 	/// constraint.constrainTags = true;
 	/// constraint.tags = (1 << 3) | (1 << 5);
 	///
@@ -1860,20 +1860,20 @@ public class AstarPath : VersionedMonoBehaviour {
 	/// var closestPoint = info.position;
 	/// </code>
 	///
-	/// ÂüÁ¶: Pathfinding.NNConstraint
+	/// ì°¸ì¡°: Pathfinding.NNConstraint
 	/// </summary>
 	public NNInfo GetNearest (Vector3 position, NNConstraint constraint) {
 		return GetNearest(position, constraint, null);
 	}
 
 	/// <summary>
-	/// ÁöÁ¤µÈ NNConstraint¸¦ »ç¿ëÇÏ¿© À§Ä¡¿¡ °¡Àå °¡±î¿î ³ëµå¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-	/// ¸ðµç ±×·¡ÇÁ¸¦ °Ë»öÇÏ¿© ÁöÁ¤µÈ À§Ä¡¿¡ °¡Àå °¡±î¿î ³ëµå¸¦ ¼±ÅÃÇÕ´Ï´Ù.
-	/// NNConstraint´Â °È±â °¡´ÉÇÑ ³ëµå¸¸ ¼±ÅÃÇÏ´Â µî ¾î¶² ³ëµå¸¦ ¼±ÅÃÇÒÁö Á¦¾àÀ» ¼³Á¤ÇÏ´Â µ¥ »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù.
-	/// ÂüÁ¶: Pathfinding.NNConstraint
+	/// ì§€ì •ëœ NNConstraintë¥¼ ì‚¬ìš©í•˜ì—¬ ìœ„ì¹˜ì— ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+	/// ëª¨ë“  ê·¸ëž˜í”„ë¥¼ ê²€ìƒ‰í•˜ì—¬ ì§€ì •ëœ ìœ„ì¹˜ì— ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ì„ íƒí•©ë‹ˆë‹¤.
+	/// NNConstraintëŠ” ê±·ê¸° ê°€ëŠ¥í•œ ë…¸ë“œë§Œ ì„ íƒí•˜ëŠ” ë“± ì–´ë–¤ ë…¸ë“œë¥¼ ì„ íƒí• ì§€ ì œì•½ì„ ì„¤ì •í•˜ëŠ” ë° ì‚¬ìš©í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+	/// ì°¸ì¡°: Pathfinding.NNConstraint
 	/// </summary>
 	public NNInfo GetNearest (Vector3 position, NNConstraint constraint, GraphNode hint) {
-		// ¼Ó¼º Á¶È¸¸¦ Ä³½ÃÇÕ´Ï´Ù.
+		// ì†ì„± ì¡°íšŒë¥¼ ìºì‹œí•©ë‹ˆë‹¤.
 		var graphs = this.graphs;
 
 		float minDist = float.PositiveInfinity;
@@ -1884,40 +1884,40 @@ public class AstarPath : VersionedMonoBehaviour {
 			for (int i = 0; i < graphs.Length; i++) {
 				NavGraph graph = graphs[i];
 
-				// ÀÌ ±×·¡ÇÁ¸¦ °Ë»öÇØ¾ß ÇÏ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+				// ì´ ê·¸ëž˜í”„ë¥¼ ê²€ìƒ‰í•´ì•¼ í•˜ëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.
 				if (graph == null || !constraint.SuitableGraph(i, graph)) {
 					continue;
 				}
 
 				NNInfoInternal nnInfo;
 				if (fullGetNearestSearch) {
-					// ´À¸° °¡Àå °¡±î¿î ³ëµå °Ë»ö
-					// ÀÌ´Â Á¦¾à¿¡ µû¶ó ÀûÇÕÇÑ ³ëµå¸¦ Ã£À¸·Á°í ½ÃµµÇÕ´Ï´Ù.
+					// ëŠë¦° ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œ ê²€ìƒ‰
+					// ì´ëŠ” ì œì•½ì— ë”°ë¼ ì í•©í•œ ë…¸ë“œë¥¼ ì°¾ìœ¼ë ¤ê³  ì‹œë„í•©ë‹ˆë‹¤.
 					nnInfo = graph.GetNearestForce(position, constraint);
 				} else {
-					// ºü¸¥ °¡Àå °¡±î¿î ³ëµå °Ë»ö
-					// Á¦¾àÀ» Å©°Ô »ç¿ëÇÏÁö ¾Ê°í À§Ä¡¿¡ °¡±î¿î ³ëµå¸¦ Ã£½À´Ï´Ù.
+					// ë¹ ë¥¸ ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œ ê²€ìƒ‰
+					// ì œì•½ì„ í¬ê²Œ ì‚¬ìš©í•˜ì§€ ì•Šê³  ìœ„ì¹˜ì— ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ì°¾ìŠµë‹ˆë‹¤.
 					nnInfo = graph.GetNearest(position, constraint);
 				}
 
 				GraphNode node = nnInfo.node;
 
-				// ÀÌ ±×·¡ÇÁ¿¡¼­ ³ëµå¸¦ Ã£Áö ¸øÇÑ °æ¿ì
+				// ì´ ê·¸ëž˜í”„ì—ì„œ ë…¸ë“œë¥¼ ì°¾ì§€ ëª»í•œ ê²½ìš°
 				if (node == null) {
 					continue;
 				}
 
-				// ¿äÃ»µÈ À§Ä¡¿¡¼­ ³ëµåÀÇ °¡Àå °¡±î¿î Á¡±îÁöÀÇ °Å¸®
+				// ìš”ì²­ëœ ìœ„ì¹˜ì—ì„œ ë…¸ë“œì˜ ê°€ìž¥ ê°€ê¹Œìš´ ì ê¹Œì§€ì˜ ê±°ë¦¬
 				float dist = ((Vector3)nnInfo.clampedPosition-position).magnitude;
 
 				if (prioritizeGraphs && dist < prioritizeGraphsLimit) {
-					// ³ëµå°¡ ÃæºÐÈ÷ °¡±î¿ì¸é ÀÌ ±×·¡ÇÁ¸¦ ¼±ÅÃÇÏ°í ´Ù¸¥ °ÍÀ» ¸ðµÎ ¹«½ÃÇÕ´Ï´Ù.
+					// ë…¸ë“œê°€ ì¶©ë¶„ížˆ ê°€ê¹Œìš°ë©´ ì´ ê·¸ëž˜í”„ë¥¼ ì„ íƒí•˜ê³  ë‹¤ë¥¸ ê²ƒì„ ëª¨ë‘ ë¬´ì‹œí•©ë‹ˆë‹¤.
 					minDist = dist;
 					nearestNode = nnInfo;
 					nearestGraph = i;
 					break;
 				} else {
-					// Áö±Ý±îÁö Ã£Àº ÃÖÀûÀÇ ³ëµå¸¦ ¼±ÅÃÇÕ´Ï´Ù.
+					// ì§€ê¸ˆê¹Œì§€ ì°¾ì€ ìµœì ì˜ ë…¸ë“œë¥¼ ì„ íƒí•©ë‹ˆë‹¤.
 					if (dist < minDist) {
 						minDist = dist;
 						nearestNode = nnInfo;
@@ -1927,19 +1927,19 @@ public class AstarPath : VersionedMonoBehaviour {
 			}
 		}
 
-		// ÀÏÄ¡ÇÏ´Â Ç×¸ñÀ» Ã£Áö ¸øÇÑ °æ¿ì
+		// ì¼ì¹˜í•˜ëŠ” í•­ëª©ì„ ì°¾ì§€ ëª»í•œ ê²½ìš°
 		if (nearestGraph == -1) {
 			return new NNInfo();
 		}
 
-		// ÀÌ¹Ì Á¦¾à ³ëµå°¡ ¼³Á¤µÇ¾ú´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+		// ì´ë¯¸ ì œì•½ ë…¸ë“œê°€ ì„¤ì •ë˜ì—ˆëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.
 		if (nearestNode.constrainedNode != null) {
 			nearestNode.node = nearestNode.constrainedNode;
 			nearestNode.clampedPosition = nearestNode.constClampedPosition;
 		}
 
 		if (!fullGetNearestSearch && nearestNode.node != null && !constraint.Suitable(nearestNode.node)) {
-			// ±×·¸Áö ¾ÊÀ¸¸é, ±×·¡ÇÁ°¡ ÀûÇÕÇÑ ³ëµå¸¦ È®ÀÎÇÏµµ·Ï °­Á¦·Î °Ë»çÇÕ´Ï´Ù.
+			// ê·¸ë ‡ì§€ ì•Šìœ¼ë©´, ê·¸ëž˜í”„ê°€ ì í•©í•œ ë…¸ë“œë¥¼ í™•ì¸í•˜ë„ë¡ ê°•ì œë¡œ ê²€ì‚¬í•©ë‹ˆë‹¤.
 			NNInfoInternal nnInfo = graphs[nearestGraph].GetNearestForce(position, constraint);
 
 			if (nnInfo.node != null) {
@@ -1951,13 +1951,13 @@ public class AstarPath : VersionedMonoBehaviour {
 			return new NNInfo();
 		}
 
-		// ³»ºÎ ÇÊµå°¡ ¸ðµÎ ÀÖ´Â NNInfo·Î º¯È¯ÇÕ´Ï´Ù.
+		// ë‚´ë¶€ í•„ë“œê°€ ëª¨ë‘ ìžˆëŠ” NNInfoë¡œ ë³€í™˜í•©ë‹ˆë‹¤.
 		return new NNInfo(nearestNode);
 	}
 
 	/// <summary>
-	/// ·¹ÀÌ¿¡ °¡Àå °¡±î¿î ³ëµå¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù (´À¸³´Ï´Ù).
-	/// °æ°í: ÀÌ ÇÔ¼ö´Â ¹«Â÷º° ´ëÀÔÀûÀÌ¸ç ¸Å¿ì ´À¸± ¼ö ÀÖÀ¸¹Ç·Î ÁÖÀÇÇØ¼­ »ç¿ëÇÏ¼¼¿ä.
+	/// ë ˆì´ì— ê°€ìž¥ ê°€ê¹Œìš´ ë…¸ë“œë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤ (ëŠë¦½ë‹ˆë‹¤).
+	/// ê²½ê³ : ì´ í•¨ìˆ˜ëŠ” ë¬´ì°¨ë³„ ëŒ€ìž…ì ì´ë©° ë§¤ìš° ëŠë¦´ ìˆ˜ ìžˆìœ¼ë¯€ë¡œ ì£¼ì˜í•´ì„œ ì‚¬ìš©í•˜ì„¸ìš”.
 	/// </summary>
 	public GraphNode GetNearest (Ray ray) {
 		if (graphs == null) return null;

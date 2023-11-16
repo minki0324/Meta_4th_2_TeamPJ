@@ -26,6 +26,12 @@ public class Flag : MonoBehaviour
         OccuHUD = FindObjectOfType<OccupationHUD>();
         TryGetComponent<SkinnedMeshRenderer>(out skinnedmesh);
     }
+
+    private void Start()
+    {       
+        transform.parent.gameObject.layer = transform.root.gameObject.layer;
+    }
+
     public void Change_Flag_Color(int TeamNum)
     { 
         skinnedmesh.material = ColorManager.instance.Flag_Color[TeamNum];        

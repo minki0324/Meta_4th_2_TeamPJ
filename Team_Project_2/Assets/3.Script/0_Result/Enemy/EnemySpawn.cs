@@ -8,7 +8,7 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] private GameObject[] unit;
     [SerializeField] private Ply_Controller player;
     private LeaderState leaderState;
-    [SerializeField]private GameObject targetLeader;
+    [SerializeField] private GameObject targetLeader;
 
     //스폰위치 3개
     public Transform[] SpawnPoint = new Transform[3];
@@ -18,6 +18,7 @@ public class EnemySpawn : MonoBehaviour
     private float Spawninterval = 0.4f;
     private int myLayer;
     private bool isAI;
+    private bool isRespawning;
     // 공격 대상 레이어
     private LayerMask TeamLayer;
     private void Awake()
@@ -26,7 +27,7 @@ public class EnemySpawn : MonoBehaviour
         TeamLayer = LayerMask.NameToLayer("Team");
         myLayer = transform.parent.gameObject.layer;
         targetLeader = null;
-        
+
 
         for (int i = 0; i < 3; i++)
         {
@@ -39,16 +40,16 @@ public class EnemySpawn : MonoBehaviour
     }
     private void Update()
     {
-        if(!GameManager.instance.isLive)
+        if (!GameManager.instance.isLive)
         {
             return;
         }
-    
+       
         //스폰포인트 레이어가 깃발의 레이어랑 다르면 깃발레이어로 업데이트.
         if (myLayer != transform.parent.gameObject.layer)
         {
             //깃발레이어로 변경
-            gameObject.layer  = transform.parent.gameObject.layer;
+            gameObject.layer = transform.parent.gameObject.layer;
 
             //중립깃발이라면 그냥 리턴
             if (gameObject.layer == 0)
@@ -66,6 +67,7 @@ public class EnemySpawn : MonoBehaviour
                 try
                 {
                     targetLeader = SetLeader();
+                    targetLeader.TryGetComponent(out leaderState);
                 }
                 catch
                 {
@@ -76,16 +78,27 @@ public class EnemySpawn : MonoBehaviour
 
 
         }
+       
+       
 
-        //중립이 아닐때
+
+        //중립깃발이 아닐때
         if (targetLeader != null)
         {
-            //타겟이 팀이아니라면 소환하는 타겟은 AI이다
+
+            if (targetLeader.layer == LayerMask.NameToLayer("Die"))
+            {
+                if (leaderState.isDead && !isRespawning)
+                {
+                    StartCoroutine(RespawnAfterDelay(5f));
+                }
+            }
             if (targetLeader.gameObject.layer == TeamLayer)
             {
                 isAI = false;
 
             }
+            //타겟이 팀이아니라면 소환하는 타겟은 AI이다
             else
             {
                 isAI = true;
@@ -164,7 +177,7 @@ public class EnemySpawn : MonoBehaviour
         Unit_Information currentUnit = GameManager.instance.units[leaderState.unitValue];
         GameObject newUnit = Instantiate(currentUnit.unitObject, SpawnPoint[SpawnIndex].position, Quaternion.identity);
         SetLayerRecursively(newUnit, leaderState.gameObject.layer);
-        switch(targetLeader.gameObject.layer)
+        switch (targetLeader.gameObject.layer)
         {
             case 7:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T1_Color);
@@ -179,7 +192,7 @@ public class EnemySpawn : MonoBehaviour
         }
 
         UnitAttack2 unitAttack2 = newUnit.GetComponent<UnitAttack2>();
-        unitAttack2.data = currentUnit;
+        unitAttack2.infodata = currentUnit;
         unitAttack2.Setunit();
         leaderState.UnitList.Add(newUnit);
         leaderState.Gold -= currentUnit.cost;
@@ -233,7 +246,7 @@ public class EnemySpawn : MonoBehaviour
     }
     private GameObject SetLeader()
     {
-     
+
         if (myLayer != TeamLayer)
         {
 
@@ -244,7 +257,7 @@ public class EnemySpawn : MonoBehaviour
 
             }
         }
-        else 
+        else
         {
 
             targetLeader = player.gameObject;
@@ -271,4 +284,36 @@ public class EnemySpawn : MonoBehaviour
             leaderState.canSpawn = true;
         }
     }
+
+    IEnumerator RespawnAfterDelay(float delay)
+    {
+        isRespawning = true;
+
+        yield return new WaitForSeconds(delay);
+
+        // 부활 로직을 여기에 구현
+        // 예를 들면, 죽었던 유닛을 다시 생성하는 등의 동작을 수행
+
+        // 부활이 완료되면 다시 살아난 것으로 플래그를 변경
+        leaderState.Respawn();
+
+        // 다음 부활을 위해 플래그를 초기화
+        isRespawning = false;
+    }
+    //private void Respawn()
+    //{
+    //    Debug.Log(targetLeader);
+
+       
+    //    //레이어 원래대로 바꿔주기 -> 스폰포인트의 레이어로
+    //    //isDead불값 초기화해주기 -> false;
+    //    //리더위치를 가장가까운 팀 스폰포인트로 이동시키기
+    //    //리더의 currentHP 를 maxHP만큼 회복시켜주기
+    //    targetLeader.layer = gameObject.layer;
+    //    leaderState.isDead = false;
+
+    //    targetLeader.transform.position = leaderState.respawnPoint.position;
+    //    leaderState.Current_HP = leaderState.Max_Hp;
+
+    //}
 }

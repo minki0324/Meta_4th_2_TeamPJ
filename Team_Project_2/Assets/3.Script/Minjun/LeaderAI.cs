@@ -1,71 +1,80 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using System.Linq;
-public class LeaderAI : Unit
+
+public class LeaderAI : LeaderState 
 {
-    private float scanRange = 10f;
     private LayerMask targetLayer;
-    private int invertedLayerMask;
-    private NavMeshAgent navMesh;
-    private Animator ani;
     private GameObject[] flag;
+    SphereCollider col;
+    bool isStart = false;
     [SerializeField] private GameObject targetFlag;
 
     public bool isEnermyChecked = false;
 
     //public Transform nearestTarget;
-    private float AttackRange = 10f;
-    private void Awake()
+    protected override void Awake()
     {
-        ani = GetComponent<Animator>();
+        base.Awake();
         combinedMask = TargetLayers();
-        navMesh = GetComponent<NavMeshAgent>();
         flag = GameObject.FindGameObjectsWithTag("Flag");
         targetFlag = TargetFlag();
         bat_State = BattleState.Move;
+        col = GetComponent<SphereCollider>();
+        col.enabled = false;
+        
+    }
+    protected override void Start()
+    {
+        base.Start();
+        GameManager.instance.leaders.Add(gameObject.GetComponent<LeaderState>());
+        SetLeaderState();
         
     }
     private void Update()
     {
 
-        if(!GameManager.instance.isLive)
+        if (!GameManager.instance.isLive)
         {
             return;
         }
+        if(!isStart)
+        {
+            col.enabled = true;
+            isStart = true;
+        }
 
+        if (data.currentHP <= 0)
+        {
+            if (!data.isDie)
+            {
+                Die();
+            }
+        }
         // 항상 주변에 적이있는지 탐지
         EnemyDitect();
 
-  
+
         switch (bat_State)
         {
-  
+
             case BattleState.Attack:
+                AttackOrder();
                 break;
-            /*case BattleState.Search:
-                
-                targetFlag = TargetFlag();
-                if(targetFlag != null) 
-                {
-                    bat_State = BattleState.Move;
-                }
-               
-             
+            case BattleState.Search:
                 break;
             case BattleState.Move:
                 if (targetFlag.transform.position != null)
                 {
-                        ani.SetBool("Move", true);
-                        Debug.Log("깃발이동");
-                        navMesh.SetDestination(targetFlag.transform.position);
+                    ani.SetBool("Move", true);
+                    Debug.Log("깃발이동");
                 }
                 else
                 {
                     bat_State = BattleState.Search;
                 }
-                break;*/
+                break;
             case BattleState.Defense:
                 break;
 
@@ -78,6 +87,37 @@ public class LeaderAI : Unit
 
 
     }
+    public override void Die()
+    {
+        //죽는애니메이션
+        //레이어변하기
+        //콜라이더 끄기
+        //리스폰위치 저장하기
+        //isDead true하기
+        //ani.SetTrigger("Dead"); // 죽는모션재생
+        ani.SetBool("Die", true); // 죽는모션재생
+        gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
+        HitBox_col.enabled = false;
+        SetRespawnPoint();
+        isDead = true;
+
+    }
+    private void SetRespawnPoint()
+    {
+        EnemySpawn ES = GameManager.instance.FindSpawnPoint(gameObject);
+        Debug.Log(ES);
+        respawnPoint = ES.transform.GetChild(0);
+    }
+    private void SetLeaderState()
+    {
+        data.maxHP = 150;
+        data.currentHP = data.maxHP;
+        data.Damage = 20;
+        data.isDie = false;
+
+    }
+ 
+   
 
     private void EnemyDitect()
     {
@@ -162,5 +202,19 @@ public class LeaderAI : Unit
         }
 
 
+    }
+    public override void HitDamage(float damage)
+    {
+        data.currentHP -= damage;
+    }
+    public override void Lostleader()
+    {
+        leaderState.bat_State = LeaderState.BattleState.Move;
+    }
+
+    public void OnOffCol()
+    {
+        HitBox_col.enabled = false;
+        HitBox_col.enabled = true;
     }
 }

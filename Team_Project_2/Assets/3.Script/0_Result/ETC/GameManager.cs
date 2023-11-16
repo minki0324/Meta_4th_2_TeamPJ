@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
     public int killCount;
     public int DeathCount;
     
+
     //병사인구 
     public int Max_MinionCount = 19;
     public int Current_MinionCount;
@@ -56,6 +57,8 @@ public class GameManager : MonoBehaviour
     public Unit_Information unit0;
     public Unit_Information unit1;
     public Unit_Information unit2;
+
+    public List<LeaderState> leaders;
     private void Awake()
     {
         if(instance == null)
@@ -68,12 +71,14 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+   
     // 기존 골드 상승량
     // 점령 어드벤티지
     // 골드 상승량 업그레이드
     
     private void Update()
     {
+       
         if(!isLive)
         {
             return;
@@ -99,4 +104,34 @@ public class GameManager : MonoBehaviour
     public int T1_Color;
     public int T2_Color;
     public int T3_Color;
+
+    public EnemySpawn FindSpawnPoint(GameObject leader)
+    {
+        EnemySpawn spawnPoint =null;
+        GameObject[] spawns;
+        spawns = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        for (int i = 0; i < spawns.Length; i++)
+        {
+
+        Debug.Log(spawns[i]);   
+        }
+        float mindistance = float.MaxValue;
+        foreach (GameObject ob in spawns)
+        {
+            if (leader.layer == ob.gameObject.layer)
+            {
+
+                float distance = Vector3.Distance(leader.transform.position, ob.transform.position);
+                if (distance < mindistance)
+                {
+                    mindistance = distance;
+                    spawnPoint = ob.GetComponent<EnemySpawn>();
+
+                }
+            }
+        }
+
+        return spawnPoint;
+    }
+  
 }
