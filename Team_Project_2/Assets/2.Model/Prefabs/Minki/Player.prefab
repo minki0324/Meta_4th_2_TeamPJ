@@ -3919,7 +3919,6 @@ GameObject:
   - component: {fileID: 181023728296746248}
   - component: {fileID: 7626781750793573622}
   - component: {fileID: 2707260959148288059}
-  - component: {fileID: 7559511552191318247}
   - component: {fileID: 6671570231878491632}
   m_Layer: 7
   m_Name: Player
@@ -4091,23 +4090,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gate: {fileID: 0}
   gateUI: {fileID: 0}
---- !u!114 &7559511552191318247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 181023728296746250}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b51c01008d8e64e4bb4bdbb10bd43611, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player_con: {fileID: 0}
-  player_move: {fileID: 0}
-  Leader: {fileID: 0}
-  Forward: {fileID: 8585919142778461005}
-  Stop_List: []
 --- !u!114 &6671570231878491632
 MonoBehaviour:
   m_ObjectHideFlags: 0
