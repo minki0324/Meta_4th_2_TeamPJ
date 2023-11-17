@@ -20,7 +20,6 @@ public class Player_AnimationCheck : MonoBehaviour
 
     public void CheckAttack1()  //葛记 1 场抄饶
     {
-        Debug.Log("葛记 1 场");
         //pm.GetComponent<Animator>().SetBool("Attack1", false);
         pm.isAttacking_1 = false;
         pm.isPossible_Attack_2 = false;

@@ -17,9 +17,12 @@ public class LeaderState : Unit
 
 
     }
+    public float Teampoint = 0;
 
     [Header("골드 관련")]
+    public float total_Gold = 500;
     public float Gold = 500; // 골드량
+    public float Upgrade_GoldValue = 1f;
     // private float Magnifi = 2f;  // 기본 골드 배율 (업데이트문 프레임 60 x 2f로 기본 획득 골드량은 분당 120)
 
     [Header("AI 관련")]
@@ -38,7 +41,14 @@ public class LeaderState : Unit
     public int has_Flag = 0;
     //EnemySpawn respawnPoint;
     public BattleState bat_State;
+    public int has_Flag = 0;
+    public int Hire = 0;
+    public bool isPossible_Upgrade_1 = false;
+    public bool isPossible_Upgrade_2 = false;
 
+    public bool isUpgrade_SolDam = false;
+    public bool isUpgrade_SolHP = false;
+    public List<int> Upgrade_List = new List<int>();
     public List<GameObject> UnitList = new List<GameObject>();
 
 

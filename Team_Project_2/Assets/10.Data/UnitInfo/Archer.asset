@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8058749bdb9a96947beea6bd0876c4da, type: 3}
-  m_Name: Spearman
+  m_Name: Archer
   m_EditorClassIdentifier: 
-  unitObject: {fileID: 123088, guid: 0755a95e2e1b5f44e8226989fb76f2cf, type: 3}
+  unitObject: {fileID: 179124, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
   ishealer: 0
-  unitName: Spearman
-  description: "\uCC3D\uBCD1\uC785\uB2C8\uB2E4"
-  damage: 25
-  maxHP: 90
-  currentHP: 90
-  attackRange: 2
-  cost: 19
-  index: 4
+  unitName: Archer
+  description: "\uAD81\uC218\uC784\uB2E4"
+  damage: 30
+  maxHP: 80
+  currentHP: 80
+  attackRange: 5
+  cost: 30
+  index: 2
