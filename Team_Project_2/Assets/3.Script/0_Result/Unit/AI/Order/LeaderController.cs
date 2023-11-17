@@ -38,22 +38,20 @@ public class LeaderController : MonoBehaviour
         if (!GameManager.instance.isLive) return;
 
 
-        if (isStart)
+        if (isStart && AI.GetNearestTarget() == null) 
         {
-            if (AI.GetNearestTarget() == null)
+            #region Base일 때
+            // 현재 위치가 베이스일 때
+            if (Target.gameObject.CompareTag("Base") && isArrive(Target))
             {
-                #region Base일 때
-                // 현재 위치가 베이스일 때
-                if (Target.CompareTag("Base") && isArrive(Target))
+                // 현재 위치가 본인 진영일 때
+                if (Target.gameObject.layer.Equals(gameObject.layer))
                 {
-                    // 현재 위치가 본인 진영일 때
-                    if (Target.gameObject.layer.Equals(gameObject.layer))
+                    // 현재 병사 수가 15명 이상일 때
+                    if (AI.currentUnitCount >= 15)
                     {
-                        // 현재 병사 수가 15명 이상일 때
-                        if (AI.currentUnitCount >= 15)
-                        {
-                            Targetset = GetComponent<TargetFlag>();
-                            NextTarget = Targetset.Target(transform);
+                        Targetset = GetComponent<TargetFlag>();
+                        NextTarget = Targetset.Target(transform);
 
                             // 현재 중앙 지역 깃발을 내가 다 먹고있을 때
                             // 그럼 돈 모일 때까지 기다리기..
@@ -162,33 +160,38 @@ public class LeaderController : MonoBehaviour
 
             #region Gate일 때
             // 게이트에 서있을 때
-            if (Target.transform.parent.CompareTag("Gate") && isArrive(Target))
+            if(Target.transform.parent != null)
             {
                 if (NextTarget == null)
                 {
                     return;
                 }
-
-                #endregion
-
-                if (AI.data.isDie)
+                else
                 {
-                    GoGate(transform, ref Target);
+                    Target = NextTarget;
+                    ToTarget(Target);
+                    NextTarget = null;
                 }
 
 
-
-
-
-
-
-
-
             }
+            #endregion
+
+
+
+
+
+
+
+
 
 
 
         }
+
+
+
+
 
 
 

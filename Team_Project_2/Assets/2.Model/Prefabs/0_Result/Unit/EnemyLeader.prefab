@@ -13136,12 +13136,13 @@ MonoBehaviour:
     damage: 0
     isDie: 0
   target: {fileID: 0}
+  ani: {fileID: 0}
   leaderState: {fileID: 0}
   leader: {fileID: 0}
-  scanRange: 13
+  scanRange: 30
   AttackRange: 1.5
-  HitBox_col: {fileID: 1803586442092828233}
-  Ob_Weapon_col: {fileID: 8132295210802871309}
+  HitBox_col: {fileID: 0}
+  Ob_Weapon_col: {fileID: 0}
   nearestTarget: {fileID: 0}
   Gold: 500
   Regeneration: 0.5
@@ -13151,7 +13152,7 @@ MonoBehaviour:
   deathCount: 0
   unitValue: 0
   unitCost: 16
-  canSpawn: 1
+  canSpawn: 0
   isMoving: 0
   respawnPoint: {fileID: 0}
   Team_Color: 0
@@ -13182,7 +13183,6 @@ NavMeshAgent:
   m_BaseOffset: -0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
-
 --- !u!114 &7674037152790838645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13214,7 +13214,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapInfo: {fileID: 0}
   Targetset: {fileID: 0}
-  Nav: {fileID: 0}
   ListTemp: []
   TargetBase: {fileID: 0}
   gates: []
@@ -13234,7 +13233,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapInfo: {fileID: 0}
   Targetset: {fileID: 0}
-  Nav: {fileID: 0}
   ListTemp: []
   TargetBase: {fileID: 0}
   gates: []
@@ -13254,7 +13252,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapInfo: {fileID: 0}
   Targetset: {fileID: 0}
-  Nav: {fileID: 0}
   ListTemp: []
   TargetBase: {fileID: 0}
   gates: []
@@ -13274,7 +13271,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapInfo: {fileID: 0}
   Targetset: {fileID: 0}
-  Nav: {fileID: 0}
   ListTemp: []
   TargetBase: {fileID: 0}
   gates: []
