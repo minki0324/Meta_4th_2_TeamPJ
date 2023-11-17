@@ -177,25 +177,29 @@ public class EnemySpawn : MonoBehaviour
         Unit_Information currentUnit = GameManager.instance.units[leaderState.unitValue];
         GameObject newUnit = Instantiate(currentUnit.unitObject, SpawnPoint[SpawnIndex].position, Quaternion.identity);
         SetLayerRecursively(newUnit, leaderState.gameObject.layer);
+        Soilder_Controller soilder_Con = newUnit.GetComponent<Soilder_Controller>();
+        soilder_Con.infodata = currentUnit;
+        soilder_Con.Setunit();
         switch (targetLeader.gameObject.layer)
         {
             case 7:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T1_Color);
+                Upgrade_Set(0, soilder_Con);
                 break;
             case 8:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T2_Color);
+                Upgrade_Set(1, soilder_Con);
                 break;
             case 9:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T3_Color);
+                Upgrade_Set(2, soilder_Con);
                 break;
 
         }
+        
 
-        
-        
-        Soilder_Controller soilder_Con = newUnit.GetComponent<Soilder_Controller>();
-        soilder_Con.infodata = currentUnit;
-        soilder_Con.Setunit();
+
+
         leaderState.UnitList.Add(newUnit);
         leaderState.Gold -= currentUnit.cost;
         SpawnIndex++;
@@ -302,20 +306,17 @@ public class EnemySpawn : MonoBehaviour
         // 다음 부활을 위해 플래그를 초기화
         isRespawning = false;
     }
-    //private void Respawn()
-    //{
-    //    Debug.Log(targetLeader);
+    private void Upgrade_Set(int Team, Soilder_Controller soilder_Controller)
+    {
+        if(GameManager.instance.leaders[Team].isUpgrade_SolDam)
+        {
+            soilder_Controller.data.damage = soilder_Controller.infodata.damage + 5;
+        }
 
-       
-    //    //레이어 원래대로 바꿔주기 -> 스폰포인트의 레이어로
-    //    //isDead불값 초기화해주기 -> false;
-    //    //리더위치를 가장가까운 팀 스폰포인트로 이동시키기
-    //    //리더의 currentHP 를 maxHP만큼 회복시켜주기
-    //    targetLeader.layer = gameObject.layer;
-    //    leaderState.isDead = false;
-
-    //    targetLeader.transform.position = leaderState.respawnPoint.position;
-    //    leaderState.Current_HP = leaderState.Max_Hp;
-
-    //}
+        if(GameManager.instance.leaders[Team].isUpgrade_SolHP)
+        {
+            soilder_Controller.data.currentHP = soilder_Controller.infodata.currentHP + 50;
+            soilder_Controller.data.maxHP = soilder_Controller.infodata.maxHP + 50;
+        }
+    }
 }
