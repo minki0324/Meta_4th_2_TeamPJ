@@ -48,7 +48,6 @@ public class SkyChange : MonoBehaviour
             }
             else
             {
-                Debug.Log("안ㄴ넘어오세요?;;");
                 night_currentRange += 0.1f;
                 RenderSettings.skybox = SunsetToNihgt_skybox;
                 SunsetToNihgt_skybox.SetFloat("_Blend", night_currentRange);
