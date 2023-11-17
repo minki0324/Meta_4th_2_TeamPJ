@@ -217,8 +217,6 @@ public class Formation_enemy : MonoBehaviour
         }
 
         // 가중치된 거리에 따라 정렬
-        weightedParents.Sort((a, b) => a.weightedDistance.CompareTo(b.weightedDistance));
-
         // 정렬된 트랜스폼 배열 추출
         return weightedParents.Select(item => item.transform).ToArray();
     }
