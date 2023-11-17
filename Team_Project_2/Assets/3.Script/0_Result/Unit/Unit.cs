@@ -42,7 +42,7 @@ public abstract class Unit : MonoBehaviour
     //죽었을때 박스콜라이더 Enable하기위해 직접참조 
     [SerializeField] protected Collider HitBox_col;
     [SerializeField] protected Collider Ob_Weapon_col;
-    protected float defalutSpeed;
+    protected float defaultSpeed;
 
     protected float speed;
 
@@ -60,7 +60,7 @@ public abstract class Unit : MonoBehaviour
         ani = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Ply_Controller>();
         aipath = GetComponent<AIPath>();
-        defalutSpeed = aipath.maxSpeed;
+        defaultSpeed = aipath.maxSpeed;
     }
 
     protected virtual void Start()
@@ -102,8 +102,7 @@ public abstract class Unit : MonoBehaviour
             {
                 isMove = true;
                 //ani.SetBool("Move", true);
-                aipath.canSearch = true;
-                aipath.canMove = true;
+                //aipath.isStopped = false;
 
 
             }
@@ -111,9 +110,8 @@ public abstract class Unit : MonoBehaviour
             {
 
                 speed = 0;
-                ani.SetBool("Move", false);
-                aipath.canMove = false;
-                aipath.canSearch = false;
+                isMove = false;
+                //aipath.isStopped = true;
                 if (!isAttacking)
                 {
                     attackCoroutine = StartCoroutine(Attack_co());

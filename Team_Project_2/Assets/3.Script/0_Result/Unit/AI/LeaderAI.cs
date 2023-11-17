@@ -35,7 +35,7 @@ public class LeaderAI : LeaderState
     private void Update()
     {
 
-        if (!GameManager.instance.isLive)
+        if (!GameManager.instance.isLive || data.isDie)
         {
             return;
         }
@@ -56,7 +56,13 @@ public class LeaderAI : LeaderState
         }
         // 항상 주변에 적이있는지 탐지
         EnemyDitect();
-        if (!holdingShield)
+        
+        if (holdingShield)
+        {
+            speed -= 1f * Time.deltaTime;
+            speed = Mathf.Clamp(speed, 0.3f, 1f);
+        }
+        else
         {
             if (isMove)
             {
@@ -66,29 +72,24 @@ public class LeaderAI : LeaderState
             {
                 speed -= 1f * Time.deltaTime;
             }
-        }
-        if (holdingShield)
-        {
-            speed -= 1f * Time.deltaTime;
-            speed = Mathf.Clamp(speed, 0.3f, 1f);
-        }
-        else
-        {
             speed = Mathf.Clamp01(speed);
         }
+        aipath.maxSpeed = 5 * speed ;
         ani.SetBool("Shield", holdingShield);
         ani.SetFloat("Speed", speed);
         ani.SetBool("Move", isMove);
-
+       
         switch (bat_State)
         {
 
             case BattleState.Move:
+                if(target.target == null)
+                {
+                    target.target = leaderController.Target;
+                }
                 holdingShield = false;
                 isMove = true;
-                //target.target = leaderController.Target;
-                aipath.canMove = true;
-                aipath.canSearch = true;
+                aipath.isStopped = false;
 
 
                 break;
@@ -96,7 +97,7 @@ public class LeaderAI : LeaderState
                 holdingShield = false;
                 isMove = true;
                 //느려졌던 이동속도 초기화
-                aipath.maxSpeed = defalutSpeed;
+                aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
                 AttackOrder();
                 break;
             case BattleState.Detect:
@@ -105,7 +106,7 @@ public class LeaderAI : LeaderState
                 holdingShield = true;
                 aipath.maxSpeed = 1.5f; // 이동속도줄이기
                 leaderAIDirection = transform.TransformDirection(Vector3.forward);
-                formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
+                //formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
 
                 break;
             case BattleState.Search:
@@ -151,8 +152,7 @@ public class LeaderAI : LeaderState
         ani.SetLayerWeight(1, 0);
         ani.SetTrigger("Dead"); // 죽는모션재생
         col.enabled = false;
-        aipath.canMove = false;
-        aipath.canSearch = false;
+        aipath.isStopped = true;
         SetRespawnPoint();
         gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
         //HitBox_col.enabled = false;
@@ -353,8 +353,7 @@ public class LeaderAI : LeaderState
         //저장한 리스폰 위치로 이동
         data.currentHP = data.maxHP;
         data.isDie = false;
-        aipath.canMove = true;
-        aipath.canSearch = true;
+        aipath.isStopped = false;
         Debug.Log(respawnPoint.parent.gameObject.layer);
         leader.layer = respawnPoint.parent.gameObject.layer;
         leader.transform.position = respawnPoint.position;

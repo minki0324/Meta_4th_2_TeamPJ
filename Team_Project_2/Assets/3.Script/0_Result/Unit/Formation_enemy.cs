@@ -6,25 +6,40 @@ using Pathfinding;
 using Pathfinding.Util;
 using System.Linq;
 
+public class Position
+{
+   Vector3 position;
+    bool dwq = false;
 
+} 
 public class Formation_enemy : MonoBehaviour
 {
 
     private LeaderAI leaderAI;
     [SerializeField] private Transform[] Parents_Pos;
     [SerializeField] private Formation_Count[] Count;
-
+    public  List<(Transform transform, float weighted)> weightedParents = new List<(Transform, float)>();
     private bool isUnitsMoving = true;
-
-    
+    private int Parents_index;
+    private int succeCount;
+    private Transform currentPosGroup;
     private void Awake()
     {
         leaderAI = GetComponent<LeaderAI>();
-     
+        currentPosGroup = Parents_Pos[Parents_index];
     }
 
     private void Update()
     {
+        //����׷� 
+        //�׷��� �ڸ��� �� ���� ���� �׷����� �̵�
+        if(currentPosGroup.childCount == succeCount)
+        {
+            Parents_index++;
+            succeCount = 0;
+            currentPosGroup = Parents_Pos[Parents_index];
+        }
+        List<Position> positions = new List<Position>();
         //if(Input.GetKeyDown(KeyCode.U))
         //{
         //    Following(100);
@@ -127,8 +142,6 @@ public class Formation_enemy : MonoBehaviour
             // ������ ��ġ�� ȸ���� �÷��̾�� ����ȭ
             //Vector3 newPosition = unit.transform.position + playerDirection * speed * Time.deltaTime;
 
-            Debug.Log(leaderAIDirection);
-
             Vector3 newPosition = unit.transform.position + leaderAIDirection * speed * Time.deltaTime;
             unit.transform.position = newPosition;
 
@@ -186,14 +199,21 @@ public class Formation_enemy : MonoBehaviour
     private Transform[] GetSortedParentsByWeight(GameObject unit)
     {
         Vector3 currentPosition = unit.transform.position;
-        List<(Transform transform, float weightedDistance)> weightedParents = new List<(Transform, float)>();
-
+  
+        float weightvalue = 0.1f;
+        float weight = 1f;
         foreach (Transform parent in Parents_Pos)
         {
-            float distance = Vector3.Distance(currentPosition, parent.position);
-            float weight = GetWeightForParent(parent);
 
-            weightedParents.Add((parent, distance * weight));
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                Transform child = parent.GetChild(i);
+
+                weight += weightvalue;
+
+                weightedParents.Add((child, weight));  // ������ �κ�
+            }
+
         }
 
         // ����ġ�� �Ÿ��� ���� ����
@@ -225,8 +245,8 @@ public class Formation_enemy : MonoBehaviour
         {
             return baseWeight / 1.5f; // 6���� 7�� �ε����� ���� ���� ����ġ
         }
-        return baseWeight; // �������� �⺻ ����ġ
 
+        return baseWeight; // �������� �⺻ ����ġ
     }
 
     // ����� ������ ��ƿ��� �޼ҵ�

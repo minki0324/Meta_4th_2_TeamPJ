@@ -6,6 +6,15 @@ using System.Linq;
 
 public class Soilder_Controller : Unit
 {
+
+    //Detect 상태일때만 적용되는 스테이트
+    enum FomationState { 
+    Following, // 리더와 가까워질때까지 따라다님
+    Formation, // 리더한테 도착하면 포메이션 이동
+    Shield, //포메이션 이동완료시 실드들고 리더와 발맞추기
+    
+    }
+    
     //적컴포넌트
     private GameObject ob;
 
@@ -66,18 +75,7 @@ public class Soilder_Controller : Unit
         {
             return;
         }
-       
-        if (!holdingShield)
-        {
-            if (isMove)
-            {
-                speed += 1f * Time.deltaTime;
-            }
-            else
-            {
-                speed -= 1f * Time.deltaTime;
-            }
-        }
+    
         if (holdingShield)
         {
             speed -= 1f * Time.deltaTime;
@@ -85,8 +83,19 @@ public class Soilder_Controller : Unit
         }
         else
         {
+            if (isMove)
+            {
+                speed += 1f * Time.deltaTime;
+
+            }
+            else
+            {
+                speed -= 1f * Time.deltaTime;
+
+            }
             speed = Mathf.Clamp01(speed);
         }
+        aipath.maxSpeed = 5 * speed; 
         ani.SetBool("Shield", holdingShield);
         ani.SetFloat("Speed", speed);
         ani.SetBool("Move", isMove);
@@ -104,9 +113,11 @@ public class Soilder_Controller : Unit
                         break;
                     case LeaderState.BattleState.Attack:
                         holdingShield = false;
-                        aipath.maxSpeed = defalutSpeed;
-                       
-                     
+                        aipath.canSearch = true;
+                        aipath.canMove = true;
+                        //aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
+
+
                         if (!infodata.ishealer)
                         {
                             //느려졌던 이동속도 초기화
@@ -123,8 +134,7 @@ public class Soilder_Controller : Unit
                     case LeaderState.BattleState.Move:
                         holdingShield = false;
                         isMove = true;
-                        aipath.canMove = true;
-                        aipath.canSearch = true;
+                        aipath.isStopped = false;
                         break;
                     default:
                         holdingShield = false;
@@ -313,9 +323,9 @@ public class Soilder_Controller : Unit
         //ani.SetBool("Die", true);  // 죽는모션재생
         ani.SetLayerWeight(1, 0);
         ani.SetTrigger("Dead"); // 죽는모션재생
-        //HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
-        aipath.canMove = false;
-        aipath.canSearch = false;
+                                //HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
+        isMove = false;
+        aipath.isStopped = true;
         gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
         if (gameObject.layer == TeamLayer)
         {
