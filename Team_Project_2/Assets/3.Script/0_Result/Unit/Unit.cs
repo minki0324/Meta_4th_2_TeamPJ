@@ -25,14 +25,12 @@ public abstract class Unit : MonoBehaviour
     protected bool isHitting;
     protected bool isAttacking;
     protected bool isdetecting;
-    protected bool holdingShield;
-    protected bool isMove;
-    public Animator ani;
+    protected Animator ani;
     protected Coroutine attackCoroutine;
     public LeaderState leaderState;
     public GameObject leader;
     protected Soilder_Controller enemy;
-   [SerializeField] protected float scanRange = 30;
+   [SerializeField] protected float scanRange = 13f;
     [SerializeField] protected float AttackRange = 1.5f;
     protected int myLayer;
     protected int combinedMask;
@@ -42,9 +40,6 @@ public abstract class Unit : MonoBehaviour
     //죽었을때 박스콜라이더 Enable하기위해 직접참조 
     [SerializeField] protected Collider HitBox_col;
     [SerializeField] protected Collider Ob_Weapon_col;
-    protected float defaultSpeed;
-
-    protected float speed;
 
     [Header("현재타겟 Transform")]
     [SerializeField] protected Transform nearestTarget;
@@ -60,7 +55,6 @@ public abstract class Unit : MonoBehaviour
         ani = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Ply_Controller>();
         aipath = GetComponent<AIPath>();
-        defaultSpeed = aipath.maxSpeed;
     }
 
     protected virtual void Start()
@@ -87,7 +81,6 @@ public abstract class Unit : MonoBehaviour
         if (nearestTarget != null) //탐지된 적이 있을때
         {
             LookatTarget(nearestTarget);
-                target.target = nearestTarget;
             float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
             if (attackDistance <= AttackRange)
             {
@@ -100,18 +93,16 @@ public abstract class Unit : MonoBehaviour
 
             if (!isdetecting) //탐지된적이 멀리있으면 적한테 이동
             {
-                isMove = true;
-                //ani.SetBool("Move", true);
-                //aipath.isStopped = false;
+                ani.SetBool("Move", true);
+
 
 
             }
             else // 탐지된 적이 접근하면 이동을 멈추고 공격
             {
 
-                speed = 0;
-                isMove = false;
-                //aipath.isStopped = true;
+                ani.SetBool("Move", false);             
+
                 if (!isAttacking)
                 {
                     attackCoroutine = StartCoroutine(Attack_co());
@@ -294,7 +285,6 @@ public abstract class Unit : MonoBehaviour
     //    ani.SetBool("Move", true);
     //    target.target = leader.transform;
     //}
-    
     public abstract void Lostleader();
     public abstract void Die();
     public abstract void HitDamage(float damage);

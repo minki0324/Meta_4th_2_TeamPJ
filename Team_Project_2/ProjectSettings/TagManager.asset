@@ -11,7 +11,7 @@ TagManager:
   - SpawnPoint
   - Gate
   - Base
-  - Soldier
+  - Soilder
   - Line
   layers:
   - Default
