@@ -345,7 +345,7 @@ MonoBehaviour:
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   gridSize: {x: 16, y: 9}
-  thickness: 10
+  thickness: 6.28
 --- !u!1 &732475347
 GameObject:
   m_ObjectHideFlags: 0
