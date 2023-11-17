@@ -6977,7 +6977,6 @@ MonoBehaviour:
   Occupied_Area: 1
   total_Gold: 1000
   Gold: 1000
-  Upgrade_GoldValue: 1
   isLive: 0
   isDead: 0
   inRange: 0

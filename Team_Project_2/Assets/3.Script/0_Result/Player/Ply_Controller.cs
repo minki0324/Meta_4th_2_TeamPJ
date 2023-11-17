@@ -72,10 +72,6 @@ public class Ply_Controller : MonoBehaviour
     public bool ischeckPosition = false;
     public Vector3 StopPos;
 
-    [SerializeField] private Upgrade upgrade;
-    public bool isUpgrade_SolDam = false;
-    public bool isUpgrade_SolHP = false;
-    
 
     private void Awake()
     {
@@ -174,7 +170,7 @@ public class Ply_Controller : MonoBehaviour
                     {
                         case 1:
                             Human_num = 0;
-                            if (GameManager.instance.Gold > GameManager.instance.unit0.cost)
+                            if (GameManager.instance.Gold > 15)
                             {
                                 Init_Solider(GameManager.instance.unit0);
                             }
@@ -188,7 +184,7 @@ public class Ply_Controller : MonoBehaviour
                             Debug.Log("2눌림");
                             Human_num = 1;
                             // 나중에 if문에 앤드게이트로 isPossible_HeavyInfantry 업글 유무 확인
-                            if (GameManager.instance.Gold > GameManager.instance.unit1.cost && GameManager.instance.isPossible_Upgrade_1)
+                            if (GameManager.instance.Gold > 20)
                             {
                                 Init_Solider(GameManager.instance.unit1);
                             }
@@ -202,7 +198,7 @@ public class Ply_Controller : MonoBehaviour
                             Debug.Log("3눌림");
                             Human_num = 2;
                             // 나중에 if문에 앤드게이트로 isPossible_Archer 업글 유무 확인
-                            if (GameManager.instance.Gold > GameManager.instance.unit2.cost && GameManager.instance.isPossible_Upgrade_2)
+                            if (GameManager.instance.Gold > 25)
                             {
                                 Init_Solider(GameManager.instance.unit2);
                             }
@@ -236,7 +232,6 @@ public class Ply_Controller : MonoBehaviour
         ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.Color_Index);
         Soilder_Con.infodata = unit;
         Soilder_Con.Setunit();
-        UpgradeSet(Soilder_Con);
 
         spawnPoint.SetLayerRecursively(newUnit, gameObject.layer);
 
@@ -267,17 +262,4 @@ public class Ply_Controller : MonoBehaviour
         }
     }
     
-    private void UpgradeSet(Soilder_Controller soilder_Controller)
-    {
-        if(isUpgrade_SolDam)
-        {
-            soilder_Controller.data.damage = soilder_Controller.infodata.damage + 5;
-        }
-
-        if(isUpgrade_SolHP)
-        {
-            soilder_Controller.data.currentHP = soilder_Controller.infodata.currentHP + 50;
-            soilder_Controller.data.maxHP = soilder_Controller.infodata.maxHP + 50;
-        }
-    }
 }

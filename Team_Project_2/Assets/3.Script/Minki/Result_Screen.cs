@@ -9,12 +9,7 @@ public class Result_Screen : MonoBehaviour
     {
         ColorSet, Mode, Time, Speed, TeamPoint, Gold, Hire, Kill, Death, Heal, Upgrade
     }
-    public enum Team
-    {
-        Team1, Team2, Team3, Team4
-    }
 
-    public Team team;
     public InfoType type;
     [SerializeField] private Image[] images;
     [SerializeField] private Text[] Texts;
@@ -101,37 +96,7 @@ public class Result_Screen : MonoBehaviour
             case InfoType.Heal:
                 break;
             case InfoType.Upgrade:
-                switch(team)
-                {
-                    case Team.Team1:
-                        ApplyUpgradesToObjects(images, GameManager.instance.Upgrade_List);
-                        break;
-                    case Team.Team2:
-                        ApplyUpgradesToObjects(images, GameManager.instance.leaders[0].Upgrade_List);
-                        break;
-                    case Team.Team3:
-                        ApplyUpgradesToObjects(images, GameManager.instance.leaders[1].Upgrade_List);
-                        break;
-                    case Team.Team4:
-                        ApplyUpgradesToObjects(images, GameManager.instance.leaders[2].Upgrade_List);
-                        break;
-                }
                 break;
-        }
-    }
-
-    private void ApplyUpgradesToObjects(Image[] images, List<int> upgradeList)
-    {
-        foreach (int index in upgradeList)
-        {
-            if (index >= 0 && index < images.Length)
-            {
-                GameObject objectToActivate = images[index].gameObject;
-                if (objectToActivate != null)
-                {
-                    objectToActivate.SetActive(true);
-                }
-            }
         }
     }
 }
