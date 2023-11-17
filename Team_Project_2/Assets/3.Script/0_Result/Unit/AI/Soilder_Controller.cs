@@ -7,7 +7,7 @@ using System.Linq;
 public class Soilder_Controller : Unit
 {
     //Detect 상태일때만 적용되는 스테이트
-    enum FomationState { 
+    public enum FomationState { 
     Following, // 리더와 가까워질때까지 따라다님
     Formation, // 리더한테 도착하면 포메이션 이동
     Shield, //포메이션 이동완료시 실드들고 리더와 발맞추기
@@ -17,13 +17,12 @@ public class Soilder_Controller : Unit
     //적컴포넌트
     private GameObject ob;
 
+    public FomationState fomationState;
 
-  
     //네비게이션
-    public bool isClose;
     public Unit_Information infodata;
     public bool isHealer = false;
-
+    public bool isArrive = false;
 
     public bool isNear = false;
 
@@ -40,8 +39,8 @@ public class Soilder_Controller : Unit
         myLayer = gameObject.layer; 
         TeamLayer = LayerMask.NameToLayer("Team");
         combinedMask = TargetLayers();
-
-
+    
+           
         //
         if (myLayer != TeamLayer)
         {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-
+using Pathfinding;
 public class LeaderAI : LeaderState
 {
     private LayerMask targetLayer;
@@ -14,6 +14,9 @@ public class LeaderAI : LeaderState
     private float attackOrederRange = 8;
     private LeaderController leaderController;
     public Vector3 leaderAIDirection;
+
+    public List<Position> positions = new List<Position>();
+    private int nextIndex;
     protected override void Awake()
     {
         base.Awake();
@@ -30,7 +33,7 @@ public class LeaderAI : LeaderState
         base.Start();
         GameManager.instance.leaders.Add(gameObject.GetComponent<LeaderState>());
         formation = GetComponent<Formation_enemy>();
-
+        positions = formation.positions; // 포메이션 포지션들 우선순위로 담아둔 리스트 초기화
         SetLeaderState();
 
     }
@@ -159,6 +162,7 @@ public class LeaderAI : LeaderState
         gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
         //HitBox_col.enabled = false;
         data.isDie = true;
+        target.target = null;
 
     }
     private void SetRespawnPoint()
@@ -366,6 +370,78 @@ public class LeaderAI : LeaderState
 
     }
   
+    private void FormationOrder()
+    {
+            
 
-   
+    }
+    private Transform GetSoilder(RaycastHit[] hits ,Position formation_Position)
+    {
+        Transform nearest = null;
+        float closestDistance = float.MaxValue;
+        //같은팀 병사담기
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.transform.gameObject.CompareTag("Soilder"))
+            {
+                bool isArrive = hit.transform.gameObject.GetComponent<Soilder_Controller>().isArrive;
+                if (isArrive)
+                {
+                    float distance = Vector3.Distance(formation_Position.position.position, hit.transform.position);
+
+
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        nearest = hit.transform;
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+
+                 
+            }
+
+        }
+
+        return nearest;
+    }
+    private void Scan_Pos(float scanRange)
+    {
+        //같은팀 레이어들 모두 담기
+        RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0 ,gameObject.layer);
+        //HashSet<GameObject> uniqueTargets = new HashSet<GameObject>();
+        //레이어들중에서 isArrive 인 병사
+            Transform Soilder = GetSoilder(allHits ,positions[nextIndex]);
+        AIDestinationSetter target = Soilder.GetComponent<AIDestinationSetter>();
+        AIPath path = Soilder.GetComponent<AIPath>();
+        Soilder_Controller soilder_con = Soilder.GetComponent<Soilder_Controller>();
+        target.target = positions[nextIndex].position;
+        
+       
+       
+        foreach (RaycastHit hit in allHits)
+        {
+            //현재 포메이션포지션에서 가장 가까운 병사 추출
+            GameObject hitObject = hit.transform.gameObject;
+            Soilder_Controller soilder = hitObject.GetComponent<Soilder_Controller>();
+            if (hitObject.layer == gameObject.layer && hitObject.CompareTag("Soilder"))
+            {
+
+                if (soilder.isArrive)
+                {
+
+                }
+                //if (!uniqueTargets.Contains(hitObject))
+                //{
+                //    uniqueTargets.Add(hitObject);
+                //}
+            }
+        }
+
+    }
+
+
 }

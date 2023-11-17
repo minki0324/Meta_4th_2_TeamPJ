@@ -8,8 +8,10 @@ using System.Linq;
 
 public class Position
 {
-   Vector3 position;
-    bool dwq = false;
+   public Transform position;
+   public float weight;
+   public bool isSuccess = false;
+   
 
 } 
 public class Formation_enemy : MonoBehaviour
@@ -19,14 +21,22 @@ public class Formation_enemy : MonoBehaviour
     [SerializeField] private Transform[] Parents_Pos;
     [SerializeField] private Formation_Count[] Count;
     public  List<(Transform transform, float weighted)> weightedParents = new List<(Transform, float)>();
+    public List<Position> positions = new List<Position>();
     private bool isUnitsMoving = true;
-    private int Parents_index;
-    private int succeCount;
+    public int Parents_index;
+    public int succeCount;
     private Transform currentPosGroup;
     private void Awake()
     {
         leaderAI = GetComponent<LeaderAI>();
         currentPosGroup = Parents_Pos[Parents_index];
+
+        for (int i = 0; i < weightedParents.Count; i++)
+        {
+            positions[i].position = weightedParents[i].transform;
+            positions[i].weight = weightedParents[i].weighted;
+            positions[i].isSuccess = false;
+        }
     }
 
     private void Update()
@@ -39,7 +49,7 @@ public class Formation_enemy : MonoBehaviour
             succeCount = 0;
             currentPosGroup = Parents_Pos[Parents_index];
         }
-        List<Position> positions = new List<Position>();
+       
         //if(Input.GetKeyDown(KeyCode.U))
         //{
         //    Following(100);
