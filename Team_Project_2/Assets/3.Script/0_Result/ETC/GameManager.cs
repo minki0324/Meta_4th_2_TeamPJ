@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum TeamLayerIdx
 {
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
         3. 점령지 (골드와 연동)
     */
     public static GameManager instance = null;
+    public DataManager Json;
+    public PlayerData Ply_Data;
 
     [Header("게임 모드")]
     public int GameMode = 0;
@@ -39,6 +42,7 @@ public class GameManager : MonoBehaviour
     public float currentTime = 0f;  // 게임이 시작하고 지난 시간
     public float EndTime = 1800f;   // 게임 시간은 30분
     public int Occupied_Area = 1;   // 점령한 지역 Default값 1
+    public GameObject Result;
 
     [Header("골드 관련")]
     public float total_Gold = 1000;
@@ -67,6 +71,8 @@ public class GameManager : MonoBehaviour
     //병종 업그레이드
     public bool isPossible_Upgrade_1 = false;
     public bool isPossible_Upgrade_2 = false;
+    public List<int> Upgrade_List = new List<int>();
+
     //스크립터블 배열
     [Header("Sword > Heavy > Archer > Priest > Spear > Halberdier ")]
     public Unit_Information[] units;
@@ -93,6 +99,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        Json = GetComponent<DataManager>();
+        Ply_Data = GetComponent<PlayerData>();
     }
    
     // 기존 골드 상승량
@@ -110,7 +118,7 @@ public class GameManager : MonoBehaviour
         currentTime += Time.deltaTime;
 
         total_Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue;
-        Gold += Time.deltaTime * Magnifi * Occupied_Area; // 골드수급 = 분당 120 * 점령한 지역 개수
+        Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue; // 골드수급 = 분당 120 * 점령한 지역 개수
     }
 
     public void Stop()
@@ -154,5 +162,18 @@ public class GameManager : MonoBehaviour
 
         return spawnPoint;
     }
-  
+
+    public void Save_N_BackToMain()
+    {
+        Json.Save_playerData(PlayerID, PlayerCoin, isCanUse_SwordMan, isCanUse_Knight, isCanUse_Archer, isCanUse_SpearMan, isCanUse_Halberdier, isCanUse_Prist);
+        SceneManager.LoadScene(0);
+    }
+    
+    public void EndGame()
+    {
+        Stop();
+        PlayerCoin = PlayerCoin + (int)Teampoint / 1000;
+        Result.SetActive(true);
+
+    }
 }

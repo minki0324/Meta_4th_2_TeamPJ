@@ -207,28 +207,17 @@ public class Intro : MonoBehaviour
 
     private void Awake()
     {
-        // gameObject.SetActive(true);
-        
-   
-        dataManager = new DataManager();
+        dataManager = GameManager.instance.Json;
         playerData = dataManager.Load_playerData("playerData");
-
-       
     }
 
     private void Start()
     {
-      
-
         Screen.SetResolution(1920, 1080, true);
 
         Init_FuntionUI();
-
-
        
         TitlePanel_On();
-
-     
     }
 
 
