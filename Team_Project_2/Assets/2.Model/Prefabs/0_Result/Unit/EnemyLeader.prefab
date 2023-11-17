@@ -11552,8 +11552,6 @@ GameObject:
   - component: {fileID: 2186265468818679685}
   - component: {fileID: 8132295210802862239}
   - component: {fileID: 8132295210802862238}
-  - component: {fileID: -6335461727198921222}
-  - component: {fileID: 8563116505424069821}
   - component: {fileID: 7674037152790838645}
   - component: {fileID: -6345470137745102455}
   - component: {fileID: 8736886272222092689}
@@ -11665,17 +11663,17 @@ MonoBehaviour:
   data:
     currentHP: 0
     maxHP: 0
-    Damage: 0
+    damage: 0
     isDie: 0
   target: {fileID: 0}
+  leaderState: {fileID: 0}
+  leader: {fileID: 0}
   scanRange: 13
   AttackRange: 1.5
   HitBox_col: {fileID: 1803586442092828233}
   Ob_Weapon_col: {fileID: 8132295210802871309}
   nearestTarget: {fileID: 0}
   Gold: 500
-  Current_HP: 150
-  Max_Hp: 150
   Regeneration: 0.5
   maxUnitCount: 19
   currentUnitCount: 0
@@ -11684,9 +11682,10 @@ MonoBehaviour:
   unitValue: 0
   unitCost: 16
   canSpawn: 1
-  isDead: 0
   isMoving: 0
   respawnPoint: {fileID: 0}
+  Team_Color: 0
+  has_Flag: 0
   bat_State: 0
   UnitList: []
   targetFlag: {fileID: 0}
@@ -11713,35 +11712,6 @@ NavMeshAgent:
   m_BaseOffset: -0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &-6335461727198921222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f57fa8d6242314891b7b62560d3d4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gate: {fileID: 0}
-  gateUI: {fileID: 0}
---- !u!114 &8563116505424069821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f96b4b4679455c49bb41a37f9a2642d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OccuHUD: {fileID: 0}
-  Flag_Num: 0
-  Team_Color: 0
 --- !u!114 &7674037152790838645
 MonoBehaviour:
   m_ObjectHideFlags: 0

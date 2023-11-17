@@ -84,6 +84,7 @@ public class LeaderController : MonoBehaviour
                         return;
                     }
                 }
+
                 // 현재 위치가 상대 진영일 때
                 else
                 {
@@ -92,11 +93,8 @@ public class LeaderController : MonoBehaviour
                     if (!Target.GetComponentInChildren<Flag>().transform.parent.gameObject.layer.Equals(gameObject.layer))
                     {
                         Target = Target.gameObject.GetComponentInChildren<Flag>().transform.parent.transform;
-                        Targetset.ToTarget(Target);
+                        ToTarget(Target);
                     }  
-
-
-
                 }
             }
             #endregion
@@ -130,12 +128,11 @@ public class LeaderController : MonoBehaviour
 
             #region Gate일 때
             // 게이트에 서있을 때
-            if (Target.gameObject.CompareTag("Gate") && isArrive(Target))
+            if (Target.transform.parent.CompareTag("Gate") && isArrive(Target))
             {
-                if (NextTarget.Equals(null))
+                if (NextTarget == null)
                 {
                     return;
-
                 }
                 else
                 {
