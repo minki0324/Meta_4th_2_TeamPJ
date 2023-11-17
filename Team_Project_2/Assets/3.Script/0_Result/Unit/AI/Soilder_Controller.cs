@@ -6,22 +6,14 @@ using System.Linq;
 
 public class Soilder_Controller : Unit
 {
-    //[SerializeField] private Ply_Controller player;
-    /*
-     미니언을 중심으로한 레이어를 감지하는 원 생성
-    레이어중 가장가까운적을 타겟으로 지정함
-    타겟감지후 미니언이 적을 바라보고 (Lookat메소드) 적에게 이동  -> 현재는 Lerp로 이동 추후 네비게이션으로 변경
-    이동중 미니언의 공격범위 콜라이더(미니언앞에 작은 박스콜라이더 (좀비서바이벌처럼))에 닿으면 정지후 공격
 
-     
-     
-     
-     */
-    //임시 미니언체력
-    //public float currentHP;
-    //public float maxHP;
-    //public float Damage;
-    //팀의 리더가 누군지
+    //Detect 상태일때만 적용되는 스테이트
+    public enum FomationState { 
+    Following, // 리더와 가까워질때까지 따라다님
+    Formation, // 리더한테 도착하면 포메이션 이동
+    Shield, //포메이션 이동완료시 실드들고 리더와 발맞추기
+    
+    }
     
     //적컴포넌트
     private GameObject ob;
@@ -31,21 +23,13 @@ public class Soilder_Controller : Unit
     }
     // 유닛 공격감지범위
 
+    public FomationState fomationState;
 
-    //이동중 적군유닛이 공격범위콜라이더에 닿았는가?
-    //공격중인가?
 
-    // 공격 대상 레이어
-    private LayerMask EnemyLayer;
-    //�׾����� �ڽ��ݶ��̴� Enable�ϱ����� �������� 
-    
-    //어택, 히트 딜레이
-  
     //네비게이션
-    public bool isClose;
     public Unit_Information infodata;
     public bool isHealer = false;
-
+    public bool isArrive = false;
 
     public bool isNear = false;
 
@@ -62,8 +46,8 @@ public class Soilder_Controller : Unit
         myLayer = gameObject.layer; 
         TeamLayer = LayerMask.NameToLayer("Team");
         combinedMask = TargetLayers();
-
-
+    
+           
         //
         if (myLayer != TeamLayer)
         {
