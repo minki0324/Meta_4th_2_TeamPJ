@@ -8,7 +8,7 @@ public class Soilder_Controller : Unit
 {
 
     //Detect 상태일때만 적용되는 스테이트
-    enum FomationState { 
+    public enum FomationState { 
     Following, // 리더와 가까워질때까지 따라다님
     Formation, // 리더한테 도착하면 포메이션 이동
     Shield, //포메이션 이동완료시 실드들고 리더와 발맞추기
