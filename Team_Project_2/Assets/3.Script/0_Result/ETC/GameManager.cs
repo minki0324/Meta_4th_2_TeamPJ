@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     [Header("게임 플레이")]
     public float currentTime = 0f;  // 게임이 시작하고 지난 시간
-    public float EndTime = 1800f;   // 게임 시간은 30분
+    public float EndTime = 20f;   // 게임 시간은 30분
     public int Occupied_Area = 1;   // 점령한 지역 Default값 1
     public int Color_Index;         // 플레이어 컬러 인덱스
 

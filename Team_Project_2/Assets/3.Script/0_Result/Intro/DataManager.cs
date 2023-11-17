@@ -35,6 +35,7 @@ public class PlayerData
 {
     public string ID;
     public int Coin;
+    public List<bool> Sol;
     public bool SwordMan;
     public bool Knight;
     public bool Archer;
@@ -43,6 +44,7 @@ public class PlayerData
     public bool Prist;
 }
 
+[System.Serializable]
 
 #endregion
 
@@ -69,7 +71,7 @@ public class DataManager : MonoBehaviour
 
 
     //public string path = "C:/Users/KGA/Documents/GitHub/Meta_4th_2_TeamPJ/Team_Project_2/JsonFiles/";
-    public string filename = "playerData";
+    public string filename = "playerData.json";
     Player_Data player_Data = new Player_Data();
 
     public void Save_playerData(string id, int coin, bool swordman, bool knight, bool archer, bool spearMan, bool halberdier, bool priest)
