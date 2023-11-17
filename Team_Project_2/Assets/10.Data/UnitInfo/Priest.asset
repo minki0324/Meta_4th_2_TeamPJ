@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8058749bdb9a96947beea6bd0876c4da, type: 3}
-  m_Name: Heavy
+  m_Name: Priest
   m_EditorClassIdentifier: 
-  unitObject: {fileID: 150198, guid: b4a1d0e6439682a4e958fb7c874ccb8c, type: 3}
-  ishealer: 0
-  unitName: Knight
-  description: "\uAE30\uC0AC\uC784\uB2E4"
-  damage: 20
-  maxHP: 100
-  currentHP: 100
-  attackRange: 1.5
-  cost: 18
-  index: 1
+  unitObject: {fileID: 169256, guid: 7b4e51ccca67b514d883b197e0f59efd, type: 3}
+  ishealer: 1
+  unitName: Priest
+  description: "\uD790\uB7EC\uC785\uB2C8\uB2F9"
+  damage: 5
+  maxHP: 80
+  currentHP: 80
+  attackRange: 0
+  cost: 30
+  index: 3

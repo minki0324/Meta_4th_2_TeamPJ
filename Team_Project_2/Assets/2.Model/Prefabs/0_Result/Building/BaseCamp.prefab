@@ -2297,6 +2297,7 @@ MonoBehaviour:
   isOccupied: 0
   Flag_Num: 0
   skinnedmesh: {fileID: 3461648979841676759}
+  Leaders: []
 --- !u!1 &3461648979838564561
 GameObject:
   m_ObjectHideFlags: 0
@@ -4413,7 +4414,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6961341211985045852}
-  - component: {fileID: 6961341211985045853}
   m_Layer: 13
   m_Name: Building
   m_TagString: Untagged
@@ -4450,18 +4450,6 @@ Transform:
   m_Father: {fileID: 6961341213275169407}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &6961341211985045853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6961341211985045827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e49248fff41efe34daa6abbfb855b2e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6961341213275169406
 GameObject:
   m_ObjectHideFlags: 0
