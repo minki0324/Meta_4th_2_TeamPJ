@@ -217,8 +217,6 @@ public class Formation_enemy : MonoBehaviour
         }
 
         // ����ġ�� �Ÿ��� ���� ����
-        weightedParents.Sort((a, b) => a.weightedDistance.CompareTo(b.weightedDistance));
-
         // ���ĵ� Ʈ������ �迭 ����
         return weightedParents.Select(item => item.transform).ToArray();
     }
