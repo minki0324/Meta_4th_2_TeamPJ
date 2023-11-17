@@ -74,8 +74,6 @@ public class Upgrade : MonoBehaviour
             Debug.Log("골드가 부족합니다.");
             return;
         }
-
-
     }
 
     public void Upgrade_RespawnTime()
@@ -133,6 +131,10 @@ public class Upgrade : MonoBehaviour
             GameManager.instance.Damage += Data[4].Value;
             UpIndex_Buttons[4].interactable = false;
         }
+        else
+        {
+            Debug.Log("골드가 부족합니다.");
+        }
     }
 
     public void Upgrade_LeaderHP()
@@ -144,75 +146,36 @@ public class Upgrade : MonoBehaviour
             GameManager.instance.Current_HP += Data[5].Value;
             UpIndex_Buttons[5].interactable = false;
         }
-    }
-
-
-
-    public void UpgradeAtk()
-    {
-        if (GameManager.instance.Gold >= 200)
-        {
-            GameManager.instance.Gold -= 200;
-            if (DamageUpgradeCount < 5)
-            {
-                DamageUpgradeCount++;
-                int currentUpgrade = DamageUpgradeCount * 5;
-                GameManager.instance.Damage += 5f;
-                Debug.Log("데미지 5증가");
-                Damage.text = string.Format("영웅의 공격력이 5 증가합니다. 현재 {0}% / 최대25", currentUpgrade);
-                if (DamageUpgradeCount == 5)
-                {
-                    buttons[4].interactable = false;
-                }
-            }
-            else
-            {
-                Debug.Log("업그레이드 최대치에 도달했습니다.");
-
-
-            }
-         
-        }
         else
         {
             Debug.Log("골드가 부족합니다.");
         }
     }
-    public void UpgradeHP()
+
+    public void Upgrade_SolDAM()
     {
-        if (GameManager.instance.Gold >= 200)
+        if (GameManager.instance.Gold >= Data[6].Upgrade_Cost)
         {
-            GameManager.instance.Gold -= 200;
-            if (HPUpgradeCount < 5)
-            {
-                HPUpgradeCount++;
-                int currentUpgrade = HPUpgradeCount * 10;
-                GameManager.instance.Max_Hp += 10f;
-                GameManager.instance.Current_HP += 10f;
-                Debug.Log("HP10증가");
-                if (HPUpgradeCount == 5)
-                {
-                    buttons[5].interactable = false;
-                }
-                HP.text = string.Format("영웅의 HP가 10% 상승합니다. 현재 {0}% / 최대50%", currentUpgrade);
-            }
-        }
-        else
-        {
-            Debug.Log("골드가 부족합니다.");
+            GameManager.instance.Gold -= Data[6].Upgrade_Cost;
+            
+            UpIndex_Buttons[5].interactable = false;
         }
     }
+
+    public void Upgrade_SolHP()
+    {
+
+    }
+
     //Astar완성후 다시 작성
-    public void UpgradeSpeed()
+    public void Upgrade_Speed()
     {
 
     }
-    public void UpgradeRegeneration()
+  
+    public void Upgrade_Income()
     {
-        GameManager.instance.Regeneration += 0.5f;
-        Debug.Log("체력리젠 0.5증가");
 
     }
-
 
 }
