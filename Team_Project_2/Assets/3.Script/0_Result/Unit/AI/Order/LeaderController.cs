@@ -37,7 +37,7 @@ public class LeaderController : MonoBehaviour
 
         if (!GameManager.instance.isLive) return;
 
-        if (isStart) 
+        if (isStart && AI.GetNearestTarget() == null) 
         {
             #region Base일 때
             // 현재 위치가 베이스일 때
@@ -128,20 +128,22 @@ public class LeaderController : MonoBehaviour
 
             #region Gate일 때
             // 게이트에 서있을 때
-            if (Target.transform.parent.CompareTag("Gate") && isArrive(Target))
+            if(Target.transform.parent != null)
             {
-                if (NextTarget == null)
+                if (Target.transform.parent.gameObject.CompareTag("Gate") && isArrive(Target))
                 {
-                    return;
-                }
-                else
-                {
-                    Target = NextTarget;
-                    ToTarget(Target);
-                    NextTarget = null;
-                }
+                    if (NextTarget == null)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        Target = NextTarget;
+                        ToTarget(Target);
+                        NextTarget = null;
+                    }
 
-
+                }
             }
             #endregion
 
