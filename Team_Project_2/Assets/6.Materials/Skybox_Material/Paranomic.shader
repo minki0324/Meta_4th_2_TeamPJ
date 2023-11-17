@@ -209,12 +209,11 @@ Shader "SkyBox/Panoramic" {
                     float4 col_A = tex2D(_Texture2, i.texcoord);
 
 
-                     float4 tex = tex2D(_Texture, tc);
-                     float4 tex2 = tex2D(_Texture2, tc);
+                    
 
                      float4 final_C = lerp(col_A, col_B, _LerpControl);
                     //half4 tex = tex2D(_Tex, tc);
-                    half3 c = DecodeHDR(final_C, _Tex_HDR);
+                    half3 c = DecodeHDR(final_C, _Texture_HDR);
                     c = c * _Tint.rgb * unity_ColorSpaceDouble.rgb;
                     c *= _Exposure;
                     return half4(c, 1);

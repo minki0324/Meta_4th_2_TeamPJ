@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Night
-  m_Shader: {fileID: 4800000, guid: bff647f283dbeea4e92b3136773eec1f, type: 3}
+  m_Shader: {fileID: 4800000, guid: 1c95fcba97fb84746a5865352a08f7c2, type: 3}
   m_ShaderKeywords: _MAPPING_LATITUDE_LONGITUDE_LAYOUT _SUNDISK_HIGH_QUALITY
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -103,8 +103,12 @@ Material:
         m_Texture: {fileID: 2800000, guid: b302f92b3535492468398a3eb6dbc841, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Texture2:
+    - _Texture1:
         m_Texture: {fileID: 2800000, guid: e23e3cbd509dcd84bb53a007dcbd06ee, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2:
+        m_Texture: {fileID: 2800000, guid: b302f92b3535492468398a3eb6dbc841, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _UpTex:
@@ -136,7 +140,9 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _Exposure: 1.12
+    - _Exposure: 0.97
+    - _Exposure1: 1
+    - _Exposure2: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -151,7 +157,9 @@ Material:
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Rotation: 0
+    - _Rotation: 92
+    - _Rotation1: 0
+    - _Rotation2: 0
     - _SampleGI: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
@@ -173,4 +181,6 @@ Material:
     - _SkyTint: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _Tint: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _Tint1: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _Tint2: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_BuildTextureStacks: []
