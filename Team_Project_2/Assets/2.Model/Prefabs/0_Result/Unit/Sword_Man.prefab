@@ -11565,6 +11565,7 @@ MonoBehaviour:
     damage: 0
     isDie: 0
   target: {fileID: 0}
+  ani: {fileID: 0}
   leaderState: {fileID: 0}
   leader: {fileID: 0}
   scanRange: 13
@@ -11651,7 +11652,7 @@ MonoBehaviour:
     maximumInterval: 2
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
-  maxAcceleration: -2.5
+  maxAcceleration: 30
   rotationSpeed: 360
   slowdownDistance: 1.5
   pickNextWaypointDist: 2
