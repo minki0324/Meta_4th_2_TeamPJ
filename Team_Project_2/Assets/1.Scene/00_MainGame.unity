@@ -4437,7 +4437,7 @@ MonoBehaviour:
   isCanUse_Halberdier: 0
   isCanUse_Prist: 0
   currentTime: 0
-  EndTime: 50
+  EndTime: 1800
   Occupied_Area: 1
   Color_Index: 4
   Gold: 1000
