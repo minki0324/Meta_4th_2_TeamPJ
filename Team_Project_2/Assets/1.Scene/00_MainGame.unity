@@ -1504,7 +1504,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Add Solider
+  m_Text: Add Soldier
 --- !u!222 &348644070
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3872,7 +3872,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Solider Setting
+  m_Text: Soldier Setting
 --- !u!222 &1151217664
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11747,6 +11747,7 @@ MonoBehaviour:
   Occu_Img_Color: []
   FlagArray: []
   OccuSlider: []
+  ColorTemp: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1278306722507524422
 GameObject:
   m_ObjectHideFlags: 0

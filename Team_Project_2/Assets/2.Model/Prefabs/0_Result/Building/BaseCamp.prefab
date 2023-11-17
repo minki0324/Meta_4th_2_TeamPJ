@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 38242643731754561}
+  - component: {fileID: 8324632912747075330}
+  - component: {fileID: 3608865927457636813}
   m_Layer: 0
   m_Name: Bone_Base
   m_TagString: Untagged
@@ -32,6 +34,32 @@ Transform:
   m_Father: {fileID: 38242643731754563}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8324632912747075330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38242643731329633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4294fa1fe9a76e5488b0bb0a04c4920a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Gate_Col: {fileID: 0}
+--- !u!135 &3608865927457636813
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38242643731329633}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 15
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &38242643731329635
 GameObject:
   m_ObjectHideFlags: 0
@@ -44,7 +72,6 @@ GameObject:
   - component: {fileID: 38242643724059043}
   - component: {fileID: 1035127064951244994}
   - component: {fileID: 218779495805277981}
-  - component: {fileID: 38242643731329636}
   - component: {fileID: 8518427302150640113}
   - component: {fileID: 823630319184670216}
   - component: {fileID: 450970463930119918}
@@ -121,19 +148,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 5}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &38242643731329636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 38242643731329635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4294fa1fe9a76e5488b0bb0a04c4920a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Gate_Col: {fileID: 0}
 --- !u!65 &8518427302150640113
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2246,7 +2260,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 5, z: 4}
+  m_Size: {x: 6, y: 5, z: 6}
   m_Center: {x: 0, y: 2.5, z: 0}
 --- !u!65 &3461648979838564601
 BoxCollider:
@@ -2297,7 +2311,10 @@ MonoBehaviour:
   isOccupied: 0
   Flag_Num: 0
   skinnedmesh: {fileID: 3461648979841676759}
-  Leaders: []
+  OccuHUD: {fileID: 0}
+  Units: 
+  Value: 
+
 --- !u!1 &3461648979838564561
 GameObject:
   m_ObjectHideFlags: 0
