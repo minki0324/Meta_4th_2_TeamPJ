@@ -11,15 +11,25 @@ public class Gate : MonoBehaviour
     [SerializeField] private Collider Gate_Col;  // Gate 물리 Collider
     private bool isOpen = false;
     WaitForSeconds DoorCool = new WaitForSeconds(2f);
+    private List<int> Units = new List<int>();
+
 
     private void Awake()
     {
-        Gate_Ani = GetComponent<Animator>();
-        Gate_Col = GetComponent<Collider>();
+        Gate_Ani = GetComponentInParent<Animator>();
+        Gate_Col = GetComponentInParent<Collider>();
         Gate_Ani.SetTrigger("OpenDoor");
         isOpen = true;
         Gate_Col.enabled = false;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
+    }
+
+
+
     // 게이트 상호작용
     public IEnumerator Gate_Interaction()
     {

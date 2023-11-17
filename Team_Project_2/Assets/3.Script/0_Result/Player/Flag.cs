@@ -19,7 +19,7 @@ public class Flag : MonoBehaviour
     public bool isOccupied = false; // 점령이 끝났는지
 
     public int Flag_Num;
-
+    public RaycastHit hit;
 
     [SerializeField] private SkinnedMeshRenderer skinnedmesh;
     public OccupationHUD OccuHUD;
@@ -45,8 +45,8 @@ public class Flag : MonoBehaviour
         }
         if (Units.Count.Equals(0))
         {
-           
-        }
+
+        }        
 
         if (Units.Count > 0 && !isOccupating) // 병사가 들어있긴 함..
         {
@@ -107,56 +107,53 @@ public class Flag : MonoBehaviour
                     return;
             }
         }
-
+    
     }
-
-
-
+    
+    
+    
     public void Change_Flag_Color(int TeamNum)
     {
         skinnedmesh.material = ColorManager.instance.Flag_Color[TeamNum];
     }
-
+    
     private int ParentLayer()
     {
         return this.transform.parent.gameObject.layer;
     }
-    private int otherLayer(Collider other)
-    {
-        return other.gameObject.layer;
-    }
 
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (GameManager.instance.isLive)
-        {
-            if (other.gameObject.layer.Equals((int)TeamLayerIdx.Player) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team2) ||
-                other.gameObject.layer.Equals((int)TeamLayerIdx.Team1) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team3)) 
-            {
-                if (other.gameObject.CompareTag("Player"))
-                {
-                    OccuHUD.Ply_OccuHUD(Flag_Num, true);
-                }
-                Units.Add(other.gameObject.layer);
-            }
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (GameManager.instance.isLive)
-        {
-            if (other.gameObject.layer.Equals((int)TeamLayerIdx.Player) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team2) ||
-               other.gameObject.layer.Equals((int)TeamLayerIdx.Team1) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team3))
-            {
-                if (other.gameObject.CompareTag("Player"))
-                {
-                    OccuHUD.Ply_OccuHUD(Flag_Num, false);
-                }
-                Units.Remove(other.gameObject.layer);
-            }
-        }
-    }
+    
+    
+     private void OnTriggerEnter(Collider other)
+     {
+         if (GameManager.instance.isLive)
+         {
+             if (other.gameObject.layer.Equals((int)TeamLayerIdx.Player) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team2) ||
+                 other.gameObject.layer.Equals((int)TeamLayerIdx.Team1) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team3)) 
+             {
+                 if (other.gameObject.CompareTag("Player"))
+                 {
+                     OccuHUD.Ply_OccuHUD(Flag_Num, true);
+                 }
+                 Units.Add(other.gameObject.layer);
+             }
+         }
+     }
+     private void OnTriggerExit(Collider other)
+     {
+         if (GameManager.instance.isLive)
+         {
+             if (other.gameObject.layer.Equals((int)TeamLayerIdx.Player) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team2) ||
+                other.gameObject.layer.Equals((int)TeamLayerIdx.Team1) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team3))
+             {
+                 if (other.gameObject.CompareTag("Player"))
+                 {
+                     OccuHUD.Ply_OccuHUD(Flag_Num, false);
+                 }
+                 Units.Remove(other.gameObject.layer);
+             }
+         }
+     }
 
     public IEnumerator OnOccu_co(int TeamColor, int Current_Minion)
     {
