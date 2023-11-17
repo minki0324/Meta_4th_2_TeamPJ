@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-    [CreateAssetMenu(fileName = "UnitInfo", menuName = "Unit Info")]
+    [CreateAssetMenu(fileName = "UnitInfo", menuName = "Scriptable Object/Unit Info")]
 public class Unit_Information : ScriptableObject
 {
     public GameObject unitObject;

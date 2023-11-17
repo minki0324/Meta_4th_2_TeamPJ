@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
     public float total_Gold = 1000;
     public float Gold = 1000;       // 골드량
     private float Magnifi = 2f;     // 기본 골드 배율 (업데이트문 프레임 60 x 2f로 기본 획득 골드량은 분당 120)
+    public float Upgrade_GoldValue = 1f;
     
     [Header("플레이어 관련")]
     public bool isLive = false;
@@ -108,7 +109,7 @@ public class GameManager : MonoBehaviour
         
         currentTime += Time.deltaTime;
 
-        total_Gold += Time.deltaTime * Magnifi * Occupied_Area;
+        total_Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue;
         Gold += Time.deltaTime * Magnifi * Occupied_Area; // 골드수급 = 분당 120 * 점령한 지역 개수
     }
 
