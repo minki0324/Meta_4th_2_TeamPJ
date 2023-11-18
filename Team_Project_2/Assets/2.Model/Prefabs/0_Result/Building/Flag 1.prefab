@@ -110,9 +110,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5805590287774689677}
   - component: {fileID: 5805590287783970427}
+  - component: {fileID: 5805590287774594476}
   - component: {fileID: 5805590287774594451}
   - component: {fileID: 5805590287774594450}
-  - component: {fileID: 4783201716271402529}
+  - component: {fileID: 4764869947871711171}
   m_Layer: 0
   m_Name: Flag 1
   m_TagString: Flag
@@ -159,6 +160,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &5805590287774594476
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5805590287774594477}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 5, z: 4}
+  m_Center: {x: 0, y: 2.6, z: 0}
 --- !u!65 &5805590287774594451
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -188,7 +202,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
---- !u!114 &4783201716271402529
+--- !u!114 &4764869947871711171
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,9 +222,6 @@ MonoBehaviour:
   isOccupied: 0
   Flag_Num: 0
   skinnedmesh: {fileID: 5805590287779870909}
-  OccuHUD: {fileID: 0}
-  Units: 
-  Value: 
 --- !u!1 &5805590287774594481
 GameObject:
   m_ObjectHideFlags: 0
