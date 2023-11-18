@@ -2,31 +2,31 @@
   "Scripts": [
     {
       "Title": "SwordMan",
-      "Script": "A soldier who uses Sword. \nATK : 20",
-      "Price": 16
+      "Script": "A soldier who uses Sword. \nATK : 2",
+      "Price": 10
     },
     {
       "Title": "Knight",
-      "Script": "A soldier who uses Sword. \nATK : 20",
-      "Price": 18
+      "Script": "A soldier who uses Sword. \nATK : 2",
+      "Price": 10
     },
     {
       "Title": "Archer",
-      "Script": "A soldier who shoots Arrow. \nATK : 30",
-      "Price": 20
+      "Script": "A soldier who shoots Arrow. \nATK : 2",
+      "Price": 10
     },
     {
       "Title": "Lancer",
-      "Script": "A soldier who uses Lance. \nATK : 25",
-      "Price": 19
+      "Script": "A soldier who uses Lance. \nATK : 2",
+      "Price": 10
     },
     {
       "Title": "Halberdier",
-      "Script": "A soldier who uses Halberd. \nATK : 30",
-      "Price": 25
+      "Script": "A soldier who uses Halberd. \nATK : 3",
+      "Price": 20
     },
     {
-      "Title": "Priest",
+      "Title": "Prist",
       "Script": "A soldier who can uses Heal \nHeal Amount : 5",
       "Price": 30
     },
