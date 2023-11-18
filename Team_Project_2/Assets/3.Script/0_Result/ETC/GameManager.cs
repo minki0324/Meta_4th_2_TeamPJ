@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum TeamLayerIdx
 {
@@ -13,15 +14,21 @@ public enum TeamLayerIdx
 public class GameManager : MonoBehaviour
 {
     /*
-        ê²Œì„ ë§¤ë‹ˆì €ì—ì„œ ê´€ë¦¬í•´ì•¼ í•  ë³€ìˆ˜ ëª©ë¡
-        1. ê³¨ë“œ
-        2. í”Œë ˆì´ì–´ ì²´ë ¥
-        3. ì ë ¹ì§€ (ê³¨ë“œì™€ ì—°ë™)
+        °ÔÀÓ ¸Å´ÏÀú¿¡¼­ °ü¸®ÇØ¾ß ÇÒ º¯¼ö ¸ñ·Ï
+        1. °ñµå
+        2. ÇÃ·¹ÀÌ¾î Ã¼·Â
+        3. Á¡·ÉÁö (°ñµå¿Í ¿¬µ¿)
     */
     public static GameManager instance = null;
+    public DataManager Json;
+    public PlayerData Ply_Data;
+
+    [Header("°ÔÀÓ ¸ğµå")]
+    public int GameMode = 0;
+    public int GameSpeed = 0;
 
     [SerializeField] private GameObject Option;
-    [Header("ê³„ì • ê´€ë ¨")]
+    [Header("°èÁ¤ °ü·Ã")]
     public string PlayerID;
     public int PlayerCoin;
     public bool isCanUse_SwordMan;
@@ -31,17 +38,19 @@ public class GameManager : MonoBehaviour
     public bool isCanUse_Halberdier;
     public bool isCanUse_Prist;
 
-    [Header("ê²Œì„ í”Œë ˆì´")]
-    public float currentTime = 0f;  // ê²Œì„ì´ ì‹œì‘í•˜ê³  ì§€ë‚œ ì‹œê°„
-    public float EndTime = 1800f;   // ê²Œì„ ì‹œê°„ì€ 30ë¶„
-    public int Occupied_Area = 1;   // ì ë ¹í•œ ì§€ì—­ Defaultê°’ 1
-    public int Color_Index;         // í”Œë ˆì´ì–´ ì»¬ëŸ¬ ì¸ë±ìŠ¤
+    [Header("°ÔÀÓ ÇÃ·¹ÀÌ")]
+    public float currentTime = 0f;  // °ÔÀÓÀÌ ½ÃÀÛÇÏ°í Áö³­ ½Ã°£
+    public float EndTime = 20f;   // °ÔÀÓ ½Ã°£Àº 30ºĞ
+    public int Occupied_Area = 1;   // Á¡·ÉÇÑ Áö¿ª Default°ª 1
+    public GameObject Result;
 
-    [Header("ê³¨ë“œ ê´€ë ¨")]
-    public float Gold = 1000;       // ê³¨ë“œëŸ‰
-    private float Magnifi = 2f;     // ê¸°ë³¸ ê³¨ë“œ ë°°ìœ¨ (ì—…ë°ì´íŠ¸ë¬¸ í”„ë ˆì„ 60 x 2fë¡œ ê¸°ë³¸ íšë“ ê³¨ë“œëŸ‰ì€ ë¶„ë‹¹ 120)
+    [Header("°ñµå °ü·Ã")]
+    public float total_Gold = 1000;
+    public float Gold = 1000;       // °ñµå·®
+    private float Magnifi = 2f;     // ±âº» °ñµå ¹èÀ² (¾÷µ¥ÀÌÆ®¹® ÇÁ·¹ÀÓ 60 x 2f·Î ±âº» È¹µæ °ñµå·®Àº ºĞ´ç 120)
+    public float Upgrade_GoldValue = 1f;
     
-    [Header("í”Œë ˆì´ì–´ ê´€ë ¨")]
+    [Header("ÇÃ·¹ÀÌ¾î °ü·Ã")]
     public bool isLive = false;
     public bool isDead;
     public bool inRange;
@@ -52,15 +61,19 @@ public class GameManager : MonoBehaviour
     public float respawnTime = 10f;
     public int killCount;
     public int DeathCount;
-    
+    public int Ply_hasFlag = 0;
+    public float Teampoint = 0;
+    public int Hire = 0;
 
-    //ë³‘ì‚¬ì¸êµ¬ 
+    //º´»çÀÎ±¸ 
     public int Max_MinionCount = 19;
     public int Current_MinionCount;
-    //ë³‘ì¢… ì—…ê·¸ë ˆì´ë“œ
+    //º´Á¾ ¾÷±×·¹ÀÌµå
     public bool isPossible_Upgrade_1 = false;
     public bool isPossible_Upgrade_2 = false;
-    //ìŠ¤í¬ë¦½í„°ë¸” ë°°ì—´
+    public List<int> Upgrade_List = new List<int>();
+
+    //½ºÅ©¸³ÅÍºí ¹è¿­
     [Header("Sword > Heavy > Archer > Priest > Spear > Halberdier ")]
     public Unit_Information[] units;
     public Unit_Information unit0;
@@ -68,6 +81,13 @@ public class GameManager : MonoBehaviour
     public Unit_Information unit2;
 
     public List<LeaderState> leaders;
+
+    [Header("ÄÃ·¯ÀÎµ¦½º")]
+    public int Color_Index;         // ÇÃ·¹ÀÌ¾î ÄÃ·¯ ÀÎµ¦½º
+    public int T1_Color;
+    public int T2_Color;
+    public int T3_Color;
+
     private void Awake()
     {
         if(instance == null)
@@ -82,9 +102,9 @@ public class GameManager : MonoBehaviour
         Json = GetComponent<DataManager>();
     }
    
-    // ê¸°ì¡´ ê³¨ë“œ ìƒìŠ¹ëŸ‰
-    // ì ë ¹ ì–´ë“œë²¤í‹°ì§€
-    // ê³¨ë“œ ìƒìŠ¹ëŸ‰ ì—…ê·¸ë ˆì´ë“œ
+    // ±âÁ¸ °ñµå »ó½Â·®
+    // Á¡·É ¾îµåº¥Æ¼Áö
+    // °ñµå »ó½Â·® ¾÷±×·¹ÀÌµå
     
     private void Update()
     {
@@ -97,7 +117,7 @@ public class GameManager : MonoBehaviour
         currentTime += Time.deltaTime;
 
         total_Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue;
-        Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue; // ê³¨ë“œìˆ˜ê¸‰ = ë¶„ë‹¹ 120 * ì ë ¹í•œ ì§€ì—­ ê°œìˆ˜
+        Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue; // °ñµå¼ö±Ş = ºĞ´ç 120 * Á¡·ÉÇÑ Áö¿ª °³¼ö
 
         if(Input.GetKeyDown(KeyCode.K))
         {
@@ -117,9 +137,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    public int T1_Color;
-    public int T2_Color;
-    public int T3_Color;
 
     public EnemySpawn FindSpawnPoint(GameObject leader)
     {
@@ -149,5 +166,18 @@ public class GameManager : MonoBehaviour
 
         return spawnPoint;
     }
-  
+
+    public void Save_N_BackToMain()
+    {
+        Json.Save_playerData(PlayerID, PlayerCoin, isCanUse_SwordMan, isCanUse_Knight, isCanUse_Archer, isCanUse_SpearMan, isCanUse_Halberdier, isCanUse_Prist);
+        SceneManager.LoadScene(0);
+    }
+    
+    public void EndGame()
+    {
+        Stop();
+        PlayerCoin = PlayerCoin + (int)Teampoint / 1000;
+        Result.SetActive(true);
+
+    }
 }
