@@ -177,22 +177,6 @@ public class EnemySpawn : MonoBehaviour
         Unit_Information currentUnit = GameManager.instance.units[leaderAI.unitValue];
         GameObject newUnit = Instantiate(currentUnit.unitObject, SpawnPoint[SpawnIndex].position, Quaternion.identity);
         SetLayerRecursively(newUnit, leaderAI.gameObject.layer);
-        switch (targetLeader.gameObject.layer)
-        {
-            case 7:
-                ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T1_Color);
-                Upgrade_Set(0, soilder_Con);
-                break;
-            case 8:
-                ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T2_Color);
-                Upgrade_Set(1, soilder_Con);
-                break;
-            case 9:
-                ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T3_Color);
-                Upgrade_Set(2, soilder_Con);
-                break;
-
-        }
         
         Soilder_Controller soilder_Con = newUnit.GetComponent<Soilder_Controller>();
         soilder_Con.infodata = currentUnit;
