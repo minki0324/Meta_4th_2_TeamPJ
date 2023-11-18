@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using SimpleProceduralTerrainProject;
 
 public class HUD : MonoBehaviour
 {
@@ -17,7 +16,7 @@ public class HUD : MonoBehaviour
 
     public enum InfoType
     {
-        Time, Soldier, Health, Gold, Employ, TeamPoint
+        Time, Soldier, Health, Gold, Employ, TeamPoint, Occupation
     }
 
     public InfoType type;
@@ -28,20 +27,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private Slider HP_Slider;
 
     [SerializeField] private Image SliderImg;
-    [SerializeField] private Image[] images;
     public Gradient HP_gradient;
-
-    private void Update()
-    {
-        if(!GameManager.instance.isLive)
-        {
-            return;
-        }
-        GameManager.instance.Teampoint = Score_Set(GameManager.instance.Ply_hasFlag, GameManager.instance.Teampoint);
-        GameManager.instance.leaders[0].Teampoint = Score_Set(GameManager.instance.leaders[0].has_Flag, GameManager.instance.leaders[0].Teampoint);
-        GameManager.instance.leaders[1].Teampoint = Score_Set(GameManager.instance.leaders[1].has_Flag, GameManager.instance.leaders[1].Teampoint);
-        GameManager.instance.leaders[2].Teampoint = Score_Set(GameManager.instance.leaders[2].has_Flag, GameManager.instance.leaders[2].Teampoint);
-    }
 
     private void LateUpdate()
     {
@@ -78,27 +64,15 @@ public class HUD : MonoBehaviour
    
                 break;
             case InfoType.TeamPoint:
-                images[0].color = ColorManager.instance.Teamcolor[GameManager.instance.Color_Index];
-                images[1].color = ColorManager.instance.Teamcolor[GameManager.instance.T1_Color];
-                images[2].color = ColorManager.instance.Teamcolor[GameManager.instance.T2_Color];
-                images[3].color = ColorManager.instance.Teamcolor[GameManager.instance.T3_Color];
-
-                textarray[0].text = $"{(int)GameManager.instance.Teampoint}";
-                textarray[1].text = $"{(int)GameManager.instance.leaders[0].Teampoint}";
-                textarray[2].text = $"{(int)GameManager.instance.leaders[1].Teampoint}";
-                textarray[3].text = $"{(int)GameManager.instance.leaders[2].Teampoint}";
+                // 추후 사용 할지 안할지 생각해봐야함
+                textarray[0].text = $"{(int)GameManager.instance.currentTime * 1}";
+                textarray[1].text = $"{(int)GameManager.instance.currentTime * 2}";
+                textarray[2].text = $"{(int)GameManager.instance.currentTime * 3}";
+                textarray[3].text = $"{(int)GameManager.instance.currentTime * 4}";
                 break;
-        }
-    }
+            case InfoType.Occupation:
+                break;
 
-    private float Score_Set(int FlagCount, float score)
-    {
-        if(FlagCount == 0)
-        {
-            return score;
         }
-        score += Time.deltaTime * (1 + (0.5f * (FlagCount - 1)));
-
-        return score;
     }
 }

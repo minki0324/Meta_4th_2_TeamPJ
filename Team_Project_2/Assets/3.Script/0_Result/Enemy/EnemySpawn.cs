@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    //unitValue¿¡ µû¶ó ¼ÒÈ¯µÇ´Â unit
+    //unitValueì— ë”°ë¼ ì†Œí™˜ë˜ëŠ” unit
     [SerializeField] private GameObject[] unit;
     [SerializeField] private Ply_Controller player;
     private LeaderState leaderState;
     [SerializeField] private GameObject targetLeader;
 
-    //½ºÆùÀ§Ä¡ 3°³
+    //ìŠ¤í°ìœ„ì¹˜ 3ê°œ
     public Transform[] SpawnPoint = new Transform[3];
-    //½ºÆùÀ§Ä¡¸¦ 0~2 ¹øÀ§Ä¡ Â÷·Ê´ë·Î ¼ÒÈ¯ÇÏ±âÀ§ÇÑ ÀÎµ¦½º
+    //ìŠ¤í°ìœ„ì¹˜ë¥¼ 0~2 ë²ˆìœ„ì¹˜ ì°¨ë¡€ëŒ€ë¡œ ì†Œí™˜í•˜ê¸°ìœ„í•œ ì¸ë±ìŠ¤
     private int SpawnIndex = 0;
-    //¼ÒÈ¯µÇ´Â °£°İ
+    //ì†Œí™˜ë˜ëŠ” ê°„ê²©
     private float Spawninterval = 0.4f;
     private int myLayer;
     private bool isAI;
     private bool isRespawning;
-    // °ø°İ ´ë»ó ·¹ÀÌ¾î
+    // ê³µê²© ëŒ€ìƒ ë ˆì´ì–´
     private LayerMask TeamLayer;
     private void Awake()
     {
@@ -31,7 +31,7 @@ public class EnemySpawn : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            SpawnPoint[i] = transform.GetChild(i); // °¢ ÀÚ½Ä °´Ã¼¸¦ ¹è¿­¿¡ ÀúÀå
+            SpawnPoint[i] = transform.GetChild(i); // ê° ìì‹ ê°ì²´ë¥¼ ë°°ì—´ì— ì €ì¥
         }
     }
     private void Start()
@@ -45,23 +45,23 @@ public class EnemySpawn : MonoBehaviour
             return;
         }
        
-        //½ºÆùÆ÷ÀÎÆ® ·¹ÀÌ¾î°¡ ±ê¹ßÀÇ ·¹ÀÌ¾î¶û ´Ù¸£¸é ±ê¹ß·¹ÀÌ¾î·Î ¾÷µ¥ÀÌÆ®.
+        //ìŠ¤í°í¬ì¸íŠ¸ ë ˆì´ì–´ê°€ ê¹ƒë°œì˜ ë ˆì´ì–´ë‘ ë‹¤ë¥´ë©´ ê¹ƒë°œë ˆì´ì–´ë¡œ ì—…ë°ì´íŠ¸.
         if (myLayer != transform.parent.gameObject.layer)
         {
-            //±ê¹ß·¹ÀÌ¾î·Î º¯°æ
+            //ê¹ƒë°œë ˆì´ì–´ë¡œ ë³€ê²½
             gameObject.layer = transform.parent.gameObject.layer;
 
-            //Áß¸³±ê¹ßÀÌ¶ó¸é ±×³É ¸®ÅÏ
+            //ì¤‘ë¦½ê¹ƒë°œì´ë¼ë©´ ê·¸ëƒ¥ ë¦¬í„´
             if (gameObject.layer == 0)
             {
                 return;
             }
-            //ÆÀ±ê¹ßÀÌ¶ó¸é Å¸°ÙÀº ÇÃ·¹ÀÌ¾î
+            //íŒ€ê¹ƒë°œì´ë¼ë©´ íƒ€ê²Ÿì€ í”Œë ˆì´ì–´
             else if (gameObject.layer == TeamLayer)
             {
                 targetLeader = player.gameObject;
             }
-            //Àû±ê¹ßÀÌ¶ó¸é ·¹ÀÌ¾î¿¡¸Â°Ô Å¸°Ù ¼¼ÆÃ.
+            //ì ê¹ƒë°œì´ë¼ë©´ ë ˆì´ì–´ì—ë§ê²Œ íƒ€ê²Ÿ ì„¸íŒ….
             else
             {
                 try
@@ -71,7 +71,7 @@ public class EnemySpawn : MonoBehaviour
                 }
                 catch
                 {
-                    Debug.Log("Å¸°ÙÃ£Áö¸øÇÔ");
+                    Debug.Log("íƒ€ê²Ÿì°¾ì§€ëª»í•¨");
                 }
             }
 
@@ -98,7 +98,7 @@ public class EnemySpawn : MonoBehaviour
                 isAI = false;
 
             }
-            //Å¸°ÙÀÌ ÆÀÀÌ¾Æ´Ï¶ó¸é ¼ÒÈ¯ÇÏ´Â Å¸°ÙÀº AIÀÌ´Ù
+            //íƒ€ê²Ÿì´ íŒ€ì´ì•„ë‹ˆë¼ë©´ ì†Œí™˜í•˜ëŠ” íƒ€ê²Ÿì€ AIì´ë‹¤
             else
             {
                 isAI = true;
@@ -184,18 +184,17 @@ public class EnemySpawn : MonoBehaviour
         {
             case 7:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T1_Color);
-                Upgrade_Set(0, soilder_Con);
                 break;
             case 8:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T2_Color);
-                Upgrade_Set(1, soilder_Con);
                 break;
             case 9:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T3_Color);
-                Upgrade_Set(2, soilder_Con);
                 break;
 
         }
+
+        
         
 
 
@@ -204,8 +203,8 @@ public class EnemySpawn : MonoBehaviour
         leaderState.Gold -= currentUnit.cost;
         SpawnIndex++;
 
-        leaderState.currentUnitCount++;
-        //½ºÆùÀ§Ä¡¸¦ Â÷·Ê´ë·Î ³ª¿À°ÔÇÏ±âÀ§ÇÑ ¸Ş¼Òµå 
+        leaderAI.currentUnitCount++;
+        //ìŠ¤í°ìœ„ì¹˜ë¥¼ ì°¨ë¡€ëŒ€ë¡œ ë‚˜ì˜¤ê²Œí•˜ê¸°ìœ„í•œ ë©”ì†Œë“œ 
         if (SpawnIndex > 2)
         {
             SpawnIndex = 0;
@@ -214,9 +213,9 @@ public class EnemySpawn : MonoBehaviour
     }
     private LeaderState FindLeader()
     {
-        GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTag¿¡´Â LeaderState ÄÄÆ÷³ÍÆ®°¡ ÀÖ´Â ¿ÀºêÁ§Æ®ÀÇ ÅÂ±×¸¦ ³Ö½À´Ï´Ù.
+        GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTagì—ëŠ” LeaderState ì»´í¬ë„ŒíŠ¸ê°€ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ì˜ íƒœê·¸ë¥¼ ë„£ìŠµë‹ˆë‹¤.
 
-        // Ã£Àº ¿ÀºêÁ§Æ® Áß¿¡¼­ LeaderState ÄÄÆ÷³ÍÆ®¸¦ °¡Áø Ã¹ ¹øÂ° ¿ÀºêÁ§Æ®¸¦ Ã£½À´Ï´Ù.
+        // ì°¾ì€ ì˜¤ë¸Œì íŠ¸ ì¤‘ì—ì„œ LeaderState ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì§„ ì²« ë²ˆì§¸ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ìŠµë‹ˆë‹¤.
 
 
         foreach (var obj in objectsWithSameLayer)
@@ -227,25 +226,25 @@ public class EnemySpawn : MonoBehaviour
 
                 if (leaderState != null)
                 {
-                    return leaderState;
-                    // LeaderState¸¦ Ã£À¸¸é ·çÇÁ¸¦ Á¾·áÇÕ´Ï´Ù.
+                    return leaderAI;
+                    // LeaderStateë¥¼ ì°¾ìœ¼ë©´ ë£¨í”„ë¥¼ ì¢…ë£Œí•©ë‹ˆë‹¤.
                 }
             }
         }
 
         if (leaderState == null)
         {
-            Debug.LogWarning("LeaderState ÄÄÆ÷³ÍÆ®¸¦ °¡Áø ¿ÀºêÁ§Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("LeaderState ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
         }
         return null;
     }
     public void SetLayerRecursively(GameObject obj, int newLayer)
     {
-        obj.layer = newLayer; // ÇöÀç ¿ÀºêÁ§Æ®ÀÇ ·¹ÀÌ¾î º¯°æ
+        obj.layer = newLayer; // í˜„ì¬ ì˜¤ë¸Œì íŠ¸ì˜ ë ˆì´ì–´ ë³€ê²½
 
         foreach (Transform child in obj.transform)
         {
-            SetLayerRecursively(child.gameObject, newLayer); // ÇÏÀ§ ¿ÀºêÁ§Æ®¿¡ ´ëÇØ Àç±Í È£Ãâ
+            SetLayerRecursively(child.gameObject, newLayer); // í•˜ìœ„ ì˜¤ë¸Œì íŠ¸ì— ëŒ€í•´ ì¬ê·€ í˜¸ì¶œ
         }
 
 
@@ -280,8 +279,8 @@ public class EnemySpawn : MonoBehaviour
 
             return;
         }
-        //À¯´ÖÄ«¿îÆ®°¡ ¸Æ½º°¡ µÆ°Å³ª , À¯´Öºñ¿ëº¸´Ù °¡Áø °ñµå°¡ ÀûÀ»¶§ false;
-        if (leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost)
+        //ìœ ë‹›ì¹´ìš´íŠ¸ê°€ ë§¥ìŠ¤ê°€ ëê±°ë‚˜ , ìœ ë‹›ë¹„ìš©ë³´ë‹¤ ê°€ì§„ ê³¨ë“œê°€ ì ì„ë•Œ false;
+        if (leaderAI.maxUnitCount <= leaderAI.currentUnitCount || leaderAI.Gold <= leaderAI.unitCost)
         {
             leaderState.canSpawn = false;
         }
@@ -297,13 +296,13 @@ public class EnemySpawn : MonoBehaviour
 
         yield return new WaitForSeconds(delay);
 
-        // ºÎÈ° ·ÎÁ÷À» ¿©±â¿¡ ±¸Çö
-        // ¿¹¸¦ µé¸é, Á×¾ú´ø À¯´ÖÀ» ´Ù½Ã »ı¼ºÇÏ´Â µîÀÇ µ¿ÀÛÀ» ¼öÇà
+        // ë¶€í™œ ë¡œì§ì„ ì—¬ê¸°ì— êµ¬í˜„
+        // ì˜ˆë¥¼ ë“¤ë©´, ì£½ì—ˆë˜ ìœ ë‹›ì„ ë‹¤ì‹œ ìƒì„±í•˜ëŠ” ë“±ì˜ ë™ì‘ì„ ìˆ˜í–‰
 
-        // ºÎÈ°ÀÌ ¿Ï·áµÇ¸é ´Ù½Ã »ì¾Æ³­ °ÍÀ¸·Î ÇÃ·¡±×¸¦ º¯°æ
-        leaderState.Respawn(targetLeader);
+        // ë¶€í™œì´ ì™„ë£Œë˜ë©´ ë‹¤ì‹œ ì‚´ì•„ë‚œ ê²ƒìœ¼ë¡œ í”Œë˜ê·¸ë¥¼ ë³€ê²½
+        leaderAI.       Respawn(targetLeader);
 
-        // ´ÙÀ½ ºÎÈ°À» À§ÇØ ÇÃ·¡±×¸¦ ÃÊ±âÈ­
+        // ë‹¤ìŒ ë¶€í™œì„ ìœ„í•´ í”Œë˜ê·¸ë¥¼ ì´ˆê¸°í™”
         isRespawning = false;
     }
     private void Upgrade_Set(int Team, Soilder_Controller soilder_Controller)

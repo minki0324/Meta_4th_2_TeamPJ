@@ -28,7 +28,7 @@ public class Ply_Movement : MonoBehaviour
     [SerializeField] private Rigidbody rb;
 
     [Header("이동")]
-    public float MoveSpeed = 10f;
+    [SerializeField] private float MoveSpeed = 10f;
 
     [Header("점프")]
     [SerializeField] private float JumpForce = 10f;
@@ -65,6 +65,8 @@ public class Ply_Movement : MonoBehaviour
 
     private void Update()
     {
+
+
         CurrentPos = transform.position;
         InputMovment();
         Jump();
@@ -115,6 +117,7 @@ public class Ply_Movement : MonoBehaviour
         {
             ani.SetBool("Shield", false);
             ani.SetFloat("MoveSpeed", 1f);
+            MoveSpeed = 5f;
         }
 
 
