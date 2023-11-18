@@ -82,7 +82,7 @@ public class DataManager : MonoBehaviour
         player.Halberdier = halberdier;
         player.Prist = priest;
 
-        filename = Path.Combine("C:", "JsonFiles", filename);
+        filename = Path.Combine("JsonFiles", filename);
         string loadJson = File.ReadAllText(filename);    //json파일의 내용 불러오고
 
         player_Data = JsonConvert.DeserializeObject<Player_Data>(loadJson); //풀고~
@@ -120,7 +120,7 @@ public class DataManager : MonoBehaviour
             filename += ".json";
         }
 
-        filename = Path.Combine("C:", "JsonFiles", filename);
+        filename = Path.Combine("JsonFiles", filename);
         string ReadData = File.ReadAllText(filename);
 
 

@@ -13,15 +13,15 @@ public enum TeamLayerIdx
 public class GameManager : MonoBehaviour
 {
     /*
-        °ÔÀÓ ¸Å´ÏÀú¿¡¼­ °ü¸®ÇØ¾ß ÇÒ º¯¼ö ¸ñ·Ï
-        1. °ñµå
-        2. ÇÃ·¹ÀÌ¾î Ã¼·Â
-        3. Á¡·ÉÁö (°ñµå¿Í ¿¬µ¿)
+        ê²Œì„ ë§¤ë‹ˆì €ì—ì„œ ê´€ë¦¬í•´ì•¼ í•  ë³€ìˆ˜ ëª©ë¡
+        1. ê³¨ë“œ
+        2. í”Œë ˆì´ì–´ ì²´ë ¥
+        3. ì ë ¹ì§€ (ê³¨ë“œì™€ ì—°ë™)
     */
     public static GameManager instance = null;
 
     [SerializeField] private GameObject Option;
-    [Header("°èÁ¤ °ü·Ã")]
+    [Header("ê³„ì • ê´€ë ¨")]
     public string PlayerID;
     public int PlayerCoin;
     public bool isCanUse_SwordMan;
@@ -31,17 +31,17 @@ public class GameManager : MonoBehaviour
     public bool isCanUse_Halberdier;
     public bool isCanUse_Prist;
 
-    [Header("°ÔÀÓ ÇÃ·¹ÀÌ")]
-    public float currentTime = 0f;  // °ÔÀÓÀÌ ½ÃÀÛÇÏ°í Áö³­ ½Ã°£
-    public float EndTime = 1800f;   // °ÔÀÓ ½Ã°£Àº 30ºĞ
-    public int Occupied_Area = 1;   // Á¡·ÉÇÑ Áö¿ª Default°ª 1
-    public int Color_Index;         // ÇÃ·¹ÀÌ¾î ÄÃ·¯ ÀÎµ¦½º
+    [Header("ê²Œì„ í”Œë ˆì´")]
+    public float currentTime = 0f;  // ê²Œì„ì´ ì‹œì‘í•˜ê³  ì§€ë‚œ ì‹œê°„
+    public float EndTime = 1800f;   // ê²Œì„ ì‹œê°„ì€ 30ë¶„
+    public int Occupied_Area = 1;   // ì ë ¹í•œ ì§€ì—­ Defaultê°’ 1
+    public int Color_Index;         // í”Œë ˆì´ì–´ ì»¬ëŸ¬ ì¸ë±ìŠ¤
 
-    [Header("°ñµå °ü·Ã")]
-    public float Gold = 1000;       // °ñµå·®
-    private float Magnifi = 2f;     // ±âº» °ñµå ¹èÀ² (¾÷µ¥ÀÌÆ®¹® ÇÁ·¹ÀÓ 60 x 2f·Î ±âº» È¹µæ °ñµå·®Àº ºĞ´ç 120)
+    [Header("ê³¨ë“œ ê´€ë ¨")]
+    public float Gold = 1000;       // ê³¨ë“œëŸ‰
+    private float Magnifi = 2f;     // ê¸°ë³¸ ê³¨ë“œ ë°°ìœ¨ (ì—…ë°ì´íŠ¸ë¬¸ í”„ë ˆì„ 60 x 2fë¡œ ê¸°ë³¸ íšë“ ê³¨ë“œëŸ‰ì€ ë¶„ë‹¹ 120)
     
-    [Header("ÇÃ·¹ÀÌ¾î °ü·Ã")]
+    [Header("í”Œë ˆì´ì–´ ê´€ë ¨")]
     public bool isLive = false;
     public bool isDead;
     public bool inRange;
@@ -54,13 +54,13 @@ public class GameManager : MonoBehaviour
     public int DeathCount;
     
 
-    //º´»çÀÎ±¸ 
+    //ë³‘ì‚¬ì¸êµ¬ 
     public int Max_MinionCount = 19;
     public int Current_MinionCount;
-    //º´Á¾ ¾÷±×·¹ÀÌµå
+    //ë³‘ì¢… ì—…ê·¸ë ˆì´ë“œ
     public bool isPossible_Upgrade_1 = false;
     public bool isPossible_Upgrade_2 = false;
-    //½ºÅ©¸³ÅÍºí ¹è¿­
+    //ìŠ¤í¬ë¦½í„°ë¸” ë°°ì—´
     [Header("Sword > Heavy > Archer > Priest > Spear > Halberdier ")]
     public Unit_Information[] units;
     public Unit_Information unit0;
@@ -79,11 +79,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        Json = GetComponent<DataManager>();
     }
    
-    // ±âÁ¸ °ñµå »ó½Â·®
-    // Á¡·É ¾îµåº¥Æ¼Áö
-    // °ñµå »ó½Â·® ¾÷±×·¹ÀÌµå
+    // ê¸°ì¡´ ê³¨ë“œ ìƒìŠ¹ëŸ‰
+    // ì ë ¹ ì–´ë“œë²¤í‹°ì§€
+    // ê³¨ë“œ ìƒìŠ¹ëŸ‰ ì—…ê·¸ë ˆì´ë“œ
     
     private void Update()
     {
@@ -95,7 +96,13 @@ public class GameManager : MonoBehaviour
         
         currentTime += Time.deltaTime;
 
-        Gold += Time.deltaTime * Magnifi * Occupied_Area; // °ñµå¼ö±Ş = ºĞ´ç 120 * Á¡·ÉÇÑ Áö¿ª °³¼ö
+        total_Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue;
+        Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue; // ê³¨ë“œìˆ˜ê¸‰ = ë¶„ë‹¹ 120 * ì ë ¹í•œ ì§€ì—­ ê°œìˆ˜
+
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            Time.timeScale = 10f;
+        }
     }
 
     public void Stop()

@@ -3040,8 +3040,6 @@ MonoBehaviour:
   Leader_A: {fileID: 7938536280104752933}
   Leader_B: {fileID: 7938536281042328518}
   isLogined: 0
-  id: sunny
-  playerID_index: 0
   audioMixer: {fileID: 24100000, guid: 9f13e184e489da04fb017a183914a246, type: 2}
   TeamColors:
   - {fileID: 2100000, guid: 2e7b2736d0629354282180f395c00a99, type: 2}
@@ -3059,6 +3057,8 @@ MonoBehaviour:
   Team2_Color: 0
   Team3_Color: 0
   Team4_Color: 0
+  Original_Map: {fileID: 0}
+  TimeAttack_Map: {fileID: 0}
 --- !u!82 &667634724
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6961,6 +6961,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e176319604f4a44cae4462dcf726fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Json: {fileID: 0}
+  Ply_Data:
+    ID: 
+    Coin: 0
+    SwordMan: 0
+    Knight: 0
+    Archer: 0
+    SpearMan: 0
+    Halberdier: 0
+    Prist: 0
+  GameMode: 0
+  GameSpeed: 0
   Option: {fileID: 0}
   PlayerID: 
   PlayerCoin: 0
@@ -6973,8 +6985,10 @@ MonoBehaviour:
   currentTime: 0
   EndTime: 1800
   Occupied_Area: 1
-  Color_Index: 0
+  Result: {fileID: 0}
+  total_Gold: 1000
   Gold: 1000
+  Upgrade_GoldValue: 1
   isLive: 0
   isDead: 0
   inRange: 0
@@ -6985,10 +6999,14 @@ MonoBehaviour:
   respawnTime: 10
   killCount: 0
   DeathCount: 0
+  Ply_hasFlag: 0
+  Teampoint: 0
+  Hire: 0
   Max_MinionCount: 19
   Current_MinionCount: 0
   isPossible_Upgrade_1: 0
   isPossible_Upgrade_2: 0
+  Upgrade_List: 
   units:
   - {fileID: 11400000, guid: 97d2d90dc5f2dbf40b38a44565a5341d, type: 2}
   - {fileID: 11400000, guid: 624770ab462c7dc439a1cf1567e032e9, type: 2}
@@ -7000,6 +7018,7 @@ MonoBehaviour:
   unit1: {fileID: 0}
   unit2: {fileID: 0}
   leaders: []
+  Color_Index: 0
   T1_Color: 0
   T2_Color: 0
   T3_Color: 0
@@ -8892,6 +8911,7 @@ GameObject:
   - component: {fileID: 1795985744}
   - component: {fileID: 1795985743}
   - component: {fileID: 1795985742}
+  - component: {fileID: 1795985745}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -8997,6 +9017,20 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1795985745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795985740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b424c53c7b536f44caeefdae5e7e1db6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DayToSunset_skybox: {fileID: 2100000, guid: 7fedf417d021b374b8669db32c31ed2d, type: 2}
+  SunsetToNihgt_skybox: {fileID: 2100000, guid: 3c3a5b57422b6c4489fc2336735cffeb, type: 2}
 --- !u!1 &1803324442
 GameObject:
   m_ObjectHideFlags: 0
@@ -24442,7 +24476,10 @@ MonoBehaviour:
   HitBox_col: {fileID: 0}
   Ob_Weapon_col: {fileID: 7938536280104760248}
   nearestTarget: {fileID: 0}
+  Teampoint: 0
+  total_Gold: 500
   Gold: 500
+  Upgrade_GoldValue: 1
   Regeneration: 0.5
   maxUnitCount: 19
   currentUnitCount: 0
@@ -24453,9 +24490,14 @@ MonoBehaviour:
   canSpawn: 0
   isMoving: 0
   respawnPoint: {fileID: 0}
-  Team_Color: 0
-  has_Flag: 0
   bat_State: 0
+  has_Flag: 0
+  Hire: 0
+  isPossible_Upgrade_1: 0
+  isPossible_Upgrade_2: 0
+  isUpgrade_SolDam: 0
+  isUpgrade_SolHP: 0
+  Upgrade_List: 
   UnitList: []
   targetFlag: {fileID: 0}
   isEnermyChecked: 0
@@ -31358,7 +31400,10 @@ MonoBehaviour:
   HitBox_col: {fileID: 0}
   Ob_Weapon_col: {fileID: 7938536281042337627}
   nearestTarget: {fileID: 0}
+  Teampoint: 0
+  total_Gold: 500
   Gold: 500
+  Upgrade_GoldValue: 1
   Regeneration: 0.5
   maxUnitCount: 19
   currentUnitCount: 0
@@ -31369,9 +31414,14 @@ MonoBehaviour:
   canSpawn: 0
   isMoving: 0
   respawnPoint: {fileID: 0}
-  Team_Color: 0
-  has_Flag: 0
   bat_State: 0
+  has_Flag: 0
+  Hire: 0
+  isPossible_Upgrade_1: 0
+  isPossible_Upgrade_2: 0
+  isUpgrade_SolDam: 0
+  isUpgrade_SolHP: 0
+  Upgrade_List: 
   UnitList: []
   targetFlag: {fileID: 0}
   isEnermyChecked: 0

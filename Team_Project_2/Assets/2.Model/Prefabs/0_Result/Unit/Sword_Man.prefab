@@ -11491,7 +11491,7 @@ GameObject:
   - component: {fileID: -8083865837556993197}
   m_Layer: 6
   m_Name: Sword_Man
-  m_TagString: Soldier
+  m_TagString: Soilder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11565,7 +11565,6 @@ MonoBehaviour:
     damage: 0
     isDie: 0
   target: {fileID: 0}
-  ani: {fileID: 0}
   leaderState: {fileID: 0}
   leader: {fileID: 0}
   scanRange: 13
@@ -11652,7 +11651,7 @@ MonoBehaviour:
     maximumInterval: 2
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
-  maxAcceleration: 30
+  maxAcceleration: -2.5
   rotationSpeed: 360
   slowdownDistance: 1.5
   pickNextWaypointDist: 2
