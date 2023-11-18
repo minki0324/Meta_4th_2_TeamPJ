@@ -8,7 +8,7 @@ public class DrawLine : Graphic
     public Vector2Int gridSize;
 
     public DrawGrid grid;
-    public Intro intro;
+    
 
     public List<Vector2> points;
 
@@ -19,9 +19,15 @@ public class DrawLine : Graphic
 
     public float thickness = 10f;
 
+    float current_Time = 0f;    //시간 변화용 변수
+    int cell_x = 0;
+    int cell_y = 0;
     protected override void Start()
     {
-        intro = FindObjectOfType<Intro>();
+        //points.Clear();
+        points.Add(new Vector2(0, 0));
+        //points.Add(new Vector2(cell_x + 1, 3));
+        SetVerticesDirty();
     }
     protected override void OnPopulateMesh(VertexHelper vh)
     {
@@ -33,6 +39,7 @@ public class DrawLine : Graphic
         unitWidth = width / (float)gridSize.x;
         unitHeight = height / (float)gridSize.y;
 
+      
         if(points[0].x !=0 || points[0].y != 0 )
         {
             points[0] = new Vector2(0, 0f);
@@ -105,20 +112,25 @@ public class DrawLine : Graphic
         UIVertex vertex = UIVertex.simpleVert;
         if (gameObject.name.ToString() == "Line_Team1")
         {
-            Getcolor(GameManager.instance.Color_Index, ref vertex);
+            vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.Color_Index];
+            //Getcolor(GameManager.instance.Color_Index, ref vertex);
             //vertex.color = Get_color(GameManager.instance.Color_Index);
         }
         else if (gameObject.name.ToString() == "Line_Enemy1")
         {
-            Getcolor(GameManager.instance.T1_Color, ref vertex);
+            vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.T1_Color];
+            //Getcolor(GameManager.instance.T1_Color, ref vertex);
         }
         else if (gameObject.name.ToString() == "Line_Enemy2")
         {
-            Getcolor(GameManager.instance.T2_Color, ref vertex);
+
+            vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.T2_Color];
+            //   Getcolor(GameManager.instance.T2_Color, ref vertex);
         }
         else if (gameObject.name.ToString() == "Line_Enemy3")
         {
-            Getcolor(GameManager.instance.T3_Color, ref vertex);
+            vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.T3_Color];
+            //Getcolor(GameManager.instance.T3_Color, ref vertex);
         }
         //vertex.color = color;
 
@@ -141,6 +153,13 @@ public class DrawLine : Graphic
                 gridSize = grid.gridSize;
                 SetVerticesDirty();
             }
+        }
+
+        if (current_Time +2 <= GameManager.instance.currentTime)
+        {
+            //시간(x), 팀포인트(y)추가
+           
+            SetVerticesDirty();
         }
     }
 }

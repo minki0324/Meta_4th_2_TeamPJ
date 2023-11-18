@@ -1165,19 +1165,11 @@ MonoBehaviour:
   m_Color: {r: 0.12518473, g: 0, b: 0.6886792, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 18, y: 15}
+  gridSize: {x: 3, y: 8}
   grid: {fileID: 989857576}
-  intro: {fileID: 0}
   points:
   - {x: 0, y: 0}
-  - {x: 1, y: 0.2}
-  - {x: 2, y: 3}
-  - {x: 3, y: 3.2}
-  - {x: 4, y: 4}
-  - {x: 5, y: 4.5}
-  - {x: 6, y: 5}
-  - {x: 7, y: 9}
-  - {x: 8, y: 4.5}
+  - {x: 1, y: 3}
   thickness: 10
 --- !u!222 &254342774
 CanvasRenderer:
@@ -1943,20 +1935,13 @@ MonoBehaviour:
   m_Color: {r: 0.3679245, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 18, y: 15}
+  gridSize: {x: 3, y: 8}
   grid: {fileID: 989857576}
-  intro: {fileID: 0}
   points:
   - {x: 0, y: 0}
-  - {x: 1, y: 0.12}
-  - {x: 2, y: 0.5}
-  - {x: 3, y: 0.6}
-  - {x: 4, y: 0.8}
-  - {x: 5, y: 1}
-  - {x: 6, y: 2}
-  - {x: 7, y: 8}
-  - {x: 8, y: 8.2}
-  thickness: 10
+  - {x: 1, y: 1}
+  - {x: 2, y: 2}
+  thickness: 10.56
 --- !u!222 &564537254
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3449,7 +3434,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 0.14117648}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 18, y: 15}
+  gridSize: {x: 3, y: 8}
   thickness: 2.55
 --- !u!1 &1075013656
 GameObject:
@@ -4425,19 +4410,11 @@ MonoBehaviour:
   m_Color: {r: 0, g: 0.5377358, b: 0.032397453, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 18, y: 15}
+  gridSize: {x: 3, y: 8}
   grid: {fileID: 989857576}
-  intro: {fileID: 0}
   points:
   - {x: 0, y: 0}
-  - {x: 1, y: 2}
-  - {x: 2, y: 2.5}
-  - {x: 3, y: 3}
-  - {x: 4, y: 3.2}
-  - {x: 5, y: 2.5}
-  - {x: 6, y: 6}
-  - {x: 7, y: 8}
-  - {x: 8, y: 9}
+  - {x: 1, y: 3}
   thickness: 10
 --- !u!222 &1261428686
 CanvasRenderer:
@@ -4815,19 +4792,11 @@ MonoBehaviour:
   m_Color: {r: 1, g: 0.73324853, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 18, y: 15}
+  gridSize: {x: 3, y: 8}
   grid: {fileID: 989857576}
-  intro: {fileID: 0}
   points:
   - {x: 0, y: 0}
-  - {x: 1, y: 0.5}
-  - {x: 2, y: 0.7}
-  - {x: 3, y: 0.9}
-  - {x: 4, y: 2}
-  - {x: 5, y: 3}
-  - {x: 6, y: 4}
-  - {x: 7, y: 5.5}
-  - {x: 8, y: 6}
+  - {x: 1, y: 3}
   thickness: 10
 --- !u!222 &1398940582
 CanvasRenderer:
