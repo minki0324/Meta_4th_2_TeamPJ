@@ -100,7 +100,6 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         Json = GetComponent<DataManager>();
-        Ply_Data = GetComponent<PlayerData>();
     }
    
     // ±âÁ¸ °ñµå »ó½Â·®
