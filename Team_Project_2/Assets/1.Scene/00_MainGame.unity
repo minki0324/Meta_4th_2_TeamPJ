@@ -664,15 +664,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!45 &23348774
-Skybox:
+--- !u!114 &23348774
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23348768}
   m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: 39737dec886c0af478df5fd6716f5323, type: 2}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b424c53c7b536f44caeefdae5e7e1db6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DayToSunset_skybox: {fileID: 2100000, guid: 7fedf417d021b374b8669db32c31ed2d, type: 2}
+  SunsetToNihgt_skybox: {fileID: 2100000, guid: 3c3a5b57422b6c4489fc2336735cffeb, type: 2}
 --- !u!1 &39388082
 GameObject:
   m_ObjectHideFlags: 0
@@ -8609,6 +8614,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e176319604f4a44cae4462dcf726fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Json: {fileID: 0}
+  Ply_Data:
+    ID: 
+    Coin: 0
+    SwordMan: 0
+    Knight: 0
+    Archer: 0
+    SpearMan: 0
+    Halberdier: 0
+    Prist: 0
   GameMode: 0
   GameSpeed: 0
   Option: {fileID: 0}
@@ -8623,6 +8638,7 @@ MonoBehaviour:
   currentTime: 0
   EndTime: 1800
   Occupied_Area: 1
+  Result: {fileID: 0}
   total_Gold: 1000
   Gold: 1000
   Upgrade_GoldValue: 1

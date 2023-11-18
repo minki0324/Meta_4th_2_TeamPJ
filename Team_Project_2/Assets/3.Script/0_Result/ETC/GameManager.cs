@@ -118,6 +118,11 @@ public class GameManager : MonoBehaviour
 
         total_Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue;
         Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue; // 골드수급 = 분당 120 * 점령한 지역 개수
+
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            Time.timeScale = 10f;
+        }
     }
 
     public void Stop()
