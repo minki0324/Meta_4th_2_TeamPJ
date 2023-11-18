@@ -9,13 +9,9 @@ using System.IO;
 
 
 
-public struct TeamColor
-{
-    public int ColorNum;
-    public Color color_c;
-    public Material color_m;
-    public bool isUsing;
-}
+
+
+
 
 public class Intro : MonoBehaviour
 {
@@ -201,15 +197,14 @@ public class Intro : MonoBehaviour
     //소리 관련
     public AudioMixer audioMixer;
 
-   
+
 
     //팀관련
     [Header("팀 컬러")]
     [SerializeField]
-    private Material[] TeamColors;
+    private GetColor getColor;
 
-    [SerializeField]
-    public TeamColor[] teamColors = new TeamColor[11];
+
 
 
     //GameManager에 보낼 팀 별 색상 번호, ColorSet 인덱스와 동일한 숫자
@@ -229,8 +224,8 @@ public class Intro : MonoBehaviour
     private void Awake()
     {
         // gameObject.SetActive(true);
-        
-   
+
+        getColor = GetComponent<GetColor>();
         dataManager = new DataManager();
         scriptsData = dataManager.Load("Scripts");
         playerData = dataManager.Load_playerData("playerData");
@@ -281,14 +276,14 @@ public class Intro : MonoBehaviour
 
 
         
-        //구조체 배열 초기화
-        for (int i = 0; i < TeamColors.Length; i++)
-        {
-            teamColors[i].color_m = TeamColors[i];
-            teamColors[i].color_c = TeamColors[i].color;
-            teamColors[i].ColorNum = i;
-            teamColors[i].isUsing = false;
-        }
+        ////구조체 배열 초기화
+        //for (int i = 0; i < GetColor.instance.TeamColors.Length; i++)
+        //{
+        //    GetColor.instance.teamColors[i].color_m = GetColor.instance.TeamColors[i];
+        //    GetColor.instance.teamColors[i].color_c = GetColor.instance.TeamColors[i].color;
+        //    GetColor.instance.teamColors[i].ColorNum = i;
+        //    GetColor.instance.teamColors[i].isUsing = false;
+        //}
 
 
        
@@ -392,20 +387,20 @@ public class Intro : MonoBehaviour
 
         ID1_Text.text = id;
 
-        TeamColor1_Btn.image.color = teamColors[8].color_c;
-        TeamColor2_Btn.image.color = teamColors[2].color_c;
-        TeamColor3_Btn.image.color = teamColors[5].color_c;
-        TeamColor4_Btn.image.color = teamColors[10].color_c;
+        TeamColor1_Btn.image.color = GetColor.instance.teamColors[8].color_c;
+        TeamColor2_Btn.image.color = GetColor.instance.teamColors[2].color_c;
+        TeamColor3_Btn.image.color = GetColor.instance.teamColors[5].color_c;
+        TeamColor4_Btn.image.color = GetColor.instance.teamColors[10].color_c;
 
-        teamColors[8].isUsing = true;
-        teamColors[2].isUsing = true;
-        teamColors[5].isUsing = true;
-        teamColors[10].isUsing = true;
+        GetColor.instance.teamColors[8].isUsing = true;
+        GetColor.instance.teamColors[2].isUsing = true;
+        GetColor.instance.teamColors[5].isUsing = true;
+        GetColor.instance.teamColors[10].isUsing = true;
 
-        Team1_Color = teamColors[8].ColorNum;
-        Team2_Color = teamColors[2].ColorNum;
-        Team3_Color = teamColors[5].ColorNum;
-        Team4_Color = teamColors[10].ColorNum;
+        Team1_Color = GetColor.instance.teamColors[8].ColorNum;
+        Team2_Color = GetColor.instance.teamColors[2].ColorNum;
+        Team3_Color = GetColor.instance.teamColors[5].ColorNum;
+        Team4_Color = GetColor.instance.teamColors[10].ColorNum;
 
 
 
@@ -415,30 +410,30 @@ public class Intro : MonoBehaviour
     {
         Debug.Log("컬러체인지");
       
-        for (int i = teamNum; i < teamColors.Length; i++)
+        for (int i = teamNum; i < GetColor.instance.teamColors.Length; i++)
         {
-            if (button.image.color == teamColors[i].color_c)
+            if (button.image.color == GetColor.instance.teamColors[i].color_c)
             {
-                for (int j = 0; j < teamColors.Length; j++)
+                for (int j = 0; j < GetColor.instance.teamColors.Length; j++)
                 {
                     if (i + j >= 10)
                     {
-                        if (teamColors[i + j - 10].isUsing == false)
+                        if (GetColor.instance.teamColors[i + j - 10].isUsing == false)
                         {
-                            button.image.color = teamColors[i + j - 10].color_c;
-                            teamColors[i + j - 10].isUsing = true;
-                            teamColors[i].isUsing = false;
+                            button.image.color = GetColor.instance.teamColors[i + j - 10].color_c;
+                            GetColor.instance.teamColors[i + j - 10].isUsing = true;
+                            GetColor.instance.teamColors[i].isUsing = false;
                             teamNum = i + j - 10;
                             break;
                         }
                     }
                     else
                     {
-                        if (teamColors[i + j].isUsing == false)
+                        if (GetColor.instance.teamColors[i + j].isUsing == false)
                         {
-                            button.image.color = teamColors[i + j].color_c;
-                            teamColors[i + j].isUsing = true;
-                            teamColors[i].isUsing = false;
+                            button.image.color = GetColor.instance.teamColors[i + j].color_c;
+                            GetColor.instance.teamColors[i + j].isUsing = true;
+                            GetColor.instance.teamColors[i].isUsing = false;
                             teamNum = i + j;
                             break;
                         }

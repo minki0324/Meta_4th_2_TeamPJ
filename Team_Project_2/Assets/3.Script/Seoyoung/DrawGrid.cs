@@ -15,10 +15,11 @@ public class DrawGrid : Graphic
 
 
     //보이지 않는 영역 그래픽 터치 처리하고싶을때 사용되는 함수
+    //VertexHelper : UI 매쉬 생성 지원 클래스
     protected override void OnPopulateMesh(VertexHelper vh)
     {
         base.OnPopulateMesh(vh);
-        vh.Clear();
+        vh.Clear();     //초기화
 
         width = rectTransform.rect.width;
         height = rectTransform.rect.height;
@@ -43,11 +44,14 @@ public class DrawGrid : Graphic
     private void drawCell(int x, int y, int index, VertexHelper vh)
     {
         float xPos = cellWidth * x;
-        float yPos = cellWidth * y;
+        float yPos = cellHeight * y;
+
+        //AddVert(UIVertex v) : 스트림에 단일 정점을 추가
+        //AddTrighangle(int index0, int idex1, int index2) : 버퍼에 삼각형 추가
 
         UIVertex vertex = UIVertex.simpleVert;
         vertex.color = color;
-
+        
         vertex.position = new Vector3(xPos, yPos);
         vh.AddVert(vertex);
 

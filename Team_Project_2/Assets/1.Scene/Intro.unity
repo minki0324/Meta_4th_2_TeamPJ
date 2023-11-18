@@ -3043,18 +3043,7 @@ MonoBehaviour:
   id: sunny
   playerID_index: 0
   audioMixer: {fileID: 24100000, guid: 9f13e184e489da04fb017a183914a246, type: 2}
-  TeamColors:
-  - {fileID: 2100000, guid: 2e7b2736d0629354282180f395c00a99, type: 2}
-  - {fileID: 2100000, guid: d01883e20aa8e2347bff594053d591d5, type: 2}
-  - {fileID: 2100000, guid: 28491658c9aedaa42ace6eebd4c8d38f, type: 2}
-  - {fileID: 2100000, guid: fdb8cf093ae80464dbb8e53c2da20496, type: 2}
-  - {fileID: 2100000, guid: baee853b2754a3145812172df6f4d8e4, type: 2}
-  - {fileID: 2100000, guid: aa31a1590df0d2c41bf5624a348a46f5, type: 2}
-  - {fileID: 2100000, guid: c377836b34d07f244937c39ee4e3747f, type: 2}
-  - {fileID: 2100000, guid: 8bf7ae841746f2445b4195d389428460, type: 2}
-  - {fileID: 2100000, guid: 1a852a32b4920134caee12603d11c25b, type: 2}
-  - {fileID: 2100000, guid: 290418d3b92a2944c98b64b26c83df54, type: 2}
-  - {fileID: 2100000, guid: f6ae1e3e059fadf4db0cff3e4504ae06, type: 2}
+  getColor: {fileID: 0}
   Team1_Color: 0
   Team2_Color: 0
   Team3_Color: 0
@@ -3652,6 +3641,7 @@ GameObject:
   m_Component:
   - component: {fileID: 804829689}
   - component: {fileID: 804829688}
+  - component: {fileID: 804829690}
   m_Layer: 0
   m_Name: ColorManager
   m_TagString: Untagged
@@ -3738,6 +3728,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &804829690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 804829687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a09a9006d594e5459da89d227c621a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TeamColors:
+  - {fileID: 2100000, guid: 2e7b2736d0629354282180f395c00a99, type: 2}
+  - {fileID: 2100000, guid: d01883e20aa8e2347bff594053d591d5, type: 2}
+  - {fileID: 2100000, guid: 28491658c9aedaa42ace6eebd4c8d38f, type: 2}
+  - {fileID: 2100000, guid: fdb8cf093ae80464dbb8e53c2da20496, type: 2}
+  - {fileID: 2100000, guid: baee853b2754a3145812172df6f4d8e4, type: 2}
+  - {fileID: 2100000, guid: aa31a1590df0d2c41bf5624a348a46f5, type: 2}
+  - {fileID: 2100000, guid: c377836b34d07f244937c39ee4e3747f, type: 2}
+  - {fileID: 2100000, guid: 8bf7ae841746f2445b4195d389428460, type: 2}
+  - {fileID: 2100000, guid: 1a852a32b4920134caee12603d11c25b, type: 2}
+  - {fileID: 2100000, guid: 290418d3b92a2944c98b64b26c83df54, type: 2}
+  - {fileID: 2100000, guid: f6ae1e3e059fadf4db0cff3e4504ae06, type: 2}
 --- !u!1 &814609892
 GameObject:
   m_ObjectHideFlags: 0
