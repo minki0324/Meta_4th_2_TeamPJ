@@ -207,7 +207,7 @@ public class Intro : MonoBehaviour
 
     private void Awake()
     {
-        dataManager = GameManager.instance.Json;
+        dataManager = new DataManager();
         playerData = dataManager.Load_playerData("playerData");
     }
 
