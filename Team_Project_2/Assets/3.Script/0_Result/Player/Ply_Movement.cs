@@ -28,14 +28,14 @@ public class Ply_Movement : MonoBehaviour
     [SerializeField] private Rigidbody rb;
 
     [Header("이동")]
-    [SerializeField] private float MoveSpeed = 5f;
+    public float MoveSpeed = 10f;
 
     [Header("점프")]
     [SerializeField] private float JumpForce = 10f;
     [SerializeField] private bool isGrounded = true;
 
     public bool isPlayerMove { get; private set; }
-
+    public Vector3 MoveDir = Vector3.zero;
     public Vector3 CurrentPos { get; private set; }
 
     public bool isAttacking_1 = false;  //공격모션 1이 실행중인가 판단
@@ -52,7 +52,6 @@ public class Ply_Movement : MonoBehaviour
     private float Min = -210f;
     private float Max = 210f;
 
-
  
     public Quaternion playerRotation { get; private set; }   //added
 
@@ -66,8 +65,6 @@ public class Ply_Movement : MonoBehaviour
 
     private void Update()
     {
-
-
         CurrentPos = transform.position;
         InputMovment();
         Jump();
@@ -118,7 +115,6 @@ public class Ply_Movement : MonoBehaviour
         {
             ani.SetBool("Shield", false);
             ani.SetFloat("MoveSpeed", 1f);
-            MoveSpeed = 5f;
         }
 
 
@@ -141,18 +137,25 @@ public class Ply_Movement : MonoBehaviour
 
         Vector3 playerRotate = Vector3.Scale(camera_.transform.forward, new Vector3(1, 0, 1));
 
-        Vector3 moveDirection = playerRotate * Input.GetAxis("Vertical") + camera_.transform.right * Input.GetAxis("Horizontal");
+        MoveDir = playerRotate * Input.GetAxis("Vertical") + camera_.transform.right * Input.GetAxis("Horizontal");
 
 
-        if (moveDirection != Vector3.zero)
+        if (MoveDir != Vector3.zero)
         {
-            // 회전
-            transform.rotation = Quaternion.LookRotation(moveDirection);
+            if (Input.GetMouseButton(1))
+            {
+                transform.rotation = Quaternion.LookRotation(playerRotate);
+            }
+            else
+            {
+               transform.rotation = Quaternion.LookRotation(MoveDir);
 
+            }
+            // 회전
             playerRotation = transform.rotation;    //added
 
             // 이동
-            transform.position += (moveDirection.normalized * MoveSpeed * Time.deltaTime);
+            transform.position += (MoveDir.normalized * MoveSpeed * Time.deltaTime);
             transform.position = new Vector3(
             Mathf.Clamp(transform.position.x, Min, Max), transform.position.y, Mathf.Clamp(transform.position.z, Min, Max));
             ani.SetBool("Move", true);

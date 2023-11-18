@@ -1,16 +1,39 @@
 {
   "Scripts": [
     {
-      "Title": "Èú·¯",
-      "Script": "Heal~"
+      "Title": "SwordMan",
+      "Script": "A soldier who uses Sword. \nATK : 2",
+      "Price": 10
     },
     {
-      "Title": "µµ³¢¸Ç",
-      "Script": "Swing~~"
+      "Title": "Knight",
+      "Script": "A soldier who uses Sword. \nATK : 2",
+      "Price": 10
     },
     {
-      "Title": "¸ÁÄ¡¸Ç",
-      "Script": "Kill~"
+      "Title": "Archer",
+      "Script": "A soldier who shoots Arrow. \nATK : 2",
+      "Price": 10
+    },
+    {
+      "Title": "Lancer",
+      "Script": "A soldier who uses Lance. \nATK : 2",
+      "Price": 10
+    },
+    {
+      "Title": "Halberdier",
+      "Script": "A soldier who uses Halberd. \nATK : 3",
+      "Price": 20
+    },
+    {
+      "Title": "Prist",
+      "Script": "A soldier who can uses Heal \nHeal Amount : 5",
+      "Price": 30
+    },
+    {
+      "Title": "Developing...",
+      "Script": "",
+      "Price": 0
     }
   ]
 }

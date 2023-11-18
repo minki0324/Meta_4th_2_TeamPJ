@@ -22,9 +22,6 @@ public class Ply_Controller : MonoBehaviour
     public Mode CurrentMode;
 
     //다른 클래스 객체=====================
-    private Minion_Controller[] minionController;
-
-    private Following following;
 
     //플레이어 정보========================
    
@@ -41,6 +38,7 @@ public class Ply_Controller : MonoBehaviour
     [SerializeField]
     private Transform Spawner;
     public EnemySpawn spawnPoint;
+    private EnemySpawn RespawnPoint;
     //보병 & 궁수 뽑을 수 있는가 판단하는 변수 -> 추후에 업그레이드 기능과 할때 사용해주세여
 
     private int spawnIndex;
@@ -49,7 +47,7 @@ public class Ply_Controller : MonoBehaviour
 
     private UnityEngine.AI.NavMeshAgent[] agents;
 
-
+   
 
     //변수추가 이서영
 
@@ -74,10 +72,13 @@ public class Ply_Controller : MonoBehaviour
     public bool ischeckPosition = false;
     public Vector3 StopPos;
 
+    [SerializeField] private Upgrade upgrade;
+    public bool isUpgrade_SolDam = false;
+    public bool isUpgrade_SolHP = false;
+    
 
     private void Awake()
     {
-        following = GetComponent<Following>();
         CurrentMode = Mode.Follow;
 
     }
@@ -138,7 +139,7 @@ public class Ply_Controller : MonoBehaviour
 
         }
 
-
+      
 
 
 
@@ -173,7 +174,7 @@ public class Ply_Controller : MonoBehaviour
                     {
                         case 1:
                             Human_num = 0;
-                            if (GameManager.instance.Gold > 15)
+                            if (GameManager.instance.Gold > GameManager.instance.unit0.cost)
                             {
                                 Init_Solider(GameManager.instance.unit0);
                             }
@@ -187,7 +188,7 @@ public class Ply_Controller : MonoBehaviour
                             Debug.Log("2눌림");
                             Human_num = 1;
                             // 나중에 if문에 앤드게이트로 isPossible_HeavyInfantry 업글 유무 확인
-                            if (GameManager.instance.Gold > 20)
+                            if (GameManager.instance.Gold > GameManager.instance.unit1.cost && GameManager.instance.isPossible_Upgrade_1)
                             {
                                 Init_Solider(GameManager.instance.unit1);
                             }
@@ -201,7 +202,7 @@ public class Ply_Controller : MonoBehaviour
                             Debug.Log("3눌림");
                             Human_num = 2;
                             // 나중에 if문에 앤드게이트로 isPossible_Archer 업글 유무 확인
-                            if (GameManager.instance.Gold > 25)
+                            if (GameManager.instance.Gold > GameManager.instance.unit2.cost && GameManager.instance.isPossible_Upgrade_2)
                             {
                                 Init_Solider(GameManager.instance.unit2);
                             }
@@ -231,10 +232,11 @@ public class Ply_Controller : MonoBehaviour
         //}
         //스폰포인트영역 들어가면 spawnPoint 참조받고 스폰위치 받아서 그위치로 소환.
         GameObject newUnit = Instantiate(unit.unitObject, spawnPoint.SpawnPoint[spawnIndex].position, Quaternion.identity);
-        UnitAttack2 unitAttack2 = newUnit.GetComponent<UnitAttack2>();
+        Soilder_Controller Soilder_Con = newUnit.GetComponent<Soilder_Controller>();
         ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.Color_Index);
-        unitAttack2.data = unit;
-        unitAttack2.Setunit();
+        Soilder_Con.infodata = unit;
+        Soilder_Con.Setunit();
+        UpgradeSet(Soilder_Con);
 
         spawnPoint.SetLayerRecursively(newUnit, gameObject.layer);
 
@@ -264,23 +266,18 @@ public class Ply_Controller : MonoBehaviour
             spawnPoint = other.GetComponent<EnemySpawn>();
         }
     }
-    private void FindSpawnPoint()
+    
+    private void UpgradeSet(Soilder_Controller soilder_Controller)
     {
-        GameObject[] spawns;
-        spawns = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        float mindistance = int.MaxValue;
-        foreach (GameObject ob in spawns)
+        if(isUpgrade_SolDam)
         {
-            if (gameObject.layer == ob.gameObject.layer)
-            {
+            soilder_Controller.data.damage = soilder_Controller.infodata.damage + 5;
+        }
 
-                float distance = Vector3.Distance(gameObject.transform.position, ob.transform.position);
-                if (distance < mindistance)
-                {
-                    mindistance = distance;
-                    spawnPoint = ob.GetComponent<EnemySpawn>();
-                }
-            }
+        if(isUpgrade_SolHP)
+        {
+            soilder_Controller.data.currentHP = soilder_Controller.infodata.currentHP + 50;
+            soilder_Controller.data.maxHP = soilder_Controller.infodata.maxHP + 50;
         }
     }
 }
