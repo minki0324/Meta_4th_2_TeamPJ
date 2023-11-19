@@ -13030,8 +13030,6 @@ GameObject:
   - component: {fileID: 8132295210802862226}
   - component: {fileID: 1803586442092828233}
   - component: {fileID: 8132295210802862239}
-  - component: {fileID: 8132295210802862238}
-  - component: {fileID: 8563116505424069821}
   - component: {fileID: 7674037152790838645}
   - component: {fileID: -6345470137745102455}
   - component: {fileID: 8736886272222092689}
@@ -13144,7 +13142,10 @@ MonoBehaviour:
   HitBox_col: {fileID: 0}
   Ob_Weapon_col: {fileID: 0}
   nearestTarget: {fileID: 0}
+  Teampoint: 0
+  total_Gold: 500
   Gold: 500
+  Upgrade_GoldValue: 1
   Regeneration: 0.5
   maxUnitCount: 19
   currentUnitCount: 0
@@ -13158,31 +13159,15 @@ MonoBehaviour:
   Team_Color: 0
   has_Flag: 0
   bat_State: 0
+  Hire: 0
+  isPossible_Upgrade_1: 0
+  isPossible_Upgrade_2: 0
+  isUpgrade_SolDam: 0
+  isUpgrade_SolHP: 0
+  Upgrade_List: 
   UnitList: []
   isEnermyChecked: 0
   leaderAIDirection: {x: 0, y: 0, z: 0}
---- !u!195 &8132295210802862238
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.35
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1.6
-  m_BaseOffset: -0.1
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!114 &7674037152790838645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13398,6 +13383,8 @@ MonoBehaviour:
   - {fileID: 1970227247699976165}
   - {fileID: 7671951699289572447}
   - {fileID: 2600469870133044426}
+  Parents_index: 0
+  succeCount: 0
 --- !u!1 &8132295210802862830
 GameObject:
   m_ObjectHideFlags: 0
