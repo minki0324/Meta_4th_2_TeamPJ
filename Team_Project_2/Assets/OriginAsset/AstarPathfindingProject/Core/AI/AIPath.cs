@@ -264,7 +264,6 @@ namespace Pathfinding {
 		/// 따라서 에이전트가 목적지에 가까울 때 이 메서드는 일반적으로 매 <see cref="repathRate"/> 초마다 호출됩니다.
 		/// </summary>
 		public virtual void OnTargetReached () {
-			canMove = true;
 		}
 
 		/// <summary>

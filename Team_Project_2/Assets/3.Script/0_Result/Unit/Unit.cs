@@ -34,6 +34,7 @@ public abstract class Unit : MonoBehaviour
     protected Soilder_Controller enemy;
    [SerializeField] protected float scanRange = 30;
     [SerializeField] protected float AttackRange = 1.5f;
+    protected float formationRange = 8;
     protected int myLayer;
     protected int combinedMask;
     // 공격 대상 레이어
@@ -102,16 +103,18 @@ public abstract class Unit : MonoBehaviour
             {
                 isMove = true;
                 //ani.SetBool("Move", true);
-                //aipath.isStopped = false;
-
+                aipath.isStopped = false;
+                aipath.canMove = true;
+                aipath.canSearch = true;
 
             }
             else // 탐지된 적이 접근하면 이동을 멈추고 공격
             {
 
-                speed = 0;
                 isMove = false;
-                //aipath.isStopped = true;
+                aipath.isStopped = true;
+                aipath.canMove = false;
+                aipath.canSearch = false;
                 if (!isAttacking)
                 {
                     attackCoroutine = StartCoroutine(Attack_co());

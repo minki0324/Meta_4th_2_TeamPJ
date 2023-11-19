@@ -206,7 +206,6 @@ public class Flag : MonoBehaviour
         {
             Current_Gauge -= Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, Current_Minion);
             OccuHUD.Ply_Slider(TeamColor_Temp, Flag_Num, Current_Gauge, Total_Gauge);
-            Debug.Log(Current_Gauge);
             yield return null;
         }
 
@@ -224,7 +223,6 @@ public class Flag : MonoBehaviour
         {
             Current_Gauge += Time.deltaTime * occu_Speed * Mathf.Pow(Soldier_Multi, Current_Minion); 
             OccuHUD.Ply_Slider(TeamColor,Flag_Num, Current_Gauge, Total_Gauge);
-            Debug.Log(Current_Gauge);
             yield return null;
         }
 
