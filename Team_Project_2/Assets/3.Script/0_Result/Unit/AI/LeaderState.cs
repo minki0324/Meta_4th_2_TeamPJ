@@ -41,7 +41,6 @@ public class LeaderState : Unit
     public int has_Flag = 0;
     //EnemySpawn respawnPoint;
     public BattleState bat_State;
-    public int has_Flag = 0;
     public int Hire = 0;
     public bool isPossible_Upgrade_1 = false;
     public bool isPossible_Upgrade_2 = false;

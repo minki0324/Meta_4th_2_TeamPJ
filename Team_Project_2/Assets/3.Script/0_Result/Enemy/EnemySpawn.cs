@@ -177,6 +177,9 @@ public class EnemySpawn : MonoBehaviour
         Unit_Information currentUnit = GameManager.instance.units[leaderAI.unitValue];
         GameObject newUnit = Instantiate(currentUnit.unitObject, SpawnPoint[SpawnIndex].position, Quaternion.identity);
         SetLayerRecursively(newUnit, leaderAI.gameObject.layer);
+        Soilder_Controller soilder_Con = newUnit.GetComponent<Soilder_Controller>();
+        soilder_Con.infodata = currentUnit;
+        soilder_Con.Setunit();
         switch (targetLeader.gameObject.layer)
         {
             case 7:
@@ -194,15 +197,7 @@ public class EnemySpawn : MonoBehaviour
 
         }
         
-
-
-
-
         
-        
-        Soilder_Controller soilder_Con = newUnit.GetComponent<Soilder_Controller>();
-        soilder_Con.infodata = currentUnit;
-        soilder_Con.Setunit();
         leaderAI.UnitList.Add(newUnit);
         leaderAI.Gold -= currentUnit.cost;
         SpawnIndex++;
@@ -308,6 +303,19 @@ public class EnemySpawn : MonoBehaviour
 
         // ���� ��Ȱ�� ���� �÷��׸� �ʱ�ȭ
         isRespawning = false;
+    }
+    private void Upgrade_Set(int Team, Soilder_Controller soilder_Controller)
+    {
+        if (GameManager.instance.leaders[Team].isUpgrade_SolDam)
+        {
+            soilder_Controller.data.damage = soilder_Controller.infodata.damage + 5;
+        }
+
+        if (GameManager.instance.leaders[Team].isUpgrade_SolHP)
+        {
+            soilder_Controller.data.currentHP = soilder_Controller.infodata.currentHP + 50;
+            soilder_Controller.data.maxHP = soilder_Controller.infodata.maxHP + 50;
+        }
     }
 
 
