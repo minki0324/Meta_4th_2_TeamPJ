@@ -148,13 +148,13 @@ public class Formation_enemy : MonoBehaviour
         for (int i = 0; i < leaderAI.UnitList.Count; i++)
         {
             GameObject unit = leaderAI.UnitList[i];
-
+            if(leaderAI.UnitList[i].GetComponent<Soilder_Controller>().formationState == Soilder_Controller.FormationState.Shield) { 
             // ������ ��ġ�� ȸ���� �÷��̾�� ����ȭ
             //Vector3 newPosition = unit.transform.position + playerDirection * speed * Time.deltaTime;
 
             Vector3 newPosition = unit.transform.position + leaderAIDirection * speed * Time.deltaTime;
             unit.transform.position = newPosition;
-
+            }
             //if (playerDirection != Vector3.zero)
             //{
             //    Quaternion newRotation = rotation;

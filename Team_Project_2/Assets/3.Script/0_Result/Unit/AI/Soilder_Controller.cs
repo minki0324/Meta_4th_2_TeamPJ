@@ -8,7 +8,7 @@ public class Soilder_Controller : Unit
 {
 
     //Detect 상태일때만 적용되는 스테이트
-    public enum FomationState { 
+    public enum FormationState { 
     Following, // 리더와 가까워질때까지 따라다님
     Formation, // 리더한테 도착하면 포메이션 이동
     Shield, //포메이션 이동완료시 실드들고 리더와 발맞추기
@@ -18,13 +18,13 @@ public class Soilder_Controller : Unit
     //적컴포넌트
     private GameObject ob;
 
-    public FomationState fomationState;
+    public FormationState formationState;
 
     //네비게이션
     public Unit_Information infodata;
     public bool isHealer = false;
     public bool isArrive = false;
-
+    public bool isSetPosition = false;
     public bool isNear = false;
 
     protected override void Awake()
@@ -76,6 +76,39 @@ public class Soilder_Controller : Unit
             return;
         }
     
+        if(Vector3.Distance(leader.transform.position , transform.position) < 5)
+        {
+            isArrive = true;
+        }
+        if(!isArrive && !isSetPosition)
+        {
+            formationState = FormationState.Following;
+        }
+        else if(isArrive && !isSetPosition)
+        {
+            formationState = FormationState.Formation;   // 도착시 포메이션 준비완료
+        }
+        else if (isArrive && isSetPosition)
+        {
+            formationState = FormationState.Shield;
+        }
+
+        switch (formationState)
+        {
+            case FormationState.Following:
+              
+                break;
+            case FormationState.Formation:
+                break;
+            case FormationState.Shield:
+                holdingShield = true;
+                break;
+        }
+
+
+
+
+
         if (holdingShield)
         {
             speed -= 1f * Time.deltaTime;

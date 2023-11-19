@@ -18,7 +18,7 @@ public abstract class Unit : MonoBehaviour
     protected WaitForSeconds hitDelay = new WaitForSeconds(0.2f);
     protected Ply_Controller player;
     public AIDestinationSetter target;
-    protected AIPath aipath;
+    public AIPath aipath;
     //팀의 리더가 누군지
 
     //공격중인가?

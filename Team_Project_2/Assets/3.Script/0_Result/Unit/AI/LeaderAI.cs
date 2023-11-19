@@ -382,10 +382,12 @@ public class LeaderAI : LeaderState
         //같은팀 병사담기
         foreach (RaycastHit hit in hits)
         {
-            if (hit.transform.gameObject.CompareTag("Soilder"))
+            if (hit.transform.gameObject.CompareTag("Soldier"))
             {
-                bool isArrive = hit.transform.gameObject.GetComponent<Soilder_Controller>().isArrive;
-                if (isArrive)
+                Soilder_Controller hit_con = hit.transform.gameObject.GetComponent<Soilder_Controller>();
+                bool isArrive = hit_con.isArrive;
+                bool isSetPosition = hit_con.isSetPosition;
+                if (hit_con.formationState == Soilder_Controller.FormationState.Formation) // 리더에게 도착했고 , 포지션이 설정안된친구 고르기 ( 포메이션 준비완료된 병사)
                 {
                     float distance = Vector3.Distance(formation_Position.position.position, hit.transform.position);
 
@@ -415,31 +417,33 @@ public class LeaderAI : LeaderState
         //HashSet<GameObject> uniqueTargets = new HashSet<GameObject>();
         //레이어들중에서 isArrive 인 병사
             Transform Soilder = GetSoilder(allHits ,positions[nextIndex]);
-        AIDestinationSetter target = Soilder.GetComponent<AIDestinationSetter>();
-        AIPath path = Soilder.GetComponent<AIPath>();
         Soilder_Controller soilder_con = Soilder.GetComponent<Soilder_Controller>();
-        target.target = positions[nextIndex].position;
+        soilder_con.target.target = positions[nextIndex].position; //제일가깝고 도착한 병사들 위치로 설정
+        soilder_con.isSetPosition = true;
+        target.target = positions[nextIndex].position; 
+        //positions[nextIndex].isSuccess = true;
         
+
        
        
-        foreach (RaycastHit hit in allHits)
-        {
-            //현재 포메이션포지션에서 가장 가까운 병사 추출
-            GameObject hitObject = hit.transform.gameObject;
-            Soilder_Controller soilder = hitObject.GetComponent<Soilder_Controller>();
-            if (hitObject.layer == gameObject.layer && hitObject.CompareTag("Soilder"))
-            {
+        //foreach (RaycastHit hit in allHits)
+        //{
+        //    //현재 포메이션포지션에서 가장 가까운 병사 추출
+        //    GameObject hitObject = hit.transform.gameObject;
+        //    Soilder_Controller soilder = hitObject.GetComponent<Soilder_Controller>();
+        //    if (hitObject.layer == gameObject.layer && hitObject.CompareTag("Soldier"))
+        //    {
 
-                if (soilder.isArrive)
-                {
+        //        if (soilder.isArrive)
+        //        {
 
-                }
-                //if (!uniqueTargets.Contains(hitObject))
-                //{
-                //    uniqueTargets.Add(hitObject);
-                //}
-            }
-        }
+        //        }
+        //        //if (!uniqueTargets.Contains(hitObject))
+        //        //{
+        //        //    uniqueTargets.Add(hitObject);
+        //        //}
+        //    }
+        //}
 
     }
 
