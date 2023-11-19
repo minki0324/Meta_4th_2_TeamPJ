@@ -10415,8 +10415,8 @@ GameObject:
   - component: {fileID: 680374640076870276}
   - component: {fileID: 680374640076870298}
   - component: {fileID: 7072279407184288612}
-  - component: {fileID: 3341690997559863209}
   - component: {fileID: 6297194433725862498}
+  - component: {fileID: 2494936460957947684}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -10521,6 +10521,9 @@ MonoBehaviour:
   isPlay_StopOrder: 0
   ischeckPosition: 0
   StopPos: {x: 0, y: 0, z: 0}
+  upgrade: {fileID: 0}
+  isUpgrade_SolDam: 0
+  isUpgrade_SolHP: 0
 --- !u!114 &680374640076870276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10569,20 +10572,6 @@ MonoBehaviour:
   isPossible_Attack_1: 1
   groundCheckRadius: 0.2
   groundTag: Ground
---- !u!114 &3341690997559863209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 680374640076870296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f57fa8d6242314891b7b62560d3d4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gate: {fileID: 0}
-  gateUI: {fileID: 0}
 --- !u!114 &6297194433725862498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10613,6 +10602,20 @@ MonoBehaviour:
   - {fileID: 2596450260871193038}
   - {fileID: 7133040526607156336}
   - {fileID: 111764687138119829}
+--- !u!114 &2494936460957947684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680374640076870296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83f57fa8d6242314891b7b62560d3d4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gate: {fileID: 0}
+  gateUI: {fileID: 0}
 --- !u!1 &680374640086412759
 GameObject:
   m_ObjectHideFlags: 0

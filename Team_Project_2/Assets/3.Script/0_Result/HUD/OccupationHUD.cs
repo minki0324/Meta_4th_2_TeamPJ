@@ -51,6 +51,7 @@ public class OccupationHUD : MonoBehaviour
             if (FlagArray[i].transform.parent != null) 
             {
                 FlagArray[i].Current_Gauge = 100f;
+                
                 FlagArray[i].isOccupied = true;
                 switch (FlagArray[i].gameObject.layer)
                 {
@@ -69,7 +70,7 @@ public class OccupationHUD : MonoBehaviour
                     default:
                         break;
                 }
-
+                Ply_Slider(TeamColor, i, 100f, 100f);
                 FlagArray[i].OccuHUD.Change_Color(TeamColor, i);
             }
         }
