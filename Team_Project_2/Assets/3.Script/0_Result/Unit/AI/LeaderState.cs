@@ -11,9 +11,9 @@ public class LeaderState : Unit
         //Follow, //점령지 이동할때 
         Attack,  // AI가 적을 인지하고 일정시간 또는 거리가됬을때 
         Search,
-        Move,
+        Move, //상체 아이들상태로 뛰어가기
         Defense,
-        Detect
+        Detect //방패들기
 
 
     }
@@ -37,9 +37,10 @@ public class LeaderState : Unit
     public bool canSpawn;
     public bool isMoving;
     public Transform respawnPoint;
+    public int Team_Color;
+    public int has_Flag = 0;
     //EnemySpawn respawnPoint;
     public BattleState bat_State;
-    public int has_Flag = 0;
     public int Hire = 0;
     public bool isPossible_Upgrade_1 = false;
     public bool isPossible_Upgrade_2 = false;
@@ -49,7 +50,29 @@ public class LeaderState : Unit
     public List<int> Upgrade_List = new List<int>();
     public List<GameObject> UnitList = new List<GameObject>();
 
-   
+
+    private void Start()
+    {
+        switch (this.gameObject.layer)
+        {
+            case (int)TeamLayerIdx.Player:
+                Team_Color = GameManager.instance.Color_Index;
+                break;
+            case (int)TeamLayerIdx.Team1:
+                Team_Color = GameManager.instance.T1_Color;
+                break;
+            case (int)TeamLayerIdx.Team2:
+                Team_Color = GameManager.instance.T2_Color;
+                break;
+            case (int)TeamLayerIdx.Team3:
+                Team_Color = GameManager.instance.T3_Color;
+                break;
+            default:
+                return;
+        }
+    }
+
+
     public override void Die()
     {
      
@@ -64,23 +87,7 @@ public class LeaderState : Unit
      2. 아무도없을시 점령
      
      */
-    public void Respawn(GameObject leader)
-    {
-        //애니메이션초기화
-        //HP , 콜라이더 , isDead ,레이어 다시설정
-        //저장한 리스폰 위치로 이동
-        aipath.canMove = false;
-        aipath.canSearch = false;
-        ani.SetTrigger("Reset");
-        ani.SetLayerWeight(1, 1);
-        data.currentHP = data.maxHP;
-        data.isDie = false;
-        Debug.Log(respawnPoint.parent.gameObject.layer);
-        leader.layer = respawnPoint.parent.gameObject.layer;
-        leader.transform.position = respawnPoint.position;
-
-
-    }
+   
     public override void HitDamage(float damage)
     {
        
