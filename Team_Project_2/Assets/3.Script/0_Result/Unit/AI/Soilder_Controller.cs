@@ -28,6 +28,7 @@ public class Soilder_Controller : Unit
     public bool isSetPosition = false;
     public bool isNear = false;
     float tempspeed;
+    public float currentScore;
     protected override void Awake()
     {
         base.Awake();

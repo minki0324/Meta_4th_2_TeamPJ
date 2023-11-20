@@ -184,7 +184,7 @@ public class Ply_Controller : MonoBehaviour
                 }
                 else
                 {
-               
+                    ResetPosition();    
                     nextIndex = 0;
                 }
                 break;
@@ -335,7 +335,7 @@ public class Ply_Controller : MonoBehaviour
             soilder_Controller.data.maxHP = soilder_Controller.infodata.maxHP + 50;
         }
     }
-    private Transform GetSoilder(RaycastHit[] hits, Position formation_Position)
+    private Transform GetSoilder(RaycastHit[] hits)
     {
         Transform nearest = null;
         float closestDistance = float.MaxValue;
@@ -347,7 +347,7 @@ public class Ply_Controller : MonoBehaviour
                 Soilder_Controller hit_con = hit.transform.gameObject.GetComponent<Soilder_Controller>();
                 if (hit_con.formationState == Soilder_Controller.FormationState.Formation && !hit_con.isSetPosition) // 리더에게 도착했고 , 포지션이 설정안된친구 고르기 ( 포메이션 준비완료된 병사)
                 {
-                    float distance = Vector3.Distance(formation_Position.position.position, hit.transform.position);
+                    float distance = Vector3.Distance(transform.position, hit.transform.position);
 
 
                     if (distance < closestDistance)
@@ -370,21 +370,63 @@ public class Ply_Controller : MonoBehaviour
     }
     private void FormationOrder(float scanRange)
     {
+
         //같은팀 레이어들 모두 담기
         RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, 1 << gameObject.layer);
 
         Transform Soilder = null;
-        Soilder = GetSoilder(allHits, positions[nextIndex]); //포메이션위치 와 가장가까운 병사 리턴
+        Soilder = GetSoilder(allHits); //포메이션위치 와 가장가까운 병사 리턴
         if (Soilder != null)
         {
             Soilder_Controller soilder_con = Soilder.GetComponent<Soilder_Controller>();
             soilder_con.isSetPosition = true;
-            soilder_con.formationTransmform = positions[nextIndex].position; //제일가깝고 도착한 병사들 위치로 설정
-            Debug.Log($"{nextIndex}번째 포지션 지정했음 다음 포지션인덱스{nextIndex + 1}");
+            soilder_con.formationTransmform = CarculateScore(Soilder); //제일가깝고 도착한 병사들 위치로 설정
+            Debug.Log($"{soilder_con.formationTransmform} 먼저 당첨");
             nextIndex++;
         }
 
 
 
+    }
+    private Transform CarculateScore(Transform Soilder)
+    {
+
+        float maxScore = 0;
+        Position destination = null;
+        for (int i = 0; i < positions.Count; i++)
+        {
+            if (positions[i].isSuccess)
+            {
+                continue;
+            }
+
+
+            float currentScore;
+            float positionSocre = positions[i].weight / Vector3.Distance(transform.position, positions[i].position.position); // 포지션과 리더와 거리비례 점수 (멀면멀수록 weight점수 감소)
+            float distanceScore = Vector3.Distance(Soilder.position, positions[i].position.position); // 병사가 포지션까지 가는 거리 (
+            currentScore = positionSocre / distanceScore;   //포지션점수 / 병사가 포지션까지 가는 거리 ( 병사가 거리가멀면 점수가 더낮아짐)  ----> 최종 병사입장에서의 그자리의 점수
+
+            if (currentScore > maxScore)
+            {
+                maxScore = currentScore;
+                destination = positions[i];
+                Soilder.GetComponent<Soilder_Controller>().currentScore = currentScore;
+            }
+            else
+            {
+                continue;
+            }
+                        
+
+        }
+        destination.isSuccess = true;
+        return destination.position;
+    }
+    private void ResetPosition()
+    {
+        for (int i = 0; i < positions.Count; i++)
+        {
+            positions[i].isSuccess = false;
+        }
     }
 }
