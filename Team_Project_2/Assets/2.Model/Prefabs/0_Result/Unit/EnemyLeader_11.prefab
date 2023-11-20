@@ -13306,7 +13306,7 @@ MonoBehaviour:
   version: 5
   radius: 0.5
   height: 2
-  canMove: 1
+  canMove: 0
   maxSpeed: 5
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
@@ -13399,6 +13399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12e46035ae138894887291ba4c8b353e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
   Main_target: {fileID: 0}
   targetsetting: {fileID: 0}
   Target: {fileID: 0}

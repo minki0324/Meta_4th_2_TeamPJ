@@ -5,6 +5,15 @@ using Pathfinding;
 
 public class Leader_Control : MonoBehaviour
 {
+    public enum AIState
+    {
+        NonTarget,
+        Target_Gate,
+        Target_Flag,
+        Target_Base
+    }
+
+    public AIState state;
     private LeaderAI ai;
     private AIPath aiPath;
     public AIDestinationSetter Main_target;
@@ -45,7 +54,17 @@ public class Leader_Control : MonoBehaviour
 
         Scan_targetPos();
 
-        switch(ai.bat_State)
+        switch(state)
+        {
+            case AIState.NonTarget:
+                Search_Target();
+                break;
+            case AIState.Target_Gate:
+                break;
+        }
+
+        #region 임시
+        /*switch(ai.bat_State)
         {
             case LeaderState.BattleState.Wait:
                 if(!isStart)
@@ -61,7 +80,7 @@ public class Leader_Control : MonoBehaviour
                 Change_State();
                 break;
             case LeaderState.BattleState.Move:
-                /*
+                *//*
                     1. 플래그가 가까울 때 
                       > 내 플래그인지 중립 플래그인지 상대 플래그인지 확인
                       > 내 플래그면 보유 유닛 수를 확인하고 보유한 유닛이 많으면 가까운 깃발로 이동(가까운 깃발이 베이스라면 게이트)
@@ -69,7 +88,7 @@ public class Leader_Control : MonoBehaviour
                       > 상대 플래그라면 Wait 상태로 전환
                     2. 게이트가 가까울 때
                       > 보유 유닛 수가 많다면 가까운 깃발로 이동
-                */
+                *//*
                 if(!NearGate && NearFlag && !NearBase)
                 {
                     if (ai.currentUnitCount >= 15 && !isStart)
@@ -99,20 +118,76 @@ public class Leader_Control : MonoBehaviour
                     }
                 }
                 break;
+        }*/
+        #endregion
+    }
+
+    public void Search_Target()
+    {
+        // ai 타겟이 없을 때
+        switch(ai.bat_State)
+        {
+            case LeaderState.BattleState.Attack:
+                ai.bat_State = LeaderState.BattleState.Move;
+                break;
+            case LeaderState.BattleState.Detect:
+                ai.bat_State = LeaderState.BattleState.Move;
+                break;
+            case LeaderState.BattleState.Move:
+                /*
+                    1. 현재 본인의 병사 숫자 체크해서 병사 숫자가 적으면 가까운 스폰포인트로 이동해서 병사 채움
+                    2. 병사 숫자가 15명 이상이라면 가장 가까운 깃발로 이동해서 점령 준비
+                    3. 깃발에 도착했다면 Wait 상태로 전환해서 점령이 끝날때까지 대기
+                */     
+                if(!Check_Soldier())
+                {
+                    Return_SpawnPoint(transform, ref Target);
+                }
+                else if(Check_Soldier())
+                {
+                    if(!NearFlag)
+                    {
+                        if(NearBase)
+                        {
+
+                        }
+                        else
+                        {
+                            Move_Flag(transform, ref Target);
+                        }
+                    }
+                    else if(NearFlag && isStart)
+                    {
+                        ai.bat_State = LeaderState.BattleState.Wait;
+                    }
+                }
+                break;
+            case LeaderState.BattleState.Wait:
+                ai.bat_State = LeaderState.BattleState.Move;
+                break;
+        }
+        
+    }
+
+    public bool Check_Soldier()
+    {
+        if(ai.currentUnitCount >= 15)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
-    private void Wait_Flag()
+    private void Return_SpawnPoint(Transform StartPos, ref Transform Target)
     {
-        aiPath.canMove = false;
-        aiPath.canSearch = false;
-
-        if(Target.CompareTag("Flag") && 
-            NearFlag && 
-            Target.gameObject.layer.Equals(gameObject.layer))
-        {
-            isOccu = true;
-        }
+        aiPath.canMove = true;
+        aiPath.canSearch = true;
+        targetsetting = GetComponent<TargetMyBase>();
+        Target = targetsetting.Target(StartPos);
+        ToTarget(Target);
     }
 
     private void Wait_Soldier()

@@ -15,6 +15,14 @@ public class TargetMyBase : Targetsetting
             }
         }
 
+        for(int i = 0; i < MapInfo.flagPositions_List.Count; i++)
+        {
+            if(MapInfo.flagPositions_List[i].layer.Equals(gameObject.layer))
+            {
+                ListTemp.Add(MapInfo.flagPositions_List[i]);
+            }
+        }
+
         if (ListTemp.Count > 0)
         {
             TargetBase = ListTemp[0];
