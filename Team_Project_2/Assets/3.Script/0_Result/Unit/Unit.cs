@@ -74,12 +74,8 @@ public abstract class Unit : MonoBehaviour
         leaderState = GetComponent<LeaderState>();
         target = GetComponent<AIDestinationSetter>();
 
-        
-        //
-
-
-
     }
+
     protected void AttackOrder()
     {
         RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, combinedMask);
@@ -276,7 +272,6 @@ public abstract class Unit : MonoBehaviour
 
     }
     protected IEnumerator Attack_co()
-   
     {
         //공격쿨타임
         float d = Random.Range(2f, 2.1f);

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8058749bdb9a96947beea6bd0876c4da, type: 3}
   m_Name: Priest
   m_EditorClassIdentifier: 
-  unitObject: {fileID: 169256, guid: 7b4e51ccca67b514d883b197e0f59efd, type: 3}
+  unitObject: {fileID: 784342720226163680, guid: 279e2a9bebd21bb459614a40c9a032ce, type: 3}
   ishealer: 1
   unitName: Priest
   description: "\uD790\uB7EC\uC785\uB2C8\uB2F9"

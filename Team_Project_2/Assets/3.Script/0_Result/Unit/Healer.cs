@@ -1,10 +1,13 @@
-/*using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Healer : MonoBehaviour
 {
     Ply_Controller pc;
+
+    [SerializeField]
+    private float healRange = 5f;
 
     [SerializeField]
     private Animator ani;
@@ -15,41 +18,74 @@ public class Healer : MonoBehaviour
     [SerializeField]
     private ParticleSystem HealCircle;
 
-    GameObject lessHPMinion;
+    GameObject healTarget;
+
     float lessHP;
+
     public float healCoolTime = 3f;
+
+    public bool isHealTargetExist = false;
+
+   // public bool testbool = false;
 
 
 
     public bool isCanHeal;
+
     private void Start()
     {
-        
+
         isCanHeal = true;
         ani = GetComponent<Animator>();
     }
 
-
-    public void Heal()
+    public void GetHeal_Target()
     {
-        if(isCanHeal)
+        healTarget = pc.UnitList_List[0];
+
+        for (int i = 0; i < pc.UnitList_List.Count; i++)
+        {
+            if (pc.UnitList_List[i].GetComponent<Soilder_Controller>().data.currentHP <= lessHP && Vector3.Distance(healTarget.transform.position, transform.position) > healRange)
+            {
+                healTarget = pc.UnitList_List[i];
+            }
+        }
+
+        if (healTarget.GetComponent<Soilder_Controller>().data.currentHP >= GameManager.instance.Current_HP)
+        {
+            healTarget = pc.gameObject;
+        }
+
+        lessHP = healTarget.GetComponent<Soilder_Controller>().data.currentHP;
+
+
+        if(healTarget.GetComponent<Soilder_Controller>().data.currentHP >= healTarget.GetComponent<Soilder_Controller>().data.maxHP || GameManager.instance.Current_HP >= GameManager.instance.Max_Hp )
+        {
+            isHealTargetExist = false;
+        }
+        else
+        {
+            isHealTargetExist = true;
+        }
+        
+
+
+}
+
+public void Heal()
+    {
+        if (isCanHeal && isHealTargetExist)
         {
             ani.SetTrigger("Heal");
 
-            lessHPMinion = pc.UnitList_List[0];
-            lessHP = lessHPMinion.GetComponent<                >().data.currentHP;
-            for (int i = 0; i < pc.UnitList_List.Count; i++)
-            {
-                if (pc.UnitList_List[i].GetComponent<Soilder_Controller>().data.currentHP <= lessHP)
-                {
-                    lessHPMinion = pc.UnitList_List[i];
+            GetHeal_Target();
 
-                }
-                lessHP = lessHPMinion.GetComponent<Soilder_Controller>().data.currentHP;
-            }
+            float healAmount = Random.Range(healTarget.GetComponent<Soilder_Controller>().data.maxHP / 10, healTarget.GetComponent<Soilder_Controller>().data.maxHP / 5);
+            //최대체력의 10~20퍼만큼 힐~
 
-            lessHPMinion.GetComponent<Soilder_Controller>().data.currentHP += 1;
-            HealEffect.transform.position = lessHPMinion.transform.position;
+            healTarget.GetComponent<Soilder_Controller>().data.currentHP += healAmount;
+
+            HealEffect.transform.position = healTarget.transform.position;
             HealEffect.Play();
 
             HealCircle.transform.position = gameObject.transform.position;
@@ -78,4 +114,3 @@ public class Healer : MonoBehaviour
     //    return a_HP <= b_HP ? -1 : 1;
     //}
 }
-*/

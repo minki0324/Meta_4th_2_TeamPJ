@@ -101,7 +101,7 @@ public class AudioManager : MonoBehaviour
     public void Button_HoverSound()
     {
         audio_SFX.clip = clip_SFX[0];
-        //audio_SFX.PlayOneShot(clip_SFX[0]);
+        
         audio_SFX.Play();
     }
 

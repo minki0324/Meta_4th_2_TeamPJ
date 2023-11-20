@@ -28,6 +28,10 @@ public class Soilder_Controller : Unit
     public bool isSetPosition = false;
     public bool isNear = false;
 
+    //힐러용
+    Healer healer;
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -180,6 +184,12 @@ public class Soilder_Controller : Unit
                         else
                         {
                             //힐러 메소드 넣기
+                          
+                                healer.Heal();
+                         
+                          
+                          
+
                         }
 
 
@@ -478,4 +488,6 @@ public class Soilder_Controller : Unit
         isMove = true;
         target.target = leader.transform;
     }
+
+
 }
