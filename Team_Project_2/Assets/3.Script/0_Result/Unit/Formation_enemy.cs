@@ -30,15 +30,22 @@ public class Formation_enemy : MonoBehaviour
     {
         leaderAI = GetComponent<LeaderAI>();
         currentPosGroup = Parents_Pos[Parents_index];
-
-        for (int i = 0; i < weightedParents.Count; i++)
+        GetSortedParentsByWeight();
+        for (int i = 0; i <  weightedParents.Count; i++)
         {
-            positions[i].position = weightedParents[i].transform;
-            positions[i].weight = weightedParents[i].weighted;
-            positions[i].isSuccess = false;
+            Position posi = new Position();
+            posi.position = weightedParents[i].transform;
+            posi.weight = weightedParents[i].weighted;
+            posi.isSuccess = false;
+            positions.Add(posi);
         }
-    }
+        Debug.Log(positions.Count);
 
+    }
+    private void Start()
+    {
+        
+    }
     private void Update()
     {
         //����׷� 
@@ -93,74 +100,68 @@ public class Formation_enemy : MonoBehaviour
         }
     }
 
-    public void SetFormation(int scanRange)
-    {
-        for (int i = 0; i < Count.Length; i++)
-        {
-            Count[i].Count = 0;
-        }
+    //public void SetFormation(int scanRange)
+    //{
+    //    for (int i = 0; i < Count.Length; i++)
+    //    {
+    //        Count[i].Count = 0;
+    //    }
 
-        List<GameObject> unitList = Scan_Pos(scanRange);
+    //    List<GameObject> unitList = Scan_Pos(scanRange);
 
-        foreach (GameObject unit in unitList)
-        {
-            Transform[] sortedParents = GetSortedParentsByWeight(unit);
-            Transform selectedParent = null;
+    //    foreach (GameObject unit in unitList)
+    //    {
+    //        Transform[] sortedParents = GetSortedParentsByWeight(unit);
+    //        Transform selectedParent = null;
 
-            // ������ �θ� ������ ã��
-            foreach (Transform parent in sortedParents)
-            {
-                if (parent.childCount != parent.GetComponent<Formation_Count>().Count)
-                {
-                    selectedParent = parent;
-                    break;
-                }
-            }
+    //        // ������ �θ� ������ ã��
+    //        foreach (Transform parent in sortedParents)
+    //        {
+    //            if (parent.childCount != parent.GetComponent<Formation_Count>().Count)
+    //            {
+    //                selectedParent = parent;
+    //                break;
+    //            }
+    //        }
 
-            // ������ Ÿ�� ����
-            if (selectedParent != null)
-            {
-                unit.GetComponent<AIDestinationSetter>().target = selectedParent.GetChild(selectedParent.GetComponent<Formation_Count>().Count).transform;
-                selectedParent.GetComponent<Formation_Count>().Count++;
-            }
-            else
-            {
-                Debug.LogError("No available position for unit: " + unit.name);
-                // ��� �θ� ��ġ�� �� á�� ����� ó��
-            }
-        }
-    }
+    //        // ������ Ÿ�� ����
+    //        if (selectedParent != null)
+    //        {
+    //            unit.GetComponent<AIDestinationSetter>().target = selectedParent.GetChild(selectedParent.GetComponent<Formation_Count>().Count).transform;
+    //            selectedParent.GetComponent<Formation_Count>().Count++;
+    //        }
+    //        else
+    //        {
+    //            Debug.LogError("No available position for unit: " + unit.name);
+    //            // ��� �θ� ��ġ�� �� á�� ����� ó��
+    //        }
+    //    }
+    //}
 
     public void Following_Shield(float speed , Vector3 leaderAIDirection)
     {
         for (int i = 0; i < leaderAI.UnitList.Count; i++)
         {
             GameObject unit = leaderAI.UnitList[i];
-            //unit.GetComponent<Soilder_Controller>();
-            unit.GetComponent<AIDestinationSetter>().target = leaderAI.transform;
-            unit.GetComponent<AIPath>().canSearch = false;
-            unit.GetComponent<AIPath>().canMove = false;
+            Soilder_Controller unit_con = unit.GetComponent<Soilder_Controller>();
+            if (unit_con.formationState == Soilder_Controller.FormationState.Shield)
+            {
+
+                Vector3 newPosition = unit.transform.position + leaderAIDirection * speed * Time.deltaTime;
+                unit.transform.position = newPosition;
+
+
+
+
+                unit_con.aipath.canSearch = false;
+                unit_con.aipath.canMove = false;
+            }
         }
+        //unit_con.target.target = leaderAI.transform;
         // �÷��̾��� ���� �̵� ����� �ӵ�
-       
+
         //Quaternion rotation = leaderAI.gameObject.transform.rotation;
-       
-        for (int i = 0; i < leaderAI.UnitList.Count; i++)
-        {
-            GameObject unit = leaderAI.UnitList[i];
 
-            // ������ ��ġ�� ȸ���� �÷��̾�� ����ȭ
-            //Vector3 newPosition = unit.transform.position + playerDirection * speed * Time.deltaTime;
-
-            Vector3 newPosition = unit.transform.position + leaderAIDirection * speed * Time.deltaTime;
-            unit.transform.position = newPosition;
-
-            //if (playerDirection != Vector3.zero)
-            //{
-            //    Quaternion newRotation = rotation;
-            //    unit.transform.rotation = newRotation;
-            //}
-        }
     }
     #endregion
     #region ��ĵ �� ��ƿ �޼ҵ��
@@ -206,10 +207,9 @@ public class Formation_enemy : MonoBehaviour
     }
    
     // ����ġ ��� ������ ���� �޼ҵ�
-    private Transform[] GetSortedParentsByWeight(GameObject unit)
+    private void GetSortedParentsByWeight()
     {
-        Vector3 currentPosition = unit.transform.position;
-  
+     
         float weightvalue = 0.1f;
         float weight = 1f;
         foreach (Transform parent in Parents_Pos)
@@ -226,9 +226,7 @@ public class Formation_enemy : MonoBehaviour
 
         }
 
-        // ����ġ�� �Ÿ��� ���� ����
-        // ���ĵ� Ʈ������ �迭 ����
-        return weightedParents.Select(item => item.transform).ToArray();
+       
     }
 
     // ����ġ ���� �޼ҵ�

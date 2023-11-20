@@ -12,11 +12,12 @@ public class LeaderAI : LeaderState
     private Formation_enemy formation;
     public bool isEnermyChecked = false;
     private float attackOrederRange = 8;
+    
     private LeaderController leaderController;
     public Vector3 leaderAIDirection;
 
     public List<Position> positions = new List<Position>();
-    private int nextIndex;
+    private int nextIndex =0;
     protected override void Awake()
     {
         base.Awake();
@@ -34,6 +35,7 @@ public class LeaderAI : LeaderState
         GameManager.instance.leaders.Add(gameObject.GetComponent<LeaderState>());
         formation = GetComponent<Formation_enemy>();
         positions = formation.positions; // 포메이션 포지션들 우선순위로 담아둔 리스트 초기화
+        Debug.Log(positions[0]);
         SetLeaderState();
 
     }
@@ -83,7 +85,8 @@ public class LeaderAI : LeaderState
         ani.SetBool("Shield", holdingShield);
         ani.SetFloat("Speed", speed);
         ani.SetBool("Move", isMove);
-       
+
+        #region 리더상태에 따른 행동
         switch (bat_State)
         {
 
@@ -95,7 +98,12 @@ public class LeaderAI : LeaderState
                 holdingShield = false;
                 isMove = true;
                 aipath.isStopped = false;
+                nextIndex = 0;
+                for (int i = 0; i < UnitList.Count; i++)
+                {
+                    UnitList[i].GetComponent<Soilder_Controller>().isSetPosition = false;
 
+                }
 
                 break;
             case BattleState.Attack:
@@ -111,8 +119,8 @@ public class LeaderAI : LeaderState
                 holdingShield = true;
                 aipath.maxSpeed = 1.5f; // 이동속도줄이기
                 leaderAIDirection = transform.TransformDirection(Vector3.forward);
+                FormationOrder(formationRange);
                 //formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
-
                 break;
             case BattleState.Search:
                 break;
@@ -124,7 +132,7 @@ public class LeaderAI : LeaderState
 
 
         }
-
+        #endregion
         if (data.currentHP <= 0)
         {
 
@@ -382,10 +390,10 @@ public class LeaderAI : LeaderState
         //같은팀 병사담기
         foreach (RaycastHit hit in hits)
         {
-            if (hit.transform.gameObject.CompareTag("Soilder"))
+            if (hit.transform.gameObject.CompareTag("Soldier"))
             {
-                bool isArrive = hit.transform.gameObject.GetComponent<Soilder_Controller>().isArrive;
-                if (isArrive)
+                Soilder_Controller hit_con = hit.transform.gameObject.GetComponent<Soilder_Controller>();
+                if (hit_con.formationState == Soilder_Controller.FormationState.Formation && !hit_con.isSetPosition) // 리더에게 도착했고 , 포지션이 설정안된친구 고르기 ( 포메이션 준비완료된 병사)
                 {
                     float distance = Vector3.Distance(formation_Position.position.position, hit.transform.position);
 
@@ -408,39 +416,23 @@ public class LeaderAI : LeaderState
 
         return nearest;
     }
-    private void Scan_Pos(float scanRange)
+    private void FormationOrder(float scanRange)
     {
         //같은팀 레이어들 모두 담기
-        RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0 ,gameObject.layer);
-        //HashSet<GameObject> uniqueTargets = new HashSet<GameObject>();
-        //레이어들중에서 isArrive 인 병사
-            Transform Soilder = GetSoilder(allHits ,positions[nextIndex]);
-        AIDestinationSetter target = Soilder.GetComponent<AIDestinationSetter>();
-        AIPath path = Soilder.GetComponent<AIPath>();
+        RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0 ,1 << gameObject.layer);
+      
+        Transform Soilder = null;
+        Soilder= GetSoilder(allHits ,positions[nextIndex]); //포메이션위치 와 가장가까운 병사 리턴
+        if(Soilder != null) { 
         Soilder_Controller soilder_con = Soilder.GetComponent<Soilder_Controller>();
-        target.target = positions[nextIndex].position;
-        
-       
-       
-        foreach (RaycastHit hit in allHits)
-        {
-            //현재 포메이션포지션에서 가장 가까운 병사 추출
-            GameObject hitObject = hit.transform.gameObject;
-            Soilder_Controller soilder = hitObject.GetComponent<Soilder_Controller>();
-            if (hitObject.layer == gameObject.layer && hitObject.CompareTag("Soilder"))
-            {
-
-                if (soilder.isArrive)
-                {
-
-                }
-                //if (!uniqueTargets.Contains(hitObject))
-                //{
-                //    uniqueTargets.Add(hitObject);
-                //}
-            }
+        soilder_con.isSetPosition = true;
+        soilder_con.formationTransmform= positions[nextIndex].position; //제일가깝고 도착한 병사들 위치로 설정
+            Debug.Log($"{nextIndex}번째 포지션 지정했음 다음 포지션인덱스{nextIndex + 1}");
+        nextIndex++;
         }
+        
 
+       
     }
 
 

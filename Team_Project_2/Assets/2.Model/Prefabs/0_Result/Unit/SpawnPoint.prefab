@@ -64,6 +64,12 @@ MonoBehaviour:
   - {fileID: 1843400025330777912, guid: 345fdb404ae102d4289e4dc4b4a877b0, type: 3}
   - {fileID: 6006503084427101158, guid: 7b2c5439dcdaff14682d91ecbec50354, type: 3}
   - {fileID: 4483072135592897270, guid: 688bb76400d688d40a0027c72be0d35e, type: 3}
+  player: {fileID: 0}
+  targetLeader: {fileID: 0}
+  SpawnPoint:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &979721771533510949
 GameObject:
   m_ObjectHideFlags: 0
