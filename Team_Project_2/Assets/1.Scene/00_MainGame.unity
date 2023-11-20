@@ -676,8 +676,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b424c53c7b536f44caeefdae5e7e1db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DayToSunset_skybox: {fileID: 2100000, guid: 7fedf417d021b374b8669db32c31ed2d, type: 2}
-  SunsetToNihgt_skybox: {fileID: 2100000, guid: 3c3a5b57422b6c4489fc2336735cffeb, type: 2}
+  DayToSunset_skybox: {fileID: 2100000, guid: 064fda147506d57428575eb672e1fa78, type: 2}
+  SunsetToNihgt_skybox: {fileID: 2100000, guid: 4aa0589aa9bc90c4e801f234d64b44a0, type: 2}
 --- !u!1 &39388082
 GameObject:
   m_ObjectHideFlags: 0
@@ -21062,6 +21062,7 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 1, y: 3}
   - {x: 0, y: 0}
+  - {x: 0, y: 0}
   thickness: 10
 --- !u!224 &2723602892452893475
 RectTransform:
@@ -21210,6 +21211,7 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 1, y: 3}
   - {x: 0, y: 0}
+  - {x: 0, y: 0}
   thickness: 10
 --- !u!224 &2723602892852064075
 RectTransform:
@@ -21277,6 +21279,7 @@ MonoBehaviour:
   points:
   - {x: 0, y: 0}
   - {x: 1, y: 3}
+  - {x: 0, y: 0}
   - {x: 0, y: 0}
   thickness: 10
 --- !u!224 &2723602893992838899
@@ -21409,6 +21412,7 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 1, y: 1}
   - {x: 2, y: 2}
+  - {x: 0, y: 0}
   - {x: 0, y: 0}
   thickness: 10.56
 --- !u!224 &2723602894353176355
