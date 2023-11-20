@@ -201,6 +201,10 @@ public class Intro : MonoBehaviour
     [SerializeField] private GameObject Original_Map;
     [SerializeField] private GameObject TimeAttack_Map;
 
+
+    [SerializeField]
+    private Button[] AllButtons;
+
     private void Awake()
     {
 
@@ -213,7 +217,8 @@ public class Intro : MonoBehaviour
         Screen.SetResolution(1920, 1080, true);
 
         Init_FuntionUI();
-       
+        SetSound_AllButtons();
+
         TitlePanel_On();
     }
 
@@ -258,6 +263,17 @@ public class Intro : MonoBehaviour
 
        
     }
+
+    private void SetSound_AllButtons()
+    {
+        AllButtons = Resources.FindObjectsOfTypeAll<Button>();
+
+        for (int i = 0; i < AllButtons.Length; i++)
+        {
+            AllButtons[i].onClick.AddListener(AudioManager.instance.Button_ClickSound);
+        }
+    }
+
 
     public void GameStart_Btn_Clicekd()
     {
@@ -777,6 +793,10 @@ public class Intro : MonoBehaviour
     {
         TitlePanel_On();
     }
+
+
+    
+
 
 
 }

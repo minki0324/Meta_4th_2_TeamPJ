@@ -20,8 +20,9 @@ public class DrawLine : Graphic
     public float thickness = 10f;
 
     float current_Time = 0f;    //시간 변화용 변수
-    int cell_x = 0;
-    int cell_y = 0;
+    float cell_x = 0;
+    float cell_y = 0;
+
     protected override void Start()
     {
         //points.Clear();
@@ -155,11 +156,39 @@ public class DrawLine : Graphic
             }
         }
 
-        if (current_Time +2 <= GameManager.instance.currentTime)
+
+        Draw_TeamPointLine();
+    }
+
+
+    public void Draw_TeamPointLine()
+    {
+        //시간(x), 팀포인트(y)추가
+        if (current_Time + 2 <= GameManager.instance.currentTime)
         {
-            //시간(x), 팀포인트(y)추가
-           
+
+            if (gameObject.name.ToString() == "Line_Team1")
+            {
+                cell_x += 2;
+                cell_y += GameManager.instance.Teampoint;
+               
+            }
+            else if (gameObject.name.ToString() == "Line_Enemy1")
+            {
+
+            }
+            else if (gameObject.name.ToString() == "Line_Enemy2")
+            {
+
+            }
+            else if (gameObject.name.ToString() == "Line_Enemy3")
+            {
+
+            }
+
             SetVerticesDirty();
+
         }
+       
     }
 }

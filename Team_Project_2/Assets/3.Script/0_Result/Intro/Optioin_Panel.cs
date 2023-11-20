@@ -8,18 +8,7 @@ public class Optioin_Panel : MonoBehaviour
 {
     public static Optioin_Panel instance = null;
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+   
 
     #region 옵션 패널
     [Header("Option Panel")]
@@ -60,8 +49,23 @@ public class Optioin_Panel : MonoBehaviour
     private float MouseY;
     private float MouseX;
     #endregion
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
- 
+
+    }
+
+  
+
 
     public void OptionPanel_On()
     {
@@ -85,9 +89,9 @@ public class Optioin_Panel : MonoBehaviour
 
 
         //사운드 조절 슬라이더
-        masterVolume_Slider.onValueChanged.AddListener(delegate { SetVolume(5, "Master"); });
-        bgmVolume_Slider.onValueChanged.AddListener(delegate { SetVolume(5, "Bgm"); });
-        sfxVolume_Slider.onValueChanged.AddListener(delegate { SetVolume(5, "Sfx"); });
+        masterVolume_Slider.onValueChanged.AddListener(delegate { AudioManager.instance.SetVolume(5, "Master"); });
+        bgmVolume_Slider.onValueChanged.AddListener(delegate { AudioManager.instance.SetVolume(5, "Bgm"); });
+        sfxVolume_Slider.onValueChanged.AddListener(delegate { AudioManager.instance.SetVolume(5, "Sfx"); });
 
 
         //밝기 조절 슬라이더
@@ -108,34 +112,34 @@ public class Optioin_Panel : MonoBehaviour
     }
 
 
-    public void SetVolume(float volume, string soundtype)
-    {
-        switch (soundtype)
-        {
-            case "Master":
-                volume = masterVolume_Slider.value;
-                break;
+    //public void SetVolume(float volume, string soundtype)
+    //{
+    //    switch (soundtype)
+    //    {
+    //        case "Master":
+    //            volume = masterVolume_Slider.value;
+    //            break;
 
 
-            case "Bgm":
-                volume = bgmVolume_Slider.value;
-                break;
+    //        case "Bgm":
+    //            volume = bgmVolume_Slider.value;
+    //            break;
 
 
-            case "Sfx":
-                volume = sfxVolume_Slider.value;
-                break;
-        }
+    //        case "Sfx":
+    //            volume = sfxVolume_Slider.value;
+    //            break;
+    //    }
 
-        if (volume == 0f)
-        {
-            audioMixer.SetFloat(soundtype, -80);
-        }
-        else
-        {
-            audioMixer.SetFloat(soundtype, volume);
-        }
-    }
+    //    if (volume == 0f)
+    //    {
+    //        audioMixer.SetFloat(soundtype, -80);
+    //    }
+    //    else
+    //    {
+    //        audioMixer.SetFloat(soundtype, volume);
+    //    }
+    //}
 
     public void SetBrightness_img(float value)
     {
