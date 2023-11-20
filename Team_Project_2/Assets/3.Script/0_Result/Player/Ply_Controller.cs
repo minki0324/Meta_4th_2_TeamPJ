@@ -97,7 +97,7 @@ public class Ply_Controller : MonoBehaviour
         if (GameManager.instance.isDead)
         {
             return;
-        }
+        }   
 
         if (GameManager.instance.inRange)
         {
@@ -176,7 +176,7 @@ public class Ply_Controller : MonoBehaviour
             case Mode.Follow:
                 if (playerMovement.isPlayerMove == false || playerMovement.holdingShield)
                 {
-                    Debug.Log("홀드실드");
+       
                     FormationOrder(8);
 
 
@@ -184,7 +184,7 @@ public class Ply_Controller : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("000");
+               
                     nextIndex = 0;
                 }
                 break;

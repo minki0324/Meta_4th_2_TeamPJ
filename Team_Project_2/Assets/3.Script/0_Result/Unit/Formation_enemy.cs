@@ -30,6 +30,12 @@ public class Formation_enemy : MonoBehaviour
     {
         leaderAI = GetComponent<LeaderAI>();
         currentPosGroup = Parents_Pos[Parents_index];
+
+        for (int i = 0; i < Parents_Pos.Length; i++)
+        {
+
+        }
+
         GetSortedParentsByWeight();
         for (int i = 0; i <  weightedParents.Count; i++)
         {
