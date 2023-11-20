@@ -27,7 +27,7 @@ public class Soilder_Controller : Unit
     public bool isArrive = false;
     public bool isSetPosition = false;
     public bool isNear = false;
-
+    float tempspeed;
     protected override void Awake()
     {
         base.Awake();
@@ -41,8 +41,8 @@ public class Soilder_Controller : Unit
         myLayer = gameObject.layer; 
         TeamLayer = LayerMask.NameToLayer("Team");
         combinedMask = TargetLayers();
-    
-           
+        tempspeed = speed;
+
         //
         if (myLayer != TeamLayer)
         {
@@ -92,6 +92,7 @@ public class Soilder_Controller : Unit
         }
         else if(isArrive && !isSetPosition) //도착함, 포지션배정 안받음 -> 포메이션대기
         {
+           
             formationState = FormationState.Formation;   // 도착시 포메이션 준비완료
         }
         else if (isArrive && isSetPosition) // 도착했고 포지션배정받음
@@ -142,27 +143,8 @@ public class Soilder_Controller : Unit
                 switch (leaderState.bat_State)
                 {
                     case LeaderState.BattleState.Detect:
-                        switch (formationState)
-                        {
-                            case FormationState.Following:
-                                FollowOrder();
-                                break;
-                            case FormationState.Formation:
-                                break;
-                            case FormationState.GoingFormation:
-                                holdingShield = true;
-                                target.target = formationTransmform;
-                                break;
-                            case FormationState.Shield:
-                                holdingShield = true;
-                                aipath.isStopped = true;
-                                Vector3 leaderDirection = leader.transform.forward;
-                                float leaderSpeed = 1.5f;
-
-                                // 예시: 솔져에게 리더의 방향과 속도를 전달
-                                transform.position = transform.position + leaderDirection * leaderSpeed * Time.deltaTime;
-                                break;
-                        }
+                    case LeaderState.BattleState.Wait:
+                        Formation_Process();
                         break;
                     case LeaderState.BattleState.Attack:
                         holdingShield = false;
@@ -189,6 +171,8 @@ public class Soilder_Controller : Unit
                         holdingShield = false;
                         aipath.isStopped = false;
                         break;
+
+
                     default:
                         //holdingShield = false;
                         //isMove = true;
@@ -209,20 +193,15 @@ public class Soilder_Controller : Unit
         {
             if (!GameManager.instance.isDead)
             {
+
                 switch (player.CurrentMode)
                 {
                     case Ply_Controller.Mode.Follow:
-
-                        if (player.CurrentMode == Ply_Controller.Mode.Follow)
+                        Formation_Process();
+                        if (player.playerMovement.isPlayerMove && player.playerMovement.speed >0.7f && !    player.playerMovement.holdingShield)
                         {
-                            //if (isClose == true)
-                            //{
-                            //    ani.SetBool("Move", false);
-                            //}
-                            //else
-                            //{
-                            //    ani.SetBool("Move", true);
-                            //}
+                            isSetPosition = false; //배치받은 위치 초기화
+                            FollowOrder();
                         }
 
                         break;
@@ -231,6 +210,7 @@ public class Soilder_Controller : Unit
                         break;
                     case Ply_Controller.Mode.Stop:
                         break;
+
                 }
             }
             else
@@ -385,7 +365,7 @@ public class Soilder_Controller : Unit
         aipath.isStopped = true;
         aipath.canMove = false;
         aipath.canSearch = false;   
-        gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
+        
         if (gameObject.layer == TeamLayer)
         {
             player.UnitList_List.Remove(gameObject);
@@ -397,7 +377,7 @@ public class Soilder_Controller : Unit
             leaderState.UnitList.Remove(gameObject);
             leaderState.currentUnitCount--;
         }
-
+        gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
         //StopCoroutine(attackCoroutine);   //공격도중이라면 공격도 중지
 
         Destroy(gameObject, 3f);  // 죽고나서 3초후 디스트로이
@@ -466,16 +446,90 @@ public class Soilder_Controller : Unit
         if (leader == null) // 리더가 없으면 제자리에서 대기
         {
             isMove = false;
+            aipath.isStopped = true;
             return;
         }
         else // 리더가 있으면 리더한테 이동
         {
             FollowOrder();
+           
         }
     }
     private void FollowOrder()
     {
         isMove = true;
+        aipath.canMove = true;
+        aipath.canSearch = true;
         target.target = leader.transform;
+        holdingShield = false;
+    }
+    private void Formation_Process()
+    {
+        switch (formationState)
+        {
+            case FormationState.Following:
+                FollowOrder();
+                break;
+            case FormationState.Formation:
+                break;
+            case FormationState.GoingFormation:
+                ani.SetBool("Shield" , true);
+                target.target = formationTransmform;
+                break;
+            case FormationState.Shield:
+                holdingShield = true;
+                aipath.canMove = false;
+                if (leader.layer == player.gameObject.layer)
+                {
+                    if (player.playerMovement.isPlayerMove) { 
+                    speed = player.playerMovement.speed;
+                    }
+                    else
+                    {
+                        speed = 0;
+                    }
+
+
+                    //코드개더럽네 시발 되면 고침
+                    Vector3 cameraForward = Camera.main.transform.forward;
+                    cameraForward.y = 0f; // 회전을 수평 평면에만 유지
+                    Quaternion targetRotation = Quaternion.LookRotation(cameraForward);
+                    Quaternion currentRotation = transform.rotation;
+                    transform.position += (player.playerMovement.MoveDir.normalized * player.playerMovement.realSpeed /** Time.deltaTime*/);
+                    Vector3 moveDir = player.playerMovement.MoveDir;
+
+
+
+                    Vector3 playerRotation = player.playerMovement.GetPlayerRotation();
+                    transform.rotation = Quaternion.LookRotation(playerRotation, Vector3.up);
+                    // 여기에서 moveDir을 사용하여 원하는 작업 수행
+                    // 예: 이동 로직에 적용
+                    transform.Translate(moveDir * Time.deltaTime);
+                    if (player.playerMovement.holdingShield)
+                    {
+                        
+                        float rotationSpeed = 3f; // 회전 속도 조절
+                        transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, rotationSpeed * Time.deltaTime);
+                    }
+                }
+
+            
+                //if (leader.layer == player.gameObject.layer)
+                //{
+                //    transform.position = transform.position + player.playerMovement.MoveDir * player.playerMovement.speed * Time.deltaTime;
+                //}
+                //else
+                //{
+
+                //    transform.position = transform.position + playerDirection * leaderState.speed * Time.deltaTime;
+                //}
+                //Vector3 leaderDirection = leader.transform.forward * -1;
+                //float leaderSpeed = 1.5f;
+
+                // 예시: 솔져에게 리더의 방향과 속도를 전달
+                //transform.position = transform.position + leaderDirection * leaderSpeed * Time.deltaTime;
+                break;
+        }
+       
     }
 }

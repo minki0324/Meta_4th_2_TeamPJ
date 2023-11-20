@@ -14,6 +14,7 @@ public class EnemySpawn : MonoBehaviour
     public Transform[] SpawnPoint = new Transform[3];
     //������ġ�� 0~2 ����ġ ���ʴ�� ��ȯ�ϱ����� �ε���
     private int SpawnIndex = 0;
+    private float SpawnCoolTime;
     //��ȯ�Ǵ� ����
     private float Spawninterval = 0.4f;
     private int myLayer;
@@ -44,7 +45,7 @@ public class EnemySpawn : MonoBehaviour
         {
             return;
         }
-       
+        SpawnCoolTime += Time.deltaTime;
         //��������Ʈ ���̾ ����� ���̾�� �ٸ��� ��߷��̾�� ������Ʈ.
         if (myLayer != transform.parent.gameObject.layer)
         {
@@ -122,51 +123,35 @@ public class EnemySpawn : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isAI)
+        if (other.CompareTag("Player"))
+        {
+            GameManager.instance.inRange = true;
+            Ply_Controller ply = other.GetComponent<Ply_Controller>();
+            ply.spawnPoint = gameObject.GetComponent<EnemySpawn>();
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (isAI && SpawnCoolTime >= 0.4f)
         {
             if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderAI.canSpawn)
             {
 
-                InvokeRepeating("UnitSpawn", 0f, Spawninterval);
+                UnitSpawn();
 
-
+                SpawnCoolTime = 0f;
             }
-            else if (!leaderAI.canSpawn)
-            {
-
-                CancelInvoke("UnitSpawn");
-            }
-        }
-        else
-        {
-
-            if (other.CompareTag("Player"))
-            {
-                GameManager.instance.inRange = true;
-                Ply_Controller ply = other.GetComponent<Ply_Controller>();
-                ply.spawnPoint = gameObject.GetComponent<EnemySpawn>();
-            }
-
-
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (isAI)
-        {
-            if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer)
-            {
 
-                CancelInvoke("UnitSpawn");
-            }
-        }
-        else
+        if (other.CompareTag("Player"))
         {
-            if (other.CompareTag("Player"))
-            {
-                GameManager.instance.inRange = false;
-            }
+            GameManager.instance.inRange = false;
         }
+
     }
     private void UnitSpawn()
     {

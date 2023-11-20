@@ -10,14 +10,13 @@ public class LeaderAI : LeaderState
     SphereCollider col;
     bool isStart = false;
     private Formation_enemy formation;
-    public bool isEnermyChecked = false;
     private float attackOrederRange = 8;
-    
+
     private LeaderController leaderController;
     public Vector3 leaderAIDirection;
 
     public List<Position> positions = new List<Position>();
-    private int nextIndex =0;
+    private int nextIndex = 0;
     protected override void Awake()
     {
         base.Awake();
@@ -62,91 +61,103 @@ public class LeaderAI : LeaderState
             }
         }
         // 항상 주변에 적이있는지 탐지
-        EnemyDitect();
-        
-        if (holdingShield)
+        if (!data.isDie)
         {
-            speed -= 1f * Time.deltaTime;
-            speed = Mathf.Clamp(speed, 0.3f, 1f);
-        }
-        else
-        {
-            if (isMove)
+            EnemyDitect();
+
+
+            if (holdingShield)
             {
-                speed += 1f * Time.deltaTime;
+                speed -= 1f * Time.deltaTime;
+                speed = Mathf.Clamp(speed, 0.3f, 1f);
             }
             else
             {
-                speed -= 1f * Time.deltaTime;
+                if (isMove)
+                {
+                    speed += 1f * Time.deltaTime;
+                }
+                else
+                {
+                    speed -= 1f * Time.deltaTime;
+                }
+                speed = Mathf.Clamp01(speed);
             }
-            speed = Mathf.Clamp01(speed);
-        }
-        aipath.maxSpeed = 5 * speed ;
-        ani.SetBool("Shield", holdingShield);
-        ani.SetFloat("Speed", speed);
-        ani.SetBool("Move", isMove);
+            aipath.maxSpeed = 5 * speed;
+            ani.SetBool("Shield", holdingShield);
+            ani.SetFloat("Speed", speed);
+            ani.SetBool("Move", isMove);
 
-        #region 리더상태에 따른 행동
-        switch (bat_State)
-        {
-
-            case BattleState.Move:
-                if(target.target == null)
-                {
-                    target.target = leaderController.Target;
-                }
-                holdingShield = false;
-                isMove = true;
-                aipath.isStopped = false;
-                nextIndex = 0;
-                for (int i = 0; i < UnitList.Count; i++)
-                {
-                    UnitList[i].GetComponent<Soilder_Controller>().isSetPosition = false;
-
-                }
-
-                break;
-            case BattleState.Attack:
-                holdingShield = false;
-                isMove = true;
-                //느려졌던 이동속도 초기화
-                aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
-                AttackOrder();
-                break;
-            case BattleState.Detect:
-                //리더가 타겟에게 가능 이동속도 줄이기 , 방패들기
-                target.target = nearestTarget;
-                holdingShield = true;
-                aipath.maxSpeed = 1.5f; // 이동속도줄이기
-                leaderAIDirection = transform.TransformDirection(Vector3.forward);
-                FormationOrder(formationRange);
-                //formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
-                break;
-            case BattleState.Search:
-                break;
-            case BattleState.Defense:
-                break;
-            default:
-                holdingShield = false;
-                break;
-
-
-        }
-        #endregion
-        if (data.currentHP <= 0)
-        {
-
-            //공격정지 ,이동정지 
-            if (!data.isDie)
+            #region 리더상태에 따른 행동
+            switch (bat_State)
             {
-                data.isDie = true;
-                Die();
+
+                case BattleState.Move:
+                    if (nearestTarget == null)
+                    {
+                        target.target = leaderController.Target;
+                    }
+                    holdingShield = false;
+                    isMove = true;
+                    aipath.isStopped = false;
+                    nextIndex = 0;
+                    for (int i = 0; i < UnitList.Count; i++)
+                    {
+                        UnitList[i].GetComponent<Soilder_Controller>().isSetPosition = false;
+
+                    }
+
+                    break;
+                case BattleState.Attack:
+                    holdingShield = false;
+                    isMove = true;
+                    //느려졌던 이동속도 초기화
+                    aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
+                    AttackOrder();
+                    break;
+                case BattleState.Detect:
+
+                    target.target = nearestTarget;
+
+                    holdingShield = true;
+                    aipath.maxSpeed = 1.5f; // 이동속도줄이기
+                    leaderAIDirection = transform.TransformDirection(Vector3.forward);
+                    FormationOrder(formationRange);
+                    //formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
+                    break;
+                case BattleState.Wait:
+                    //리더가 타겟에게 가는 이동속도 줄이기 , 방패들기
+
+                    holdingShield = true;
+                    aipath.maxSpeed = 1.5f; // 이동속도줄이기
+                    leaderAIDirection = transform.TransformDirection(Vector3.forward);
+                    FormationOrder(formationRange);
+                    //formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
+                    break;
+                case BattleState.Defense:
+                    break;
+
+                default:
+                    holdingShield = false;
+                    break;
+
+
+            }
+            #endregion
+            if (data.currentHP <= 0)
+            {
+
+                //공격정지 ,이동정지 
+                if (!data.isDie)
+                {
+                    data.isDie = true;
+                    Die();
+                }
+
             }
 
         }
 
-
-      
 
 
     }
@@ -293,14 +304,12 @@ public class LeaderAI : LeaderState
                 bat_State = BattleState.Attack;
             }
 
-            isEnermyChecked = true;
         }
         else
         {
 
             bat_State = BattleState.Move;
 
-            isEnermyChecked = false;
         }
 
 
@@ -377,13 +386,13 @@ public class LeaderAI : LeaderState
 
 
     }
-  
+
     private void FormationOrder()
     {
-            
+
 
     }
-    private Transform GetSoilder(RaycastHit[] hits ,Position formation_Position)
+    private Transform GetSoilder(RaycastHit[] hits, Position formation_Position)
     {
         Transform nearest = null;
         float closestDistance = float.MaxValue;
@@ -409,7 +418,7 @@ public class LeaderAI : LeaderState
                     continue;
                 }
 
-                 
+
             }
 
         }
@@ -419,21 +428,21 @@ public class LeaderAI : LeaderState
     private void FormationOrder(float scanRange)
     {
         //같은팀 레이어들 모두 담기
-        RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0 ,1 << gameObject.layer);
-      
+        RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, 1 << gameObject.layer);
+
         Transform Soilder = null;
-        Soilder= GetSoilder(allHits ,positions[nextIndex]); //포메이션위치 와 가장가까운 병사 리턴
-        if(Soilder != null) { 
-        Soilder_Controller soilder_con = Soilder.GetComponent<Soilder_Controller>();
-        soilder_con.isSetPosition = true;
-        soilder_con.formationTransmform= positions[nextIndex].position; //제일가깝고 도착한 병사들 위치로 설정
+        Soilder = GetSoilder(allHits, positions[nextIndex]); //포메이션위치 와 가장가까운 병사 리턴
+        if (Soilder != null)
+        {
+            Soilder_Controller soilder_con = Soilder.GetComponent<Soilder_Controller>();
+            soilder_con.isSetPosition = true;
+            soilder_con.formationTransmform = positions[nextIndex].position; //제일가깝고 도착한 병사들 위치로 설정
             Debug.Log($"{nextIndex}번째 포지션 지정했음 다음 포지션인덱스{nextIndex + 1}");
-        nextIndex++;
+            nextIndex++;
         }
-        
 
-       
+
+
     }
-
 
 }

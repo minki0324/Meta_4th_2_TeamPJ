@@ -48,9 +48,13 @@ public class LeaderController : MonoBehaviour
                     // 현재 위치가 본인 진영일 때
                     if (Target.gameObject.layer.Equals(gameObject.layer))
                     {
+
+                        AI.bat_State = LeaderState.BattleState.Wait;
+
                         // 현재 병사 수가 15명 이상일 때
                         if (AI.currentUnitCount >= 15)
                         {
+                            AI.bat_State = LeaderState.BattleState.Move;
                             Targetset = GetComponent<TargetFlag>();
                             NextTarget = Targetset.Target(transform);
 

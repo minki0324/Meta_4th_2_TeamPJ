@@ -45,7 +45,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected Collider Ob_Weapon_col;
     protected float defaultSpeed;
 
-    protected float speed;
+    public float speed;
 
     [Header("현재타겟 Transform")]
     [SerializeField] protected Transform nearestTarget;

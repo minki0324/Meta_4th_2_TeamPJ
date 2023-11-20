@@ -65,7 +65,7 @@ public class Formation_State : MonoBehaviour
         }
     }
 
-    private void SetFormation(int scanRange)
+    public void SetFormation(int scanRange)
     {
         for (int i = 0; i < Count.Length; i++)
         {
@@ -155,7 +155,7 @@ public class Formation_State : MonoBehaviour
         foreach (RaycastHit hit in allHits)
         {
             GameObject hitObject = hit.transform.gameObject;
-            if (hitObject.layer == gameObject.layer && hitObject.CompareTag("Soilder"))
+            if (hitObject.layer == gameObject.layer && hitObject.CompareTag("Soldier"))
               
             {
                 if (!uniqueTargets.Contains(hitObject))

@@ -28,8 +28,9 @@ public class Ply_Movement : MonoBehaviour
     [SerializeField] private Rigidbody rb;
 
     [Header("이동")]
-    public float MoveSpeed = 10f;
-
+    public float MoveSpeed = 10f ;
+    public float speed;
+    public float realSpeed;
     [Header("점프")]
     [SerializeField] private float JumpForce = 10f;
     [SerializeField] private bool isGrounded = true;
@@ -47,12 +48,17 @@ public class Ply_Movement : MonoBehaviour
     public float groundCheckRadius = 0.2f;  // OverlapSphere 반지름
     public string groundTag = "Ground";  // 땅의 태그
 
+
+    public bool holdingShield; //우클릭 실드들때
+    private bool isMove; 
+
     private Vector3 playerPosition;
 
     private float Min = -210f;
     private float Max = 210f;
+    Vector3 playerRotate;
 
- 
+
     public Quaternion playerRotation { get; private set; }   //added
 
 
@@ -61,16 +67,41 @@ public class Ply_Movement : MonoBehaviour
         camera_ = Camera.main;
         isPossible_Attack_1 = true;
         playerPosition = gameObject.transform.position;
+
     }
 
     private void Update()
     {
         CurrentPos = transform.position;
-        InputMovment();
+     
+
+        if (holdingShield)
+        {
+            speed -= 1f * Time.deltaTime;
+            speed = Mathf.Clamp(speed, 0.3f, 1f);
+            
+        }
+        else
+        {
+            if (isMove)
+            {
+                speed += 1f * Time.deltaTime;
+            }
+            else
+            {
+                speed -= 1f * Time.deltaTime;
+            }
+            speed = Mathf.Clamp01(speed);
+        }
+        ani.SetBool("Shield", holdingShield);
+        ani.SetFloat("Speed", speed);
+        ani.SetBool("Move", isMove);
+        realSpeed = MoveSpeed * speed *Time.deltaTime;
+        InputMovment(MoveSpeed);
         Jump();
         Ground_Check();
 
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetMouseButton(0))
         {
 
             if (isPossible_Attack_1)
@@ -104,17 +135,21 @@ public class Ply_Movement : MonoBehaviour
             // isLive = false;
         }
 
-
+        
         if (Input.GetMouseButton(1))
         {
-            ani.SetBool("Shield", true);
-            ani.SetFloat("MoveSpeed", 0.5f);
-            MoveSpeed = 2f;
+
+            holdingShield = true;
+
+            Vector3 cameraForward = Camera.main.transform.forward;
+            cameraForward.y = 0f; // 회전을 수평 평면에만 유지
+            Quaternion targetRotation = Quaternion.LookRotation(cameraForward);
+            transform.rotation = targetRotation;
+
         }
         else
         {
-            ani.SetBool("Shield", false);
-            ani.SetFloat("MoveSpeed", 1f);
+            holdingShield = false;
         }
 
 
@@ -124,7 +159,7 @@ public class Ply_Movement : MonoBehaviour
 
 
 
-    private void InputMovment()
+    private void InputMovment(float MoveSpeed)
     {
         if (!GameManager.instance.isLive)
         {
@@ -135,7 +170,22 @@ public class Ply_Movement : MonoBehaviour
 
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        Vector3 playerRotate = Vector3.Scale(camera_.transform.forward, new Vector3(1, 0, 1));
+
+
+
+        //Vector3 currentPlayerRotate = playerRotate;
+
+        // 목표 플레이어 회전 계산
+        Vector3 cameraForward = Camera.main.transform.forward;
+        cameraForward.y = 0f; // 수평 평면에만 유지
+        Vector3 targetPlayerRotate = Vector3.Scale(cameraForward, new Vector3(1, 0, 1));
+
+        // Vector3.Slerp를 사용하여 자연스럽게 회전 보간
+        float rotationSpeed = 5f; // 회전 속도 조절
+
+
+
+        playerRotate = Vector3.Slerp(targetPlayerRotate, targetPlayerRotate, rotationSpeed * Time.deltaTime);
 
         MoveDir = playerRotate * Input.GetAxis("Vertical") + camera_.transform.right * Input.GetAxis("Horizontal");
 
@@ -155,21 +205,23 @@ public class Ply_Movement : MonoBehaviour
             playerRotation = transform.rotation;    //added
 
             // 이동
-            transform.position += (MoveDir.normalized * MoveSpeed * Time.deltaTime);
+            Debug.Log(MoveSpeed);
+            transform.position += (MoveDir.normalized * realSpeed /** Time.deltaTime*/);
             transform.position = new Vector3(
             Mathf.Clamp(transform.position.x, Min, Max), transform.position.y, Mathf.Clamp(transform.position.z, Min, Max));
-            ani.SetBool("Move", true);
-            ani.SetBool("Idle", false);
+            isMove = true;
             isPlayerMove = true;
         }
         else
         {
-            ani.SetBool("Idle", true);
-            ani.SetBool("Move", false);
+            isMove = false;
             isPlayerMove = false;
         }
     }
-
+    public Vector3 GetPlayerRotation()
+    {
+        return playerRotate;
+    }
     private void Jump()
     {
         if (!GameManager.instance.isLive)
