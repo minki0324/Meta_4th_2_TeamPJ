@@ -202,7 +202,7 @@ public class Ply_Controller : MonoBehaviour
                             Debug.Log("3눌림");
                             Human_num = 2;
                             // 나중에 if문에 앤드게이트로 isPossible_Archer 업글 유무 확인
-                            if (GameManager.instance.Gold > GameManager.instance.unit2.cost && GameManager.instance.isPossible_Upgrade_2)
+                            if (GameManager.instance.Gold > GameManager.instance.unit2.cost)
                             {
                                 Init_Solider(GameManager.instance.unit2);
                             }
