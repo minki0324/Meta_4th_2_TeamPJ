@@ -5,24 +5,6 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Text;
 
-#region 인게임 스크립트
-[System.Serializable]
-public class ScriptsData
-{
-
-    public Scripts[] Scripts;
-}
-
-[System.Serializable]
-
-public class Scripts
-{
-    public string Title;
-    public string Script;
-    public int Price;
-}
-
-#endregion
 
 #region 플레이어 데이터
 [System.Serializable]
@@ -35,7 +17,6 @@ public class PlayerData
 {
     public string ID;
     public int Coin;
-    public List<bool> Sol;
     public bool SwordMan;
     public bool Knight;
     public bool Archer;
@@ -44,7 +25,6 @@ public class PlayerData
     public bool Prist;
 }
 
-[System.Serializable]
 
 #endregion
 
@@ -71,7 +51,7 @@ public class DataManager : MonoBehaviour
 
 
     //public string path = "C:/Users/KGA/Documents/GitHub/Meta_4th_2_TeamPJ/Team_Project_2/JsonFiles/";
-    public string filename = "playerData.json";
+    public string filename = "playerData.Json";
     Player_Data player_Data = new Player_Data();
 
     public void Save_playerData(string id, int coin, bool swordman, bool knight, bool archer, bool spearMan, bool halberdier, bool priest)
@@ -80,11 +60,14 @@ public class DataManager : MonoBehaviour
         PlayerData player = new PlayerData();
         player.ID = id;
         player.Coin = coin;
+        player.SwordMan = swordman;
+        player.Knight = knight;
+        player.Archer = archer;
         player.SpearMan = spearMan;
         player.Halberdier = halberdier;
         player.Prist = priest;
 
-        filename = Path.Combine("C:", "JsonFiles", filename);
+        filename = Path.Combine("JsonFiles", filename);
         string loadJson = File.ReadAllText(filename);    //json파일의 내용 불러오고
 
         player_Data = JsonConvert.DeserializeObject<Player_Data>(loadJson); //풀고~
@@ -122,7 +105,7 @@ public class DataManager : MonoBehaviour
             filename += ".json";
         }
 
-        filename = Path.Combine("C:", "JsonFiles", filename);
+        filename = Path.Combine("JsonFiles", filename);
         string ReadData = File.ReadAllText(filename);
 
 
@@ -133,27 +116,6 @@ public class DataManager : MonoBehaviour
         playerdata = JsonConvert.DeserializeObject<Player_Data>(ReadData);
 
         return playerdata;
-    }
-
-
-
-    public ScriptsData Load(string filename)
-    {
-        if (!filename.Contains(".json"))
-        {
-            filename += ".json";
-        }
-
-        filename = Path.Combine("C:", "JsonFiles", filename);
-        string ReadData = File.ReadAllText(filename);
-
-      
-
-        ScriptsData scriptdata = new ScriptsData();
-
-        scriptdata = JsonConvert.DeserializeObject<ScriptsData>(ReadData);
-
-        return scriptdata;
     }
 
     public void printPath()

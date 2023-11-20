@@ -9,11 +9,12 @@ public class OccupationHUD : MonoBehaviour
     // 1. 점령이 끝나면 인게임 상단에 점령현황 ImageColor 변경
     // 2. 플레이어한테는 점령 중 Slider와 UI 표시되도록   
 
-    [SerializeField] GameObject[] Occu_image = null;
-    [SerializeField] private Image[] Occu_Img_Color; // 점령 중인 팀 색
+    public GameObject[] Occu_image;
+    public Image[] Occu_Img_Color; // 점령 중인 팀 색
     public Flag[] FlagArray;  // 플래그 컴포넌트 배열
     public Slider[] OccuSlider;
-    private Color ColorTemp;
+    public Color ColorTemp;
+    int TeamColor;
 
     private void Start()
     {
@@ -39,10 +40,39 @@ public class OccupationHUD : MonoBehaviour
         }
 
         // 상단 점령현황 위치조정
+
+       
+
         for (int i = 0; i < FlagArray.Length; i++)
         {
             Occu_image[i] = Occu_Img_Color[i * 4].transform.parent.gameObject;
             Occu_image[i].transform.localPosition = new Vector3((-50 * FlagArray.Length * 0.5f) + (50 * i), 0, 0);
+            Change_Color((int)ColorIdx.White, i);
+            if (FlagArray[i].transform.parent != null) 
+            {
+                FlagArray[i].Current_Gauge = 100f;
+                
+                FlagArray[i].isOccupied = true;
+                switch (FlagArray[i].gameObject.layer)
+                {
+                    case (int)TeamLayerIdx.Player:
+                        TeamColor = GameManager.instance.Color_Index;
+                        break;
+                    case (int)TeamLayerIdx.Team1:
+                        TeamColor = GameManager.instance.T1_Color;
+                        break;
+                    case (int)TeamLayerIdx.Team2:
+                        TeamColor = GameManager.instance.T2_Color;
+                        break;
+                    case (int)TeamLayerIdx.Team3:
+                        TeamColor = GameManager.instance.T3_Color;
+                        break;
+                    default:
+                        break;
+                }
+                Ply_Slider(TeamColor, i, 100f, 100f);
+                FlagArray[i].OccuHUD.Change_Color(TeamColor, i);
+            }
         }
 
         // 상단 점령현황 setActive 

@@ -51,7 +51,7 @@ public class LineUpSet : MonoBehaviour
 
     void Start()
     {
-     
+
         lineupSprite = lineupUI.GetComponentsInChildren<Image>();
         buttons = GetComponentsInChildren<Button>();
         Checkbox = new GameObject[buttons.Length]; //
@@ -85,7 +85,7 @@ public class LineUpSet : MonoBehaviour
                 lineupSprite[i].sprite = unitSprite_array[6];
             }
         }
-        if(lineupIndexs.Count == 3)
+        if (lineupIndexs.Count == 3)
         {
             isCanStart = true;
         }
@@ -100,7 +100,7 @@ public class LineUpSet : MonoBehaviour
     }
     private void Init_Button()
     {
-      
+
         Swordman_Btn = gameObject.transform.GetChild(0).GetComponent<Button>();
         Knight_Btn = gameObject.transform.GetChild(1).GetComponent<Button>();
         Archer_Btn = gameObject.transform.GetChild(2).GetComponent<Button>();
@@ -145,7 +145,7 @@ public class LineUpSet : MonoBehaviour
         }
         else
         {
-            
+
             //카운트가 3이상일땐 추가못함
             //선택되있는 유닛들만 리스트에서 뺄수있음.
             for (int i = 0; i < lineupIndexs.Count; i++)
@@ -158,9 +158,6 @@ public class LineUpSet : MonoBehaviour
             }
 
         }
-
-
-
 
     }
     private void SetLineup(int buttonIndex)
@@ -187,14 +184,23 @@ public class LineUpSet : MonoBehaviour
             }
         }
     }
+
     public void UnitSetToPlayer()
     {
-       
-        GameManager.instance.unit0 =GameManager.instance.units[lineupIndexs[0]];
-        GameManager.instance.unit1 =GameManager.instance.units[lineupIndexs[1]];
-        GameManager.instance.unit2 =GameManager.instance.units[lineupIndexs[2]];
+        GameManager.instance.unit0 = GameManager.instance.units[lineupIndexs[0]];
+        GameManager.instance.unit1 = GameManager.instance.units[lineupIndexs[1]];
+        GameManager.instance.unit2 = GameManager.instance.units[lineupIndexs[2]];
+    }
 
-       }
+    public void Normal_Mode()
+    {
+        GameManager.instance.GameSpeed = 0;
+    }
+
+    public void Speed_Mode()
+    {
+        GameManager.instance.GameSpeed = 1;
+    }
 }
-  
+
 

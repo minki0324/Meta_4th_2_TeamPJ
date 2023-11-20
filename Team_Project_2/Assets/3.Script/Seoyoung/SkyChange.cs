@@ -19,10 +19,10 @@ public class SkyChange : MonoBehaviour
         RenderSettings.skybox = DayToSunset_skybox;
         DayToSunset_skybox.SetFloat("_Blend", 0);
         SunsetToNihgt_skybox.SetFloat("_Blend", 0);
-
         StartCoroutine(ChangeSky());
+
     }
-    
+
     private IEnumerator ChangeSky()
     {
         // 게임 시간 20초 일때
@@ -33,22 +33,21 @@ public class SkyChange : MonoBehaviour
         //코루틴 호출 주기 1초 -> (겜시간/2) / 10; =>1.5
         //값 증가량
 
-
-        float co_time =  (GameManager.instance.EndTime/2) / 10;
+        float co_time =  (GameManager.instance.EndTime/2) / 100;
        
      
         while (true)
         {
-      
+            Debug.Log("?");
             
             if (GameManager.instance.currentTime <= GameManager.instance.EndTime / 2)
             {
-                day_currentRange += 0.1f;
+                day_currentRange += 0.01f;
                 DayToSunset_skybox.SetFloat("_Blend", day_currentRange);              
             }
             else
             {
-                night_currentRange += 0.1f;
+                night_currentRange += 0.01f;
                 RenderSettings.skybox = SunsetToNihgt_skybox;
                 SunsetToNihgt_skybox.SetFloat("_Blend", night_currentRange);
             }

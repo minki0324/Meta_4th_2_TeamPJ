@@ -15,7 +15,7 @@ using System.IO;
 
 public class Intro : MonoBehaviour
 {
-    #region Å¸ÀÌÆ² ÆĞ³Î 
+    #region íƒ€ì´í‹€ íŒ¨ë„ 
     [Header("Title Panel")]
     [SerializeField]
     private GameObject Title_Panel;
@@ -26,7 +26,7 @@ public class Intro : MonoBehaviour
     [SerializeField]
     private GameObject Btn_Panel;
 
-    //·Î±×ÀÎ ÆĞ³Î
+    //ë¡œê·¸ì¸ íŒ¨ë„
     [SerializeField]
     private InputField inputField;
 
@@ -36,7 +36,7 @@ public class Intro : MonoBehaviour
     [SerializeField]
     private Button SignUp_Btn;
 
-    //¹öÆ° ÆĞ³Î
+    //ë²„íŠ¼ íŒ¨ë„
     [SerializeField]
     private Button Ready_Btn;
 
@@ -51,14 +51,11 @@ public class Intro : MonoBehaviour
 
 
 
-    //µÚ·Î°¡±â
+    //ë’¤ë¡œê°€ê¸°
     [SerializeField]
     private Button BackButton;
     #endregion
-
-
-
-    #region Setup ÆĞ³Î(Ready ÆĞ³Î)
+    #region Setup íŒ¨ë„(Ready íŒ¨ë„)
 
     [Header("Setup Panel")]
     [SerializeField]
@@ -116,10 +113,7 @@ public class Intro : MonoBehaviour
     private Text ID4_Text;
 
     #endregion
-
-
-
-    #region ¾÷±×·¹ÀÌµå ÆĞ³Î
+    #region ì—…ê·¸ë ˆì´ë“œ íŒ¨ë„
     [Header("Upgrade Panel")]
     private ScrollRect Upgrade_Panel;
 
@@ -130,10 +124,7 @@ public class Intro : MonoBehaviour
     private Text Coin_Text;
 
     #endregion
-
-
-
-    #region ¿É¼Ç ÆĞ³Î
+    #region ì˜µì…˜ íŒ¨ë„
     [Header("Option Panel")]
 
     [SerializeField]
@@ -142,9 +133,7 @@ public class Intro : MonoBehaviour
 
 
     #endregion
-
-
-    #region È¸¿ø°¡ÀÔ ÆĞ³Î
+    #region íšŒì›ê°€ì… íŒ¨ë„
     [SerializeField]
     private GameObject SignUp_Panel;
 
@@ -157,18 +146,14 @@ public class Intro : MonoBehaviour
     [SerializeField]
     private Button SignUp_Cancel_Btn;
     #endregion
-
-
-    #region °æ°í ÆĞ³Î
+    #region ê²½ê³  íŒ¨ë„
     [SerializeField]
     private GameObject Warning_Panel;
     #endregion
+    #region ê¸°íƒ€
+    [Header("ê¸°íƒ€")]
 
-
-    #region ±âÅ¸
-    [Header("±âÅ¸")]
-
-    //¹è°æ°ü·Ã
+    //ë°°ê²½ê´€ë ¨
     [SerializeField]
     private GameObject Leader_A;
 
@@ -182,32 +167,27 @@ public class Intro : MonoBehaviour
     private float MouseX;
 
 
-    //json °ü·Ã
+    //json ê´€ë ¨
     private DataManager dataManager;
-    private ScriptsData scriptsData;
     private Player_Data playerData;
 
-    //·Î±×ÀÎ °ü·Ã
+    //ë¡œê·¸ì¸ ê´€ë ¨
     public bool isLogined = false;
 
-    public string id = "sunny";
-
-    public int playerID_index;
-
-    //¼Ò¸® °ü·Ã
+    //ì†Œë¦¬ ê´€ë ¨
     public AudioMixer audioMixer;
 
 
 
-    //ÆÀ°ü·Ã
-    [Header("ÆÀ ÄÃ·¯")]
+    //íŒ€ê´€ë ¨
+    [Header("íŒ€ ì»¬ëŸ¬")]
     [SerializeField]
     private GetColor getColor;
 
 
 
 
-    //GameManager¿¡ º¸³¾ ÆÀ º° »ö»ó ¹øÈ£, ColorSet ÀÎµ¦½º¿Í µ¿ÀÏÇÑ ¼ıÀÚ
+    //GameManagerì— ë³´ë‚¼ íŒ€ ë³„ ìƒ‰ìƒ ë²ˆí˜¸, ColorSet ì¸ë±ìŠ¤ì™€ ë™ì¼í•œ ìˆ«ì
     public int Team1_Color;
     public int Team2_Color;
     public int Team3_Color;
@@ -217,35 +197,22 @@ public class Intro : MonoBehaviour
 
 
     #endregion
-
-
-
+    [SerializeField] private GameObject Original_Map;
+    [SerializeField] private GameObject TimeAttack_Map;
 
     private void Awake()
     {
-        // gameObject.SetActive(true);
-
-        getColor = GetComponent<GetColor>();
         dataManager = new DataManager();
-        scriptsData = dataManager.Load("Scripts");
         playerData = dataManager.Load_playerData("playerData");
-
-       
     }
 
     private void Start()
     {
-      
-
         Screen.SetResolution(1920, 1080, true);
 
         Init_FuntionUI();
-
-
        
         TitlePanel_On();
-
-     
     }
 
 
@@ -260,7 +227,7 @@ public class Intro : MonoBehaviour
 
     private void Init_FuntionUI()
     {
-        //½ÃÀÛ ½Ã ÃÊ±âÈ­ÇÒ °Íµé
+        //ì‹œì‘ ì‹œ ì´ˆê¸°í™”í•  ê²ƒë“¤
 
         BackButton = transform.GetChild(0).GetComponent<Button>();
         BackButton.onClick.AddListener(BackBtn_Clicked);
@@ -276,7 +243,7 @@ public class Intro : MonoBehaviour
 
 
         
-        ////±¸Á¶Ã¼ ¹è¿­ ÃÊ±âÈ­
+        ////êµ¬ì¡°ì²´ ë°°ì—´ ì´ˆê¸°í™”
         //for (int i = 0; i < GetColor.instance.TeamColors.Length; i++)
         //{
         //    GetColor.instance.teamColors[i].color_m = GetColor.instance.TeamColors[i];
@@ -301,7 +268,7 @@ public class Intro : MonoBehaviour
 
     public void TitlePanel_On()
     {
-        //ÆĞ³Î on/off
+        //íŒ¨ë„ on/off
         Title_Panel.SetActive(true);
         Setup_Panel.SetActive(false);
         Upgrade_Panel.gameObject.SetActive(false);
@@ -314,7 +281,7 @@ public class Intro : MonoBehaviour
         BackButton.gameObject.SetActive(false);
         BackButton.enabled = false;
 
-        //¿ÀºêÁ§Æ® °ª ¿¬°á
+        //ì˜¤ë¸Œì íŠ¸ ê°’ ì—°ê²°
         Login_Panel = Title_Panel.transform.GetChild(1).gameObject;
         Btn_Panel = Title_Panel.transform.GetChild(2).gameObject;
 
@@ -348,7 +315,7 @@ public class Intro : MonoBehaviour
 
         GameObject Selection = Setup_Panel.transform.GetChild(0).gameObject;
 
-        #region ¿ÀºêÁ§Æ® ¿¬°á
+        #region ì˜¤ë¸Œì íŠ¸ ì—°ê²°
         TeamColor1_Btn = Selection.transform.GetChild(0).GetChild(0).GetComponent<Button>();
         TeamColor2_Btn = Selection.transform.GetChild(1).GetChild(0).GetComponent<Button>();
         TeamColor3_Btn = Selection.transform.GetChild(2).GetChild(0).GetComponent<Button>();
@@ -373,7 +340,7 @@ public class Intro : MonoBehaviour
         #endregion
 
 
-        #region ¹öÆ° ÇÔ¼ö È£Ãâ
+        #region ë²„íŠ¼ í•¨ìˆ˜ í˜¸ì¶œ
         Original_Btn.onClick.AddListener(OriginalBtn_Clicked);
         TimeAttack_Btn.onClick.AddListener(TimeAttackBtn_Clicked);
         GameStart_Btn.onClick.AddListener(GameStart_Btn_Clicekd);
@@ -385,7 +352,7 @@ public class Intro : MonoBehaviour
 
         #endregion
 
-        ID1_Text.text = id;
+        ID1_Text.text = GameManager.instance.PlayerID;
 
         TeamColor1_Btn.image.color = GetColor.instance.teamColors[8].color_c;
         TeamColor2_Btn.image.color = GetColor.instance.teamColors[2].color_c;
@@ -408,7 +375,7 @@ public class Intro : MonoBehaviour
 
     public void Change_Team_Color(Button button, ref int teamNum)
     {
-        Debug.Log("ÄÃ·¯Ã¼ÀÎÁö");
+        Debug.Log("ì»¬ëŸ¬ì²´ì¸ì§€");
       
         for (int i = teamNum; i < GetColor.instance.teamColors.Length; i++)
         {
@@ -468,8 +435,8 @@ public class Intro : MonoBehaviour
 
     private void Init_Scroll_Item()
     {
-       
-        for (int i = 0; i < 7; i++)
+        Upgrade_Items.Clear();
+        for (int i = 0; i < 6; i++)
         {
             GameObject a = Upgrade_Panel.transform.GetChild(0).GetChild(0).GetChild(i).gameObject;
             Upgrade_Items.Add(a);
@@ -477,26 +444,34 @@ public class Intro : MonoBehaviour
 
         for(int i = 0; i<Upgrade_Items.Count; i++)
         {
-            Upgrade_Items[i].transform.GetChild(1).GetComponent<Text>().text = scriptsData.Scripts[i].Title;
-            Upgrade_Items[i].transform.GetChild(2).GetComponent<Text>().text = scriptsData.Scripts[i].Script;
-            Upgrade_Items[i].transform.GetChild(3).GetComponent<Text>().text = $"{scriptsData.Scripts[i].Price}c";
+            Upgrade_Items[i].transform.GetChild(1).GetComponent<Text>().text = GameManager.instance.units[i].unitName;
+            if (i == 3)
+            {
+                Upgrade_Items[i].transform.GetChild(2).GetComponent<Text>().text = $"{GameManager.instance.units[i].description}\nHeal Amount : {GameManager.instance.units[i].damage}";
+            }
+            else
+            {
+                Upgrade_Items[i].transform.GetChild(2).GetComponent<Text>().text = $"{GameManager.instance.units[i].description}\nDamage : {GameManager.instance.units[i].damage}";
+            }
+            Upgrade_Items[i].transform.GetChild(3).GetComponent<Text>().text = $"{GameManager.instance.units[i].cost}c";
         }
 
-        #region ±¸¸Å¿©ºÎ
+        #region êµ¬ë§¤ì—¬ë¶€
+
         if (GameManager.instance.isCanUse_SwordMan)
         {
             Upgrade_Items[0].GetComponent<Button>().enabled = false;
-            Upgrade_Items[0].GetComponent<Image>().color = Color.black;
+            Upgrade_Items[0].GetComponent<Image>().color = Color.gray;
         }
         else
         {
             Upgrade_Items[0].GetComponent<Button>().enabled = true;
             Upgrade_Items[0].GetComponent<Button>().onClick.AddListener(() =>
             {
-                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[0].Price)
+                if (GameManager.instance.PlayerCoin >= GameManager.instance.units[0].cost)
                 {
                     GameManager.instance.isCanUse_SwordMan = true;
-                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[0].Price;
+                    GameManager.instance.PlayerCoin -= GameManager.instance.units[0].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[0].GetComponent<Button>().enabled = false;
                     Upgrade_Items[0].GetComponent<Image>().color = Color.black;
@@ -508,17 +483,17 @@ public class Intro : MonoBehaviour
         if (GameManager.instance.isCanUse_Knight)
         {
             Upgrade_Items[1].GetComponent<Button>().enabled = false;
-            Upgrade_Items[1].GetComponent<Image>().color = Color.black;
+            Upgrade_Items[1].GetComponent<Image>().color = Color.gray;
         }
         else
         {
-            Upgrade_Items[0].GetComponent<Button>().enabled = true;
-            Upgrade_Items[0].GetComponent<Button>().onClick.AddListener(() =>
+            Upgrade_Items[1].GetComponent<Button>().enabled = true;
+            Upgrade_Items[1].GetComponent<Button>().onClick.AddListener(() =>
             {
-                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[1].Price)
+                if (GameManager.instance.PlayerCoin >= GameManager.instance.units[1].cost)
                 {
                     GameManager.instance.isCanUse_Knight = true;
-                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[1].Price;
+                    GameManager.instance.PlayerCoin -= GameManager.instance.units[1].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[1].GetComponent<Button>().enabled = false;
                     Upgrade_Items[1].GetComponent<Image>().color = Color.black;
@@ -530,17 +505,17 @@ public class Intro : MonoBehaviour
         if (GameManager.instance.isCanUse_Archer)
         {
             Upgrade_Items[2].GetComponent<Button>().enabled = false;
-            Upgrade_Items[2].GetComponent<Image>().color = Color.black;
+            Upgrade_Items[2].GetComponent<Image>().color = Color.gray;
         }
         else
         {
             Upgrade_Items[2].GetComponent<Button>().enabled = true;
             Upgrade_Items[2].GetComponent<Button>().onClick.AddListener(() =>
             {
-                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[2].Price)
+                if (GameManager.instance.PlayerCoin >= GameManager.instance.units[2].cost)
                 {
                     GameManager.instance.isCanUse_Archer = true;
-                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[2].Price;
+                    GameManager.instance.PlayerCoin -= GameManager.instance.units[2].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[2].GetComponent<Button>().enabled = false;
                     Upgrade_Items[2].GetComponent<Image>().color = Color.black;
@@ -552,17 +527,17 @@ public class Intro : MonoBehaviour
         if (GameManager.instance.isCanUse_SpearMan)
         {
             Upgrade_Items[3].GetComponent<Button>().enabled = false;
-            Upgrade_Items[3].GetComponent<Image>().color = Color.black;
+            Upgrade_Items[3].GetComponent<Image>().color = Color.gray;
         }
         else
         {
             Upgrade_Items[3].GetComponent<Button>().enabled = true;
             Upgrade_Items[3].GetComponent<Button>().onClick.AddListener(() =>
             {
-                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[3].Price)
+                if (GameManager.instance.PlayerCoin >= GameManager.instance.units[3].cost)
                 {
-                    GameManager.instance.isCanUse_SpearMan = true;
-                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[3].Price;
+                    GameManager.instance.isCanUse_Prist = true;
+                    GameManager.instance.PlayerCoin -= GameManager.instance.units[3].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[3].GetComponent<Button>().enabled = false;
                     Upgrade_Items[3].GetComponent<Image>().color = Color.black;
@@ -574,17 +549,17 @@ public class Intro : MonoBehaviour
         if (GameManager.instance.isCanUse_Halberdier)
         {
             Upgrade_Items[4].GetComponent<Button>().enabled = false;
-            Upgrade_Items[4].GetComponent<Image>().color = Color.black;
+            Upgrade_Items[4].GetComponent<Image>().color = Color.gray;
         }
         else
         {
             Upgrade_Items[4].GetComponent<Button>().enabled = true;
             Upgrade_Items[4].GetComponent<Button>().onClick.AddListener(() =>
             {
-                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[4].Price)
+                if (GameManager.instance.PlayerCoin >= GameManager.instance.units[4].cost)
                 {
-                    GameManager.instance.isCanUse_SwordMan = true;
-                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[4].Price;
+                    GameManager.instance.isCanUse_SpearMan = true;
+                    GameManager.instance.PlayerCoin -= GameManager.instance.units[4].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[4].GetComponent<Button>().enabled = false;
                     Upgrade_Items[4].GetComponent<Image>().color = Color.black;
@@ -596,28 +571,24 @@ public class Intro : MonoBehaviour
         if (GameManager.instance.isCanUse_Prist)
         {
             Upgrade_Items[5].GetComponent<Button>().enabled = false;
-            Upgrade_Items[5].GetComponent<Image>().color = Color.black;
+            Upgrade_Items[5].GetComponent<Image>().color = Color.gray;
         }
         else
         {
             Upgrade_Items[5].GetComponent<Button>().enabled = true;
             Upgrade_Items[5].GetComponent<Button>().onClick.AddListener(() =>
             {
-                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[5].Price)
+                if (GameManager.instance.PlayerCoin >= GameManager.instance.units[5].cost)
                 {
-                    GameManager.instance.isCanUse_SwordMan = true;
-                    GameManager.instance.PlayerCoin -= scriptsData.Scripts[5].Price;
+                    GameManager.instance.isCanUse_Halberdier = true;
+                    GameManager.instance.PlayerCoin -= GameManager.instance.units[5].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[5].GetComponent<Button>().enabled = false;
                     Upgrade_Items[5].GetComponent<Image>().color = Color.black;
-
                 }
             });
         }
         #endregion
-
-
-
     }
 
     public void BuyBtn_Clicked(Button button, bool isHave, int solidernum)
@@ -625,25 +596,23 @@ public class Intro : MonoBehaviour
         if(isHave)
         {
             button.enabled = false;
-            button.GetComponent<Image>().color = Color.black;
+            button.GetComponent<Image>().color = Color.gray;
         }
         else
         {
             button.enabled = true;
             button.onClick.AddListener(() =>
             {
-                if (GameManager.instance.PlayerCoin >= scriptsData.Scripts[solidernum].Price)
+                if (GameManager.instance.PlayerCoin >= GameManager.instance.units[solidernum].cost)
                 {
-                    
                     button.enabled = false;
-                    button.GetComponent<Image>().color = Color.black;
+                    button.GetComponent<Image>().color = Color.gray;
                 }
 
             });
         }
       
     }
-
 
     public void OptionPanel_On()
     {
@@ -663,13 +632,13 @@ public class Intro : MonoBehaviour
 
     public void SignUpPanel_On()
     {
-        //¿ÀºêÁ§Æ® ¿¬°á
+        //ì˜¤ë¸Œì íŠ¸ ì—°ê²°
         SignUp_Panel.SetActive(true);
         SignUp_inputField = SignUp_Panel.transform.GetChild(1).GetComponent<InputField>();
         SignUp_Confirm_Btn = SignUp_Panel.transform.GetChild(2).GetComponent<Button>();
         SignUp_Cancel_Btn = SignUp_Panel.transform.GetChild(3).GetComponent<Button>();
 
-        //¹öÆ° ÀÌº¥Æ®
+        //ë²„íŠ¼ ì´ë²¤íŠ¸
         SignUp_Confirm_Btn.onClick.AddListener(Check_SignUp);
         SignUp_Cancel_Btn.onClick.AddListener(() => {
             SignUp_Panel.SetActive(false);
@@ -715,7 +684,7 @@ public class Intro : MonoBehaviour
     public void CheckLogin()
     {
         
-        //·Î±×ÀÎ È®ÀÎ
+        //ë¡œê·¸ì¸ í™•ì¸
         if (!isLogined)
         {
             Btn_Panel.SetActive(false);
@@ -728,7 +697,7 @@ public class Intro : MonoBehaviour
             Confirm_Btn.onClick.AddListener(Login);
             SignUp_Btn.onClick.AddListener(SignUpPanel_On);
 
-            //½ÃÀÛ½Ã inputField¿¡ Ä¿¼­
+            //ì‹œì‘ì‹œ inputFieldì— ì»¤ì„œ
             inputField.ActivateInputField();
         }
         else
@@ -747,7 +716,6 @@ public class Intro : MonoBehaviour
         {
             if(playerData.playerData[i].ID == inputField.text)
             {
-                playerID_index = i;
                 GameManager.instance.PlayerID = playerData.playerData[i].ID;
                 GameManager.instance.PlayerCoin = playerData.playerData[i].Coin;
                 GameManager.instance.isCanUse_SwordMan = playerData.playerData[i].SwordMan;
@@ -759,7 +727,7 @@ public class Intro : MonoBehaviour
 
 
 
-                Debug.Log("·Î±×ÀÎµÊ¤¾¤¾");
+                Debug.Log("ë¡œê·¸ì¸ë¨ã…ã…");
 
                 isLogined = true;
             }
@@ -790,20 +758,21 @@ public class Intro : MonoBehaviour
 
     public void OriginalBtn_Clicked()
     {
-        //¸ÊÀÌ¹ÌÁö Original·Î º¯°æ
-        Debug.Log("¿À¸®Áö³Î ¸Ê ÀÌ¹ÌÁö");
+        GameManager.instance.GameMode = 0;
+        Original_Map.gameObject.SetActive(true);
+        TimeAttack_Map.gameObject.SetActive(false);
     }
 
     public void TimeAttackBtn_Clicked()
     {
-        //¸ÊÀÌ¹ÌÁö Å¸ÀÓ¾îÅÃÀ¸·Î º¯°æ
-        Debug.Log("Å¸ÀÓ¾îÅÃ ¸Ê ÀÌ¹ÌÁö");
+        GameManager.instance.GameMode = 1;
+        TimeAttack_Map.gameObject.SetActive(true);
+        Original_Map.gameObject.SetActive(false);
     }
 
     
     public void BackBtn_Clicked()
     {
-        Debug.Log("Backbutton Å¬¸¯µÊ");
         TitlePanel_On();
     }
 

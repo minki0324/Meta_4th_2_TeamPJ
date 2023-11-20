@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4643991624658711482}
   - component: {fileID: 1106139832776937690}
   - component: {fileID: 7682848984412516024}
-  - component: {fileID: 7141185023575989192}
+  - component: {fileID: 5193139720666522647}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Weapon
@@ -63,7 +63,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: -0.1}
---- !u!114 &7141185023575989192
+--- !u!114 &5193139720666522647
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,10 +72,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4329260827449654019}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18c30c47e1bbf59468088bd8a9673fb9, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d1752f986cd5ac4ba40c532a8bb4956, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target_T: {fileID: 0}
 --- !u!1 &4751077189329270103
 GameObject:
   m_ObjectHideFlags: 0

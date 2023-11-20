@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    //unitValue¿¡ µû¶ó ¼ÒÈ¯µÇ´Â unit
+    //unitValueï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ç´ï¿½ unit
     [SerializeField] private GameObject[] unit;
     [SerializeField] private Ply_Controller player;
-    private LeaderState leaderState;
+    private LeaderAI leaderAI;
     [SerializeField] private GameObject targetLeader;
 
-    //½ºÆùÀ§Ä¡ 3°³
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ 3ï¿½ï¿½
     public Transform[] SpawnPoint = new Transform[3];
-    //½ºÆùÀ§Ä¡¸¦ 0~2 ¹øÀ§Ä¡ Â÷·Ê´ë·Î ¼ÒÈ¯ÇÏ±âÀ§ÇÑ ÀÎµ¦½º
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ 0~2 ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½Ê´ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ï±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½
     private int SpawnIndex = 0;
-    //¼ÒÈ¯µÇ´Â °£°Ý
+    //ï¿½ï¿½È¯ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½
     private float Spawninterval = 0.4f;
     private int myLayer;
     private bool isAI;
     private bool isRespawning;
-    // °ø°Ý ´ë»ó ·¹ÀÌ¾î
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½
     private LayerMask TeamLayer;
     private void Awake()
     {
@@ -31,7 +31,7 @@ public class EnemySpawn : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            SpawnPoint[i] = transform.GetChild(i); // °¢ ÀÚ½Ä °´Ã¼¸¦ ¹è¿­¿¡ ÀúÀå
+            SpawnPoint[i] = transform.GetChild(i); // ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
     private void Start()
@@ -45,33 +45,33 @@ public class EnemySpawn : MonoBehaviour
             return;
         }
        
-        //½ºÆùÆ÷ÀÎÆ® ·¹ÀÌ¾î°¡ ±ê¹ßÀÇ ·¹ÀÌ¾î¶û ´Ù¸£¸é ±ê¹ß·¹ÀÌ¾î·Î ¾÷µ¥ÀÌÆ®.
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½ß·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®.
         if (myLayer != transform.parent.gameObject.layer)
         {
-            //±ê¹ß·¹ÀÌ¾î·Î º¯°æ
+            //ï¿½ï¿½ß·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             gameObject.layer = transform.parent.gameObject.layer;
 
-            //Áß¸³±ê¹ßÀÌ¶ó¸é ±×³É ¸®ÅÏ
+            //ï¿½ß¸ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½×³ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (gameObject.layer == 0)
             {
                 return;
             }
-            //ÆÀ±ê¹ßÀÌ¶ó¸é Å¸°ÙÀº ÇÃ·¹ÀÌ¾î
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½
             else if (gameObject.layer == TeamLayer)
             {
                 targetLeader = player.gameObject;
             }
-            //Àû±ê¹ßÀÌ¶ó¸é ·¹ÀÌ¾î¿¡¸Â°Ô Å¸°Ù ¼¼ÆÃ.
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î¿¡ï¿½Â°ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
             else
             {
                 try
                 {
                     targetLeader = SetLeader();
-                    targetLeader.TryGetComponent(out leaderState);
+                    targetLeader.TryGetComponent(out leaderAI);
                 }
                 catch
                 {
-                    Debug.Log("Å¸°ÙÃ£Áö¸øÇÔ");
+                    Debug.Log("Å¸ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
                 }
             }
 
@@ -88,7 +88,7 @@ public class EnemySpawn : MonoBehaviour
 
             if (targetLeader.layer == LayerMask.NameToLayer("Die"))
             {
-                if (leaderState.data.isDie && !isRespawning)
+                if (leaderAI.data.isDie && !isRespawning)
                 {
                     StartCoroutine(RespawnAfterDelay(5f));
                 }
@@ -98,7 +98,7 @@ public class EnemySpawn : MonoBehaviour
                 isAI = false;
 
             }
-            //Å¸°ÙÀÌ ÆÀÀÌ¾Æ´Ï¶ó¸é ¼ÒÈ¯ÇÏ´Â Å¸°ÙÀº AIÀÌ´Ù
+            //Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾Æ´Ï¶ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ï´ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ AIï¿½Ì´ï¿½
             else
             {
                 isAI = true;
@@ -124,14 +124,14 @@ public class EnemySpawn : MonoBehaviour
     {
         if (isAI)
         {
-            if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderState.canSpawn)
+            if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderAI.canSpawn)
             {
 
                 InvokeRepeating("UnitSpawn", 0f, Spawninterval);
 
 
             }
-            else if (!leaderState.canSpawn)
+            else if (!leaderAI.canSpawn)
             {
 
                 CancelInvoke("UnitSpawn");
@@ -170,78 +170,80 @@ public class EnemySpawn : MonoBehaviour
     }
     private void UnitSpawn()
     {
-        if (leaderState.currentUnitCount > 19)
+        if (leaderAI.currentUnitCount > 19)
         {
             return;
         }
-        Unit_Information currentUnit = GameManager.instance.units[leaderState.unitValue];
+        Unit_Information currentUnit = GameManager.instance.units[leaderAI.unitValue];
         GameObject newUnit = Instantiate(currentUnit.unitObject, SpawnPoint[SpawnIndex].position, Quaternion.identity);
-        SetLayerRecursively(newUnit, leaderState.gameObject.layer);
+        SetLayerRecursively(newUnit, leaderAI.gameObject.layer);
+        Soilder_Controller soilder_Con = newUnit.GetComponent<Soilder_Controller>();
+        soilder_Con.infodata = currentUnit;
+        soilder_Con.Setunit();
         switch (targetLeader.gameObject.layer)
         {
             case 7:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T1_Color);
+                Upgrade_Set(0, soilder_Con);
                 break;
             case 8:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T2_Color);
+                Upgrade_Set(1, soilder_Con);
                 break;
             case 9:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T3_Color);
+                Upgrade_Set(2, soilder_Con);
                 break;
 
         }
-
         
         
-        Soilder_Controller soilder_Con = newUnit.GetComponent<Soilder_Controller>();
-        soilder_Con.infodata = currentUnit;
-        soilder_Con.Setunit();
-        leaderState.UnitList.Add(newUnit);
-        leaderState.Gold -= currentUnit.cost;
+        leaderAI.UnitList.Add(newUnit);
+        leaderAI.Gold -= currentUnit.cost;
         SpawnIndex++;
 
-        leaderState.currentUnitCount++;
-        //½ºÆùÀ§Ä¡¸¦ Â÷·Ê´ë·Î ³ª¿À°ÔÇÏ±âÀ§ÇÑ ¸Þ¼Òµå 
+        leaderAI.currentUnitCount++;
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½Ê´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼Òµï¿½ 
         if (SpawnIndex > 2)
         {
             SpawnIndex = 0;
         }
 
     }
-    private LeaderState FindLeader()
+    private LeaderAI FindLeader()
     {
-        GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTag¿¡´Â LeaderState ÄÄÆ÷³ÍÆ®°¡ ÀÖ´Â ¿ÀºêÁ§Æ®ÀÇ ÅÂ±×¸¦ ³Ö½À´Ï´Ù.
+        GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTagï¿½ï¿½ï¿½ï¿½ LeaderState ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Â±×¸ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.
 
-        // Ã£Àº ¿ÀºêÁ§Æ® Áß¿¡¼­ LeaderState ÄÄÆ÷³ÍÆ®¸¦ °¡Áø Ã¹ ¹øÂ° ¿ÀºêÁ§Æ®¸¦ Ã£½À´Ï´Ù.
+        // Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ß¿ï¿½ï¿½ï¿½ LeaderState ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¹ ï¿½ï¿½Â° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ Ã£ï¿½ï¿½ï¿½Ï´ï¿½.
 
 
         foreach (var obj in objectsWithSameLayer)
         {
             if (obj.gameObject.layer == gameObject.layer)
             {
-                leaderState = obj.GetComponent<LeaderState>();
+                leaderAI = obj.GetComponent<LeaderAI>();
 
-                if (leaderState != null)
+                if (leaderAI != null)
                 {
-                    return leaderState;
-                    // LeaderState¸¦ Ã£À¸¸é ·çÇÁ¸¦ Á¾·áÇÕ´Ï´Ù.
+                    return leaderAI;
+                    // LeaderStateï¿½ï¿½ Ã£ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
                 }
             }
         }
 
-        if (leaderState == null)
+        if (leaderAI == null)
         {
-            Debug.LogWarning("LeaderState ÄÄÆ÷³ÍÆ®¸¦ °¡Áø ¿ÀºêÁ§Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("LeaderState ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
         }
         return null;
     }
     public void SetLayerRecursively(GameObject obj, int newLayer)
     {
-        obj.layer = newLayer; // ÇöÀç ¿ÀºêÁ§Æ®ÀÇ ·¹ÀÌ¾î º¯°æ
+        obj.layer = newLayer; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         foreach (Transform child in obj.transform)
         {
-            SetLayerRecursively(child.gameObject, newLayer); // ÇÏÀ§ ¿ÀºêÁ§Æ®¿¡ ´ëÇØ Àç±Í È£Ãâ
+            SetLayerRecursively(child.gameObject, newLayer); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È£ï¿½ï¿½
         }
 
 
@@ -252,10 +254,10 @@ public class EnemySpawn : MonoBehaviour
         if (myLayer != TeamLayer)
         {
 
-            leaderState = FindLeader();
-            if (leaderState != null)
+            leaderAI = FindLeader();
+            if (leaderAI != null)
             {
-                targetLeader = leaderState.gameObject;
+                targetLeader = leaderAI.gameObject;
 
             }
         }
@@ -270,20 +272,20 @@ public class EnemySpawn : MonoBehaviour
     }
     private void AIspawn()
     {
-        if (leaderState.data.isDie)
+        if (leaderAI.data.isDie)
         {
-            leaderState.canSpawn = false;
+            leaderAI.canSpawn = false;
 
             return;
         }
-        //À¯´ÖÄ«¿îÆ®°¡ ¸Æ½º°¡ µÆ°Å³ª , À¯´Öºñ¿ëº¸´Ù °¡Áø °ñµå°¡ ÀûÀ»¶§ false;
-        if (leaderState.maxUnitCount <= leaderState.currentUnitCount || leaderState.Gold <= leaderState.unitCost)
+        //ï¿½ï¿½ï¿½ï¿½Ä«ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Æ½ï¿½ï¿½ï¿½ ï¿½Æ°Å³ï¿½ , ï¿½ï¿½ï¿½Öºï¿½ëº¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ false;
+        if (leaderAI.maxUnitCount <= leaderAI.currentUnitCount || leaderAI.Gold <= leaderAI.unitCost)
         {
-            leaderState.canSpawn = false;
+            leaderAI.canSpawn = false;
         }
         else
         {
-            leaderState.canSpawn = true;
+            leaderAI.canSpawn = true;
         }
     }
 
@@ -293,29 +295,28 @@ public class EnemySpawn : MonoBehaviour
 
         yield return new WaitForSeconds(delay);
 
-        // ºÎÈ° ·ÎÁ÷À» ¿©±â¿¡ ±¸Çö
-        // ¿¹¸¦ µé¸é, Á×¾ú´ø À¯´ÖÀ» ´Ù½Ã »ý¼ºÇÏ´Â µîÀÇ µ¿ÀÛÀ» ¼öÇà
+        // ï¿½ï¿½È° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â¿¡ ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½×¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        // ºÎÈ°ÀÌ ¿Ï·áµÇ¸é ´Ù½Ã »ì¾Æ³­ °ÍÀ¸·Î ÇÃ·¡±×¸¦ º¯°æ
-        leaderState.Respawn(targetLeader);
+        // ï¿½ï¿½È°ï¿½ï¿½ ï¿½Ï·ï¿½Ç¸ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½Æ³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+        leaderAI.       Respawn(targetLeader);
 
-        // ´ÙÀ½ ºÎÈ°À» À§ÇØ ÇÃ·¡±×¸¦ ÃÊ±âÈ­
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½×¸ï¿½ ï¿½Ê±ï¿½È­
         isRespawning = false;
     }
-    //private void Respawn()
-    //{
-    //    Debug.Log(targetLeader);
+    private void Upgrade_Set(int Team, Soilder_Controller soilder_Controller)
+    {
+        if (GameManager.instance.leaders[Team].isUpgrade_SolDam)
+        {
+            soilder_Controller.data.damage = soilder_Controller.infodata.damage + 5;
+        }
 
-       
-    //    //·¹ÀÌ¾î ¿ø·¡´ë·Î ¹Ù²ãÁÖ±â -> ½ºÆùÆ÷ÀÎÆ®ÀÇ ·¹ÀÌ¾î·Î
-    //    //isDeadºÒ°ª ÃÊ±âÈ­ÇØÁÖ±â -> false;
-    //    //¸®´õÀ§Ä¡¸¦ °¡Àå°¡±î¿î ÆÀ ½ºÆùÆ÷ÀÎÆ®·Î ÀÌµ¿½ÃÅ°±â
-    //    //¸®´õÀÇ currentHP ¸¦ maxHP¸¸Å­ È¸º¹½ÃÄÑÁÖ±â
-    //    targetLeader.layer = gameObject.layer;
-    //    leaderState.isDead = false;
+        if (GameManager.instance.leaders[Team].isUpgrade_SolHP)
+        {
+            soilder_Controller.data.currentHP = soilder_Controller.infodata.currentHP + 50;
+            soilder_Controller.data.maxHP = soilder_Controller.infodata.maxHP + 50;
+        }
+    }
 
-    //    targetLeader.transform.position = leaderState.respawnPoint.position;
-    //    leaderState.Current_HP = leaderState.Max_Hp;
 
-    //}
 }

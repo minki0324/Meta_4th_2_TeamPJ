@@ -100,5 +100,5 @@ public class ColorManager : MonoBehaviour
     {
         sprite.GetComponent<Image>().color = Teamcolor[index];
     }
-
+   
 }
