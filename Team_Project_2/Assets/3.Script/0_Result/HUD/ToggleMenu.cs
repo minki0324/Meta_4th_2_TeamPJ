@@ -12,7 +12,14 @@ public class ToggleMenu : MonoBehaviour
     [SerializeField] private Optioin_Panel option;
 
     public bool isMenuOpen = false;
-
+    private void Awake()
+    {
+        Menu[2] = Optioin_Panel.instance.gameObject;
+        option = Menu[2].GetComponent<Optioin_Panel>();
+        Menu[2].GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
+        Menu[2].GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
+        Menu[2].gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, 0f, 0f);
+    }
     void Update()
     {
         if(!isMenuOpen)
@@ -30,6 +37,7 @@ public class ToggleMenu : MonoBehaviour
             {
                 Togglemenu(Menu[2]);    // ¿É¼Ç
                 option.OptionPanel_On();
+               
             }
         }
         else

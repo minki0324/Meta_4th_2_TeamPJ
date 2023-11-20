@@ -6,18 +6,32 @@ using UnityEngine.Audio;
 
 public class Optioin_Panel : MonoBehaviour
 {
+    public static Optioin_Panel instance = null;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     #region 옵션 패널
     [Header("Option Panel")]
 
     [SerializeField]
-    private Slider masterVolume_Slider;
+    public Slider masterVolume_Slider;
 
     [SerializeField]
-    private Slider bgmVolume_Slider;
+    public Slider bgmVolume_Slider;
 
     [SerializeField]
-    private Slider sfxVolume_Slider;
+    public Slider sfxVolume_Slider;
 
     [SerializeField]
     private Slider mouseSensitive_Slider;
@@ -47,13 +61,14 @@ public class Optioin_Panel : MonoBehaviour
     private float MouseX;
     #endregion
 
+ 
 
     public void OptionPanel_On()
     {
         this.gameObject.SetActive(true);
+        
 
 
-       
         GameObject Selection_img = transform.GetChild(0).gameObject;
         Background_img = transform.GetChild(1).GetComponent<Image>();
 
@@ -71,6 +86,8 @@ public class Optioin_Panel : MonoBehaviour
 
         //사운드 조절 슬라이더
         masterVolume_Slider.onValueChanged.AddListener(delegate { SetVolume(5, "Master"); });
+        bgmVolume_Slider.onValueChanged.AddListener(delegate { SetVolume(5, "Bgm"); });
+        sfxVolume_Slider.onValueChanged.AddListener(delegate { SetVolume(5, "Sfx"); });
 
 
         //밝기 조절 슬라이더

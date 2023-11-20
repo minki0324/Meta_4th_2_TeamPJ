@@ -124,6 +124,7 @@ public class Intro : MonoBehaviour
     private Text Coin_Text;
 
     #endregion
+
     #region 옵션 패널
     [Header("Option Panel")]
 
@@ -202,6 +203,7 @@ public class Intro : MonoBehaviour
 
     private void Awake()
     {
+
         dataManager = new DataManager();
         playerData = dataManager.Load_playerData("playerData");
     }
@@ -236,9 +238,10 @@ public class Intro : MonoBehaviour
         Title_Panel = transform.GetChild(1).gameObject;
         Setup_Panel = transform.GetChild(2).gameObject;
         Upgrade_Panel = transform.GetChild(3).GetComponent<ScrollRect>();
-        Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
-        SignUp_Panel = transform.GetChild(5).gameObject;
-        Warning_Panel = transform.GetChild(6).gameObject;
+        Option_Panel = FindObjectOfType<Optioin_Panel>();
+       // Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
+        SignUp_Panel = transform.GetChild(4).gameObject;
+        Warning_Panel = transform.GetChild(5).gameObject;
 
 
 
