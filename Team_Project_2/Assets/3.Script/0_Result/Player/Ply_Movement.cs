@@ -34,7 +34,7 @@ public class Ply_Movement : MonoBehaviour
     [Header("점프")]
     [SerializeField] private float JumpForce = 10f;
     [SerializeField] private bool isGrounded = true;
-
+    public float rotationSpeed = 3.0f;
     public bool isPlayerMove { get; private set; }
     public Vector3 MoveDir = Vector3.zero;
     public Vector3 CurrentPos { get; private set; }
@@ -166,14 +166,7 @@ public class Ply_Movement : MonoBehaviour
             return;
         }
 
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
 
-        Vector3 right = transform.TransformDirection(Vector3.right);
-
-
-
-
-        //Vector3 currentPlayerRotate = playerRotate;
 
         // 목표 플레이어 회전 계산
         Vector3 cameraForward = Camera.main.transform.forward;
@@ -181,13 +174,47 @@ public class Ply_Movement : MonoBehaviour
         Vector3 targetPlayerRotate = Vector3.Scale(cameraForward, new Vector3(1, 0, 1));
 
         // Vector3.Slerp를 사용하여 자연스럽게 회전 보간
-        float rotationSpeed = 5f; // 회전 속도 조절
 
+        // 수평 및 수직 입력 값
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        //if (horizontalInput == 1)
+        //{
+        //    RotateToDirection(Camera.main.transform.right);
+        //}
+        //else if (horizontalInput == -1)
+        //{
+        //    RotateToDirection(-Camera.main.transform.right);
+        //}
+        //else if (verticalInput == 1)
+        //{
+        //    RotateToDirection(Camera.main.transform.forward);
+        //}
+        //else if (verticalInput == -1)
+        //{
+        //    RotateToDirection(-Camera.main.transform.forward);
+        //}
+        // 현재 회전에서 목표 회전까지 특정 각속도로 즉시 회전
 
+        //Vector3 rightDir = Camera.main.transform.right * horizontalInput;
+        //Vector3 forwardDir = Camera.main.transform.forward * verticalInput;
+        //Vector3 diagonalDir = rightDir + forwardDir;
+        //Quaternion rotation = Quaternion.LookRotation(diagonalDir);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, rotation ,rotationSpeed *Time.deltaTime);
+        //Quaternion targetRotation = Quaternion.LookRotation(diagonalDir);
+        //Quaternion currentRotation = transform.rotation;
+        //transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, rotationSpeed * Time.deltaTime);
+        //// 움직임 방향 계산
+        ///
+        MoveDir = targetPlayerRotate * verticalInput + Camera.main.transform.right * horizontalInput;
 
-        playerRotate = Vector3.Slerp(targetPlayerRotate, targetPlayerRotate, rotationSpeed * Time.deltaTime);
+        // 목표 회전 방향 계산
 
-        MoveDir = playerRotate * Input.GetAxis("Vertical") + camera_.transform.right * Input.GetAxis("Horizontal");
+        // Slerp를 사용하여 부드러운 회전 적용
+
+        //MoveDir = playerRotate * Input.GetAxis("Vertical") + camera_.transform.right * Input.GetAxis("Horizontal");
+        //playerRotate = Vector3.Slerp(targetPlayerRotate, MoveDir, rotationSpeed * Time.deltaTime);
+
 
 
         if (MoveDir != Vector3.zero)
@@ -216,9 +243,10 @@ public class Ply_Movement : MonoBehaviour
             isPlayerMove = false;
         }
     }
-    public Vector3 GetPlayerRotation()
+    private void RotateToDirection(Vector3 targetDirection)
     {
-        return playerRotate;
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
     private void Jump()
     {

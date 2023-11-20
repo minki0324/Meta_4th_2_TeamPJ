@@ -33,7 +33,7 @@ public class Formation_enemy : MonoBehaviour
 
         for (int i = 0; i < Parents_Pos.Length; i++)
         {
-
+         
         }
 
         GetSortedParentsByWeight();
@@ -225,7 +225,7 @@ public class Formation_enemy : MonoBehaviour
             {
                 Transform child = parent.GetChild(i);
 
-                weight += weightvalue;
+                weight += weightvalue *i;
 
                 weightedParents.Add((child, weight));  // ������ �κ�
             }

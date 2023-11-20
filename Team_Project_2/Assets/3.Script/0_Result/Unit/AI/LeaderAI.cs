@@ -407,7 +407,7 @@ public class LeaderAI : LeaderState
                     float distance = Vector3.Distance(formation_Position.position.position, hit.transform.position);
 
 
-                    if (distance < closestDistance)
+                    if (distance  < closestDistance)
                     {
                         closestDistance = distance;
                         nearest = hit.transform;
