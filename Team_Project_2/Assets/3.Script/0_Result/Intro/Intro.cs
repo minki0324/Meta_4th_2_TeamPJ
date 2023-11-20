@@ -162,12 +162,6 @@ public class Intro : MonoBehaviour
     private GameObject Leader_B;
 
 
-   // public float mouseSensitivity;
-
-    private float MouseY;
-    private float MouseX;
-
-
     //json 관련
     private DataManager dataManager;
     private Player_Data playerData;
@@ -198,6 +192,7 @@ public class Intro : MonoBehaviour
 
 
     #endregion
+
     [SerializeField] private GameObject Original_Map;
     [SerializeField] private GameObject TimeAttack_Map;
 

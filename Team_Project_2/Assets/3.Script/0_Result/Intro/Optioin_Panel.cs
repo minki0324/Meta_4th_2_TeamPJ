@@ -35,8 +35,6 @@ public class Optioin_Panel : MonoBehaviour
     private Button fullScreen_Btn;
 
 
-
-
     [SerializeField]
     private Light light_;
 
@@ -48,7 +46,14 @@ public class Optioin_Panel : MonoBehaviour
 
     private float MouseY;
     private float MouseX;
+
+    [SerializeField]
+    CameraControl cameraControl;
+
     #endregion
+
+
+
     private void Awake()
     {
         if (instance == null)
@@ -64,8 +69,6 @@ public class Optioin_Panel : MonoBehaviour
 
     }
 
-  
-
 
     public void OptionPanel_On()
     {
@@ -75,6 +78,7 @@ public class Optioin_Panel : MonoBehaviour
 
         GameObject Selection_img = transform.GetChild(0).gameObject;
         Background_img = transform.GetChild(1).GetComponent<Image>();
+        cameraControl = FindObjectOfType<CameraControl>();
 
         #region 오브젝트 연결
         masterVolume_Slider = Selection_img.transform.GetChild(0).GetChild(0).GetComponent<Slider>();
@@ -166,18 +170,18 @@ public class Optioin_Panel : MonoBehaviour
 
     private void SetMouseSensitive(float mouseSensitivity)
     {
-        //나중에 CameraControl 값 가져오기
-        if (mouseSensitivity > 100)
+      
+        if (mouseSensitivity > 10)
         {
-            mouseSensitivity = 100;
+            mouseSensitivity = 10;
+        }
+        if(mouseSensitivity < 1)
+        {
+            mouseSensitivity = 1;
         }
 
-        MouseX += Input.GetAxisRaw("Mouse X") * mouseSensitivity * Time.deltaTime;
-        MouseY -= Input.GetAxisRaw("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        cameraControl.RotSen = mouseSensitivity;
 
-        MouseY = Mathf.Clamp(MouseY, -90f, 90f); //Clamp를 통해 최소값 최대값을 넘지 않도록함
-
-        transform.localRotation = Quaternion.Euler(MouseY, MouseX, 0f);// 각 축을 한꺼번에 계산
     }
 
 

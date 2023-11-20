@@ -166,24 +166,22 @@ public class DrawLine : Graphic
         //시간(x), 팀포인트(y)추가
         if (current_Time + 2 <= GameManager.instance.currentTime)
         {
-
+            cell_x += 2;
             if (gameObject.name.ToString() == "Line_Team1")
-            {
-                cell_x += 2;
-                cell_y += GameManager.instance.Teampoint;
-               
+            {       
+                cell_y += GameManager.instance.Teampoint;               
             }
             else if (gameObject.name.ToString() == "Line_Enemy1")
             {
-
+                cell_y += GameManager.instance.leaders[0].Teampoint;
             }
             else if (gameObject.name.ToString() == "Line_Enemy2")
             {
-
+                cell_y += GameManager.instance.leaders[1].Teampoint;
             }
             else if (gameObject.name.ToString() == "Line_Enemy3")
             {
-
+                cell_y += GameManager.instance.leaders[2].Teampoint;
             }
 
             SetVerticesDirty();
