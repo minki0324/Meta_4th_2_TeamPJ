@@ -1165,11 +1165,12 @@ MonoBehaviour:
   m_Color: {r: 0.12518473, g: 0, b: 0.6886792, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 3, y: 8}
+  gridSize: {x: 1, y: 8}
   grid: {fileID: 989857576}
   points:
   - {x: 0, y: 0}
   - {x: 1, y: 3}
+  - {x: 0, y: 0}
   thickness: 10
 --- !u!222 &254342774
 CanvasRenderer:
@@ -1935,12 +1936,13 @@ MonoBehaviour:
   m_Color: {r: 0.3679245, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 3, y: 8}
+  gridSize: {x: 1, y: 8}
   grid: {fileID: 989857576}
   points:
   - {x: 0, y: 0}
   - {x: 1, y: 1}
   - {x: 2, y: 2}
+  - {x: 0, y: 0}
   thickness: 10.56
 --- !u!222 &564537254
 CanvasRenderer:
@@ -3434,7 +3436,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 0.14117648}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 3, y: 8}
+  gridSize: {x: 1, y: 8}
   thickness: 2.55
 --- !u!1 &1075013656
 GameObject:
@@ -4410,11 +4412,12 @@ MonoBehaviour:
   m_Color: {r: 0, g: 0.5377358, b: 0.032397453, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 3, y: 8}
+  gridSize: {x: 1, y: 8}
   grid: {fileID: 989857576}
   points:
   - {x: 0, y: 0}
   - {x: 1, y: 3}
+  - {x: 0, y: 0}
   thickness: 10
 --- !u!222 &1261428686
 CanvasRenderer:
@@ -4792,11 +4795,12 @@ MonoBehaviour:
   m_Color: {r: 1, g: 0.73324853, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 3, y: 8}
+  gridSize: {x: 1, y: 8}
   grid: {fileID: 989857576}
   points:
   - {x: 0, y: 0}
   - {x: 1, y: 3}
+  - {x: 0, y: 0}
   thickness: 10
 --- !u!222 &1398940582
 CanvasRenderer:
