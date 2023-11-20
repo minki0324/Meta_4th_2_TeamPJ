@@ -307,7 +307,9 @@ namespace SimpleProceduralTerrainProject
                     terrainData.heightmapResolution = m_heightMapSize;
                     terrainData.SetHeights(0, 0, htmap);
                     terrainData.size = new Vector3(m_terrainSize, m_terrainHeight, m_terrainSize);
+#pragma warning disable CS0618 // 형식 또는 멤버는 사용되지 않습니다.
                     terrainData.splatPrototypes = m_splatPrototypes;
+#pragma warning restore CS0618 // 형식 또는 멤버는 사용되지 않습니다.
                     terrainData.treePrototypes = m_treeProtoTypes;
                     terrainData.detailPrototypes = m_detailProtoTypes;
                     FillAlphaMap(terrainData);
@@ -321,7 +323,9 @@ namespace SimpleProceduralTerrainProject
                     m_terrain[x, z].heightmapPixelError = m_pixelMapError;
                     m_terrain[x, z].basemapDistance = m_baseMapDist;
                     m_terrain[x, z].gameObject.tag = "Ground";
+#pragma warning disable CS0618 // 형식 또는 멤버는 사용되지 않습니다.
                     m_terrain[x, z].castShadows = false;
+#pragma warning restore CS0618 // 형식 또는 멤버는 사용되지 않습니다.
 
                    
 

@@ -9,6 +9,7 @@ public class ToggleMenu : MonoBehaviour
     */
     [SerializeField] private WorldMap worldMap;
     [SerializeField] private GameObject[] Menu;
+    [SerializeField] private Optioin_Panel option;
 
     public bool isMenuOpen = false;
 
@@ -28,6 +29,7 @@ public class ToggleMenu : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Togglemenu(Menu[2]);    // ¿É¼Ç
+                option.OptionPanel_On();
             }
         }
         else

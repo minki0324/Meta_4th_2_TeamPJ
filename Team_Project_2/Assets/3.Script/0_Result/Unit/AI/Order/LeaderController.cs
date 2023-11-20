@@ -171,7 +171,7 @@ public class LeaderController : MonoBehaviour
     }
 
 
-    private bool isArrive(Transform EndPos)
+    public bool isArrive(Transform EndPos)
     {
         return (Vector3.Magnitude(transform.position - EndPos.position) < 5) ? true : false;
     }

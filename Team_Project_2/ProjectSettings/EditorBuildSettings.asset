@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scene/00_MainGame.unity
     guid: 2102ed02bac444d409510ec4e7fea6ad
+  - enabled: 1
+    path: Assets/1.Scene/Kwan.unity
+    guid: 5d646c3b3c113924fa7c21e92577e2f1
   m_configObjects: {}

@@ -12,38 +12,21 @@ public class Unit_Gate : MonoBehaviour
     // 2. 점령 후 포인트가 속도 변경
     // 3. 주변 유닛 수에 따른 점령 슬라이더 변경
 
-    [SerializeField] private Gate gate;   // 문 열기 스크립트
-    [SerializeField] private GameObject gateUI; // 문 열기 Text
-
-    private void OnEnable()
-    {
-        gateUI = GameObject.Find("Doorui");
-    }
+    private GameObject gateUI; // 문 열기 Text
+    public bool isMyGate = false;
 
     private void Start()
     {
+        gateUI = GameObject.Find("GateUI");
         gateUI.gameObject.SetActive(false);
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Gate"))
+        if (other.gameObject.CompareTag("Gate") && gameObject.CompareTag("Player"))
         {
-            gate = other.gameObject.GetComponent<Gate>();
-            if (gameObject.CompareTag("Player"))
-            {
-                gateUI.gameObject.SetActive(true);  // gateUI 활성화
-
-                if (Input.GetKeyDown(KeyCode.J))
-                {
-                    Debug.Log("??");
-                    StartCoroutine(gate.Gate_Interaction());
-                }                
-            }
-            else
-            {
-                StartCoroutine(gate.Gate_Interaction());
-            }
+            gateUI.gameObject.SetActive(true);  // gateUI 활성화 
+            isMyGate = true;
         }
     }
     private void OnTriggerExit(Collider other)
@@ -51,7 +34,7 @@ public class Unit_Gate : MonoBehaviour
         if (other.gameObject.CompareTag("Gate") && gameObject.CompareTag("Player")) 
         {
             gateUI.gameObject.SetActive(false);  // gateUI 비활성화        
+            isMyGate = false;
         }
-        gate = null;
     }
 }

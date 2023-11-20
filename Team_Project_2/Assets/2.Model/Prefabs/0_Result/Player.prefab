@@ -7909,11 +7909,8 @@ GameObject:
   - component: {fileID: 4021546367775810746}
   - component: {fileID: 4021546367775810747}
   - component: {fileID: 4021546367775810748}
-  - component: {fileID: 4021546367775810725}
-  - component: {fileID: 4021546367775810749}
   - component: {fileID: 4021546367775810750}
   - component: {fileID: 4021546367775810720}
-  - component: {fileID: 4021546367775810721}
   - component: {fileID: 4021546367775810751}
   m_Layer: 7
   m_Name: Player
@@ -8001,15 +7998,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentMode: 0
-  Max_MinionCount: 25
-  Current_MinionCount: 0
-  Minion_Prefabs:
-  - {fileID: 4239812368246995255, guid: 90345139ca52d394c8f1c4e71bc7bc22, type: 3}
-  - {fileID: 6006503084427101158, guid: 7b2c5439dcdaff14682d91ecbec50354, type: 3}
-  - {fileID: 4483072135592897270, guid: 688bb76400d688d40a0027c72be0d35e, type: 3}
   UnitList_List: []
   Human_num: 0
   Spawner: {fileID: 0}
+  spawnPoint: {fileID: 0}
   TargetLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -8021,42 +8013,9 @@ MonoBehaviour:
   isPlay_StopOrder: 0
   ischeckPosition: 0
   StopPos: {x: 0, y: 0, z: 0}
---- !u!114 &4021546367775810725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4021546367775810722}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58f40d976cd9e6448a420ad82ef3bd54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nearestMinion_List: []
-  TargetLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  isa: 0
-  StopPos: {x: 0, y: 0, z: 0}
---- !u!114 &4021546367775810749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4021546367775810722}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bda1b663e2d9ce047a0c08f3f29c1a02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nearestMinion_List: []
-  TargetLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  isa: 0
-  StopPos: {x: 0, y: 0, z: 0}
+  upgrade: {fileID: 0}
+  isUpgrade_SolDam: 0
+  isUpgrade_SolHP: 0
 --- !u!114 &4021546367775810750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8081,32 +8040,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f96b4b4679455c49bb41a37f9a2642d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  occupation: {fileID: 0}
-  Doorinter: {fileID: 0}
-  Doorui: {fileID: 0}
---- !u!114 &4021546367775810721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4021546367775810722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2847ebb42bcefe4479ca2ccbd38e9cc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ani: {fileID: 4021546367775810745}
-  rb: {fileID: 4021546367775810746}
-  MoveSpeed: 5
-  JumpForce: 250
-  isGrounded: 1
-  isAttacking_1: 0
-  isPossible_Attack_2: 0
-  isAttacking_2: 0
-  isPossible_Attack_1: 1
-  groundCheckRadius: 0.2
-  groundTag: Ground
 --- !u!208 &4021546367775810751
 NavMeshObstacle:
   m_ObjectHideFlags: 0

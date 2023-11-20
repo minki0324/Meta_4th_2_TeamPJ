@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
     public bool isLive = false;
     public bool isDead;
     public bool inRange;
+    private bool isFastMode;
     public float Current_HP = 150f;
     public float Max_Hp = 150f;
     public float Damage = 20f; 
@@ -121,7 +122,14 @@ public class GameManager : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.K))
         {
+            isFastMode = !isFastMode;
+            if (isFastMode) { 
             Time.timeScale = 10f;
+            }
+            else
+            {
+                Time.timeScale = 1;
+            }
         }
     }
 
