@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 38242643731754561}
   - component: {fileID: 8324632912747075330}
   - component: {fileID: 3608865927457636813}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bone_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Gate_Col: {fileID: 0}
-  gateUI: {fileID: 0}
+  isOpen: 1
 --- !u!135 &3608865927457636813
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -959,7 +959,7 @@ GameObject:
   - component: {fileID: 6733261164777575930}
   - component: {fileID: 2984605049039391014}
   - component: {fileID: 5276151884018965303}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: SpawnPoint
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}

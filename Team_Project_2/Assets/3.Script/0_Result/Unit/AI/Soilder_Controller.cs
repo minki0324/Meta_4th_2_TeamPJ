@@ -195,6 +195,31 @@ public class Soilder_Controller : Unit
 
                         //FollowOrder();
                         break;
+
+                    case LeaderState.BattleState.Wait:
+                        switch (formationState)
+                        {
+                            case FormationState.Following:
+                                FollowOrder();
+                                break;
+                            case FormationState.Formation:
+                                break;
+                            case FormationState.GoingFormation:
+                                holdingShield = true;
+                                target.target = formationTransmform;
+                                break;
+                            case FormationState.Shield:
+                                holdingShield = true;
+                                aipath.isStopped = true;
+                                Vector3 leaderDirection = leader.transform.forward;
+                                float leaderSpeed = 1.5f;
+
+                                // 예시: 솔져에게 리더의 방향과 속도를 전달
+                                transform.position = transform.position + leaderDirection * leaderSpeed * Time.deltaTime;
+                                break;
+                        }
+
+                        break;
                 }
             }
             else

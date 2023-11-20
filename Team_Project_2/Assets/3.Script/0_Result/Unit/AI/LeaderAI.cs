@@ -5,6 +5,7 @@ using System.Linq;
 using Pathfinding;
 public class LeaderAI : LeaderState
 {
+    private Rigidbody rb;
     private LayerMask targetLayer;
     private GameObject[] flag;
     SphereCollider col;
@@ -24,7 +25,7 @@ public class LeaderAI : LeaderState
         combinedMask = TargetLayers();
         flag = GameObject.FindGameObjectsWithTag("Flag");
         leaderController = GetComponent<LeaderController>();
-        bat_State = BattleState.Move;
+        /*bat_State = BattleState.Move;*/
         col = GetComponent<SphereCollider>();
         col.enabled = false;
 
@@ -35,7 +36,7 @@ public class LeaderAI : LeaderState
         GameManager.instance.leaders.Add(gameObject.GetComponent<LeaderState>());
         formation = GetComponent<Formation_enemy>();
         positions = formation.positions; // 포메이션 포지션들 우선순위로 담아둔 리스트 초기화
-        Debug.Log(positions[0]);
+        rb = GetComponent<Rigidbody>();
         SetLeaderState();
 
     }
@@ -62,7 +63,10 @@ public class LeaderAI : LeaderState
             }
         }
         // 항상 주변에 적이있는지 탐지
-        EnemyDitect();
+        if(!data.isDie)
+        {
+            EnemyDitect();
+        }
         
         if (holdingShield)
         {
@@ -95,6 +99,8 @@ public class LeaderAI : LeaderState
                 {
                     target.target = leaderController.Target;
                 }
+                rb.constraints = RigidbodyConstraints.None;
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
                 holdingShield = false;
                 isMove = true;
                 aipath.isStopped = false;
@@ -102,11 +108,11 @@ public class LeaderAI : LeaderState
                 for (int i = 0; i < UnitList.Count; i++)
                 {
                     UnitList[i].GetComponent<Soilder_Controller>().isSetPosition = false;
-
                 }
-
                 break;
             case BattleState.Attack:
+                rb.constraints = RigidbodyConstraints.None;
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
                 holdingShield = false;
                 isMove = true;
                 //느려졌던 이동속도 초기화
@@ -122,7 +128,15 @@ public class LeaderAI : LeaderState
                 FormationOrder(formationRange);
                 //formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
                 break;
-            case BattleState.Search:
+            case BattleState.Wait:
+                rb.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+                //리더가 타겟에게 가능 이동속도 줄이기 , 방패들기
+                target.target = nearestTarget;
+                holdingShield = true;
+                aipath.maxSpeed = 1.5f; // 이동속도줄이기
+                leaderAIDirection = transform.TransformDirection(Vector3.forward);
+                FormationOrder(formationRange);
+                //formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
                 break;
             case BattleState.Defense:
                 break;
@@ -164,6 +178,7 @@ public class LeaderAI : LeaderState
         //isDead true하기
         ani.SetLayerWeight(1, 0);
         ani.SetTrigger("Dead"); // 죽는모션재생
+        bat_State = BattleState.Move;
         col.enabled = false;
         aipath.isStopped = true;
         SetRespawnPoint();
@@ -171,7 +186,6 @@ public class LeaderAI : LeaderState
         //HitBox_col.enabled = false;
         data.isDie = true;
         target.target = null;
-
     }
     private void SetRespawnPoint()
     {
@@ -292,15 +306,12 @@ public class LeaderAI : LeaderState
             {
                 bat_State = BattleState.Attack;
             }
-
-            isEnermyChecked = true;
         }
         else
         {
 
-            bat_State = BattleState.Move;
+           /* bat_State = BattleState.Move;*/
 
-            isEnermyChecked = false;
         }
 
 
@@ -364,16 +375,18 @@ public class LeaderAI : LeaderState
         //애니메이션초기화
         //HP , 콜라이더 , isDead ,레이어 다시설정
         //저장한 리스폰 위치로 이동
+        bat_State = BattleState.Move;
         data.currentHP = data.maxHP;
         data.isDie = false;
         aipath.isStopped = false;
+        aipath.canMove = true;
+        aipath.canSearch = true;
         Debug.Log(respawnPoint.parent.gameObject.layer);
         leader.layer = respawnPoint.parent.gameObject.layer;
         leader.transform.position = respawnPoint.position;
         ani.SetTrigger("Reset");
         ani.SetLayerWeight(1, 1);
         col.enabled = true;
-        bat_State = BattleState.Move;
 
 
     }
@@ -423,16 +436,14 @@ public class LeaderAI : LeaderState
       
         Transform Soilder = null;
         Soilder= GetSoilder(allHits ,positions[nextIndex]); //포메이션위치 와 가장가까운 병사 리턴
-        if(Soilder != null) { 
-        Soilder_Controller soilder_con = Soilder.GetComponent<Soilder_Controller>();
-        soilder_con.isSetPosition = true;
-        soilder_con.formationTransmform= positions[nextIndex].position; //제일가깝고 도착한 병사들 위치로 설정
-            Debug.Log($"{nextIndex}번째 포지션 지정했음 다음 포지션인덱스{nextIndex + 1}");
-        nextIndex++;
+        if(Soilder != null) 
+        { 
+            Soilder_Controller soilder_con = Soilder.GetComponent<Soilder_Controller>();
+            soilder_con.isSetPosition = true;
+            soilder_con.formationTransmform= positions[nextIndex].position; //제일가깝고 도착한 병사들 위치로 설정
+                Debug.Log($"{nextIndex}번째 포지션 지정했음 다음 포지션인덱스{nextIndex + 1}");
+            nextIndex++;
         }
-        
-
-       
     }
 
 

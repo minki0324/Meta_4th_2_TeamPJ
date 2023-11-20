@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Pathfinding;
+using UnityEngine;
 
 
 public class LeaderController : MonoBehaviour
@@ -37,122 +35,115 @@ public class LeaderController : MonoBehaviour
 
         if (!GameManager.instance.isLive) return;
 
-        if (isStart)
+        if (isStart &&                          // isStart가 true 일 때
+            AI.GetNearestTarget() == null &&    // 타겟이 null이 아닐 때
+            Target.CompareTag("Base") &&        // 타겟의 태그가 Base일 때
+            isArrive(Target))                   // 본인이 타겟의 주변에 있을 때
         {
-            if (AI.GetNearestTarget() == null)
+            if (Target.gameObject.layer.Equals(gameObject.layer))
             {
-                #region Base일 때
-                // 현재 위치가 베이스일 때
-                if (Target.CompareTag("Base") && isArrive(Target))
+                // 현재 병사 수가 15명 이상일 때
+                if (AI.currentUnitCount >= 15)
                 {
-                    // 현재 위치가 본인 진영일 때
-                    if (Target.gameObject.layer.Equals(gameObject.layer))
+                    AI.bat_State = LeaderState.BattleState.Move;
+                    Targetset = GetComponent<TargetFlag>();
+                    NextTarget = Targetset.Target(transform);
+
+                    // 현재 중앙 지역 깃발을 내가 다 먹고있을 때
+                    // 그럼 돈 모일 때까지 기다리기..
+                    if (NextTarget.Equals(null))
                     {
-                        // 현재 병사 수가 15명 이상일 때
-                        if (AI.currentUnitCount >= 15)
+                        if (GameManager.instance.currentTime < 900)
                         {
-                            Targetset = GetComponent<TargetFlag>();
-                            NextTarget = Targetset.Target(transform);
-
-                            // 현재 중앙 지역 깃발을 내가 다 먹고있을 때
-                            // 그럼 돈 모일 때까지 기다리기..
-                            if (NextTarget.Equals(null))
+                            if (AI.currentUnitCount >= 21)
                             {
-
-                                if (GameManager.instance.currentTime < 900)
-                                {
-                                    if (AI.currentUnitCount >= 21)
-                                    {
-                                        Targetset = GetComponent<TargetEnemyBase>();
-                                        NextTarget = Targetset.Target(transform);
-                                    }
-                                }
-                                else
-                                {
-                                    if (AI.currentUnitCount >= 23)
-                                    {
-                                        Targetset = GetComponent<TargetEnemyBase>();
-                                        NextTarget = Targetset.Target(transform);
-                                    }
-
-                                }
-                                return;
+                                Targetset = GetComponent<TargetEnemyBase>();
+                                NextTarget = Targetset.Target(transform);
                             }
-                            GoGate(transform, ref Target);
-
                         }
                         else
                         {
-                            return;
-                        }
-                    }
+                            if (AI.currentUnitCount >= 23)
+                            {
+                                Targetset = GetComponent<TargetEnemyBase>();
+                                NextTarget = Targetset.Target(transform);
+                            }
 
-                    // 현재 위치가 상대 진영일 때
-                    else
-                    {
-                        // 깃발점령
-                        // 어차피 깃발 점령하면 베이스가 본인 진영으로 바뀌어서 위 if문으로 이동
-                        if (!Target.GetComponentInChildren<Flag>().transform.parent.gameObject.layer.Equals(gameObject.layer))
-                        {
-                            Target = Target.gameObject.GetComponentInChildren<Flag>().transform.parent.transform;
-                            ToTarget(Target);
                         }
+                        return;
                     }
+                    GoGate(transform, ref Target);
+
                 }
-                #endregion
-
-                #region Flag일 때
-                if (Target.CompareTag("Flag") && isArrive(Target))
+                else
                 {
-                    // 내 깃발이 아닐 때
-                    // 점령하려면 가만히 있어야지..
-                    if (!Target.gameObject.layer.Equals(gameObject.layer))
+                    return;
+                }
+            }
+
+            // 현재 위치가 상대 진영일 때
+            else
+            {
+                // 깃발점령
+                // 어차피 깃발 점령하면 베이스가 본인 진영으로 바뀌어서 위 if문으로 이동
+                if (!Target.GetComponentInChildren<Flag>().transform.parent.gameObject.layer.Equals(gameObject.layer))
+                {
+                    Target = Target.gameObject.GetComponentInChildren<Flag>().transform.parent.transform;
+                    ToTarget(Target);
+                }
+            }
+            #region Flag일 때
+            if (Target.CompareTag("Flag") && isArrive(Target))
+            {
+                // 내 깃발이 아닐 때
+                // 점령하려면 가만히 있어야지..
+                if (!Target.gameObject.layer.Equals(gameObject.layer))
+                {
+                    return;
+                }
+                // 내 깃발일 때
+                else
+                {
+                    if (AI.currentUnitCount > 13)
+                    {
+                        GoFlag(transform, ref Target);
+                    }
+                    else
                     {
                         return;
                     }
-                    // 내 깃발일 때
+                }
+            }
+            #endregion
+
+
+            #region Gate일 때
+            // 게이트에 서있을 때
+            if (Target.transform.parent != null)
+            {
+                if (Target.transform.parent.gameObject.CompareTag("Gate") && isArrive(Target))
+                {
+                    if (NextTarget == null)
+                    {
+                        return;
+                    }
                     else
                     {
-                        if (AI.currentUnitCount > 13)
-                        {
-                            GoFlag(transform, ref Target);
-                        }
-                        else
-                        {
-                            return;
-                        }
+                        Target = NextTarget;
+                        ToTarget(Target);
+                        NextTarget = null;
                     }
+
                 }
-                #endregion
-
-
-                #region Gate일 때
-                // 게이트에 서있을 때
-                if (Target.transform.parent != null)
-                {
-                    if (Target.transform.parent.gameObject.CompareTag("Gate") && isArrive(Target))
-                    {
-                        if (NextTarget == null)
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            Target = NextTarget;
-                            ToTarget(Target);
-                            NextTarget = null;
-                        }
-
-                    }
-                }
-                #endregion
-
-                if (AI.data.isDie)
-                {
-                    GoGate(transform, ref Target);
-                }
-
             }
+            #endregion
+
+            if (AI.data.isDie)
+            {
+                GoGate(transform, ref Target);
+            }
+
+            
 
 
 
@@ -164,6 +155,7 @@ public class LeaderController : MonoBehaviour
         else  // 처음 한 번만 실행
         {
             GoMyBase(transform, ref Target);
+            AI.bat_State = LeaderState.BattleState.Wait;
             isStart = true;
         }
 
@@ -202,13 +194,16 @@ public class LeaderController : MonoBehaviour
         Targetset = GetComponent<TargetGate>();
         Target = Targetset.Target(StartPos);
         ToTarget(Target);
-   
     }
     private void ToTarget(Transform Target)
     {
         Target_.target = Target;
     }
 
+    private void Wait()
+    {
+
+    }
 }
 
 

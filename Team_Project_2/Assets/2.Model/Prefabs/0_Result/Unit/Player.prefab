@@ -10614,8 +10614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f57fa8d6242314891b7b62560d3d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gate: {fileID: 0}
-  gateUI: {fileID: 0}
+  isMyGate: 0
 --- !u!1 &680374640086412759
 GameObject:
   m_ObjectHideFlags: 0

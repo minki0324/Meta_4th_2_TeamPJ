@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3253523894844845745}
   - component: {fileID: 6738827489473805981}
   - component: {fileID: 4877838278686929843}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: SpawnPoint
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
@@ -211,6 +211,10 @@ MonoBehaviour:
   OccuHUD: {fileID: 0}
   Units: 
   Value: 
+  Team1Count: 0
+  Team2Count: 0
+  Team3Count: 0
+  Team4Count: 0
 --- !u!1 &5805590287774594481
 GameObject:
   m_ObjectHideFlags: 0

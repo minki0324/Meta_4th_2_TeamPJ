@@ -10,11 +10,11 @@ public class LeaderState : Unit
 
         //Follow, //점령지 이동할때 
         Attack,  // AI가 적을 인지하고 일정시간 또는 거리가됬을때 
-        Search,
+        Wait,
         Move, //상체 아이들상태로 뛰어가기
         Defense,
         Detect //방패들기
-
+        
 
     }
     public float Teampoint = 0;

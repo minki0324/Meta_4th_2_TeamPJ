@@ -59,11 +59,6 @@ public class Flag : MonoBehaviour
         Team3Count = 0;
         Team4Count = 0;
 
-
-        
-
-        
-
         foreach (RaycastHit hit in allHits)
         {
             if (hit.transform.CompareTag("SpawnPoint") || hit.transform.CompareTag("Flag") || hit.transform.CompareTag("Base"))
@@ -72,6 +67,7 @@ public class Flag : MonoBehaviour
             }
 
             int layer = hit.transform.gameObject.layer;
+         
             switch (layer)
             {
 

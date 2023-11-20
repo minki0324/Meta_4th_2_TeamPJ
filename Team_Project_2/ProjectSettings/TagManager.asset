@@ -28,7 +28,7 @@ TagManager:
   - EnemyTarget
   - Die
   - Obstacle
-  - 
+  - IgnoreCollision
   - 
   - 
   - 

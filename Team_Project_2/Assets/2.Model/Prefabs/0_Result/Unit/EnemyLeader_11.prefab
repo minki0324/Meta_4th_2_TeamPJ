@@ -13040,6 +13040,7 @@ GameObject:
   - component: {fileID: 4643609815274536730}
   - component: {fileID: 1686098295777629251}
   - component: {fileID: -7241441996915175343}
+  - component: {fileID: -2097097275925591877}
   m_Layer: 6
   m_Name: EnemyLeader_11
   m_TagString: Leader
@@ -13159,7 +13160,7 @@ MonoBehaviour:
   respawnPoint: {fileID: 0}
   Team_Color: 0
   has_Flag: 0
-  bat_State: 0
+  bat_State: 1
   Hire: 0
   isPossible_Upgrade_1: 0
   isPossible_Upgrade_2: 0
@@ -13176,7 +13177,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7d2cf42c3fe80a4dbf0f7b8f0933a0c, type: 3}
   m_Name: 
@@ -13386,6 +13387,27 @@ MonoBehaviour:
   - {fileID: 2600469870133044426}
   Parents_index: 0
   succeCount: 0
+--- !u!114 &-2097097275925591877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12e46035ae138894887291ba4c8b353e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Main_target: {fileID: 0}
+  targetsetting: {fileID: 0}
+  Target: {fileID: 0}
+  NextTarget: {fileID: 0}
+  NearGate: 0
+  NearFlag: 0
+  NearBase: 1
+  isStart: 0
+  isOccu: 0
 --- !u!1 &8132295210802862830
 GameObject:
   m_ObjectHideFlags: 0
