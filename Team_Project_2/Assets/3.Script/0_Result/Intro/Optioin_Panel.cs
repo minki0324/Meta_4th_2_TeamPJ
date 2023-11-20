@@ -35,7 +35,7 @@ public class Optioin_Panel : MonoBehaviour
 
 
     [SerializeField]
-    private Light light;
+    private Light light_;
 
     [SerializeField]
     private Image Background_img;
@@ -124,13 +124,13 @@ public class Optioin_Panel : MonoBehaviour
     {
         value = Mathf.Abs(Brightness_Slider.value - 255);
 
-        Background_img.color = new Color(Background_img.color.r, Background_img.color.g, Background_img.color.b, value / 225);
+        Background_img.color = new Color(Background_img.color.r, Background_img.color.g, Background_img.color.b, value / 255);
     }
 
 
     public void SetBrightness(float value)
     {
-        light = FindObjectOfType<Light>();
+        light_ = FindObjectOfType<Light>();
         value = Brightness_Slider.value;
 
         if (value > 10)
@@ -139,7 +139,7 @@ public class Optioin_Panel : MonoBehaviour
         }
 
 
-        light.intensity = value;
+        light_.intensity = value;
     }
 
 

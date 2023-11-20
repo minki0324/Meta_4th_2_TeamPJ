@@ -38,7 +38,6 @@ public class SkyChange : MonoBehaviour
      
         while (true)
         {
-            Debug.Log("?");
             
             if (GameManager.instance.currentTime <= GameManager.instance.EndTime / 2)
             {
