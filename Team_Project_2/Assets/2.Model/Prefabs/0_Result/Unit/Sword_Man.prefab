@@ -11489,7 +11489,6 @@ GameObject:
   - component: {fileID: -91776194968146134}
   - component: {fileID: 406563541980887975}
   - component: {fileID: -8083865837556993197}
-  - component: {fileID: -6172802644820169313}
   m_Layer: 6
   m_Name: Sword_Man
   m_TagString: Soldier
@@ -11566,7 +11565,6 @@ MonoBehaviour:
     damage: 0
     isDie: 0
   target: {fileID: 0}
-  aipath: {fileID: 0}
   ani: {fileID: 0}
   leaderState: {fileID: 0}
   leader: {fileID: 0}
@@ -11575,12 +11573,9 @@ MonoBehaviour:
   HitBox_col: {fileID: 3077217372575218644}
   Ob_Weapon_col: {fileID: 1843400023942459172}
   nearestTarget: {fileID: 0}
-  formationState: 0
-  formationTransmform: {fileID: 0}
+  isClose: 0
   infodata: {fileID: 0}
   isHealer: 0
-  isArrive: 0
-  isSetPosition: 0
   isNear: 0
 --- !u!136 &3077217372575218644
 CapsuleCollider:
@@ -11679,48 +11674,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
---- !u!114 &-6172802644820169313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843400025330777912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa549f94eece57b40b580bcf5ad6572b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 5
-  radius: 0.5
-  height: 2
-  canMove: 1
-  maxSpeed: 5
-  gravity: {x: NaN, y: NaN, z: NaN}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  centerOffsetCompatibility: NaN
-  repathRateCompatibility: NaN
-  canSearchCompability: 0
-  orientation: 0
-  enableRotation: 1
-  autoRepath:
-    mode: 0
-    interval: NaN
-    sensitivity: 10
-    maximumInterval: 2
-    visualizeSensitivity: 0
-  targetCompatibility: {fileID: 0}
-  maxAcceleration: 30
-  rotationSpeed: 360
-  slowdownDistance: 1.5
-  pickNextWaypointDist: 2
-  endReachedDistance: 0.4
-  alwaysDrawGizmos: 1
-  slowWhenNotFacingTarget: 1
-  whenCloseToDestination: 0
-  constrainInsideGraph: 1
 --- !u!1 &1843400025335299086
 GameObject:
   m_ObjectHideFlags: 0
