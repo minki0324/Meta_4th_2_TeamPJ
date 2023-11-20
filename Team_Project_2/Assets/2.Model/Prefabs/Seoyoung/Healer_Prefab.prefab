@@ -8251,7 +8251,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3998764035206198972}
   - component: {fileID: 3998764035213632688}
-  - component: {fileID: 3998764035206485369}
   - component: {fileID: 3998764035206485373}
   - component: {fileID: 3998764035206485372}
   - component: {fileID: 3998764035206485371}
@@ -8259,6 +8258,7 @@ GameObject:
   - component: {fileID: 3998764035206485374}
   - component: {fileID: 3998764035206485375}
   - component: {fileID: 3998764035206485360}
+  - component: {fileID: 1933211657277199240}
   m_Layer: 6
   m_Name: Healer_Prefab
   m_TagString: Untagged
@@ -8361,25 +8361,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3998764035206485369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3998764035206485368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35298a29f87465445a4d105211d23823, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healRange: 5
-  ani: {fileID: 0}
-  HealEffect: {fileID: 2027261926529319762, guid: 8fb8f3d67f263334e8a1e4c3a01cfbaa, type: 3}
-  HealCircle: {fileID: 5599572612825852846, guid: 32951fdab7accbc4e9871027a2139ebb, type: 3}
-  healCoolTime: 3
-  isHealTargetExist: 0
-  isCanHeal: 0
 --- !u!114 &3998764035206485373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8555,6 +8536,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1933211657277199240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3998764035206485368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35298a29f87465445a4d105211d23823, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healRange: 5
+  ani: {fileID: 0}
+  HealEffect: {fileID: 2027261926529319762, guid: 8fb8f3d67f263334e8a1e4c3a01cfbaa, type: 3}
+  HealCircle: {fileID: 5599572612825852846, guid: 32951fdab7accbc4e9871027a2139ebb, type: 3}
+  healCoolTime: 3
+  isHealTargetExist: 0
+  isCanHeal: 0
 --- !u!1 &3998764035206485516
 GameObject:
   m_ObjectHideFlags: 0

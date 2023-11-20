@@ -49,6 +49,10 @@ public abstract class Unit : MonoBehaviour
 
     [Header("현재타겟 Transform")]
     [SerializeField] protected Transform nearestTarget;
+
+
+    //힐러용
+    Healer healer;
     public Transform GetNearestTarget()
     {
         return nearestTarget;
@@ -278,19 +282,30 @@ public abstract class Unit : MonoBehaviour
     protected IEnumerator Attack_co()
    
     {
-        //공격쿨타임
-        float d = Random.Range(2f, 2.1f);
-        attackDelay = new WaitForSeconds(d);
+        if(!gameObject.GetComponent<Soilder_Controller>().isHealer)
+        {   
+            //공격쿨타임
+            float d = Random.Range(2f, 2.1f);
+            attackDelay = new WaitForSeconds(d);
 
-        //상태 공격중으로 변경
-        isAttacking = true;
+            //상태 공격중으로 변경
+            isAttacking = true;
 
-        isSuccessAtk = false;
-        ani.SetTrigger("Attack");
-        yield return attackDelay;
+            isSuccessAtk = false;
+            ani.SetTrigger("Attack");
+            yield return attackDelay;
 
 
-        isAttacking = false;
+            isAttacking = false;
+        }
+        else
+        {
+            healer = GetComponent<Healer>();
+            healer.GetHeal_Target();
+            ani.SetTrigger("Heal");
+
+        }
+     
     }
     //protected void FollowOrder()
     //{
