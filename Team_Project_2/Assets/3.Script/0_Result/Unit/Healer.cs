@@ -44,9 +44,18 @@ public class Healer : MonoBehaviour
         Debug.Log("ÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈú");
 
         //Èú Å¸°Ù UnitList0¹øÀ¸·Î ÀÓÀÇ ÁöÁ¤
-        healTarget = pc.UnitList_List[0];
+       // healTarget = pc.UnitList_List[0].gameObject;    //null
+        if(healTarget == null)
+        {
+            Debug.Log("½Ã¹ß·Ò¾Æ ¿Ö ¶Ç ¾ø°í Áö¶öÀÎµ¥¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ");
+        }
+        else
+        {
+            Debug.Log("ÀÌ°É ´ã¹è°¡..?");
+        }
+       
         lessHP = healTarget.GetComponent<Soilder_Controller>().data.currentHP;
-        Debug.Log("HealTarget : " + healTarget.name.ToString());
+        //Debug.Log("HealTarget : " + healTarget.name.ToString());
         // && Vector3.Distance(healTarget.transform.position, transform.position) > healRange
         for (int i = 0; i < pc.UnitList_List.Count; i++)
         {
