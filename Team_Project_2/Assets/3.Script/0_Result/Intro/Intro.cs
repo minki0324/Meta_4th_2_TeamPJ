@@ -474,7 +474,7 @@ public class Intro : MonoBehaviour
                     GameManager.instance.PlayerCoin -= GameManager.instance.units[0].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[0].GetComponent<Button>().enabled = false;
-                    Upgrade_Items[0].GetComponent<Image>().color = Color.black;
+                    Upgrade_Items[0].GetComponent<Image>().color = Color.gray;
                     
                 }
             });    
@@ -496,7 +496,7 @@ public class Intro : MonoBehaviour
                     GameManager.instance.PlayerCoin -= GameManager.instance.units[1].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[1].GetComponent<Button>().enabled = false;
-                    Upgrade_Items[1].GetComponent<Image>().color = Color.black;
+                    Upgrade_Items[1].GetComponent<Image>().color = Color.gray;
 
                 }
             });
@@ -518,7 +518,7 @@ public class Intro : MonoBehaviour
                     GameManager.instance.PlayerCoin -= GameManager.instance.units[2].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[2].GetComponent<Button>().enabled = false;
-                    Upgrade_Items[2].GetComponent<Image>().color = Color.black;
+                    Upgrade_Items[2].GetComponent<Image>().color = Color.gray;
 
                 }
             });
@@ -540,8 +540,7 @@ public class Intro : MonoBehaviour
                     GameManager.instance.PlayerCoin -= GameManager.instance.units[3].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[3].GetComponent<Button>().enabled = false;
-                    Upgrade_Items[3].GetComponent<Image>().color = Color.black;
-
+                    Upgrade_Items[3].GetComponent<Image>().color = Color.gray;
                 }
             });
         }
@@ -562,7 +561,7 @@ public class Intro : MonoBehaviour
                     GameManager.instance.PlayerCoin -= GameManager.instance.units[4].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[4].GetComponent<Button>().enabled = false;
-                    Upgrade_Items[4].GetComponent<Image>().color = Color.black;
+                    Upgrade_Items[4].GetComponent<Image>().color = Color.gray;
 
                 }
             });
@@ -584,7 +583,7 @@ public class Intro : MonoBehaviour
                     GameManager.instance.PlayerCoin -= GameManager.instance.units[5].cost;
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[5].GetComponent<Button>().enabled = false;
-                    Upgrade_Items[5].GetComponent<Image>().color = Color.black;
+                    Upgrade_Items[5].GetComponent<Image>().color = Color.gray;
                 }
             });
         }
