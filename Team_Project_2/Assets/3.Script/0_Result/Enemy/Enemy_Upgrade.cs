@@ -5,9 +5,7 @@ using UnityEngine;
 public class Enemy_Upgrade : MonoBehaviour
 {
     [SerializeField] private UpgradeData[] Data;
-    Dictionary<int, int> upgradeidx;
-    
-
+      
     public void Upgradeall(int Team, int upgradeidx)
     {
         if (upgradeidx.Equals(0)) Upgrade_MaxCountUp(Team);

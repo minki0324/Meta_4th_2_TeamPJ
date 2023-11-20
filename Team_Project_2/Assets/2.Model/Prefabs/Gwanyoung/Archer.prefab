@@ -9273,9 +9273,10 @@ GameObject:
   - component: {fileID: 3664790069097579758}
   - component: {fileID: 8425864580102197205}
   - component: {fileID: 5177891973146813926}
+  - component: {fileID: 8126766598145584794}
   m_Layer: 0
   m_Name: Archer
-  m_TagString: Untagged
+  m_TagString: Soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9389,7 +9390,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &7632062523974968463
 CapsuleCollider:
@@ -9519,6 +9520,21 @@ MonoBehaviour:
   isHealer: 0
   isArrive: 0
   isNear: 0
+--- !u!114 &8126766598145584794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528131510608018179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65edaf81ed35db54f8b237e289fe5259, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+  Arrow: {fileID: 4329260827449654019, guid: d3edd5e415bb3e0438671ef4ef2c814a, type: 3}
+  Bow: {fileID: 528131510608330703}
 --- !u!1 &528131510608018271
 GameObject:
   m_ObjectHideFlags: 0
