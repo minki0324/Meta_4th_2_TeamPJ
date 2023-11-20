@@ -495,16 +495,9 @@ public class Soilder_Controller : Unit
                     cameraForward.y = 0f; // 회전을 수평 평면에만 유지
                     Quaternion targetRotation = Quaternion.LookRotation(cameraForward);
                     Quaternion currentRotation = transform.rotation;
-                    transform.position += (player.playerMovement.MoveDir.normalized * player.playerMovement.realSpeed /** Time.deltaTime*/);
-                    Vector3 moveDir = player.playerMovement.MoveDir;
+                    transform.position += (player.playerMovement.MoveDir.normalized * player.playerMovement.realSpeed); //플레이어와 이동 동기화
+                     transform.rotation =  player.transform.rotation; //플레이어와 로테이션 동기화
 
-
-
-                    Vector3 playerRotation = player.playerMovement.GetPlayerRotation();
-                    transform.rotation = Quaternion.LookRotation(playerRotation, Vector3.up);
-                    // 여기에서 moveDir을 사용하여 원하는 작업 수행
-                    // 예: 이동 로직에 적용
-                    transform.Translate(moveDir * Time.deltaTime);
                     if (player.playerMovement.holdingShield)
                     {
                         

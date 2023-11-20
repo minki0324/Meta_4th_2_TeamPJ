@@ -207,8 +207,6 @@ public class Ply_Movement : MonoBehaviour
             // 이동
             Debug.Log(MoveSpeed);
             transform.position += (MoveDir.normalized * realSpeed /** Time.deltaTime*/);
-            transform.position = new Vector3(
-            Mathf.Clamp(transform.position.x, Min, Max), transform.position.y, Mathf.Clamp(transform.position.z, Min, Max));
             isMove = true;
             isPlayerMove = true;
         }
