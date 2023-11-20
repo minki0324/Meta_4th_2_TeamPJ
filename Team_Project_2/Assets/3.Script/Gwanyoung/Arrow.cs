@@ -16,6 +16,7 @@ public class Arrow : MonoBehaviour
 
     private void Start()
     {
+        
         StartCoroutine(Arrow_rot());
     }
 
@@ -44,7 +45,6 @@ public class Arrow : MonoBehaviour
     {
         // 1. 화살 발사 타이밍에 무기와 한 번 충돌이 나서 예외처리
         // 2. 화살 발사 후 본인이 맞는 경우 예외처리 
-
         if (other.gameObject.CompareTag("Soldier") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader"))
         {
             if (!other.gameObject.layer.Equals(gameObject.layer))

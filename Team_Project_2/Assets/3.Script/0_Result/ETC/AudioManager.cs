@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
+public enum BGMSound
+{
+    MainBGM = 0
+}
+
+public enum SFXSound
+{
+    MouseHove = 0,
+    MouseClick,
+    MouseClick2,
+    StartGame,
+    Arrow_Alway,
+    Arrow_Shoot,
+    Gate_Inter,
+    Gate_Crash,
+    Sword_Hit,
+    Sword_Swing
+}
 public class AudioManager : MonoBehaviour
 {
-    public enum BGMSound
-    {
-        MainBGM = 0
-    }
-
-    public enum SFXSound
-    {
-        MouseHove = 0,
-        MouseClick,
-        MouseClick2,
-        StartGame,
-    }
-
-
-
     public static AudioManager instance = null;
 
     private Optioin_Panel optionPanel;
@@ -30,19 +33,21 @@ public class AudioManager : MonoBehaviour
 
     [Header("오디오 소스")]
     [SerializeField]
-    private AudioSource audio_Master;
+    public AudioSource audio_Master;
 
     [SerializeField]
-    private AudioSource audio_BGM;
+    public AudioSource audio_BGM;
 
     [SerializeField]
-    private AudioSource audio_SFX;
+    public AudioSource audio_SFX;
 
 
     [Header("오디오 클립(직접 참조)")]
-    public AudioClip[] clip_BGM;
+    [SerializeField]
+    private AudioClip[] clip_BGM;
     
-    public AudioClip[] clip_SFX;
+    [SerializeField]
+    private AudioClip[] clip_SFX;
 
     private void Awake()
     {
@@ -55,24 +60,17 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
+        Init_AudioSource();
         optionPanel = FindObjectOfType<Optioin_Panel>();
 
        
-    }
-
-    private void Start()
-    {
-        Init_AudioSource();
-        audio_BGM.clip = clip_BGM[0];
-        audio_BGM.Play();
     }
 
 
     private void OnMouseEnter()
     {
         audio_SFX.PlayOneShot(clip_SFX[3]);
-              
+                        
     }
 
 
@@ -112,6 +110,23 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    
+    public void BGMPlay(int idx)    // BGM 플레이
+    {
+        audio_BGM.clip = clip_BGM[idx];
+        audio_BGM.Play();
+    }
+    public void SFXPlay(int idx)   // SFX 플레이
+    {
+        audio_SFX.clip = clip_SFX[idx];
+        audio_SFX.Play();
+    }
+    public void SFXLoop(bool isLoop)
+    {
+        audio_SFX.loop = isLoop;
+    }
+
+
 
     public void Button_HoverSound()
     {
@@ -122,7 +137,6 @@ public class AudioManager : MonoBehaviour
 
     public void Button_ClickSound()
     {
-        //audio_SFX.clip = clip_SFX[1];
         int clickSound = Random.Range(0, 2);
 
         switch(clickSound)

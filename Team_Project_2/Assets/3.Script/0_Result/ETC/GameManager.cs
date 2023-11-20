@@ -102,6 +102,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         Json = GetComponent<DataManager>();
+
+        AudioManager.instance.BGMPlay((int)BGMSound.MainBGM);
     }
    
     // ±âÁ¸ °ñµå »ó½Â·®

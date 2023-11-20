@@ -67,12 +67,14 @@ public class Gate : MonoBehaviour
         {
             if (ply_gate.isMyGate && Input.GetKeyDown(KeyCode.J) && isOpen)
             {
+                AudioManager.instance.SFXPlay((int)SFXSound.Gate_Inter);
                 Gate_Ani.SetTrigger("CloseDoor");
                 isOpen = false;
                 Gate_Col.enabled = true;
             }
             else if (ply_gate.isMyGate && Input.GetKeyDown(KeyCode.J) && !isOpen)
             {
+                AudioManager.instance.SFXPlay((int)SFXSound.Gate_Inter);
                 Gate_Ani.SetTrigger("OpenDoor");
                 isOpen = true;
                 Gate_Col.enabled = false;
@@ -80,12 +82,14 @@ public class Gate : MonoBehaviour
         }
         if (Units.Count > 0 && isOpen)
         {
+            AudioManager.instance.SFXPlay((int)SFXSound.Gate_Inter);
             Gate_Ani.SetTrigger("CloseDoor");
             isOpen = false;
             Gate_Col.enabled = true;
         }
         else if (Units.Count.Equals(0) && !isOpen && !transform.root.gameObject.layer.Equals((int)TeamLayerIdx.Player)) 
         {
+            AudioManager.instance.SFXPlay((int)SFXSound.Gate_Inter);
             Gate_Ani.SetTrigger("OpenDoor");
             isOpen = true;
             Gate_Col.enabled = false;
