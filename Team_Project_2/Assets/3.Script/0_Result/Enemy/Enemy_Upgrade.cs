@@ -5,9 +5,23 @@ using UnityEngine;
 public class Enemy_Upgrade : MonoBehaviour
 {
     [SerializeField] private UpgradeData[] Data;
+      
+    public void Upgradeall(int Team, int upgradeidx)
+    {
+        if (upgradeidx.Equals(0)) Upgrade_MaxCountUp(Team);
+        else if (upgradeidx.Equals(1)) Upgrade_RespawnTime(Team);
+        else if (upgradeidx.Equals(2)) Upgrade_Sol1(Team);
+        else if (upgradeidx.Equals(3)) Upgrade_Sol2(Team);
+        else if (upgradeidx.Equals(4)) Upgrade_LeaderATK(Team);
+        else if (upgradeidx.Equals(5)) Upgrade_LeaderHP(Team);
+        else if (upgradeidx.Equals(6)) Upgrade_SolDAM(Team);
+        else if (upgradeidx.Equals(7)) Upgrade_SolHP(Team);
+        else if (upgradeidx.Equals(8)) Upgrade_Speed(Team);
+        else if (upgradeidx.Equals(9)) Upgrade_Income(Team);
+    }
 
     // 인덱스 0번
-    public void Upgrade_MaxCountUp(int Team)
+    private void Upgrade_MaxCountUp(int Team)
     {
         if (GameManager.instance.leaders[Team].Gold >= Data[0].Upgrade_Cost && !GameManager.instance.leaders[Team].Upgrade_List.Contains(0))
         {
@@ -23,7 +37,7 @@ public class Enemy_Upgrade : MonoBehaviour
     }
 
     // 인덱스 1번
-    public void Upgrade_RespawnTime(int Team)
+    private void Upgrade_RespawnTime(int Team)
     {
         if (GameManager.instance.leaders[Team].Gold >= Data[1].Upgrade_Cost && !GameManager.instance.leaders[Team].Upgrade_List.Contains(1))
         {
@@ -38,7 +52,7 @@ public class Enemy_Upgrade : MonoBehaviour
         }
     }
 
-    public void Upgrade_Sol1(int Team)
+    private void Upgrade_Sol1(int Team)
     {
         if (GameManager.instance.leaders[Team].Gold >= Data[2].Upgrade_Cost && !GameManager.instance.leaders[Team].Upgrade_List.Contains(2))
         {
@@ -53,7 +67,7 @@ public class Enemy_Upgrade : MonoBehaviour
         }
     }
 
-    public void Upgrade_Sol2(int Team)
+    private void Upgrade_Sol2(int Team)
     {
         if (GameManager.instance.leaders[Team].Gold >= Data[3].Upgrade_Cost && !GameManager.instance.leaders[Team].Upgrade_List.Contains(3))
         {
@@ -68,7 +82,7 @@ public class Enemy_Upgrade : MonoBehaviour
         }
     }
 
-    public void Upgrade_LeaderATK(int Team)
+    private void Upgrade_LeaderATK(int Team)
     {
         if (GameManager.instance.leaders[Team].Gold >= Data[4].Upgrade_Cost && !GameManager.instance.leaders[Team].Upgrade_List.Contains(4))
         {
@@ -82,7 +96,7 @@ public class Enemy_Upgrade : MonoBehaviour
         }
     }
 
-    public void Upgrade_LeaderHP(int Team)
+    private void Upgrade_LeaderHP(int Team)
     {
         if (GameManager.instance.leaders[Team].Gold >= Data[5].Upgrade_Cost && !GameManager.instance.leaders[Team].Upgrade_List.Contains(5))
         {
@@ -97,7 +111,7 @@ public class Enemy_Upgrade : MonoBehaviour
         }
     }
 
-    public void Upgrade_SolDAM(int Team)
+    private void Upgrade_SolDAM(int Team)
     {
         if (GameManager.instance.leaders[Team].Gold >= Data[6].Upgrade_Cost && !GameManager.instance.leaders[Team].Upgrade_List.Contains(6))
         {
@@ -111,7 +125,7 @@ public class Enemy_Upgrade : MonoBehaviour
         }
     }
 
-    public void Upgrade_SolHP(int Team)
+    private void Upgrade_SolHP(int Team)
     {
         if (GameManager.instance.leaders[Team].Gold >= Data[7].Upgrade_Cost && !GameManager.instance.leaders[Team].Upgrade_List.Contains(7))
         {
@@ -126,7 +140,7 @@ public class Enemy_Upgrade : MonoBehaviour
     }
 
     //Astar완성후 다시 작성
-    public void Upgrade_Speed(int Team)
+    private void Upgrade_Speed(int Team)
     {
         if (GameManager.instance.leaders[Team].Gold >= Data[8].Upgrade_Cost && !GameManager.instance.leaders[Team].Upgrade_List.Contains(8))
         {
@@ -142,7 +156,7 @@ public class Enemy_Upgrade : MonoBehaviour
         }
     }
 
-    public void Upgrade_Income(int Team)
+    private void Upgrade_Income(int Team)
     {
         if (GameManager.instance.leaders[Team].Gold >= Data[9].Upgrade_Cost && !GameManager.instance.leaders[Team].Upgrade_List.Contains(9))
         {

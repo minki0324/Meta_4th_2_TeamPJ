@@ -166,36 +166,26 @@ public class Flag : MonoBehaviour
 
 
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (GameManager.instance.isLive)
-    //    {
-    //        if (other.gameObject.layer.Equals((int)TeamLayerIdx.Player) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team2) ||
-    //            other.gameObject.layer.Equals((int)TeamLayerIdx.Team1) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team3)) 
-    //        {
-    //            if (other.gameObject.CompareTag("Player"))
-    //            {
-    //                OccuHUD.Ply_OccuHUD(Flag_Num, true);
-    //            }
-    //            Units.Add(other.gameObject.layer);
-    //        }
-    //    }
-    //}
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (GameManager.instance.isLive)
-    //    {
-    //        if (other.gameObject.layer.Equals((int)TeamLayerIdx.Player) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team2) ||
-    //           other.gameObject.layer.Equals((int)TeamLayerIdx.Team1) || other.gameObject.layer.Equals((int)TeamLayerIdx.Team3))
-    //        {
-    //            if (other.gameObject.CompareTag("Player"))
-    //            {
-    //                OccuHUD.Ply_OccuHUD(Flag_Num, false);
-    //            }
-    //            Units.Remove(other.gameObject.layer);
-    //        }
-    //    }
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        if (GameManager.instance.isLive)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                OccuHUD.Ply_OccuHUD(Flag_Num, true);
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (GameManager.instance.isLive)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                OccuHUD.Ply_OccuHUD(Flag_Num, false);
+            }        
+        }
+    }
 
     public IEnumerator OnOccu_co(int TeamColor, int Current_Minion, int Teamlayer)
     {

@@ -9,17 +9,13 @@ using System.IO;
 
 
 
-public struct TeamColor
-{
-    public int ColorNum;
-    public Color color_c;
-    public Material color_m;
-    public bool isUsing;
-}
+
+
+
 
 public class Intro : MonoBehaviour
 {
-    #region Å¸ÀÌÆ² ÆĞ³Î 
+    #region íƒ€ì´í‹€ íŒ¨ë„ 
     [Header("Title Panel")]
     [SerializeField]
     private GameObject Title_Panel;
@@ -30,7 +26,7 @@ public class Intro : MonoBehaviour
     [SerializeField]
     private GameObject Btn_Panel;
 
-    //·Î±×ÀÎ ÆĞ³Î
+    //ë¡œê·¸ì¸ íŒ¨ë„
     [SerializeField]
     private InputField inputField;
 
@@ -40,7 +36,7 @@ public class Intro : MonoBehaviour
     [SerializeField]
     private Button SignUp_Btn;
 
-    //¹öÆ° ÆĞ³Î
+    //ë²„íŠ¼ íŒ¨ë„
     [SerializeField]
     private Button Ready_Btn;
 
@@ -55,11 +51,11 @@ public class Intro : MonoBehaviour
 
 
 
-    //µÚ·Î°¡±â
+    //ë’¤ë¡œê°€ê¸°
     [SerializeField]
     private Button BackButton;
     #endregion
-    #region Setup ÆĞ³Î(Ready ÆĞ³Î)
+    #region Setup íŒ¨ë„(Ready íŒ¨ë„)
 
     [Header("Setup Panel")]
     [SerializeField]
@@ -117,7 +113,7 @@ public class Intro : MonoBehaviour
     private Text ID4_Text;
 
     #endregion
-    #region ¾÷±×·¹ÀÌµå ÆĞ³Î
+    #region ì—…ê·¸ë ˆì´ë“œ íŒ¨ë„
     [Header("Upgrade Panel")]
     private ScrollRect Upgrade_Panel;
 
@@ -128,7 +124,7 @@ public class Intro : MonoBehaviour
     private Text Coin_Text;
 
     #endregion
-    #region ¿É¼Ç ÆĞ³Î
+    #region ì˜µì…˜ íŒ¨ë„
     [Header("Option Panel")]
 
     [SerializeField]
@@ -137,7 +133,7 @@ public class Intro : MonoBehaviour
 
 
     #endregion
-    #region È¸¿ø°¡ÀÔ ÆĞ³Î
+    #region íšŒì›ê°€ì… íŒ¨ë„
     [SerializeField]
     private GameObject SignUp_Panel;
 
@@ -150,14 +146,14 @@ public class Intro : MonoBehaviour
     [SerializeField]
     private Button SignUp_Cancel_Btn;
     #endregion
-    #region °æ°í ÆĞ³Î
+    #region ê²½ê³  íŒ¨ë„
     [SerializeField]
     private GameObject Warning_Panel;
     #endregion
-    #region ±âÅ¸
-    [Header("±âÅ¸")]
+    #region ê¸°íƒ€
+    [Header("ê¸°íƒ€")]
 
-    //¹è°æ°ü·Ã
+    //ë°°ê²½ê´€ë ¨
     [SerializeField]
     private GameObject Leader_A;
 
@@ -171,28 +167,27 @@ public class Intro : MonoBehaviour
     private float MouseX;
 
 
-    //json °ü·Ã
+    //json ê´€ë ¨
     private DataManager dataManager;
     private Player_Data playerData;
 
-    //·Î±×ÀÎ °ü·Ã
+    //ë¡œê·¸ì¸ ê´€ë ¨
     public bool isLogined = false;
 
-    //¼Ò¸® °ü·Ã
+    //ì†Œë¦¬ ê´€ë ¨
     public AudioMixer audioMixer;
 
-   
 
-    //ÆÀ°ü·Ã
-    [Header("ÆÀ ÄÃ·¯")]
+
+    //íŒ€ê´€ë ¨
+    [Header("íŒ€ ì»¬ëŸ¬")]
     [SerializeField]
-    private Material[] TeamColors;
-
-    [SerializeField]
-    public TeamColor[] teamColors = new TeamColor[11];
+    private GetColor getColor;
 
 
-    //GameManager¿¡ º¸³¾ ÆÀ º° »ö»ó ¹øÈ£, ColorSet ÀÎµ¦½º¿Í µ¿ÀÏÇÑ ¼ıÀÚ
+
+
+    //GameManagerì— ë³´ë‚¼ íŒ€ ë³„ ìƒ‰ìƒ ë²ˆí˜¸, ColorSet ì¸ë±ìŠ¤ì™€ ë™ì¼í•œ ìˆ«ì
     public int Team1_Color;
     public int Team2_Color;
     public int Team3_Color;
@@ -232,7 +227,7 @@ public class Intro : MonoBehaviour
 
     private void Init_FuntionUI()
     {
-        //½ÃÀÛ ½Ã ÃÊ±âÈ­ÇÒ °Íµé
+        //ì‹œì‘ ì‹œ ì´ˆê¸°í™”í•  ê²ƒë“¤
 
         BackButton = transform.GetChild(0).GetComponent<Button>();
         BackButton.onClick.AddListener(BackBtn_Clicked);
@@ -248,14 +243,14 @@ public class Intro : MonoBehaviour
 
 
         
-        //±¸Á¶Ã¼ ¹è¿­ ÃÊ±âÈ­
-        for (int i = 0; i < TeamColors.Length; i++)
-        {
-            teamColors[i].color_m = TeamColors[i];
-            teamColors[i].color_c = TeamColors[i].color;
-            teamColors[i].ColorNum = i;
-            teamColors[i].isUsing = false;
-        }
+        ////êµ¬ì¡°ì²´ ë°°ì—´ ì´ˆê¸°í™”
+        //for (int i = 0; i < GetColor.instance.TeamColors.Length; i++)
+        //{
+        //    GetColor.instance.teamColors[i].color_m = GetColor.instance.TeamColors[i];
+        //    GetColor.instance.teamColors[i].color_c = GetColor.instance.TeamColors[i].color;
+        //    GetColor.instance.teamColors[i].ColorNum = i;
+        //    GetColor.instance.teamColors[i].isUsing = false;
+        //}
 
 
        
@@ -273,7 +268,7 @@ public class Intro : MonoBehaviour
 
     public void TitlePanel_On()
     {
-        //ÆĞ³Î on/off
+        //íŒ¨ë„ on/off
         Title_Panel.SetActive(true);
         Setup_Panel.SetActive(false);
         Upgrade_Panel.gameObject.SetActive(false);
@@ -286,7 +281,7 @@ public class Intro : MonoBehaviour
         BackButton.gameObject.SetActive(false);
         BackButton.enabled = false;
 
-        //¿ÀºêÁ§Æ® °ª ¿¬°á
+        //ì˜¤ë¸Œì íŠ¸ ê°’ ì—°ê²°
         Login_Panel = Title_Panel.transform.GetChild(1).gameObject;
         Btn_Panel = Title_Panel.transform.GetChild(2).gameObject;
 
@@ -320,7 +315,7 @@ public class Intro : MonoBehaviour
 
         GameObject Selection = Setup_Panel.transform.GetChild(0).gameObject;
 
-        #region ¿ÀºêÁ§Æ® ¿¬°á
+        #region ì˜¤ë¸Œì íŠ¸ ì—°ê²°
         TeamColor1_Btn = Selection.transform.GetChild(0).GetChild(0).GetComponent<Button>();
         TeamColor2_Btn = Selection.transform.GetChild(1).GetChild(0).GetComponent<Button>();
         TeamColor3_Btn = Selection.transform.GetChild(2).GetChild(0).GetComponent<Button>();
@@ -345,7 +340,7 @@ public class Intro : MonoBehaviour
         #endregion
 
 
-        #region ¹öÆ° ÇÔ¼ö È£Ãâ
+        #region ë²„íŠ¼ í•¨ìˆ˜ í˜¸ì¶œ
         Original_Btn.onClick.AddListener(OriginalBtn_Clicked);
         TimeAttack_Btn.onClick.AddListener(TimeAttackBtn_Clicked);
         GameStart_Btn.onClick.AddListener(GameStart_Btn_Clicekd);
@@ -359,20 +354,20 @@ public class Intro : MonoBehaviour
 
         ID1_Text.text = GameManager.instance.PlayerID;
 
-        TeamColor1_Btn.image.color = teamColors[8].color_c;
-        TeamColor2_Btn.image.color = teamColors[2].color_c;
-        TeamColor3_Btn.image.color = teamColors[5].color_c;
-        TeamColor4_Btn.image.color = teamColors[10].color_c;
+        TeamColor1_Btn.image.color = GetColor.instance.teamColors[8].color_c;
+        TeamColor2_Btn.image.color = GetColor.instance.teamColors[2].color_c;
+        TeamColor3_Btn.image.color = GetColor.instance.teamColors[5].color_c;
+        TeamColor4_Btn.image.color = GetColor.instance.teamColors[10].color_c;
 
-        teamColors[8].isUsing = true;
-        teamColors[2].isUsing = true;
-        teamColors[5].isUsing = true;
-        teamColors[10].isUsing = true;
+        GetColor.instance.teamColors[8].isUsing = true;
+        GetColor.instance.teamColors[2].isUsing = true;
+        GetColor.instance.teamColors[5].isUsing = true;
+        GetColor.instance.teamColors[10].isUsing = true;
 
-        Team1_Color = teamColors[8].ColorNum;
-        Team2_Color = teamColors[2].ColorNum;
-        Team3_Color = teamColors[5].ColorNum;
-        Team4_Color = teamColors[10].ColorNum;
+        Team1_Color = GetColor.instance.teamColors[8].ColorNum;
+        Team2_Color = GetColor.instance.teamColors[2].ColorNum;
+        Team3_Color = GetColor.instance.teamColors[5].ColorNum;
+        Team4_Color = GetColor.instance.teamColors[10].ColorNum;
 
 
 
@@ -380,32 +375,32 @@ public class Intro : MonoBehaviour
 
     public void Change_Team_Color(Button button, ref int teamNum)
     {
-        Debug.Log("ÄÃ·¯Ã¼ÀÎÁö");
+        Debug.Log("ì»¬ëŸ¬ì²´ì¸ì§€");
       
-        for (int i = teamNum; i < teamColors.Length; i++)
+        for (int i = teamNum; i < GetColor.instance.teamColors.Length; i++)
         {
-            if (button.image.color == teamColors[i].color_c)
+            if (button.image.color == GetColor.instance.teamColors[i].color_c)
             {
-                for (int j = 0; j < teamColors.Length; j++)
+                for (int j = 0; j < GetColor.instance.teamColors.Length; j++)
                 {
                     if (i + j >= 10)
                     {
-                        if (teamColors[i + j - 10].isUsing == false)
+                        if (GetColor.instance.teamColors[i + j - 10].isUsing == false)
                         {
-                            button.image.color = teamColors[i + j - 10].color_c;
-                            teamColors[i + j - 10].isUsing = true;
-                            teamColors[i].isUsing = false;
+                            button.image.color = GetColor.instance.teamColors[i + j - 10].color_c;
+                            GetColor.instance.teamColors[i + j - 10].isUsing = true;
+                            GetColor.instance.teamColors[i].isUsing = false;
                             teamNum = i + j - 10;
                             break;
                         }
                     }
                     else
                     {
-                        if (teamColors[i + j].isUsing == false)
+                        if (GetColor.instance.teamColors[i + j].isUsing == false)
                         {
-                            button.image.color = teamColors[i + j].color_c;
-                            teamColors[i + j].isUsing = true;
-                            teamColors[i].isUsing = false;
+                            button.image.color = GetColor.instance.teamColors[i + j].color_c;
+                            GetColor.instance.teamColors[i + j].isUsing = true;
+                            GetColor.instance.teamColors[i].isUsing = false;
                             teamNum = i + j;
                             break;
                         }
@@ -461,7 +456,7 @@ public class Intro : MonoBehaviour
             Upgrade_Items[i].transform.GetChild(3).GetComponent<Text>().text = $"{GameManager.instance.units[i].cost}c";
         }
 
-        #region ±¸¸Å¿©ºÎ
+        #region êµ¬ë§¤ì—¬ë¶€
 
         if (GameManager.instance.isCanUse_SwordMan)
         {
@@ -637,13 +632,13 @@ public class Intro : MonoBehaviour
 
     public void SignUpPanel_On()
     {
-        //¿ÀºêÁ§Æ® ¿¬°á
+        //ì˜¤ë¸Œì íŠ¸ ì—°ê²°
         SignUp_Panel.SetActive(true);
         SignUp_inputField = SignUp_Panel.transform.GetChild(1).GetComponent<InputField>();
         SignUp_Confirm_Btn = SignUp_Panel.transform.GetChild(2).GetComponent<Button>();
         SignUp_Cancel_Btn = SignUp_Panel.transform.GetChild(3).GetComponent<Button>();
 
-        //¹öÆ° ÀÌº¥Æ®
+        //ë²„íŠ¼ ì´ë²¤íŠ¸
         SignUp_Confirm_Btn.onClick.AddListener(Check_SignUp);
         SignUp_Cancel_Btn.onClick.AddListener(() => {
             SignUp_Panel.SetActive(false);
@@ -689,7 +684,7 @@ public class Intro : MonoBehaviour
     public void CheckLogin()
     {
         
-        //·Î±×ÀÎ È®ÀÎ
+        //ë¡œê·¸ì¸ í™•ì¸
         if (!isLogined)
         {
             Btn_Panel.SetActive(false);
@@ -702,7 +697,7 @@ public class Intro : MonoBehaviour
             Confirm_Btn.onClick.AddListener(Login);
             SignUp_Btn.onClick.AddListener(SignUpPanel_On);
 
-            //½ÃÀÛ½Ã inputField¿¡ Ä¿¼­
+            //ì‹œì‘ì‹œ inputFieldì— ì»¤ì„œ
             inputField.ActivateInputField();
         }
         else
@@ -732,7 +727,7 @@ public class Intro : MonoBehaviour
 
 
 
-                Debug.Log("·Î±×ÀÎµÊ¤¾¤¾");
+                Debug.Log("ë¡œê·¸ì¸ë¨ã…ã…");
 
                 isLogined = true;
             }
