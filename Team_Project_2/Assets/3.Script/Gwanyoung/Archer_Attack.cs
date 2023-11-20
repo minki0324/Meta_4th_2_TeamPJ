@@ -35,6 +35,7 @@ public class Archer_Attack : MonoBehaviour
         isAttack = true;
         
         ani.SetTrigger("Attack");  // 공격 애니메이션
+        
         GameObject Arrow_ob = Instantiate(Arrow, Bow.position, Quaternion.identity);  // 화살 생성
         Arrow_ob.transform.parent = this.transform;   // Arrow 프리팹이 정보좀 가져가라고 잠시 상속..
 

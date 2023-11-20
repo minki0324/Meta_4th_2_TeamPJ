@@ -5,6 +5,21 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
+    public enum BGMSound
+    {
+        MainBGM = 0
+    }
+
+    public enum SFXSound
+    {
+        MouseHove = 0,
+        MouseClick,
+        MouseClick2,
+        StartGame,
+    }
+
+
+
     public static AudioManager instance = null;
 
     private Optioin_Panel optionPanel;
@@ -25,11 +40,9 @@ public class AudioManager : MonoBehaviour
 
 
     [Header("오디오 클립(직접 참조)")]
-    [SerializeField]
-    private AudioClip[] clip_BGM;
-
-    [SerializeField]
-    private AudioClip[] clip_SFX;
+    public AudioClip[] clip_BGM;
+    
+    public AudioClip[] clip_SFX;
 
     private void Awake()
     {
@@ -51,6 +64,8 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         Init_AudioSource();
+        audio_BGM.clip = clip_BGM[0];
+        audio_BGM.Play();
     }
 
 
@@ -87,9 +102,9 @@ public class AudioManager : MonoBehaviour
                 break;
         }
 
-        if (volume == 0f)
+        if (volume == -20f)
         {
-            audioMixer.SetFloat(soundtype, -80);
+            audioMixer.SetFloat(soundtype, -80f);
         }
         else
         {
@@ -115,13 +130,11 @@ public class AudioManager : MonoBehaviour
             case 0:
                 audio_SFX.clip = clip_SFX[1];
                 audio_SFX.Play();
-                //audio_SFX.PlayOneShot(clip_SFX[1]);
                 break;
 
             case 1:
                 audio_SFX.clip = clip_SFX[2];
                 audio_SFX.Play();
-                // audio_SFX.PlayOneShot(clip_SFX[2]);
                 break;
         }
        

@@ -93,9 +93,9 @@ public class Optioin_Panel : MonoBehaviour
 
 
         //사운드 조절 슬라이더
-        masterVolume_Slider.onValueChanged.AddListener(delegate { AudioManager.instance.SetVolume(5, "Master"); });
-        bgmVolume_Slider.onValueChanged.AddListener(delegate { AudioManager.instance.SetVolume(5, "Bgm"); });
-        sfxVolume_Slider.onValueChanged.AddListener(delegate { AudioManager.instance.SetVolume(5, "Sfx"); });
+        masterVolume_Slider.onValueChanged.AddListener(delegate { AudioManager.instance.SetVolume(-10f, "Master"); });
+        bgmVolume_Slider.onValueChanged.AddListener(delegate { AudioManager.instance.SetVolume(-10f, "Bgm"); });
+        sfxVolume_Slider.onValueChanged.AddListener(delegate { AudioManager.instance.SetVolume(-10f, "Sfx"); });
 
 
         //밝기 조절 슬라이더

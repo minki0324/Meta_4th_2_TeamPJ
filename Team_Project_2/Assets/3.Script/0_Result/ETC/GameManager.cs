@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     public float EndTime = 20f;   // 게임 시간은 30분
     public int Occupied_Area = 1;   // 점령한 지역 Default값 1
     public GameObject Result;
+    public AudioClip MainBgm;
 
     [Header("골드 관련")]
     public float total_Gold = 1000;
