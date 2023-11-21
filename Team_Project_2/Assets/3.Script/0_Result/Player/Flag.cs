@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public class Flag : MonoBehaviour
     public bool isOccupating = false; // 점령 중인지
     public bool isOccupied = false; // 점령이 끝났는지
 
+    private EnemySpawn Spawn;
     public int Flag_Num;
     RaycastHit[] allHits;
     int Totalcount;
@@ -37,11 +39,25 @@ public class Flag : MonoBehaviour
     public int Team3Count;
     public int Team4Count;
 
+    public List<GameObject> Leaders = new List<GameObject>();
+
+    public event Action isOccuDone;
+
     private void Start()
     {
+        Spawn = GetComponent<EnemySpawn>();
         OccuHUD = FindObjectOfType<OccupationHUD>();
         gameObject.layer = (transform.parent == null) ? 0 : ParentLayer();
-        
+    }
+
+    private void OnEnable()
+    {
+        isOccuDone += Spawn.Occupation_Done;
+    }
+
+    private void OnDisable()
+    {
+        isOccuDone -= Spawn.Occupation_Done;
     }
 
     private void Update()
@@ -66,6 +82,13 @@ public class Flag : MonoBehaviour
                 continue;
             }
          
+            if(hit.transform.CompareTag("Leader") || hit.transform.CompareTag("Player"))
+            {
+                if(hit.transform.gameObject != hit.transform.gameObject)
+                {
+                    Leaders.Add(hit.transform.gameObject);
+                }
+            }
             int layer = hit.transform.gameObject.layer;
          
             switch (layer)
@@ -218,6 +241,9 @@ public class Flag : MonoBehaviour
             TeamColor_Temp = TeamColor;
             gameObject.layer = Teamlayer;
             OccuHUD.Change_Color(TeamColor, Flag_Num);
+            ColorManager.instance.Change_SolidColor(transform.GetChild(1).GetComponent<SpriteRenderer>(), TeamColor);
+            isOccuDone?.Invoke();
+
         }
 
         isOccupating = false;

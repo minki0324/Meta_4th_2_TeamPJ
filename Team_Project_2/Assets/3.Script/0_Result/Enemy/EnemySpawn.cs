@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,12 @@ public class EnemySpawn : MonoBehaviour
     private bool isRespawning;
     // ���� ��� ���̾�
     private LayerMask TeamLayer;
-    
+
+    // Action 은 return이 없는 메소드만 추가한다
+    public event Action OnEnemySpawn;
+    // Function 은 return이 없는 메소드만 추가한다
+    public event Func<int> OnEnemySpawn2;
+
     private void Awake()
     {
         myLayer = gameObject.layer;
@@ -46,40 +52,7 @@ public class EnemySpawn : MonoBehaviour
             return;
         }
         SpawnCoolTime += Time.deltaTime;
-        //��������Ʈ ���̾ ����� ���̾�� �ٸ��� ��߷��̾�� ������Ʈ.
-        if (myLayer != transform.parent.gameObject.layer)
-        {
-            gameObject.layer = transform.parent.gameObject.layer;
 
-            if (gameObject.layer == 0)
-            {
-                return;
-            }
-            else if (gameObject.layer == TeamLayer)
-            {
-                targetLeader = player.gameObject;
-            }
-            else
-            {
-                try
-                {
-                    targetLeader = SetLeader();
-                    targetLeader.TryGetComponent(out leaderAI);
-                }
-                catch
-                {
-                    Debug.Log("Ÿ��ã������");
-                }
-            }
-
-
-
-        }
-       
-       
-
-
-      
         if (targetLeader != null)
         {
 
@@ -190,6 +163,43 @@ public class EnemySpawn : MonoBehaviour
             SpawnIndex = 0;
         }
 
+    }
+
+    public void Occupation_Done()
+    {
+        /*
+            1. 스포너의 레이어를 플래그와 동기화 해줌
+            2. 소환 해야할 리더를 셋팅을 해줌
+            3. 각 리더의 has_Flag 값을 올리고 빼줌
+        */
+
+
+        if (myLayer != transform.parent.gameObject.layer)
+        {
+            gameObject.layer = transform.parent.gameObject.layer;
+
+            if (gameObject.layer == 0)
+            {
+                return;
+            }
+            else if (gameObject.layer == TeamLayer)
+            {
+                Debug.Log("몇번 부르나요");
+                targetLeader = player.gameObject;
+            }
+            else
+            {
+                try
+                {
+                    targetLeader = SetLeader();
+                    targetLeader.TryGetComponent(out leaderAI);
+                }
+                catch
+                {
+                    Debug.Log("Ÿ��ã������");
+                }
+            }
+        }
     }
     private LeaderAI FindLeader()
     {

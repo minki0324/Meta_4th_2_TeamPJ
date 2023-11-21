@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
     public float respawnTime = 10f;
     public int killCount;
     public int DeathCount;
-    public int Ply_hasFlag = 0;
+    public int Ply_hasFlag = 1;
     public float Teampoint = 0;
     public int Hire = 0;
 
