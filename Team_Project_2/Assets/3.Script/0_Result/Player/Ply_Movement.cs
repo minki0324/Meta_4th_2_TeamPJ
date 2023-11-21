@@ -232,7 +232,6 @@ public class Ply_Movement : MonoBehaviour
             playerRotation = transform.rotation;    //added
 
             // 이동
-            Debug.Log(MoveSpeed);
             transform.position += (MoveDir.normalized * realSpeed /** Time.deltaTime*/);
             isMove = true;
             isPlayerMove = true;

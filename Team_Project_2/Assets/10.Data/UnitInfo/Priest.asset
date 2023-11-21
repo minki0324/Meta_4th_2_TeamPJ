@@ -16,9 +16,9 @@ MonoBehaviour:
   ishealer: 1
   unitName: Priest
   description: "\uD790\uB7EC\uC785\uB2C8\uB2F9"
-  damage: 5
+  damage: 0
   maxHP: 80
   currentHP: 80
-  attackRange: 0
+  attackRange: 7
   cost: 30
   index: 3

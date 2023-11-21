@@ -8255,10 +8255,10 @@ GameObject:
   - component: {fileID: 3998764035206485372}
   - component: {fileID: 3998764035206485371}
   - component: {fileID: 3998764035206485370}
-  - component: {fileID: 3998764035206485374}
   - component: {fileID: 3998764035206485375}
   - component: {fileID: 3998764035206485360}
   - component: {fileID: 1933211657277199240}
+  - component: {fileID: 7385769135805898960}
   m_Layer: 6
   m_Name: Healer_Prefab
   m_TagString: Untagged
@@ -8378,6 +8378,7 @@ MonoBehaviour:
     maxHP: 0
     damage: 0
     isDie: 0
+    attackRange: 0
   target: {fileID: 0}
   aipath: {fileID: 0}
   ani: {fileID: 0}
@@ -8387,7 +8388,9 @@ MonoBehaviour:
   AttackRange: 1.5
   HitBox_col: {fileID: 0}
   Ob_Weapon_col: {fileID: 0}
+  speed: 0
   nearestTarget: {fileID: 0}
+  HealerPos: {x: 0, y: 0, z: 0}
   formationState: 0
   formationTransmform: {fileID: 0}
   infodata: {fileID: 0}
@@ -8395,6 +8398,7 @@ MonoBehaviour:
   isArrive: 0
   isSetPosition: 0
   isNear: 0
+  currentScore: 0
 --- !u!114 &3998764035206485372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8452,7 +8456,7 @@ MonoBehaviour:
   radius: 0.5
   height: 2
   canMove: 1
-  maxSpeed: 1
+  maxSpeed: 5
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -8464,48 +8468,20 @@ MonoBehaviour:
   enableRotation: 1
   autoRepath:
     mode: 2
-    interval: 0.5
+    interval: NaN
     sensitivity: 10
     maximumInterval: 2
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
-  maxAcceleration: -2.5
+  maxAcceleration: 30
   rotationSpeed: 360
-  slowdownDistance: 0.6
+  slowdownDistance: 1.5
   pickNextWaypointDist: 2
-  endReachedDistance: 0.2
-  alwaysDrawGizmos: 0
+  endReachedDistance: 0.4
+  alwaysDrawGizmos: 1
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
-  constrainInsideGraph: 0
---- !u!114 &3998764035206485374
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3998764035206485368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  drawGizmos: 1
-  detailedGizmos: 0
-  startEndModifier:
-    addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
-    useRaycasting: 0
-    mask:
-      serializedVersion: 2
-      m_Bits: 4294967295
-    useGraphRaycasting: 0
-  traversableTags: -1
-  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  graphMask:
-    value: -1
+  constrainInsideGraph: 1
 --- !u!136 &3998764035206485375
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8555,6 +8531,48 @@ MonoBehaviour:
   healCoolTime: 3
   isHealTargetExist: 0
   isCanHeal: 0
+--- !u!114 &7385769135805898960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3998764035206485368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
+  radius: 0.5
+  height: 2
+  canMove: 1
+  maxSpeed: 5
+  gravity: {x: NaN, y: NaN, z: NaN}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  repathRateCompatibility: NaN
+  canSearchCompability: 0
+  orientation: 0
+  enableRotation: 1
+  autoRepath:
+    mode: 2
+    interval: 0.5
+    sensitivity: 10
+    maximumInterval: 2
+    visualizeSensitivity: 0
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: 30
+  rotationSpeed: 360
+  slowdownDistance: 1.5
+  pickNextWaypointDist: 2
+  endReachedDistance: 0.4
+  alwaysDrawGizmos: 1
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 0
+  constrainInsideGraph: 1
 --- !u!1 &3998764035206485516
 GameObject:
   m_ObjectHideFlags: 0

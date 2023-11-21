@@ -117,7 +117,6 @@ public class Soilder_Controller : Unit
         }
 
 
-        currentHP = data.currentHP;
 
 
 

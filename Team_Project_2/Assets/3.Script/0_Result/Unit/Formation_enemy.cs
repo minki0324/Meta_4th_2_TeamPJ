@@ -44,7 +44,6 @@ public class Formation_enemy : MonoBehaviour
             posi.weight = weightedParents[i].weighted;
             posi.isSuccess = false;
             positions.Add(posi);
-            Debug.Log($"{i}번째 리스트  가중치{positions[i].weight}");
         }
     }
     private void Start()
