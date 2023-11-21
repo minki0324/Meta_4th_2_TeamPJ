@@ -7,7 +7,7 @@ public class Healer : MonoBehaviour
     Ply_Controller pc;
 
     [SerializeField]
-    private float healRange = 5f;
+    private float healRange = 10f;
 
     [SerializeField]
     private Animator ani;
@@ -22,7 +22,7 @@ public class Healer : MonoBehaviour
 
     float lessHP;
 
-    public float healCoolTime = 3f;
+    public float healCoolTime;
 
     public bool isHealTargetExist = false;
 
@@ -34,9 +34,9 @@ public class Healer : MonoBehaviour
 
     private void Start()
     {
-
+        pc = FindObjectOfType<Ply_Controller>();
         isCanHeal = true;
-       // ani = GetComponent<Animator>();
+        ani = GetComponent<Animator>();
     }
 
     public void GetHeal_Target()
@@ -44,23 +44,20 @@ public class Healer : MonoBehaviour
         Debug.Log("ÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈúÈú");
 
         //Èú Å¸°Ù UnitList0¹øÀ¸·Î ÀÓÀÇ ÁöÁ¤
-       // healTarget = pc.UnitList_List[0].gameObject;    //null
+        healTarget = pc.UnitList_List[0].gameObject;    //null
         if(healTarget == null)
         {
             Debug.Log("½Ã¹ß·Ò¾Æ ¿Ö ¶Ç ¾ø°í Áö¶öÀÎµ¥¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ¤Ğ");
         }
-        else
-        {
-            Debug.Log("ÀÌ°É ´ã¹è°¡..?");
-        }
-       
+    
         lessHP = healTarget.GetComponent<Soilder_Controller>().data.currentHP;
         //Debug.Log("HealTarget : " + healTarget.name.ToString());
-        // && Vector3.Distance(healTarget.transform.position, transform.position) > healRange
+        
         for (int i = 0; i < pc.UnitList_List.Count; i++)
         {
-            if (pc.UnitList_List[i].GetComponent<Soilder_Controller>().data.currentHP <= lessHP)
+            if (pc.UnitList_List[i].GetComponent<Soilder_Controller>().data.currentHP <= lessHP && Vector3.Distance(healTarget.transform.position, transform.position) < healRange)
             {
+                //ÃÖ¼ÒHP¸¦ °¡Áø ¾Öº¸´Ù ÇÇ°¡ ÀÛ°í Èú°¡´É ¹üÀ§ ³»(10f)¾È¿¡ ÀÖÀ¸¸é
                 healTarget = pc.UnitList_List[i];
                 lessHP = healTarget.GetComponent<Soilder_Controller>().data.currentHP;
 
@@ -75,29 +72,33 @@ public class Healer : MonoBehaviour
         }
 
 
-        Debug.Log("HealTarget : " + healTarget.name.ToString());
+      
 
-        if (healTarget.GetComponent<Soilder_Controller>().data.currentHP >= healTarget.GetComponent<Soilder_Controller>().data.maxHP || GameManager.instance.Current_HP >= GameManager.instance.Max_Hp)
+        if (healTarget.GetComponent<Soilder_Controller>().data.currentHP >= healTarget.GetComponent<Soilder_Controller>().data.maxHP)
         {
+            //ÈúÅ¸°ÙÀÇ ÇöÀç HP°¡ maxphpÀÎ °æ¿ì 
             isHealTargetExist = false;
+            Debug.Log("ÈúÅ¸°Ù Á¸ÀçÇÏÁö ¾ÊÀ½");
         }
         else
         {
             isHealTargetExist = true;
+            Debug.Log("HealTarget : " + healTarget.name.ToString());
+            Heal();
         }
+     
 
-
-        Heal();
+      
     }
 
     public void Heal()
     {
        
-        if (isCanHeal && isHealTargetExist)
+        if (isCanHeal)
         {
             Debug.Log("ºü¿ÍÈú@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-            //ani.SetTrigger("Heal");
+            ani.SetTrigger("Heal");
 
 
 
@@ -121,9 +122,11 @@ public class Healer : MonoBehaviour
 
     public IEnumerator HealCoolTime()
     {
+        healCoolTime = Random.Range(3, 7);
         Debug.Log("ÈúÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğ");
         yield return new WaitForSeconds(healCoolTime);
         isCanHeal = true;
+        yield break;
     }
 
 

@@ -53,6 +53,12 @@ public abstract class Unit : MonoBehaviour
 
     //힐러용
     Healer healer;
+
+    [SerializeField]
+    Vector3 HealerPos = new Vector3();
+
+    float healRange = 5f;
+
     public Transform GetNearestTarget()
     {
         return nearestTarget;
@@ -92,16 +98,42 @@ public abstract class Unit : MonoBehaviour
         if (nearestTarget != null) //탐지된 적이 있을때
         {
             LookatTarget(nearestTarget);
-                target.target = nearestTarget;
-            float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
-            if (attackDistance <= AttackRange)
+            target.target = nearestTarget;
+
+            if (gameObject.GetComponent<Soilder_Controller>().isHealer)    //힐러일 때
             {
-                isdetecting = true;
+                if (Vector3.Distance(transform.position, nearestTarget.transform.position) < 5f)
+                {
+                    target.target = transform;
+                }
+            }
+
+            if (gameObject.GetComponent<Soilder_Controller>().isHealer)    //힐러일 때
+            {
+                float healDistance = Vector3.Distance(transform.position, nearestTarget.position);
+                if (healDistance <= healRange)
+                {
+                    isdetecting = true;
+                }
+                else
+                {
+                    isdetecting = false;
+                }
             }
             else
             {
-                isdetecting = false;
+                //힐러가 아닐 떄
+                float attackDistance = Vector3.Distance(transform.position, nearestTarget.position); //목표 타겟과 자기자신 거리 비교
+                if (attackDistance <= AttackRange)
+                {
+                    isdetecting = true;     //공격범위
+                }
+                else
+                {
+                    isdetecting = false;
+                }
             }
+           
 
             if (!isdetecting) //탐지된적이 멀리있으면 적한테 이동
             {
@@ -282,7 +314,7 @@ public abstract class Unit : MonoBehaviour
     protected IEnumerator Attack_co()
    
     {
-        if(!gameObject.GetComponent<Soilder_Controller>().isHealer)
+        if(!gameObject.GetComponent<Soilder_Controller>().isHealer) //힐러가 아니면 공격
         {   
             //공격쿨타임
             float d = Random.Range(2f, 2.1f);
@@ -302,8 +334,6 @@ public abstract class Unit : MonoBehaviour
         {
             healer = GetComponent<Healer>();
             healer.GetHeal_Target();
-            ani.SetTrigger("Heal");
-
         }
      
     }
