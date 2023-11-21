@@ -59,11 +59,6 @@ public class Flag : MonoBehaviour
         Team3Count = 0;
         Team4Count = 0;
 
-
-        
-
-        
-
         foreach (RaycastHit hit in allHits)
         {
             if (hit.transform.gameObject.CompareTag("SpawnPoint") || hit.transform.CompareTag("Flag") || hit.transform.CompareTag("Base"))
@@ -72,6 +67,7 @@ public class Flag : MonoBehaviour
             }
          
             int layer = hit.transform.gameObject.layer;
+         
             switch (layer)
             {
 
@@ -222,7 +218,6 @@ public class Flag : MonoBehaviour
             TeamColor_Temp = TeamColor;
             gameObject.layer = Teamlayer;
             OccuHUD.Change_Color(TeamColor, Flag_Num);
-           
         }
 
         isOccupating = false;

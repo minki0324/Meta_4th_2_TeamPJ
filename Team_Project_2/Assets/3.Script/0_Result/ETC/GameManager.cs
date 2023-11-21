@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
         {
             isFastMode = !isFastMode;
             if (isFastMode) { 
-            Time.timeScale = 10f;
+            Time.timeScale = 2.5f;
             }
             else
             {

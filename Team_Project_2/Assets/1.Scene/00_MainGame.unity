@@ -29699,12 +29699,12 @@ MonoBehaviour:
   m_grassHealthyColor: {r: 0.8962264, g: 0.8131371, b: 0.6975347, a: 1}
   m_grassDryColor: {r: 0.8396226, g: 0.7456582, b: 0.621796, a: 1}
   Base_PreFabs:
-  - {fileID: 6961341213275169406, guid: 9afe9041d6be2ec4e96001b20cf9b7ab, type: 3}
+  - {fileID: 2349902267804321941, guid: 9afe9041d6be2ec4e96001b20cf9b7ab, type: 3}
   Ply_Num: 4
   Base_Num: 0
   baseCampPositions: []
   flag:
-  - {fileID: 5805590287774594477, guid: 7fb92d38918ceee4d9a78bfe97aab807, type: 3}
+  - {fileID: 7709266736555943690, guid: b1c8b9da0af30de4ba3c5d4e7142cee4, type: 3}
   flag_Num: 3
   flagPositions_List: []
   Leader_Prefabs:

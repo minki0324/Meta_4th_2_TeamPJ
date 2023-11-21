@@ -12980,14 +12980,15 @@ GameObject:
   - component: {fileID: 8132295210802862226}
   - component: {fileID: 1803586442092828233}
   - component: {fileID: 8132295210802862239}
-  - component: {fileID: 7674037152790838645}
+  - component: {fileID: -2097097275925591877}
+  - component: {fileID: 4643609815274536730}
   - component: {fileID: -6345470137745102455}
+  - component: {fileID: 7674037152790838645}
   - component: {fileID: 8736886272222092689}
   - component: {fileID: -6659146888812430763}
   - component: {fileID: 8870553910889788021}
   - component: {fileID: 2549932089501598413}
   - component: {fileID: -4631484934897724047}
-  - component: {fileID: 4643609815274536730}
   - component: {fileID: 1686098295777629251}
   - component: {fileID: -7241441996915175343}
   m_Layer: 6
@@ -13083,6 +13084,8 @@ MonoBehaviour:
     maxHP: 0
     damage: 0
     isDie: 0
+    attackRange: 0
+    ishealer: 0
   target: {fileID: 0}
   aipath: {fileID: 0}
   ani: {fileID: 0}
@@ -13094,9 +13097,11 @@ MonoBehaviour:
   Ob_Weapon_col: {fileID: 8132295210802871309}
   speed: 0
   nearestTarget: {fileID: 0}
+  HealerPos: {x: 0, y: 0, z: 0}
   Teampoint: 0
   total_Gold: 500
   Gold: 500
+  Magnifi: 2
   Upgrade_GoldValue: 1
   Regeneration: 0.5
   maxUnitCount: 19
@@ -13109,8 +13114,8 @@ MonoBehaviour:
   isMoving: 0
   respawnPoint: {fileID: 0}
   Team_Color: 0
-  has_Flag: 0
-  bat_State: 0
+  has_Flag: 1
+  bat_State: 1
   Hire: 0
   isPossible_Upgrade_1: 0
   isPossible_Upgrade_2: 0
@@ -13119,7 +13124,7 @@ MonoBehaviour:
   Upgrade_List: 
   UnitList: []
   leaderAIDirection: {x: 0, y: 0, z: 0}
---- !u!114 &7674037152790838645
+--- !u!114 &-2097097275925591877
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13128,14 +13133,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 8132295210802862224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7d2cf42c3fe80a4dbf0f7b8f0933a0c, type: 3}
+  m_Script: {fileID: 11500000, guid: 12e46035ae138894887291ba4c8b353e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Targetset: {fileID: 0}
+  state: 0
+  Main_target: {fileID: 0}
+  targetsetting: {fileID: 0}
   Target: {fileID: 0}
   NextTarget: {fileID: 0}
-  CurrentPos: {fileID: 0}
-  Target_: {fileID: 4643609815274536730}
+  NearGate: 0
+  NearFlag: 0
+  NearBase: 1
+  isStart: 0
+--- !u!114 &4643609815274536730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9679e68a0f1144e79c664d9a11ca121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!114 &-6345470137745102455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13155,6 +13177,23 @@ MonoBehaviour:
   gates: []
   TargetGate: {fileID: 0}
   Distance: 0
+--- !u!114 &7674037152790838645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132295210802862224}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d2cf42c3fe80a4dbf0f7b8f0933a0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Targetset: {fileID: 0}
+  Target: {fileID: 0}
+  NextTarget: {fileID: 0}
+  CurrentPos: {fileID: 0}
+  Target_: {fileID: 4643609815274536730}
 --- !u!114 &8736886272222092689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13282,19 +13321,6 @@ MonoBehaviour:
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
   constrainInsideGraph: 0
---- !u!114 &4643609815274536730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8132295210802862224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9679e68a0f1144e79c664d9a11ca121, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!135 &1686098295777629251
 SphereCollider:
   m_ObjectHideFlags: 0

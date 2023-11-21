@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Gate : MonoBehaviour
 {
-    // πÆ¿ª ø≠∞Ì ¥›¥¬ Ω∫≈©∏≥∆Æ
+    // Î¨∏ÏùÑ Ïó¥Í≥† Îã´Îäî Ïä§ÌÅ¨Î¶ΩÌä∏
 
 
     private Animator Gate_Ani;  
     [SerializeField] 
-    private BoxCollider Gate_Col;  // Gate π∞∏Æ Collider
+    private BoxCollider Gate_Col;  // Gate Î¨ºÎ¶¨ Collider
     public bool isOpen = true;
 
     private List<int> Units = new List<int>();
@@ -26,41 +26,41 @@ public class Gate : MonoBehaviour
         Gate_Col.enabled = false;
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Soldier") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader")) 
-    //    {            
-    //        if (!other.gameObject.layer.Equals(transform.root.gameObject.layer))
-    //        {
-    //            Units.Add(other.gameObject.layer);
-    //        }
-    //        else
-    //        {
-    //            if (other.gameObject.CompareTag("Player"))
-    //            {
-    //                ply_gate = other.gameObject.GetComponent<Unit_Gate>();
-    //            }
-    //        }
-    //    }        
-    //}
+    /*private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Soldier") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader")) 
+        {            
+            if (!other.gameObject.layer.Equals(transform.root.gameObject.layer))
+            {
+                Units.Add(other.gameObject.layer);
+            }
+            else
+            {
+                if (other.gameObject.CompareTag("Player"))
+                {
+                    ply_gate = other.gameObject.GetComponent<Unit_Gate>();
+                }
+            }
+        }        
+    }
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Soldier") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader"))
-    //    {
-    //        if (!other.gameObject.layer.Equals(transform.root.gameObject.layer))
-    //        {
-    //            Units.Remove(other.gameObject.layer);
-    //        }
-    //        else
-    //        {
-    //            if (other.gameObject.CompareTag("Player"))
-    //            {
-    //                ply_gate = null;
-    //            }
-    //        }
-    //    }
-    //}
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Soldier") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader"))
+        {
+            if (!other.gameObject.layer.Equals(transform.root.gameObject.layer))
+            {
+                Units.Remove(other.gameObject.layer);
+            }
+            else
+            {
+                if (other.gameObject.CompareTag("Player"))
+                {
+                    ply_gate = null;
+                }
+            }
+        }
+    }*/
     private void Update()
     {
         if (!GameManager.instance.isLive) 
