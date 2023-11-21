@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -25,7 +25,7 @@ public class LeaderAI : LeaderState
         combinedMask = TargetLayers();
         flag = GameObject.FindGameObjectsWithTag("Flag");
         leaderController = GetComponent<LeaderController>();
-        /*bat_State = BattleState.Move;*/
+        *//*bat_State = BattleState.Move;*//*
         col = GetComponent<SphereCollider>();
         col.enabled = false;
 
@@ -131,7 +131,7 @@ public class LeaderAI : LeaderState
                 //formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
                 break;
             case BattleState.Wait:
-                /*rb.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;*/
+                *//*rb.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;*//*
                 //리더가 타겟에게 가능 이동속도 줄이기 , 방패들기
                 holdingShield = true;
                 aipath.maxSpeed = 1.5f; // 이동속도줄이기
@@ -311,7 +311,7 @@ public class LeaderAI : LeaderState
         else
         {
 
-           /* bat_State = BattleState.Move;*/
+           *//* bat_State = BattleState.Move;*//*
 
         }
 
@@ -447,4 +447,4 @@ public class LeaderAI : LeaderState
     }
 
 
-}
+}*/
