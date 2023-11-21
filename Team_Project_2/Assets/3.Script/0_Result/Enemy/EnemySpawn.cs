@@ -14,6 +14,7 @@ public class EnemySpawn : MonoBehaviour
     public Transform[] SpawnPoint = new Transform[3];
     //������ġ�� 0~2 ����ġ ���ʴ�� ��ȯ�ϱ����� �ε���
     private int SpawnIndex = 0;
+    private float SpawnCoolTime;
     //��ȯ�Ǵ� ����
     private int myLayer;
     private bool isAI;
@@ -45,9 +46,8 @@ public class EnemySpawn : MonoBehaviour
         {
             return;
         }
-
         SpawnCoolTime += Time.deltaTime;
-
+        //��������Ʈ ���̾ ����� ���̾�� �ٸ��� ��߷��̾�� ������Ʈ.
         if (myLayer != transform.parent.gameObject.layer)
         {
             gameObject.layer = transform.parent.gameObject.layer;
@@ -134,18 +134,21 @@ public class EnemySpawn : MonoBehaviour
         {
             if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderAI.canSpawn)
             {
+
                 UnitSpawn();
 
                 SpawnCoolTime = 0f;
             }
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             GameManager.instance.inRange = false;
         }
+
     }
     private void UnitSpawn()
     {

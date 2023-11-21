@@ -53,9 +53,19 @@ public class LeaderController : MonoBehaviour
                     // 그럼 돈 모일 때까지 기다리기..
                     if (NextTarget.Equals(null))
                     {
-                        if (GameManager.instance.currentTime < 900)
+
+                        AI.bat_State = LeaderState.BattleState.Wait;
+
+                        // 현재 병사 수가 15명 이상일 때
+                        if (AI.currentUnitCount >= 15)
                         {
-                            if (AI.currentUnitCount >= 21)
+                            AI.bat_State = LeaderState.BattleState.Move;
+                            Targetset = GetComponent<TargetFlag>();
+                            NextTarget = Targetset.Target(transform);
+
+                            // 현재 중앙 지역 깃발을 내가 다 먹고있을 때
+                            // 그럼 돈 모일 때까지 기다리기..
+                            if (NextTarget.Equals(null))
                             {
                                 Targetset = GetComponent<TargetEnemyBase>();
                                 NextTarget = Targetset.Target(transform);

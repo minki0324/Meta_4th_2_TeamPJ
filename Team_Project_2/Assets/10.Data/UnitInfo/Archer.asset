@@ -19,6 +19,6 @@ MonoBehaviour:
   damage: 30
   maxHP: 80
   currentHP: 80
-  attackRange: 5
+  attackRange: 8
   cost: 30
   index: 2

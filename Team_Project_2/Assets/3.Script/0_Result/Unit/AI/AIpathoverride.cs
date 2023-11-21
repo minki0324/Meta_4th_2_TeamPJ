@@ -8,12 +8,13 @@ public class AIpathoverride : AIPath
     protected  override void Start()
     {
         soilder_con = GetComponent<Soilder_Controller>();
-    }
+    }       
     public override void OnTargetReached()
     {
         if (soilder_con.formationState == Soilder_Controller.FormationState.GoingFormation)
         {
             soilder_con.formationState = Soilder_Controller.FormationState.Shield;
+            
         }
     }
 }

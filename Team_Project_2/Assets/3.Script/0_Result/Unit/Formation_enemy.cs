@@ -30,8 +30,14 @@ public class Formation_enemy : MonoBehaviour
     {
         leaderAI = GetComponent<LeaderAI>();
         currentPosGroup = Parents_Pos[Parents_index];
+
+        for (int i = 0; i < Parents_Pos.Length; i++)
+        {
+         
+        }
+
         GetSortedParentsByWeight();
-        for (int i = 0; i <  weightedParents.Count; i++)
+        for (int i = 0; i < weightedParents.Count; i++)
         {
             Position posi = new Position();
             posi.position = weightedParents[i].transform;
@@ -39,7 +45,6 @@ public class Formation_enemy : MonoBehaviour
             posi.isSuccess = false;
             positions.Add(posi);
         }
-
     }
     private void Start()
     {
@@ -208,24 +213,39 @@ public class Formation_enemy : MonoBehaviour
     // ����ġ ��� ������ ���� �޼ҵ�
     private void GetSortedParentsByWeight()
     {
-     
-        float weightvalue = 0.1f;
-        float weight = 1f;
-        foreach (Transform parent in Parents_Pos)
+
+        float weight = 0;
+
+        for (int i = 0; i < Parents_Pos.Length; i++)
         {
-
-            for (int i = 0; i < parent.childCount; i++)
+            switch (i)
             {
-                Transform child = parent.GetChild(i);
+                case 0:
+                    weight = 1000;
+                    break;
+                case 1:
+                    weight = 800;
+                    break;
+                case 2:
+                    weight = 300;
+                    break;
+                case 3:
+                    weight = 50;
+                    break;
+            }
 
-                weight += weightvalue;
+            for (int k = 0; k < Parents_Pos[i].childCount; k++)
+            {
+                Transform child = Parents_Pos[i].GetChild(k);
+
+
 
                 weightedParents.Add((child, weight));  // ������ �κ�
             }
-
         }
 
-       
+
+
     }
 
     // ����ġ ���� �޼ҵ�
@@ -244,7 +264,7 @@ public class Formation_enemy : MonoBehaviour
         }
         else if (index == 4)
         {
-            return baseWeight / 1.2f; // 5�� �ε����� ���� ���� ����ġ
+            return baseWeight / 1.2f; // 5�� �ε����� ���� ���� ����ġ 
         }
         else if (index >= 5 && index <= 6)
         {

@@ -61,11 +61,11 @@ public class Flag : MonoBehaviour
 
         foreach (RaycastHit hit in allHits)
         {
-            if (hit.transform.CompareTag("SpawnPoint") || hit.transform.CompareTag("Flag") || hit.transform.CompareTag("Base"))
+            if (hit.transform.gameObject.CompareTag("SpawnPoint") || hit.transform.CompareTag("Flag") || hit.transform.CompareTag("Base"))
             {
                 continue;
             }
-
+         
             int layer = hit.transform.gameObject.layer;
          
             switch (layer)

@@ -151,11 +151,6 @@ public class GameManager : MonoBehaviour
         EnemySpawn spawnPoint =null;
         GameObject[] spawns;
         spawns = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        for (int i = 0; i < spawns.Length; i++)
-        {
-
-        Debug.Log(spawns[i]);   
-        }
         float mindistance = float.MaxValue;
         foreach (GameObject ob in spawns)
         {
