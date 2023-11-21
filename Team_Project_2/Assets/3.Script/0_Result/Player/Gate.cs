@@ -8,10 +8,15 @@ public class Gate : MonoBehaviour
 
 
     private Animator Gate_Ani;  
-    [SerializeField] private BoxCollider Gate_Col;  // Gate 물리 Collider
+    [SerializeField] 
+    private BoxCollider Gate_Col;  // Gate 물리 Collider
     public bool isOpen = true;
+
     private List<int> Units = new List<int>();
     private Unit_Gate ply_gate;
+
+    [SerializeField]
+    private AudioSource GateAudio;
 
     private void Start()
     {
@@ -21,41 +26,41 @@ public class Gate : MonoBehaviour
         Gate_Col.enabled = false;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Soldier") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader")) 
-        {            
-            if (!other.gameObject.layer.Equals(transform.root.gameObject.layer))
-            {
-                Units.Add(other.gameObject.layer);
-            }
-            else
-            {
-                if (other.gameObject.CompareTag("Player"))
-                {
-                    ply_gate = other.gameObject.GetComponent<Unit_Gate>();
-                }
-            }
-        }        
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Soldier") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader")) 
+    //    {            
+    //        if (!other.gameObject.layer.Equals(transform.root.gameObject.layer))
+    //        {
+    //            Units.Add(other.gameObject.layer);
+    //        }
+    //        else
+    //        {
+    //            if (other.gameObject.CompareTag("Player"))
+    //            {
+    //                ply_gate = other.gameObject.GetComponent<Unit_Gate>();
+    //            }
+    //        }
+    //    }        
+    //}
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Soldier") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader"))
-        {
-            if (!other.gameObject.layer.Equals(transform.root.gameObject.layer))
-            {
-                Units.Remove(other.gameObject.layer);
-            }
-            else
-            {
-                if (other.gameObject.CompareTag("Player"))
-                {
-                    ply_gate = null;
-                }
-            }
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Soldier") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader"))
+    //    {
+    //        if (!other.gameObject.layer.Equals(transform.root.gameObject.layer))
+    //        {
+    //            Units.Remove(other.gameObject.layer);
+    //        }
+    //        else
+    //        {
+    //            if (other.gameObject.CompareTag("Player"))
+    //            {
+    //                ply_gate = null;
+    //            }
+    //        }
+    //    }
+    //}
     private void Update()
     {
         if (!GameManager.instance.isLive) 
@@ -67,12 +72,14 @@ public class Gate : MonoBehaviour
         {
             if (ply_gate.isMyGate && Input.GetKeyDown(KeyCode.J) && isOpen)
             {
+                GateAudio.clip = AudioManager.instance.clip_SFX[(int)SFXList.Gate_Inter];
                 Gate_Ani.SetTrigger("CloseDoor");
                 isOpen = false;
                 Gate_Col.enabled = true;
             }
             else if (ply_gate.isMyGate && Input.GetKeyDown(KeyCode.J) && !isOpen)
             {
+                GateAudio.clip = AudioManager.instance.clip_SFX[(int)SFXList.Gate_Inter];
                 Gate_Ani.SetTrigger("OpenDoor");
                 isOpen = true;
                 Gate_Col.enabled = false;
@@ -80,12 +87,14 @@ public class Gate : MonoBehaviour
         }
         if (Units.Count > 0 && isOpen)
         {
+            GateAudio.clip = AudioManager.instance.clip_SFX[(int)SFXList.Gate_Inter];
             Gate_Ani.SetTrigger("CloseDoor");
             isOpen = false;
             Gate_Col.enabled = true;
         }
         else if (Units.Count.Equals(0) && !isOpen && !transform.root.gameObject.layer.Equals((int)TeamLayerIdx.Player)) 
         {
+            GateAudio.clip = AudioManager.instance.clip_SFX[(int)SFXList.Gate_Inter];
             Gate_Ani.SetTrigger("OpenDoor");
             isOpen = true;
             Gate_Col.enabled = false;

@@ -124,6 +124,7 @@ public class Intro : MonoBehaviour
     private Text Coin_Text;
 
     #endregion
+
     #region 옵션 패널
     [Header("Option Panel")]
 
@@ -161,12 +162,6 @@ public class Intro : MonoBehaviour
     private GameObject Leader_B;
 
 
-   // public float mouseSensitivity;
-
-    private float MouseY;
-    private float MouseX;
-
-
     //json 관련
     private DataManager dataManager;
     private Player_Data playerData;
@@ -197,11 +192,17 @@ public class Intro : MonoBehaviour
 
 
     #endregion
+
     [SerializeField] private GameObject Original_Map;
     [SerializeField] private GameObject TimeAttack_Map;
 
+
+    [SerializeField]
+    private Button[] AllButtons;
+
     private void Awake()
     {
+
         dataManager = new DataManager();
         playerData = dataManager.Load_playerData("playerData");
     }
@@ -211,7 +212,8 @@ public class Intro : MonoBehaviour
         Screen.SetResolution(1920, 1080, true);
 
         Init_FuntionUI();
-       
+        SetSound_AllButtons();
+
         TitlePanel_On();
     }
 
@@ -236,9 +238,10 @@ public class Intro : MonoBehaviour
         Title_Panel = transform.GetChild(1).gameObject;
         Setup_Panel = transform.GetChild(2).gameObject;
         Upgrade_Panel = transform.GetChild(3).GetComponent<ScrollRect>();
-        Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
-        SignUp_Panel = transform.GetChild(5).gameObject;
-        Warning_Panel = transform.GetChild(6).gameObject;
+        Option_Panel = FindObjectOfType<Optioin_Panel>();
+       // Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
+        SignUp_Panel = transform.GetChild(4).gameObject;
+        Warning_Panel = transform.GetChild(5).gameObject;
 
 
 
@@ -255,6 +258,17 @@ public class Intro : MonoBehaviour
 
        
     }
+
+    private void SetSound_AllButtons()
+    {
+        AllButtons = Resources.FindObjectsOfTypeAll<Button>();
+
+        for (int i = 0; i < AllButtons.Length; i++)
+        {
+            AllButtons[i].onClick.AddListener(Button_ClickSound);
+        }
+    }
+
 
     public void GameStart_Btn_Clicekd()
     {
@@ -774,6 +788,16 @@ public class Intro : MonoBehaviour
     {
         TitlePanel_On();
     }
+
+    public void Button_ClickSound()
+    {
+        int Idx = Random.Range((int)SFXList.MouseClick, (int)SFXList.MouseClick2 + 1);
+
+        AudioManager.instance.SFXPlay(Idx);
+    }
+
+
+
 
 
 }

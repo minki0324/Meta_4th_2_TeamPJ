@@ -320,7 +320,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1098648309}
   - component: {fileID: 1098648308}
-  - component: {fileID: 1098648307}
   - component: {fileID: 1098648310}
   m_Layer: 0
   m_Name: Main Camera
@@ -329,14 +328,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1098648307
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1098648306}
-  m_Enabled: 1
 --- !u!20 &1098648308
 Camera:
   m_ObjectHideFlags: 0
@@ -427,6 +418,45 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!1 &1140783737
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1140783739}
+  - component: {fileID: 1140783738}
+  m_Layer: 0
+  m_Name: Listen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!81 &1140783738
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140783737}
+  m_Enabled: 1
+--- !u!4 &1140783739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140783737}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1525718485
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,6 +468,7 @@ GameObject:
   - component: {fileID: 1525718487}
   - component: {fileID: 1525718486}
   - component: {fileID: 1525718488}
+  - component: {fileID: 1525718489}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -482,6 +513,8 @@ MonoBehaviour:
   EndTime: 1800
   Occupied_Area: 1
   Result: {fileID: 0}
+  MainBgm: {fileID: 1525718488}
+  WeatherSFX: {fileID: 1525718489}
   total_Gold: 1000
   Gold: 1000
   Upgrade_GoldValue: 1
@@ -541,12 +574,108 @@ AudioSource:
   m_GameObject: {fileID: 1525718485}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 493901967269825122, guid: 9f13e184e489da04fb017a183914a246, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.4
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1525718489
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525718485}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -76754434556514484, guid: 9f13e184e489da04fb017a183914a246, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.4
+  m_Pitch: 1
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1611,65 +1740,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2723136143395264604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2723136143395264609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3636bcf8635926a49991910505e52199, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Title_Panel: {fileID: 2723136144319827167}
-  Login_Panel: {fileID: 0}
-  Btn_Panel: {fileID: 0}
-  inputField: {fileID: 0}
-  Confirm_Btn: {fileID: 0}
-  SignUp_Btn: {fileID: 0}
-  Ready_Btn: {fileID: 0}
-  Upgrade_Btn: {fileID: 0}
-  Option_Btn: {fileID: 0}
-  Exit_Btn: {fileID: 0}
-  BackButton: {fileID: 0}
-  Setup_Panel: {fileID: 0}
-  Map_img: {fileID: 0}
-  TeamColor1_Btn: {fileID: 0}
-  TeamColor2_Btn: {fileID: 0}
-  TeamColor3_Btn: {fileID: 0}
-  TeamColor4_Btn: {fileID: 0}
-  Original_Btn: {fileID: 0}
-  TimeAttack_Btn: {fileID: 0}
-  GameStart_Btn: {fileID: 0}
-  Team1_Text: {fileID: 0}
-  Team2_Text: {fileID: 0}
-  Team3_Text: {fileID: 0}
-  Team4_Text: {fileID: 0}
-  ID1_Text: {fileID: 0}
-  ID2_Text: {fileID: 0}
-  ID3_Text: {fileID: 0}
-  ID4_Text: {fileID: 0}
-  Upgrade_Items: []
-  Coin_Text: {fileID: 0}
-  Option_Panel: {fileID: 0}
-  SignUp_Panel: {fileID: 0}
-  SignUp_inputField: {fileID: 0}
-  SignUp_Confirm_Btn: {fileID: 0}
-  SignUp_Cancel_Btn: {fileID: 0}
-  Warning_Panel: {fileID: 0}
-  Leader_A: {fileID: 0}
-  Leader_B: {fileID: 0}
-  isLogined: 0
-  audioMixer: {fileID: 24100000, guid: 9f13e184e489da04fb017a183914a246, type: 2}
-  getColor: {fileID: 0}
-  Team1_Color: 0
-  Team2_Color: 0
-  Team3_Color: 0
-  Team4_Color: 0
-  Original_Map: {fileID: 0}
-  TimeAttack_Map: {fileID: 0}
 --- !u!224 &2723136143395264605
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1768,8 +1838,8 @@ GameObject:
   - component: {fileID: 2723136143395264606}
   - component: {fileID: 2723136143395264607}
   - component: {fileID: 2723136143395264608}
-  - component: {fileID: 2723136143395264604}
   - component: {fileID: 2723136143395264603}
+  - component: {fileID: 2723136143395264610}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1777,6 +1847,66 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2723136143395264610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2723136143395264609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3636bcf8635926a49991910505e52199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Title_Panel: {fileID: 0}
+  Login_Panel: {fileID: 0}
+  Btn_Panel: {fileID: 0}
+  inputField: {fileID: 0}
+  Confirm_Btn: {fileID: 0}
+  SignUp_Btn: {fileID: 0}
+  Ready_Btn: {fileID: 0}
+  Upgrade_Btn: {fileID: 0}
+  Option_Btn: {fileID: 0}
+  Exit_Btn: {fileID: 0}
+  BackButton: {fileID: 0}
+  Setup_Panel: {fileID: 0}
+  Map_img: {fileID: 0}
+  TeamColor1_Btn: {fileID: 0}
+  TeamColor2_Btn: {fileID: 0}
+  TeamColor3_Btn: {fileID: 0}
+  TeamColor4_Btn: {fileID: 0}
+  Original_Btn: {fileID: 0}
+  TimeAttack_Btn: {fileID: 0}
+  GameStart_Btn: {fileID: 0}
+  Team1_Text: {fileID: 0}
+  Team2_Text: {fileID: 0}
+  Team3_Text: {fileID: 0}
+  Team4_Text: {fileID: 0}
+  ID1_Text: {fileID: 0}
+  ID2_Text: {fileID: 0}
+  ID3_Text: {fileID: 0}
+  ID4_Text: {fileID: 0}
+  Upgrade_Items: []
+  Coin_Text: {fileID: 0}
+  Option_Panel: {fileID: 0}
+  SignUp_Panel: {fileID: 0}
+  SignUp_inputField: {fileID: 0}
+  SignUp_Confirm_Btn: {fileID: 0}
+  SignUp_Cancel_Btn: {fileID: 0}
+  Warning_Panel: {fileID: 0}
+  Leader_A: {fileID: 0}
+  Leader_B: {fileID: 0}
+  isLogined: 0
+  audioMixer: {fileID: 0}
+  getColor: {fileID: 0}
+  Team1_Color: 0
+  Team2_Color: 0
+  Team3_Color: 0
+  Team4_Color: 0
+  Original_Map: {fileID: 0}
+  TimeAttack_Map: {fileID: 0}
+  AllButtons: []
 --- !u!222 &2723136143411852858
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6393,7 +6523,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2723136143395264604}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Intro, Assembly-CSharp
         m_MethodName: BackBtn_Clicked
         m_Mode: 1
@@ -14763,6 +14893,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 598bf921f61fd1e4bb557c564f7bf959, type: 3}
   - {fileID: 8300000, guid: 8b7e53722e699784ba265104b56a7f00, type: 3}
   - {fileID: 8300000, guid: c85703d5013a6674f896faad4a2d823c, type: 3}
+  - {fileID: 8300000, guid: 9d19fac6c0f101043bfd38e55f8bdd5e, type: 3}
 --- !u!1 &3559998019410055301
 GameObject:
   m_ObjectHideFlags: 0
@@ -15006,6 +15137,7 @@ GameObject:
   - component: {fileID: 9201259750579403419}
   - component: {fileID: 9201259750579403620}
   - component: {fileID: 9201259750579403621}
+  - component: {fileID: 9201259750579403623}
   m_Layer: 5
   m_Name: Canvas_OptionPanel
   m_TagString: Untagged
@@ -15013,6 +15145,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &9201259750579403623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9201259750579403622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 775d50c6758f6654c874f07c514ea29e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &9201259750830298882
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -318,6 +318,7 @@ public abstract class Unit : MonoBehaviour
             isAttacking = false;
         }
         ani.SetTrigger("Hit");
+
         yield return hitDelay;
         isHitting = false;
 
