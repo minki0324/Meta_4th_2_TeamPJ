@@ -24,7 +24,6 @@ public class Soilder_Controller : Unit
     public Transform formationTransmform;
     //네비게이션
     public Unit_Information infodata;
-    public bool isHealer = false;
     public bool isArrive = false;
     public bool isSetPosition = false;
     public bool isNear = false;
@@ -164,7 +163,7 @@ public class Soilder_Controller : Unit
                         //aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
 
 
-                        if (!gameObject.GetComponent<Soilder_Controller>().isHealer)
+                        if (!data.ishealer)
                         {
                             //느려졌던 이동속도 초기화
                             //Debug.Log("attack~~~" + gameObject.name.ToString());
@@ -241,7 +240,6 @@ public class Soilder_Controller : Unit
         #region 다이 메소드
         if (data.currentHP <= 0)
         {
-            Debug.Log("죽는조건");
             //공격정지 ,이동정지 
             if (!data.isDie)
             {
@@ -446,7 +444,7 @@ public class Soilder_Controller : Unit
         data.maxHP = infodata.maxHP;
         data.currentHP = data.maxHP;
         data.damage = infodata.damage;
-        isHealer = infodata.ishealer;
+        data.ishealer = infodata.ishealer;
         data.attackRange = infodata.attackRange;
 
     }

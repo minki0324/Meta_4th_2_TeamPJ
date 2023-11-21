@@ -11,6 +11,7 @@ public struct Data
     public float damage;
     public bool isDie;
     public float attackRange;
+    public bool ishealer;
 }
 public abstract class Unit : MonoBehaviour 
 {
@@ -154,12 +155,20 @@ public abstract class Unit : MonoBehaviour
                 aipath.isStopped = true;
                 aipath.canMove = false;
                 aipath.canSearch = false;
+
+                if (!data.ishealer) { 
+
                 if (!isAttacking)
                 {
                     attackCoroutine = StartCoroutine(Attack_co());
                     //StartCoroutine(Attack_co());
                 }
-
+                }
+                else
+                {
+                    healer = GetComponent<Healer>();
+                    healer.GetHeal_Target();
+                }
                 //������ ��
             }
 
@@ -317,8 +326,7 @@ public abstract class Unit : MonoBehaviour
     protected IEnumerator Attack_co()
    
     {
-        if(!gameObject.GetComponent<Soilder_Controller>().isHealer) //힐러가 아니면 공격
-        {   
+    
             //공격쿨타임
             float d = Random.Range(2f, 2.1f);
             attackDelay = new WaitForSeconds(d);
@@ -332,12 +340,7 @@ public abstract class Unit : MonoBehaviour
 
 
             isAttacking = false;
-        }
-        else
-        {
-            healer = GetComponent<Healer>();
-            healer.GetHeal_Target();
-        }
+        
      
     }
     //protected void FollowOrder()

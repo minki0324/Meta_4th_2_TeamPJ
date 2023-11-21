@@ -18,7 +18,7 @@ public class Healer : MonoBehaviour
     [SerializeField]
     private ParticleSystem HealCircle;
 
-    GameObject healTarget = new GameObject();
+    GameObject healTarget ;
 
     private float lessHP;
 
@@ -37,6 +37,7 @@ public class Healer : MonoBehaviour
         pc = FindObjectOfType<Ply_Controller>();
         isCanHeal = true;
         ani = GetComponent<Animator>();
+        healTarget = new GameObject();
     }
 
     public void GetHeal_Target()

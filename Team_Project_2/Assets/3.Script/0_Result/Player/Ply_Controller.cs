@@ -381,7 +381,6 @@ public class Ply_Controller : MonoBehaviour
             Soilder_Controller soilder_con = Soilder.GetComponent<Soilder_Controller>();
             soilder_con.isSetPosition = true;
             soilder_con.formationTransmform = CarculateScore(Soilder); //제일가깝고 도착한 병사들 위치로 설정
-            Debug.Log($"{soilder_con.formationTransmform} 먼저 당첨");
             nextIndex++;
         }
 
