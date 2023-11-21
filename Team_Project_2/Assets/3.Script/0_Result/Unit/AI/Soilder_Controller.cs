@@ -158,15 +158,8 @@ public class Soilder_Controller : Unit
                         break;
                     case LeaderState.BattleState.Attack:
                         holdingShield = false;
-                        //aipath.canSearch = true;
-                        //aipath.canMove = true;
-                        //aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
-
-
                         if (!data.ishealer)
                         {
-                            //느려졌던 이동속도 초기화
-                            //Debug.Log("attack~~~" + gameObject.name.ToString());
                             AttackOrder();
                         }
                         //else

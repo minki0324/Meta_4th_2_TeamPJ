@@ -9520,6 +9520,7 @@ MonoBehaviour:
   Ob_Weapon_col: {fileID: 0}
   speed: 0
   nearestTarget: {fileID: 0}
+  Soldier_Sound: {fileID: 3023095113256829615}
   HealerPos: {x: 0, y: 0, z: 0}
   formationState: 0
   formationTransmform: {fileID: 0}

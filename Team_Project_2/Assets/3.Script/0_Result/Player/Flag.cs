@@ -37,11 +37,13 @@ public class Flag : MonoBehaviour
     public int Team3Count;
     public int Team4Count;
 
+    public AudioSource Flag_Sound;
+
+
     private void Start()
     {
         OccuHUD = FindObjectOfType<OccupationHUD>();
         gameObject.layer = (transform.parent == null) ? 0 : ParentLayer();
-        
     }
 
     private void Update()

@@ -19,8 +19,16 @@ public enum SFXList
     Gate_Inter,
     Gate_Crash,
     Sword_Hit,
-    Sword_Swing,
-    Wind_Storm = 10,
+    Sword_Swing1,
+    Sword_Swing2 = 10,
+    Sword_Swing3,
+    Wind_Storm,
+    Flag_Sound,
+    Human_Attack1,
+    Human_Attack2,
+    Human_Die1,
+    Human_Die2,
+    Human_Die3
 }
 public class AudioManager : MonoBehaviour
 {
