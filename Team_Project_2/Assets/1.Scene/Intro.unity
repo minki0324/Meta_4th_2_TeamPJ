@@ -954,8 +954,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b424c53c7b536f44caeefdae5e7e1db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DayToSunset_skybox: {fileID: 2100000, guid: 7fedf417d021b374b8669db32c31ed2d, type: 2}
-  SunsetToNihgt_skybox: {fileID: 2100000, guid: 3c3a5b57422b6c4489fc2336735cffeb, type: 2}
+  DayToSunset_skybox: {fileID: 2100000, guid: 064fda147506d57428575eb672e1fa78, type: 2}
+  SunsetToNihgt_skybox: {fileID: 2100000, guid: 4aa0589aa9bc90c4e801f234d64b44a0, type: 2}
 --- !u!1 &1900403581
 GameObject:
   m_ObjectHideFlags: 0
