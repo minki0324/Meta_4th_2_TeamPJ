@@ -265,7 +265,7 @@ public class Intro : MonoBehaviour
 
         for (int i = 0; i < AllButtons.Length; i++)
         {
-            AllButtons[i].onClick.AddListener(AudioManager.instance.Button_ClickSound);
+            AllButtons[i].onClick.AddListener(Button_ClickSound);
         }
     }
 
@@ -789,8 +789,14 @@ public class Intro : MonoBehaviour
         TitlePanel_On();
     }
 
+    public void Button_ClickSound()
+    {
+        int Idx = Random.Range((int)SFXList.MouseClick, (int)SFXList.MouseClick2 + 1);
 
-    
+        AudioManager.instance.SFXPlay(Idx);
+    }
+
+
 
 
 

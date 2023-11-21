@@ -13,9 +13,9 @@ public class Archer_Attack : MonoBehaviour
     private Animator ani; // 아처 공격 애니메이션 구현하기위함
     public Transform Bow; // 화살 Transform
 
-    private WaitForSeconds Cooltime = new WaitForSeconds(1.5f); // 쿨타임 1.5초
+    private WaitForSeconds Cooltime = new WaitForSeconds(3f); // 쿨타임 1.5초
     private WaitForSeconds Sink = new WaitForSeconds(0.8f);
-    AudioClip Shoot;
+    [SerializeField] private AudioSource BowSound;
 
     private bool isAttack = false;
 
@@ -23,7 +23,7 @@ public class Archer_Attack : MonoBehaviour
     {
         ani = GetComponent<Animator>();
         Bow.transform.position += new Vector3(0, 0.2f, 0); // 활에서 나가는 포지션 보정
-
+        
        
     }
     private void Update()
@@ -38,7 +38,8 @@ public class Archer_Attack : MonoBehaviour
         isAttack = true;
         
         ani.SetTrigger("Attack");  // 공격 애니메이션
-        AudioManager.instance.SFXPlay((int)SFXSound.Arrow_Shoot);
+
+        BowSound.PlayOneShot(AudioManager.instance.clip_SFX[(int)SFXList.Arrow_Shoot]);
         yield return Sink;
 
 

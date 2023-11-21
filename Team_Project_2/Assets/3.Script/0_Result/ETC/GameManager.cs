@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     public float EndTime = 20f;   // 게임 시간은 30분
     public int Occupied_Area = 1;   // 점령한 지역 Default값 1
     public GameObject Result;
-    public AudioClip MainBgm;
+    public AudioSource MainBgm;
 
     [Header("골드 관련")]
     public float total_Gold = 1000;
@@ -103,13 +103,18 @@ public class GameManager : MonoBehaviour
         }
         Json = GetComponent<DataManager>();
 
-        AudioManager.instance.BGMPlay((int)BGMSound.MainBGM);
+
     }
-   
+    private void Start()
+    {
+        MainBgm.clip = AudioManager.instance.clip_BGM[(int)BGMList.MainBGM];
+        MainBgm.Play();
+    }
+
     // 기존 골드 상승량
     // 점령 어드벤티지
     // 골드 상승량 업그레이드
-    
+
     private void Update()
     {
        

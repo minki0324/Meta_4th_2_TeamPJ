@@ -6,12 +6,15 @@ public class Gate : MonoBehaviour
 {
     // 문을 열고 닫는 스크립트
 
-
     private Animator Gate_Ani;  
-    [SerializeField] private BoxCollider Gate_Col;  // Gate 물리 Collider
-    public bool isOpen = true;
+    private BoxCollider Gate_Col;  // Gate 물리 Collider
     private List<int> Units = new List<int>();
     private Unit_Gate ply_gate;
+    private bool isOpen = true;
+
+    [SerializeField]
+    private AudioSource GateInter;  //게이트 상호작용 사운드
+
 
     private void Start()
     {
@@ -67,14 +70,15 @@ public class Gate : MonoBehaviour
         {
             if (ply_gate.isMyGate && Input.GetKeyDown(KeyCode.J) && isOpen)
             {
-                AudioManager.instance.SFXPlay((int)SFXSound.Gate_Inter);
+                GateInter.PlayOneShot(AudioManager.instance.clip_SFX[((int)SFXList.Gate_Inter)]);
+                
                 Gate_Ani.SetTrigger("CloseDoor");
                 isOpen = false;
                 Gate_Col.enabled = true;
             }
             else if (ply_gate.isMyGate && Input.GetKeyDown(KeyCode.J) && !isOpen)
             {
-                AudioManager.instance.SFXPlay((int)SFXSound.Gate_Inter);
+                GateInter.PlayOneShot(AudioManager.instance.clip_SFX[((int)SFXList.Gate_Inter)]);
                 Gate_Ani.SetTrigger("OpenDoor");
                 isOpen = true;
                 Gate_Col.enabled = false;
@@ -82,14 +86,14 @@ public class Gate : MonoBehaviour
         }
         if (Units.Count > 0 && isOpen)
         {
-            AudioManager.instance.SFXPlay((int)SFXSound.Gate_Inter);
+            GateInter.PlayOneShot(AudioManager.instance.clip_SFX[((int)SFXList.Gate_Inter)]);
             Gate_Ani.SetTrigger("CloseDoor");
             isOpen = false;
             Gate_Col.enabled = true;
         }
         else if (Units.Count.Equals(0) && !isOpen && !transform.root.gameObject.layer.Equals((int)TeamLayerIdx.Player)) 
         {
-            AudioManager.instance.SFXPlay((int)SFXSound.Gate_Inter);
+            GateInter.PlayOneShot(AudioManager.instance.clip_SFX[((int)SFXList.Gate_Inter)]);
             Gate_Ani.SetTrigger("OpenDoor");
             isOpen = true;
             Gate_Col.enabled = false;

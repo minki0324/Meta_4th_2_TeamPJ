@@ -78,6 +78,7 @@ public class Ply_Movement : MonoBehaviour
                 //모션 1 실행 시작
 
                 ani.SetTrigger("Attack");
+                AudioManager.instance.SFXPlay((int)SFXList.Sword_Swing);
                 //ani.SetBool("Attack1", true);
 
                 isAttacking_1 = true;   //실행중
@@ -93,7 +94,7 @@ public class Ply_Movement : MonoBehaviour
 
                 //ani.SetBool("ContinualAttack", true);
                 ani.SetTrigger("Continual_Attack");
-
+                AudioManager.instance.SFXPlay((int)SFXList.Sword_Swing);
                 isAttacking_2 = true;
                 isPossible_Attack_2 = false;
 

@@ -46,6 +46,8 @@ public abstract class Unit : MonoBehaviour
     protected float defaultSpeed;
 
     protected float speed;
+    [SerializeField]
+    private AudioSource UnitSound;
 
     [Header("현재타겟 Transform")]
     [SerializeField] protected Transform nearestTarget;
@@ -266,6 +268,7 @@ public abstract class Unit : MonoBehaviour
             isAttacking = false;
         }
         ani.SetTrigger("Hit");
+        UnitSound.PlayOneShot(AudioManager.instance.clip_SFX[(int)SFXList.Sword_Hit]);
         yield return hitDelay;
         isHitting = false;
 
@@ -282,6 +285,7 @@ public abstract class Unit : MonoBehaviour
 
         isSuccessAtk = false;
         ani.SetTrigger("Attack");
+        UnitSound.PlayOneShot(AudioManager.instance.clip_SFX[(int)SFXList.Sword_Swing]);
         yield return attackDelay;
 
 
