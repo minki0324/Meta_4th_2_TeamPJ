@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class Gate : MonoBehaviour
 {
-    // ¹®À» ¿­°í ´İ´Â ½ºÅ©¸³Æ®
+    // ë¬¸ì„ ì—´ê³  ë‹«ëŠ” ìŠ¤í¬ë¦½íŠ¸
 
 
     private Animator Gate_Ani;  
-    [SerializeField] private BoxCollider Gate_Col;  // Gate ¹°¸® Collider
+    [SerializeField] 
+    private BoxCollider Gate_Col;  // Gate ë¬¼ë¦¬ Collider
     public bool isOpen = true;
+
     private List<int> Units = new List<int>();
     private Unit_Gate ply_gate;
+
+    [SerializeField]
+    private AudioSource GateAudio;
 
     private void Start()
     {
@@ -67,12 +72,14 @@ public class Gate : MonoBehaviour
         {
             if (ply_gate.isMyGate && Input.GetKeyDown(KeyCode.J) && isOpen)
             {
+                GateAudio.clip = AudioManager.instance.clip_SFX[(int)SFXList.Gate_Inter];
                 Gate_Ani.SetTrigger("CloseDoor");
                 isOpen = false;
                 Gate_Col.enabled = true;
             }
             else if (ply_gate.isMyGate && Input.GetKeyDown(KeyCode.J) && !isOpen)
             {
+                GateAudio.clip = AudioManager.instance.clip_SFX[(int)SFXList.Gate_Inter];
                 Gate_Ani.SetTrigger("OpenDoor");
                 isOpen = true;
                 Gate_Col.enabled = false;
@@ -80,12 +87,14 @@ public class Gate : MonoBehaviour
         }
         if (Units.Count > 0 && isOpen)
         {
+            GateAudio.clip = AudioManager.instance.clip_SFX[(int)SFXList.Gate_Inter];
             Gate_Ani.SetTrigger("CloseDoor");
             isOpen = false;
             Gate_Col.enabled = true;
         }
         else if (Units.Count.Equals(0) && !isOpen && !transform.root.gameObject.layer.Equals((int)TeamLayerIdx.Player)) 
         {
+            GateAudio.clip = AudioManager.instance.clip_SFX[(int)SFXList.Gate_Inter];
             Gate_Ani.SetTrigger("OpenDoor");
             isOpen = true;
             Gate_Col.enabled = false;

@@ -107,15 +107,18 @@ public class Ply_Movement : MonoBehaviour
             if (isPossible_Attack_1)
             {
                 //모션 1 실행 시작
+                StartCoroutine(Attack_Co());
+                //ani.SetTrigger("Attack");
+                
+                ////AudioManager.instance.SFXPlay((int)SFXList.Sword_Swing);
 
-                ani.SetTrigger("Attack");
-                //ani.SetBool("Attack1", true);
+                ////ani.SetBool("Attack1", true);
 
-                isAttacking_1 = true;   //실행중
+                //isAttacking_1 = true;   //실행중
 
-                isAttacking_2 = false;
-                isPossible_Attack_1 = false;
-                isPossible_Attack_2 = false;
+                //isAttacking_2 = false;
+                //isPossible_Attack_1 = false;
+                //isPossible_Attack_2 = false;
 
             }
 
@@ -155,6 +158,22 @@ public class Ply_Movement : MonoBehaviour
 
     }
 
+    IEnumerator Attack_Co()
+    {
+
+        ani.SetTrigger("Attack");
+        
+        //ani.SetBool("Attack1", true);
+
+        isAttacking_1 = true;   //실행중
+
+        isAttacking_2 = false;
+        isPossible_Attack_1 = false;
+        isPossible_Attack_2 = false;
+        yield return new WaitForSeconds(0.15f);
+        AudioManager.instance.SFXPlay((int)SFXList.Sword_Swing);
+        yield return null;
+    }
 
 
 
