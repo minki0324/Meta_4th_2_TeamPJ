@@ -37,6 +37,9 @@ public class Flag : MonoBehaviour
     public int Team3Count;
     public int Team4Count;
 
+    public int CurrentColor;
+   
+
     private void Start()
     {
         OccuHUD = FindObjectOfType<OccupationHUD>();
@@ -153,7 +156,16 @@ public class Flag : MonoBehaviour
     public void Change_Flag_Color(int TeamNum)
     {
         skinnedmesh.material = ColorManager.instance.Flag_Color[TeamNum];
+
+        //깃발 소유 변수 초기화
+        CurrentColor = TeamNum;
+
+        GameManager.instance.IsAllFlagOccupied();
+        //IsGameEnd();
     }
+
+
+
     
     private int ParentLayer()
     {

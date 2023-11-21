@@ -3174,7 +3174,6 @@ MonoBehaviour:
   Team4_Color: 0
   Original_Map: {fileID: 0}
   TimeAttack_Map: {fileID: 0}
-  AllButtons: []
 --- !u!82 &667634724
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6446,21 +6445,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d898221da75fbfd4d8a91d9d3f2ff24b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: 9f13e184e489da04fb017a183914a246, type: 2}
-  audio_SFX: {fileID: 97791539}
-  clip_BGM:
-  - {fileID: 8300000, guid: 8c6a9f1070cdfea41b2e3f7307d2db3d, type: 3}
-  clip_SFX:
-  - {fileID: 8300000, guid: d271bd302a23565488ffb4bc1c108342, type: 3}
-  - {fileID: 8300000, guid: 7eae6fdabbb4f7b45b00c0b216175a01, type: 3}
-  - {fileID: 8300000, guid: 9a7b4c2ba96257a419ae47ae28e640ca, type: 3}
-  - {fileID: 8300000, guid: 3709d00a071f4b84384665518f048629, type: 3}
-  - {fileID: 8300000, guid: e9e19f7d9b3ac7847a7147c0d206eafd, type: 3}
-  - {fileID: 8300000, guid: 0926fabce713bcf4186922855574abea, type: 3}
-  - {fileID: 8300000, guid: e5428826921d9734391a70c3d84435d3, type: 3}
-  - {fileID: 8300000, guid: 598bf921f61fd1e4bb557c564f7bf959, type: 3}
-  - {fileID: 8300000, guid: 8b7e53722e699784ba265104b56a7f00, type: 3}
-  - {fileID: 8300000, guid: c85703d5013a6674f896faad4a2d823c, type: 3}
 --- !u!1 &1259902484
 GameObject:
   m_ObjectHideFlags: 0
@@ -7147,7 +7131,8 @@ MonoBehaviour:
   EndTime: 1800
   Occupied_Area: 1
   Result: {fileID: 0}
-  MainBgm: {fileID: 1525718488}
+  FlagState: []
+  WinnerTeam: 0
   total_Gold: 1000
   Gold: 1000
   Upgrade_GoldValue: 1
@@ -9261,8 +9246,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b424c53c7b536f44caeefdae5e7e1db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DayToSunset_skybox: {fileID: 2100000, guid: 7fedf417d021b374b8669db32c31ed2d, type: 2}
-  SunsetToNihgt_skybox: {fileID: 2100000, guid: 3c3a5b57422b6c4489fc2336735cffeb, type: 2}
+  DayToSunset_skybox: {fileID: 2100000, guid: 064fda147506d57428575eb672e1fa78, type: 2}
+  SunsetToNihgt_skybox: {fileID: 2100000, guid: 4aa0589aa9bc90c4e801f234d64b44a0, type: 2}
 --- !u!1 &1803324442
 GameObject:
   m_ObjectHideFlags: 0
@@ -11552,7 +11537,6 @@ MonoBehaviour:
   light_: {fileID: 0}
   Background_img: {fileID: 0}
   audioMixer: {fileID: 24100000, guid: 9f13e184e489da04fb017a183914a246, type: 2}
-  cameraControl: {fileID: 0}
 --- !u!1 &5797145798001235946
 GameObject:
   m_ObjectHideFlags: 0

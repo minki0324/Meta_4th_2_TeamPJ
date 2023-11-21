@@ -236,9 +236,10 @@ public class Intro : MonoBehaviour
         Title_Panel = transform.GetChild(1).gameObject;
         Setup_Panel = transform.GetChild(2).gameObject;
         Upgrade_Panel = transform.GetChild(3).GetComponent<ScrollRect>();
-        Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
-        SignUp_Panel = transform.GetChild(5).gameObject;
-        Warning_Panel = transform.GetChild(6).gameObject;
+        Option_Panel = FindObjectOfType<Optioin_Panel>();
+        // Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
+        SignUp_Panel = transform.GetChild(4).gameObject;
+        Warning_Panel = transform.GetChild(5).gameObject;
 
 
 
@@ -264,6 +265,7 @@ public class Intro : MonoBehaviour
         GameManager.instance.T3_Color = Team4_Color;
 
         SceneManager.LoadScene(1);
+        GameManager.instance.FlagState = Resources.FindObjectsOfTypeAll<Flag>();
     }
 
     public void TitlePanel_On()

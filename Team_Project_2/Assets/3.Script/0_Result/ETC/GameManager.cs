@@ -44,6 +44,10 @@ public class GameManager : MonoBehaviour
     public int Occupied_Area = 1;   // 점령한 지역 Default값 1
     public GameObject Result;
 
+    public Flag[] FlagState;
+    bool isColorSame = false;
+    public int WinnerTeam;
+
     [Header("골드 관련")]
     public float total_Gold = 1000;
     public float Gold = 1000;       // 골드량
@@ -101,6 +105,9 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         Json = GetComponent<DataManager>();
+
+
+       
     }
    
     // 기존 골드 상승량
@@ -131,6 +138,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1;
             }
         }
+
     }
 
     public void Stop()
@@ -178,9 +186,75 @@ public class GameManager : MonoBehaviour
     
     public void EndGame()
     {
-        Stop();
-        PlayerCoin = PlayerCoin + (int)Teampoint / 1000;
-        Result.SetActive(true);
+        if (currentTime >= EndTime || IsAllFlagOccupied())
+        {
+            Stop();
+            PlayerCoin = PlayerCoin + (int)Teampoint / 1000;
+            Result.SetActive(true);
+        }
+
 
     }
+
+
+    //모든 깃발이 한팀에 점령 당했을 경우
+    public bool IsAllFlagOccupied()
+    {
+        //모든 깃발색이 맞나 검사
+        for (int i = 0; i < FlagState.Length - 1; i++)
+        {
+            if (FlagState[i].CurrentColor == FlagState[i + 1].CurrentColor)
+            {
+                isColorSame = true;         
+            }
+            else
+            {
+                isColorSame = false;
+              
+            }
+        }
+
+        if(isColorSame)
+        {
+            GetwinnerTeam();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    //승리팀 판단
+    public void GetwinnerTeam()
+    {
+        if (isColorSame)
+        {
+            if (FlagState[0].CurrentColor != 11) //흰색 깃발이 아닌경우
+            {
+                if (FlagState[0].CurrentColor == Color_Index)
+                {
+                    WinnerTeam = 0;
+                }
+                else if (FlagState[0].CurrentColor == T1_Color)
+                {
+
+                }
+                else if (FlagState[0].CurrentColor == T1_Color)
+                {
+
+                }
+                else if (FlagState[0].CurrentColor == T1_Color)
+                {
+
+
+                }
+            }
+
+
+        }
+    }
+
+
+
 }
