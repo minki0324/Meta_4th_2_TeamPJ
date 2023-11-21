@@ -432,6 +432,7 @@ public class Soilder_Controller : Unit
         data.currentHP = data.maxHP;
         data.damage = infodata.damage;
         isHealer = infodata.ishealer;
+        data.attackRange = infodata.attackRange;
         
     }
     public override void HitDamage(float damage)

@@ -10,6 +10,7 @@ public struct Data
     public float maxHP;
     public float damage;
     public bool isDie;
+    public float attackRange;
 }
 public abstract class Unit : MonoBehaviour 
 {
@@ -90,7 +91,7 @@ public abstract class Unit : MonoBehaviour
             LookatTarget(nearestTarget);
                 target.target = nearestTarget;
             float attackDistance = Vector3.Distance(transform.position, nearestTarget.position);
-            if (attackDistance <= AttackRange)
+            if (attackDistance <= data.attackRange)
             {
                 isdetecting = true;
             }
@@ -101,11 +102,37 @@ public abstract class Unit : MonoBehaviour
 
             if (!isdetecting) //탐지된적이 멀리있으면 적한테 이동
             {
-                isMove = true;
-                //ani.SetBool("Move", true);
-                aipath.isStopped = false;
-                aipath.canMove = true;
-                aipath.canSearch = true;
+                //if(GetComponent<Archer_Attack>() != null)
+                //{
+                //   if( GetComponent<Archer_Attack>().isAttack )
+                //    {
+                //        isMove = false;
+                //        aipath.isStopped = true;
+                //        aipath.canMove = false;
+                //        aipath.canSearch = false;
+                //    }
+                //    else
+                //    {
+                //        isMove = true;
+                //        //ani.SetBool("Move", true);
+                //        aipath.isStopped = false;
+                //        aipath.canMove = true;
+                //        aipath.canSearch = true;
+                //    }
+
+
+                //}
+                //else
+                //{
+                    isMove = true;
+                    //ani.SetBool("Move", true);
+                    aipath.isStopped = false;
+                    aipath.canMove = true;
+                    aipath.canSearch = true;
+                //}
+              
+
+
 
             }
             else // 탐지된 적이 접근하면 이동을 멈추고 공격

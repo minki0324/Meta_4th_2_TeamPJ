@@ -403,8 +403,8 @@ public class Ply_Controller : MonoBehaviour
 
             float currentScore;
             float positionSocre = positions[i].weight / Vector3.Distance(transform.position, positions[i].position.position); // 포지션과 리더와 거리비례 점수 (멀면멀수록 weight점수 감소)
-            float distanceScore = Vector3.Distance(Soilder.position, positions[i].position.position); // 병사가 포지션까지 가는 거리 (
-            currentScore = positionSocre / distanceScore;   //포지션점수 / 병사가 포지션까지 가는 거리 ( 병사가 거리가멀면 점수가 더낮아짐)  ----> 최종 병사입장에서의 그자리의 점수
+            //float distanceScore = Vector3.Distance(Soilder.position, positions[i].position.position); // 병사가 포지션까지 가는 거리 (
+            currentScore = positionSocre /** distanceScore*/;   //포지션점수 / 병사가 포지션까지 가는 거리 ( 병사가 거리가멀면 점수가 더낮아짐)  ----> 최종 병사입장에서의 그자리의 점수
 
             if (currentScore > maxScore)
             {
