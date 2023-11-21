@@ -236,9 +236,9 @@ public class Intro : MonoBehaviour
         Title_Panel = transform.GetChild(1).gameObject;
         Setup_Panel = transform.GetChild(2).gameObject;
         Upgrade_Panel = transform.GetChild(3).GetComponent<ScrollRect>();
-        Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
-        SignUp_Panel = transform.GetChild(5).gameObject;
-        Warning_Panel = transform.GetChild(6).gameObject;
+        /*Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();*/
+        SignUp_Panel = transform.GetChild(4).gameObject;
+        Warning_Panel = transform.GetChild(5).gameObject;
 
 
 
@@ -272,7 +272,7 @@ public class Intro : MonoBehaviour
         Title_Panel.SetActive(true);
         Setup_Panel.SetActive(false);
         Upgrade_Panel.gameObject.SetActive(false);
-        Option_Panel.gameObject.SetActive(false);
+        /*Option_Panel.gameObject.SetActive(false);*/
         SignUp_Panel.SetActive(false);
         Warning_Panel.SetActive(false);
 
@@ -306,7 +306,7 @@ public class Intro : MonoBehaviour
     {
         Setup_Panel.SetActive(true);
         Upgrade_Panel.gameObject.SetActive(false);
-        Option_Panel.gameObject.SetActive(false);
+        /*Option_Panel.gameObject.SetActive(false);*/
         SignUp_Panel.SetActive(false);
         Warning_Panel.SetActive(false);
 

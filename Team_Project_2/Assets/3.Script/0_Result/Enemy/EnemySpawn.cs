@@ -14,13 +14,14 @@ public class EnemySpawn : MonoBehaviour
     public Transform[] SpawnPoint = new Transform[3];
     //������ġ�� 0~2 ����ġ ���ʴ�� ��ȯ�ϱ����� �ε���
     private int SpawnIndex = 0;
+    private float SpawnCoolTime;
     //��ȯ�Ǵ� ����
-    private float Spawninterval = 0.4f;
     private int myLayer;
     private bool isAI;
     private bool isRespawning;
     // ���� ��� ���̾�
     private LayerMask TeamLayer;
+    
     private void Awake()
     {
         myLayer = gameObject.layer;
@@ -44,24 +45,20 @@ public class EnemySpawn : MonoBehaviour
         {
             return;
         }
-       
+        SpawnCoolTime += Time.deltaTime;
         //��������Ʈ ���̾ ����� ���̾�� �ٸ��� ��߷��̾�� ������Ʈ.
         if (myLayer != transform.parent.gameObject.layer)
         {
-            //��߷��̾�� ����
             gameObject.layer = transform.parent.gameObject.layer;
 
-            //�߸�����̶�� �׳� ����
             if (gameObject.layer == 0)
             {
                 return;
             }
-            //������̶�� Ÿ���� �÷��̾�
             else if (gameObject.layer == TeamLayer)
             {
                 targetLeader = player.gameObject;
             }
-            //������̶�� ���̾�°� Ÿ�� ����.
             else
             {
                 try
@@ -122,55 +119,39 @@ public class EnemySpawn : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isAI)
+        if (other.CompareTag("Player"))
+        {
+            GameManager.instance.inRange = true;
+            Ply_Controller ply = other.GetComponent<Ply_Controller>();
+            ply.spawnPoint = gameObject.GetComponent<EnemySpawn>();
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (isAI && SpawnCoolTime >= 0.4f)
         {
             if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderAI.canSpawn)
             {
 
-                InvokeRepeating("UnitSpawn", 0f, Spawninterval);
+                UnitSpawn();
 
-
+                SpawnCoolTime = 0f;
             }
-            else if (!leaderAI.canSpawn)
-            {
-
-                CancelInvoke("UnitSpawn");
-            }
-        }
-        else
-        {
-
-            if (other.CompareTag("Player"))
-            {
-                GameManager.instance.inRange = true;
-                Ply_Controller ply = other.GetComponent<Ply_Controller>();
-                ply.spawnPoint = gameObject.GetComponent<EnemySpawn>();
-            }
-
-
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
-        if (isAI)
+        if (other.CompareTag("Player"))
         {
-            if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer)
-            {
+            GameManager.instance.inRange = false;
+        }
 
-                CancelInvoke("UnitSpawn");
-            }
-        }
-        else
-        {
-            if (other.CompareTag("Player"))
-            {
-                GameManager.instance.inRange = false;
-            }
-        }
     }
     private void UnitSpawn()
     {
-        if (leaderAI.currentUnitCount > 19)
+        if (leaderAI.currentUnitCount > leaderAI.maxUnitCount)
         {
             return;
         }
@@ -278,7 +259,7 @@ public class EnemySpawn : MonoBehaviour
 
             return;
         }
-        //����ī��Ʈ�� �ƽ��� �ưų� , ���ֺ�뺸�� ���� ��尡 ������ false;
+
         if (leaderAI.maxUnitCount <= leaderAI.currentUnitCount || leaderAI.Gold <= leaderAI.unitCost)
         {
             leaderAI.canSpawn = false;
