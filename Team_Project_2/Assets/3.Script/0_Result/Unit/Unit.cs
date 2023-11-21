@@ -26,7 +26,7 @@ public abstract class Unit : MonoBehaviour
     //공격중인가?
     protected bool isHitting;
     protected bool isAttacking;
-    protected bool isdetecting;
+    [SerializeField]protected bool isdetecting;
     protected bool holdingShield;
     protected bool isMove;
     public Animator ani;
