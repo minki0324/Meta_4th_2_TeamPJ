@@ -46,6 +46,14 @@ public class GameManager : MonoBehaviour
     public AudioSource MainBgm;
     public AudioSource WeatherSFX;
 
+
+    public Flag[] FlagState;
+    bool isColorSame = false;
+    public int WinnerTeam;
+
+    public bool isGameEnd = false;
+    
+
     [Header("°ñµå °ü·Ã")]
     public float total_Gold = 1000;
     public float Gold = 1000;       // °ñµå·®
@@ -141,6 +149,15 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1;
             }
         }
+
+        if (currentTime >= EndTime) 
+        {
+            isGameEnd = true;
+        }
+
+        EndGame();
+
+      
     }
 
     public void Stop()
@@ -185,12 +202,80 @@ public class GameManager : MonoBehaviour
         Json.Save_playerData(PlayerID, PlayerCoin, isCanUse_SwordMan, isCanUse_Knight, isCanUse_Archer, isCanUse_SpearMan, isCanUse_Halberdier, isCanUse_Prist);
         SceneManager.LoadScene(0);
     }
-    
+
     public void EndGame()
     {
-        Stop();
-        PlayerCoin = PlayerCoin + (int)Teampoint / 1000;
-        Result.SetActive(true);
-
+        if (isGameEnd)
+        {
+            Stop();
+            PlayerCoin = PlayerCoin + (int)Teampoint / 1000;
+           
+            Result.SetActive(true);
+        }
     }
+
+
+    //¸ðµç ±ê¹ßÀÌ ÇÑÆÀ¿¡ Á¡·É ´çÇßÀ» °æ¿ì
+    public void IsAllFlagOccupied()
+    {
+        FlagState = Resources.FindObjectsOfTypeAll<Flag>();
+
+        //¸ðµç ±ê¹ß»öÀÌ ¸Â³ª °Ë»ç
+        for (int i = 0; i < FlagState.Length - 1; i++)
+        {
+            if (FlagState[i].CurrentColor == FlagState[i + 1].CurrentColor)
+            {
+                isColorSame = true;
+                
+            }
+            else
+            {
+                isColorSame = false;
+            }
+        }
+
+        if(isColorSame)
+        {
+            Debug.Log("¸ðµç ±ê¹ßÀÌ Á¡·ÉµÊ");
+        }
+        else
+        {
+            Debug.Log("¾ÆÁ÷ ±ê¹ß ³²À½");
+        }
+        //GetwinnerTeam();
+    }
+
+    //½Â¸®ÆÀ ÆÇ´Ü
+    public void GetwinnerTeam()
+    {
+        if (isColorSame)
+        {
+            Debug.Log("¸ðµç ±ê¹ßÀÌ Á¡·ÉµÊ");
+            if (FlagState[0].CurrentColor != 11) //Èò»ö ±ê¹ßÀÌ ¾Æ´Ñ°æ¿ì
+            {
+                isGameEnd = true;  
+                if (FlagState[0].CurrentColor == Color_Index)
+                {
+                    WinnerTeam = 0;
+                }
+                else if (FlagState[0].CurrentColor == T1_Color)
+                {
+
+                }
+                else if (FlagState[0].CurrentColor == T1_Color)
+                {
+
+                }
+                else if (FlagState[0].CurrentColor == T1_Color)
+                {
+
+
+                }
+            }
+
+
+        }
+    }
+
+
 }

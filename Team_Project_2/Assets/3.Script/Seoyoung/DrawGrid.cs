@@ -17,22 +17,26 @@ public class DrawGrid : Graphic
     protected override void Start()
     {
         gridSize.x = 1;
-        gridSize.y = 8;
+        gridSize.y = 200;
     }
 
     private void Update()
     {
         //endTime/20초 지날 때마다 x축 (시간) 셀 갯수 늘림
         //GameManager.instance.EndTime / 20
-        if(current_Time + 2 <= GameManager.instance.currentTime)
+        //if(!GameManager.instance.isGameEnd)
+        //{
+         
+        //}
+        if (current_Time + 2 <= GameManager.instance.currentTime)
         {
             Debug.Log("증가");
             current_Time += 2;
             gridSize.x += 1;
 
-            //y축 팀포인트 평균치 알아내서 y축도 정할 것
             SetVerticesDirty();
         }
+
     }
 
     //보이지 않는 영역 그래픽 터치 처리하고싶을때 사용되는 함수

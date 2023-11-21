@@ -515,6 +515,9 @@ MonoBehaviour:
   Result: {fileID: 0}
   MainBgm: {fileID: 1525718488}
   WeatherSFX: {fileID: 1525718489}
+  FlagState: []
+  WinnerTeam: 0
+  isGameEnd: 0
   total_Gold: 1000
   Gold: 1000
   Upgrade_GoldValue: 1
