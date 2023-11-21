@@ -42,11 +42,11 @@ public class LeaderAI : LeaderState
     }
     private void Update()
     {
-
         if (!GameManager.instance.isLive || data.isDie)
         {
             return;
         }
+
 
         if (!isStart)
         {
@@ -62,8 +62,10 @@ public class LeaderAI : LeaderState
                 Die();
             }
         }
+        total_Gold += Time.deltaTime * Magnifi * has_Flag * Upgrade_GoldValue;
+        Gold += Time.deltaTime * Magnifi * has_Flag * Upgrade_GoldValue; // 골드수급 = 분당 120 * 점령한 지역 개수
         // 항상 주변에 적이있는지 탐지
-        if(!data.isDie)
+        if (!data.isDie)
         {
             EnemyDitect();
         }
@@ -129,9 +131,8 @@ public class LeaderAI : LeaderState
                 //formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
                 break;
             case BattleState.Wait:
-                rb.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+                /*rb.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;*/
                 //리더가 타겟에게 가능 이동속도 줄이기 , 방패들기
-                target.target = nearestTarget;
                 holdingShield = true;
                 aipath.maxSpeed = 1.5f; // 이동속도줄이기
                 leaderAIDirection = transform.TransformDirection(Vector3.forward);
@@ -441,7 +442,6 @@ public class LeaderAI : LeaderState
             Soilder_Controller soilder_con = Soilder.GetComponent<Soilder_Controller>();
             soilder_con.isSetPosition = true;
             soilder_con.formationTransmform= positions[nextIndex].position; //제일가깝고 도착한 병사들 위치로 설정
-                Debug.Log($"{nextIndex}번째 포지션 지정했음 다음 포지션인덱스{nextIndex + 1}");
             nextIndex++;
         }
     }

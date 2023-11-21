@@ -218,7 +218,6 @@ public class Flag : MonoBehaviour
             TeamColor_Temp = TeamColor;
             gameObject.layer = Teamlayer;
             OccuHUD.Change_Color(TeamColor, Flag_Num);
-           
         }
 
         isOccupating = false;

@@ -21,7 +21,7 @@ public class Gate : MonoBehaviour
         Gate_Col.enabled = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Soldier") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Leader")) 
         {            
@@ -55,7 +55,7 @@ public class Gate : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
     private void Update()
     {
         if (!GameManager.instance.isLive) 

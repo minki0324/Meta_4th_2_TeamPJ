@@ -7003,7 +7003,7 @@ MonoBehaviour:
   respawnTime: 10
   killCount: 0
   DeathCount: 0
-  Ply_hasFlag: 0
+  Ply_hasFlag: 1
   Teampoint: 0
   Hire: 0
   Max_MinionCount: 19

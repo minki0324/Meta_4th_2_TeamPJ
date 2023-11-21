@@ -39,7 +39,6 @@ public class Formation_enemy : MonoBehaviour
             posi.isSuccess = false;
             positions.Add(posi);
         }
-        Debug.Log(positions.Count);
 
     }
     private void Start()
