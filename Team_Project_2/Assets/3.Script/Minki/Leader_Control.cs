@@ -50,7 +50,7 @@ public class Leader_Control : MonoBehaviour
 
         Debug.Log($"{gameObject.name} : {state} : {ai.bat_State} ");
 
-        if (State_CoolTime < 0.2f)
+        if (State_CoolTime > 0.2f)
         {
             switch (state)
             {
@@ -67,7 +67,7 @@ public class Leader_Control : MonoBehaviour
                     IfTarget_Flag();
                     break;
                 case AIState.Target_Enemy:
-
+                    break;
                 default:
                     break;
             }
