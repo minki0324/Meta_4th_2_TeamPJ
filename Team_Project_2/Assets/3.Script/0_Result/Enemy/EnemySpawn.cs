@@ -16,12 +16,13 @@ public class EnemySpawn : MonoBehaviour
     private int SpawnIndex = 0;
     private float SpawnCoolTime;
     //��ȯ�Ǵ� ����
-    private float Spawninterval = 0.4f;
     private int myLayer;
     private bool isAI;
     private bool isRespawning;
     // ���� ��� ���̾�
     private LayerMask TeamLayer;
+    private float SpawnCoolTime = 0.4f;
+
     private void Awake()
     {
         myLayer = gameObject.layer;
@@ -49,20 +50,16 @@ public class EnemySpawn : MonoBehaviour
         //��������Ʈ ���̾ ����� ���̾�� �ٸ��� ��߷��̾�� ������Ʈ.
         if (myLayer != transform.parent.gameObject.layer)
         {
-            //��߷��̾�� ����
             gameObject.layer = transform.parent.gameObject.layer;
 
-            //�߸�����̶�� �׳� ����
             if (gameObject.layer == 0)
             {
                 return;
             }
-            //������̶�� Ÿ���� �÷��̾�
             else if (gameObject.layer == TeamLayer)
             {
                 targetLeader = player.gameObject;
             }
-            //������̶�� ���̾�°� Ÿ�� ����.
             else
             {
                 try
@@ -144,9 +141,9 @@ public class EnemySpawn : MonoBehaviour
             }
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
-
         if (other.CompareTag("Player"))
         {
             GameManager.instance.inRange = false;
@@ -155,7 +152,7 @@ public class EnemySpawn : MonoBehaviour
     }
     private void UnitSpawn()
     {
-        if (leaderAI.currentUnitCount > 19)
+        if (leaderAI.currentUnitCount > leaderAI.maxUnitCount)
         {
             return;
         }
@@ -263,7 +260,7 @@ public class EnemySpawn : MonoBehaviour
 
             return;
         }
-        //����ī��Ʈ�� �ƽ��� �ưų� , ���ֺ�뺸�� ���� ��尡 ������ false;
+
         if (leaderAI.maxUnitCount <= leaderAI.currentUnitCount || leaderAI.Gold <= leaderAI.unitCost)
         {
             leaderAI.canSpawn = false;
