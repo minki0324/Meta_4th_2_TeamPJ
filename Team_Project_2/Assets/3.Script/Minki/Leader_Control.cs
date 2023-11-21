@@ -48,89 +48,31 @@ public class Leader_Control : MonoBehaviour
         Change_State();
         State_CoolTime += Time.deltaTime;
 
+        Debug.Log($"{gameObject.name} : {state} : {ai.bat_State} ");
+
         if (State_CoolTime < 0.2f)
         {
-            if (ai.bat_State != LeaderState.BattleState.Attack && ai.bat_State != LeaderState.BattleState.Detect)
+            switch (state)
             {
-                switch (state)
-                {
-                    case AIState.NonTarget:
-                        Search_Target();
-                        break;
-                    case AIState.Target_Gate:
-                        IfTarget_Gate();
-                        break;
-                    case AIState.Target_Base:
-                        IfTarget_Base();
-                        break;
-                    case AIState.Target_Flag:
-                        IfTarget_Flag();
-                        break;
-                    case AIState.Target_Enemy:
+                case AIState.NonTarget:
+                    Search_Target();
+                    break;
+                case AIState.Target_Gate:
+                    IfTarget_Gate();
+                    break;
+                case AIState.Target_Base:
+                    IfTarget_Base();
+                    break;
+                case AIState.Target_Flag:
+                    IfTarget_Flag();
+                    break;
+                case AIState.Target_Enemy:
 
-                    default:
-                        break;
-                }
+                default:
+                    break;
             }
             State_CoolTime = 0;
         }
-        #region 임시
-        /*switch(ai.bat_State)
-        {
-            case LeaderState.BattleState.Wait:
-                if(!isStart)
-                {
-                    return;
-                }
-
-               
-                if (ai.currentUnitCount < 15)
-                {
-                    Wait_Soldier();
-                }
-                Change_State();
-                break;
-            case LeaderState.BattleState.Move:
-                *//*
-                    1. 플래그가 가까울 때 
-                      > 내 플래그인지 중립 플래그인지 상대 플래그인지 확인
-                      > 내 플래그면 보유 유닛 수를 확인하고 보유한 유닛이 많으면 가까운 깃발로 이동(가까운 깃발이 베이스라면 게이트)
-                      > 중립 플래그라면 Wait 상태로 전환
-                      > 상대 플래그라면 Wait 상태로 전환
-                    2. 게이트가 가까울 때
-                      > 보유 유닛 수가 많다면 가까운 깃발로 이동
-                *//*
-                if(!NearGate && NearFlag && !NearBase)
-                {
-                    if (ai.currentUnitCount >= 15 && !isStart)
-                    {
-                        targetsetting = GetComponent<TargetFlag>(); 
-                        NextTarget = targetsetting.Target(transform);
-                        Move_Gate(transform, ref Target);
-                        isStart = true;
-                    }
-                    else if(ai.currentUnitCount >= 15 && Target.gameObject.layer.Equals(gameObject.layer))
-                    {
-                        Debug.Log("점령했음");
-                        Move_Flag(transform, ref Target);
-                    }
-                    else if(ai.currentUnitCount >= 15 && !Target.gameObject.layer.Equals(gameObject.layer))
-                    {
-                        Debug.Log("점령중");
-                        ai.bat_State = LeaderState.BattleState.Wait;
-                    }
-                }
-                else if(NearGate && !NearFlag && !NearBase)
-                {
-                    if(ai.currentUnitCount >= 15)
-                    {
-                        Target = NextTarget;
-                        ToTarget(Target);
-                    }
-                }
-                break;
-        }*/
-        #endregion
     }
 
     // 논타겟일때 타겟을 설정해주는 메소드
@@ -180,9 +122,17 @@ public class Leader_Control : MonoBehaviour
                 }
                 break;
             case LeaderState.BattleState.Wait:
-                if(NearFlag)
+                if (!Check_Soldier())
                 {
-                    Move_Flag(transform, ref Target);
+                    Return_SpawnPoint(transform, ref Target);
+                }
+                else if (Check_Soldier())
+                {
+                    if (NearFlag)
+                    {
+                        Move_Flag(transform, ref Target);
+                        ai.bat_State = LeaderState.BattleState.Move;
+                    }
                 }
                 break;
         }
@@ -228,6 +178,7 @@ public class Leader_Control : MonoBehaviour
                     1. 현재 본인의 병사 수를 체크하여 병사 숫자가 15마리 이하라면 대기
                     2. 병사 숫자가 충분히 채워졌으면 게이트로 이동
                 */
+                Debug.Log($"{gameObject.name} : {Check_Soldier()}");
                 if(!Check_Soldier())
                 {
                     break;
@@ -309,6 +260,11 @@ public class Leader_Control : MonoBehaviour
                         {
                             Debug.Log("불리니?");
                             ai.bat_State = LeaderState.BattleState.Wait;
+                        }
+                        else if(isOccuDone())
+                        {
+                            Debug.Log("다음거 안감 ?");
+                            Move_Flag(transform, ref Target);
                         }
                     }
                     else if(!NearFlag)

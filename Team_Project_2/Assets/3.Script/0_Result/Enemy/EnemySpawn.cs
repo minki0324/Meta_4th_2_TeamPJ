@@ -21,8 +21,7 @@ public class EnemySpawn : MonoBehaviour
     private bool isRespawning;
     // ���� ��� ���̾�
     private LayerMask TeamLayer;
-    private float SpawnCoolTime = 0.4f;
-
+    
     private void Awake()
     {
         myLayer = gameObject.layer;
