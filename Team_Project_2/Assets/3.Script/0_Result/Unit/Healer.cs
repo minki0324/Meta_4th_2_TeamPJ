@@ -20,7 +20,7 @@ public class Healer : MonoBehaviour
 
     GameObject healTarget = new GameObject();
 
-    float lessHP;
+    private float lessHP;
 
     public float healCoolTime;
 
@@ -122,7 +122,7 @@ public class Healer : MonoBehaviour
 
     public IEnumerator HealCoolTime()
     {
-        healCoolTime = Random.Range(3, 7);
+        healCoolTime = Random.Range(1, 5);
         Debug.Log("ÈúÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğÄğ");
         yield return new WaitForSeconds(healCoolTime);
         isCanHeal = true;
