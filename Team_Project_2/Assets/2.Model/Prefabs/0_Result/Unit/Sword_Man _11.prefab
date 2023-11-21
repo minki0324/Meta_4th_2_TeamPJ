@@ -11574,6 +11574,7 @@ MonoBehaviour:
   AttackRange: 1.5
   HitBox_col: {fileID: 3077217372575218644}
   Ob_Weapon_col: {fileID: 1843400023942459172}
+  speed: 0
   nearestTarget: {fileID: 0}
   formationState: 0
   formationTransmform: {fileID: 0}
@@ -11582,6 +11583,7 @@ MonoBehaviour:
   isArrive: 0
   isSetPosition: 0
   isNear: 0
+  currentScore: 0
 --- !u!136 &3077217372575218644
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -11706,7 +11708,7 @@ MonoBehaviour:
   orientation: 0
   enableRotation: 1
   autoRepath:
-    mode: 0
+    mode: 2
     interval: NaN
     sensitivity: 10
     maximumInterval: 2

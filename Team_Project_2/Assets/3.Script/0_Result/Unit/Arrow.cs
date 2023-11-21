@@ -23,7 +23,7 @@ public class Arrow : MonoBehaviour
     IEnumerator Arrow_rot()
     {
         archer_attack = GetComponentInParent<Archer_Attack>(); 
-        Vector3 targetp = archer_attack.Target.position - archer_attack.Bow.position;  // 날아갈 방향 구하기
+        Vector3 targetp = archer_attack.soilder.GetNearestTarget().position - archer_attack.Bow.position;  // 날아갈 방향 구하기
 
         // 타겟 포지션을 향해서 쏘면 바닥으로 쏴서 보정값 으로 y좀 올려줬습니당..
         transform.forward = targetp + new Vector3(0, 0.7f, 0); 

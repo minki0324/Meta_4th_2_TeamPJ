@@ -28,12 +28,13 @@ public class Ply_Movement : MonoBehaviour
     [SerializeField] private Rigidbody rb;
 
     [Header("이동")]
-    public float MoveSpeed = 10f;
-
+    public float MoveSpeed = 10f ;
+    public float speed;
+    public float realSpeed;
     [Header("점프")]
     [SerializeField] private float JumpForce = 10f;
     [SerializeField] private bool isGrounded = true;
-
+    public float rotationSpeed = 3.0f;
     public bool isPlayerMove { get; private set; }
     public Vector3 MoveDir = Vector3.zero;
     public Vector3 CurrentPos { get; private set; }
@@ -47,12 +48,17 @@ public class Ply_Movement : MonoBehaviour
     public float groundCheckRadius = 0.2f;  // OverlapSphere 반지름
     public string groundTag = "Ground";  // 땅의 태그
 
+
+    public bool holdingShield; //우클릭 실드들때
+    private bool isMove; 
+
     private Vector3 playerPosition;
 
     private float Min = -210f;
     private float Max = 210f;
+    Vector3 playerRotate;
 
- 
+
     public Quaternion playerRotation { get; private set; }   //added
 
 
@@ -61,16 +67,41 @@ public class Ply_Movement : MonoBehaviour
         camera_ = Camera.main;
         isPossible_Attack_1 = true;
         playerPosition = gameObject.transform.position;
+
     }
 
     private void Update()
     {
         CurrentPos = transform.position;
-        InputMovment();
+     
+
+        if (holdingShield)
+        {
+            speed -= 1f * Time.deltaTime;
+            speed = Mathf.Clamp(speed, 0.3f, 1f);
+            
+        }
+        else
+        {
+            if (isMove)
+            {
+                speed += 1f * Time.deltaTime;
+            }
+            else
+            {
+                speed -= 1f * Time.deltaTime;
+            }
+            speed = Mathf.Clamp01(speed);
+        }
+        ani.SetBool("Shield", holdingShield);
+        ani.SetFloat("Speed", speed);
+        ani.SetBool("Move", isMove);
+        realSpeed = MoveSpeed * speed *Time.deltaTime;
+        InputMovment(MoveSpeed);
         Jump();
         Ground_Check();
 
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetMouseButton(0))
         {
 
             if (isPossible_Attack_1)
@@ -104,17 +135,21 @@ public class Ply_Movement : MonoBehaviour
             // isLive = false;
         }
 
-
+        
         if (Input.GetMouseButton(1))
         {
-            ani.SetBool("Shield", true);
-            ani.SetFloat("MoveSpeed", 0.5f);
-            MoveSpeed = 2f;
+
+            holdingShield = true;
+
+            Vector3 cameraForward = Camera.main.transform.forward;
+            cameraForward.y = 0f; // 회전을 수평 평면에만 유지
+            Quaternion targetRotation = Quaternion.LookRotation(cameraForward);
+            transform.rotation = targetRotation;
+
         }
         else
         {
-            ani.SetBool("Shield", false);
-            ani.SetFloat("MoveSpeed", 1f);
+            holdingShield = false;
         }
 
 
@@ -124,20 +159,62 @@ public class Ply_Movement : MonoBehaviour
 
 
 
-    private void InputMovment()
+    private void InputMovment(float MoveSpeed)
     {
         if (!GameManager.instance.isLive)
         {
             return;
         }
 
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
 
-        Vector3 right = transform.TransformDirection(Vector3.right);
 
-        Vector3 playerRotate = Vector3.Scale(camera_.transform.forward, new Vector3(1, 0, 1));
+        // 목표 플레이어 회전 계산
+        Vector3 cameraForward = Camera.main.transform.forward;
+        cameraForward.y = 0f; // 수평 평면에만 유지
+        Vector3 targetPlayerRotate = Vector3.Scale(cameraForward, new Vector3(1, 0, 1));
 
-        MoveDir = playerRotate * Input.GetAxis("Vertical") + camera_.transform.right * Input.GetAxis("Horizontal");
+        // Vector3.Slerp를 사용하여 자연스럽게 회전 보간
+
+        // 수평 및 수직 입력 값
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        //if (horizontalInput == 1)
+        //{
+        //    RotateToDirection(Camera.main.transform.right);
+        //}
+        //else if (horizontalInput == -1)
+        //{
+        //    RotateToDirection(-Camera.main.transform.right);
+        //}
+        //else if (verticalInput == 1)
+        //{
+        //    RotateToDirection(Camera.main.transform.forward);
+        //}
+        //else if (verticalInput == -1)
+        //{
+        //    RotateToDirection(-Camera.main.transform.forward);
+        //}
+        // 현재 회전에서 목표 회전까지 특정 각속도로 즉시 회전
+
+        //Vector3 rightDir = Camera.main.transform.right * horizontalInput;
+        //Vector3 forwardDir = Camera.main.transform.forward * verticalInput;
+        //Vector3 diagonalDir = rightDir + forwardDir;
+        //Quaternion rotation = Quaternion.LookRotation(diagonalDir);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, rotation ,rotationSpeed *Time.deltaTime);
+        //Quaternion targetRotation = Quaternion.LookRotation(diagonalDir);
+        //Quaternion currentRotation = transform.rotation;
+        //transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, rotationSpeed * Time.deltaTime);
+        //// 움직임 방향 계산
+        ///
+        MoveDir = targetPlayerRotate * verticalInput + Camera.main.transform.right * horizontalInput;
+
+        // 목표 회전 방향 계산
+
+        // Slerp를 사용하여 부드러운 회전 적용
+
+        //MoveDir = playerRotate * Input.GetAxis("Vertical") + camera_.transform.right * Input.GetAxis("Horizontal");
+        //playerRotate = Vector3.Slerp(targetPlayerRotate, MoveDir, rotationSpeed * Time.deltaTime);
+
 
 
         if (MoveDir != Vector3.zero)
@@ -155,21 +232,22 @@ public class Ply_Movement : MonoBehaviour
             playerRotation = transform.rotation;    //added
 
             // 이동
-            transform.position += (MoveDir.normalized * MoveSpeed * Time.deltaTime);
-            transform.position = new Vector3(
-            Mathf.Clamp(transform.position.x, Min, Max), transform.position.y, Mathf.Clamp(transform.position.z, Min, Max));
-            ani.SetBool("Move", true);
-            ani.SetBool("Idle", false);
+            Debug.Log(MoveSpeed);
+            transform.position += (MoveDir.normalized * realSpeed /** Time.deltaTime*/);
+            isMove = true;
             isPlayerMove = true;
         }
         else
         {
-            ani.SetBool("Idle", true);
-            ani.SetBool("Move", false);
+            isMove = false;
             isPlayerMove = false;
         }
     }
-
+    private void RotateToDirection(Vector3 targetDirection)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
     private void Jump()
     {
         if (!GameManager.instance.isLive)

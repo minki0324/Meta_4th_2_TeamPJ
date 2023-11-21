@@ -10,6 +10,7 @@ public struct Data
     public float maxHP;
     public float damage;
     public bool isDie;
+    public float attackRange;
 }
 public abstract class Unit : MonoBehaviour 
 {
@@ -45,7 +46,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected Collider Ob_Weapon_col;
     protected float defaultSpeed;
 
-    protected float speed;
+    public float speed;
 
     [Header("현재타겟 Transform")]
     [SerializeField] protected Transform nearestTarget;
@@ -98,9 +99,11 @@ public abstract class Unit : MonoBehaviour
         if (nearestTarget != null) //탐지된 적이 있을때
         {
             LookatTarget(nearestTarget);
+
             target.target = nearestTarget;
 
             if (gameObject.GetComponent<Soilder_Controller>().isHealer)    //힐러일 때
+
             {
                 if (Vector3.Distance(transform.position, nearestTarget.transform.position) < 5f)
                 {
@@ -137,11 +140,37 @@ public abstract class Unit : MonoBehaviour
 
             if (!isdetecting) //탐지된적이 멀리있으면 적한테 이동
             {
-                isMove = true;
-                //ani.SetBool("Move", true);
-                aipath.isStopped = false;
-                aipath.canMove = true;
-                aipath.canSearch = true;
+                //if(GetComponent<Archer_Attack>() != null)
+                //{
+                //   if( GetComponent<Archer_Attack>().isAttack )
+                //    {
+                //        isMove = false;
+                //        aipath.isStopped = true;
+                //        aipath.canMove = false;
+                //        aipath.canSearch = false;
+                //    }
+                //    else
+                //    {
+                //        isMove = true;
+                //        //ani.SetBool("Move", true);
+                //        aipath.isStopped = false;
+                //        aipath.canMove = true;
+                //        aipath.canSearch = true;
+                //    }
+
+
+                //}
+                //else
+                //{
+                    isMove = true;
+                    //ani.SetBool("Move", true);
+                    aipath.isStopped = false;
+                    aipath.canMove = true;
+                    aipath.canSearch = true;
+                //}
+              
+
+
 
             }
             else // 탐지된 적이 접근하면 이동을 멈추고 공격
