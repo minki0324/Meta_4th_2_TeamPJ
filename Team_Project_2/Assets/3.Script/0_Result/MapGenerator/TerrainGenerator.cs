@@ -20,6 +20,9 @@ namespace SimpleProceduralTerrainProject
         [SerializeField]
         private GameObject Terra;
 
+        [SerializeField] private TerrainData[] terraindata;
+
+
         //Prototypes
         public Texture2D[] m_splat; // 텍스춰 배열
         public float[] m_splatTileSizes; // 타일 사이즈 값들을 저장할 배열
@@ -90,7 +93,7 @@ namespace SimpleProceduralTerrainProject
 
         //Private
         private FractalNoise m_groundNoise, m_mountainNoise, m_treeNoise, m_detailNoise;
-        private Terrain[,] m_terrain;
+        [SerializeField]private Terrain[,] m_terrain;
         private SplatPrototype[] m_splatPrototypes;
         private TreePrototype[] m_treeProtoTypes;
         private DetailPrototype[] m_detailProtoTypes;
@@ -290,19 +293,33 @@ namespace SimpleProceduralTerrainProject
 
             m_terrain = new Terrain[m_tilesX, m_tilesZ];
 
+            //Terra
+            /*for(int i=0;i< m_tilesX;i++)
+            {
+                for(int j=0;j< m_tilesZ;j++)
+                {
+                    int ind = i + (j + i);
+                    m_terrain[i, j] = Terra.transform.GetChild(ind).GetComponent<Terrain>();
+                }
+            }*/
+            for (int j = 0; j < 4; j++)
+            {
+                m_terrain[j/2, j%2] = Terra.transform.GetChild(j).GetComponent<Terrain>();
+            }
             m_offset = new Vector2(-m_terrainSize * m_tilesX * 0.5f, -m_terrainSize * m_tilesZ * 0.5f);
 
             CreateProtoTypes();
-
+            /*
             for (int x = 0; x < m_tilesX; x++)
             {
                 for (int z = 0; z < m_tilesZ; z++)
                 {
                     FillHeights(htmap, x, z);
 
-                    TerrainData terrainData = new TerrainData();
-                    
+                    //TerrainData terrainData = new TerrainData();
+                    TerrainData terrainData = terraindata[(j / 2) + (j % 2)];
 
+                    //terrains
 
                     terrainData.heightmapResolution = m_heightMapSize;
                     terrainData.SetHeights(0, 0, htmap);
@@ -315,10 +332,10 @@ namespace SimpleProceduralTerrainProject
                     FillAlphaMap(terrainData);
 
 
+                    //m_terrain[x, z].terrainData = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
+                    m_terrain[x, z].terrainData = terrainData;
 
-                    m_terrain[x, z] = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
-
-                    m_terrain[x, z].transform.SetParent(Terra.transform);
+                    //m_terrain[x, z].transform.SetParent(Terra.transform);
                     m_terrain[x, z].transform.position = new Vector3(m_terrainSize * x + m_offset.x, 0, m_terrainSize * z + m_offset.y);
                     m_terrain[x, z].heightmapPixelError = m_pixelMapError;
                     m_terrain[x, z].basemapDistance = m_baseMapDist;
@@ -334,7 +351,50 @@ namespace SimpleProceduralTerrainProject
                     terrainList.Add(m_terrain[x, z]);
                 }
             }
-            
+            */
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                    FillHeights(htmap, (i / 2), (i % 2));
+
+                //TerrainData terrainData = new TerrainData();
+                TerrainData terrainData = m_terrain[(i / 2), (i % 2)].terrainData;
+
+                    //terrains
+
+                terrainData.heightmapResolution = m_heightMapSize;
+                    terrainData.SetHeights(0, 0, htmap);
+                    terrainData.size = new Vector3(m_terrainSize, m_terrainHeight, m_terrainSize);
+#pragma warning disable CS0618 // 형식 또는 멤버는 사용되지 않습니다.
+                    terrainData.splatPrototypes = m_splatPrototypes;
+#pragma warning restore CS0618 // 형식 또는 멤버는 사용되지 않습니다.
+                    terrainData.treePrototypes = m_treeProtoTypes;
+                    terrainData.detailPrototypes = m_detailProtoTypes;
+                    FillAlphaMap(terrainData);
+
+
+                    //m_terrain[x, z].terrainData = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
+                    //m_terrain[(i / 2), (i % 2)].terrainData = terrainData;
+
+                    //m_terrain[x, z].transform.SetParent(Terra.transform);
+                    m_terrain[(i / 2),  ( i% 2)].transform.position = new Vector3(m_terrainSize * (i / 2) + m_offset.x, 0, m_terrainSize * (i % 2) + m_offset.y);
+                    m_terrain[(i / 2),  ( i% 2)].heightmapPixelError = m_pixelMapError;
+                    m_terrain[(i / 2),  ( i% 2)].basemapDistance = m_baseMapDist;
+                    m_terrain[(i / 2), (i % 2)].gameObject.tag = "Ground";
+#pragma warning disable CS0618 // 형식 또는 멤버는 사용되지 않습니다.
+                    m_terrain[(i / 2), (i % 2)].castShadows = false;
+#pragma warning restore CS0618 // 형식 또는 멤버는 사용되지 않습니다.
+
+
+
+                    FillTreeInstances(m_terrain[(i / 2), (i % 2)], (i / 2), (i % 2));
+                    FillDetailMap(m_terrain[(i / 2), (i % 2)], (i / 2), (i % 2));
+                    terrainList.Add(m_terrain[(i / 2), (i % 2)]);
+                }
+
+
+            //-----------------------------
             SpawnBaseCamps(SpawnFlags(flag_Num, 75f, 45f));
 
             for (int x = 0; x < m_tilesX; x++)
