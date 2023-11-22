@@ -16,7 +16,7 @@ public class LeaderAI : LeaderState
     public Vector3 leaderAIDirection;
     public List<Position> positions = new List<Position>();
     private int nextIndex = 0;
-   
+    int thisLeaderLayer;
 
     protected override void Awake()
     {
@@ -49,6 +49,7 @@ public class LeaderAI : LeaderState
         {
             col.enabled = true;
             isStart = true;
+            thisLeaderLayer = gameObject.layer;
         }
         total_Gold += Time.deltaTime * Magnifi * has_Flag * Upgrade_GoldValue;
         Gold += Time.deltaTime * Magnifi * has_Flag * Upgrade_GoldValue; // 골드수급 = 분당 120 * 점령한 지역 개수
@@ -167,7 +168,7 @@ public class LeaderAI : LeaderState
     }
     private int SetRespawnPoint()
     {
-        EnemySpawn ES = GameManager.instance.FindSpawnPoint(gameObject);
+        EnemySpawn ES = GameManager.instance.FindSpawnPoint(gameObject, thisLeaderLayer);
         respawnPoint = ES.transform.GetChild(0);
 
         return ES.gameObject.layer;
