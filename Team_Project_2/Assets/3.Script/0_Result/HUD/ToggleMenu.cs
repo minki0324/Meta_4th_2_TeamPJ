@@ -11,6 +11,8 @@ public class ToggleMenu : MonoBehaviour
     [SerializeField] private GameObject[] Menu;
     [SerializeField] private Optioin_Panel option;
 
+    [SerializeField] public GameObject Result_Panel;
+
     public bool isMenuOpen = false;
     private void Awake()
     {
@@ -19,6 +21,8 @@ public class ToggleMenu : MonoBehaviour
         Menu[2].GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
         Menu[2].GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
         Menu[2].gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(0f, 0f, 0f);
+
+        Result_Panel = transform.GetChild(4).gameObject;
     }
 
     void Update()

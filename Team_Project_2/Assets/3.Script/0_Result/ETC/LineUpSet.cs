@@ -190,6 +190,11 @@ public class LineUpSet : MonoBehaviour
         GameManager.instance.unit0 = GameManager.instance.units[lineupIndexs[0]];
         GameManager.instance.unit1 = GameManager.instance.units[lineupIndexs[1]];
         GameManager.instance.unit2 = GameManager.instance.units[lineupIndexs[2]];
+
+        //이시점에서 resultPanel 초기화
+        GameManager.instance.Result = FindObjectOfType<ToggleMenu>().transform.GetChild(4).gameObject;
+        GameManager.instance.Result.SetActive(false);
+        GameManager.instance.txt = GameManager.instance.Result.transform.GetChild(9).GetComponent<Text>();
     }
 
     public void Normal_Mode()

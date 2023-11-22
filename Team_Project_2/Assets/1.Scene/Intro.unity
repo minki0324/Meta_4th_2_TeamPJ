@@ -510,11 +510,14 @@ MonoBehaviour:
   isCanUse_Halberdier: 0
   isCanUse_Prist: 0
   currentTime: 0
-  EndTime: 1800
+  EndTime: 10
   Occupied_Area: 1
   Result: {fileID: 0}
+  txt: {fileID: 0}
   MainBgm: {fileID: 1525718488}
   WeatherSFX: {fileID: 1525718489}
+  Flags: []
+  isGameEnd: 0
   total_Gold: 1000
   Gold: 1000
   Upgrade_GoldValue: 1

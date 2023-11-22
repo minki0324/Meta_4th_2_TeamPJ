@@ -159,8 +159,19 @@ public class Flag : MonoBehaviour
     public void Change_Flag_Color(int TeamNum)
     {
         skinnedmesh.material = ColorManager.instance.Flag_Color[TeamNum];
+
+       
+       
+        if(GameManager.instance.currentTime > 3f)
+        {
+           
+            GameManager.instance.IsAllFlagOccupied();
+
+        }
+        
+       
     }
-    
+
     private int ParentLayer()
     {
         return this.transform.parent.gameObject.layer;
