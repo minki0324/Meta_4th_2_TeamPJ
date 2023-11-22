@@ -39,6 +39,7 @@ public class Flag : MonoBehaviour
     public int Team3Count;
     public int Team4Count;
 
+    public AudioSource Flag_Sound;
     public List<GameObject> Leaders = new List<GameObject>();
 
     public event Action isOccuDone;

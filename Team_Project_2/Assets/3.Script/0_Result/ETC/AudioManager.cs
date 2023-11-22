@@ -19,8 +19,16 @@ public enum SFXList
     Gate_Inter,
     Gate_Crash,
     Sword_Hit,
-    Sword_Swing,
-    Wind_Storm = 10,
+    Sword_Swing1,
+    Sword_Swing2 = 10,
+    Sword_Swing3,
+    Wind_Storm,
+    Flag_Sound,
+    Human_Attack1,
+    Human_Attack2,
+    Human_Die1,
+    Human_Die2,
+    Human_Die3
 }
 public class AudioManager : MonoBehaviour
 {
@@ -33,8 +41,7 @@ public class AudioManager : MonoBehaviour
     private AudioMixer audioMixer;
 
     [Header("오디오 소스")]
-    [SerializeField]
-    public AudioSource audio_SFX;
+    public AudioSource[] audio_SFX;
 
 
     [Header("오디오 클립(직접 참조)")]
@@ -56,13 +63,13 @@ public class AudioManager : MonoBehaviour
         }       
         optionPanel = FindObjectOfType<Optioin_Panel>();
 
-       
+        audio_SFX = GetComponents<AudioSource>();
     }
 
 
     private void OnMouseEnter()
     {
-        audio_SFX.PlayOneShot(clip_SFX[3]);
+        audio_SFX[0].PlayOneShot(clip_SFX[3]);
                         
     }
 
@@ -97,15 +104,20 @@ public class AudioManager : MonoBehaviour
 
     public void SFXPlay(int idx)   // SFX 플레이
     {
-        audio_SFX.clip = clip_SFX[idx];
-        audio_SFX.Play();
+        for (int i = 0; i < audio_SFX.Length; i++)
+        {
+            if (!audio_SFX[i].isPlaying)
+            {
+                audio_SFX[i].clip = clip_SFX[idx];
+                audio_SFX[i].Play();
+                break;
+            }
+        }
     }
 
     public void Button_HoverSound()
     {
-        audio_SFX.clip = clip_SFX[0];
-        
-        audio_SFX.Play();
+        SFXPlay((int)SFXList.MouseHover);
     }
 
 }

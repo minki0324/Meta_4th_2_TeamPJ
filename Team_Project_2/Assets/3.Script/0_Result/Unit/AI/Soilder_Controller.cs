@@ -158,15 +158,8 @@ public class Soilder_Controller : Unit
                         break;
                     case LeaderState.BattleState.Attack:
                         holdingShield = false;
-                        //aipath.canSearch = true;
-                        //aipath.canMove = true;
-                        //aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
-
-
                         if (!data.ishealer)
                         {
-                            //느려졌던 이동속도 초기화
-                            //Debug.Log("attack~~~" + gameObject.name.ToString());
                             AttackOrder();
                         }
                         //else
@@ -379,6 +372,8 @@ public class Soilder_Controller : Unit
 
         //ani.SetBool("Die", true);  // 죽는모션재생
         ani.SetLayerWeight(1, 0);
+        int Temp = Random.Range((int)SFXList.Human_Die1, (int)SFXList.Human_Die3 + 1);
+        Soldier_Sound.PlayOneShot(AudioManager.instance.clip_SFX[Temp]);
         ani.SetTrigger("Dead"); // 죽는모션재생
                                 //HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
         isMove = false;

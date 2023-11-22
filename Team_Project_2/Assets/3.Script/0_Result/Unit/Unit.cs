@@ -52,6 +52,7 @@ public abstract class Unit : MonoBehaviour
     [Header("현재타겟 Transform")]
     [SerializeField] protected Transform nearestTarget;
 
+    public AudioSource Soldier_Sound;
 
     //힐러용
     Healer healer;
@@ -60,6 +61,7 @@ public abstract class Unit : MonoBehaviour
     Vector3 HealerPos = new Vector3();
 
     float healRange = 5f;
+    
 
     public Transform GetNearestTarget()
     {
@@ -137,16 +139,16 @@ public abstract class Unit : MonoBehaviour
                     isdetecting = false;
                 }
             //}
-           
+
 
             if (!isdetecting) //탐지된적이 멀리있으면 적한테 이동
             {
-              
-                    isMove = true;
-              
-                    aipath.isStopped = false;
-                    aipath.canMove = true;
-                    aipath.canSearch = true;
+
+                isMove = true;
+
+                aipath.isStopped = false;
+                aipath.canMove = true;
+                aipath.canSearch = true;
             }
             else // 탐지된 적이 접근하면 이동을 멈추고 공격
             {
@@ -156,13 +158,14 @@ public abstract class Unit : MonoBehaviour
                 aipath.canMove = false;
                 aipath.canSearch = false;
 
-                if (!data.ishealer) { 
-
-                if (!isAttacking)
+                if (!data.ishealer)
                 {
-                    attackCoroutine = StartCoroutine(Attack_co());
-                    //StartCoroutine(Attack_co());
-                }
+
+                    if (!isAttacking)
+                    {
+                        attackCoroutine = StartCoroutine(Attack_co());
+                        //StartCoroutine(Attack_co());
+                    }
                 }
                 else
                 {
@@ -325,24 +328,27 @@ public abstract class Unit : MonoBehaviour
 
     }
     protected IEnumerator Attack_co()
-   
+
     {
-    
-            //공격쿨타임
-            float d = Random.Range(2f, 2.1f);
-            attackDelay = new WaitForSeconds(d);
 
-            //상태 공격중으로 변경
-            isAttacking = true;
+        //공격쿨타임
+        float d = Random.Range(2f, 2.1f);
+        attackDelay = new WaitForSeconds(d);
 
-            isSuccessAtk = false;
-            ani.SetTrigger("Attack");
-            yield return attackDelay;
+        //상태 공격중으로 변경
+        isAttacking = true;
+
+        isSuccessAtk = false;
+        int Temp = Random.Range((int)SFXList.Sword_Swing1, (int)SFXList.Sword_Swing3 + 1);
+        Soldier_Sound.PlayOneShot(AudioManager.instance.clip_SFX[Temp]);
+        yield return new WaitForSeconds(0.17f);
+        ani.SetTrigger("Attack");
+        yield return attackDelay;
 
 
-            isAttacking = false;
-        
-     
+        isAttacking = false;
+
+
     }
     //protected void FollowOrder()
     //{

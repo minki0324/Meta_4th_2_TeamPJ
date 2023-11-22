@@ -36,6 +36,8 @@ public class OccupationHUD : MonoBehaviour
         // 플래그마다 번호부여
         for (int i = 0; i < FlagArray.Length; i++)
         {
+            FlagArray[i].Flag_Sound.clip = AudioManager.instance.clip_SFX[(int)SFXList.Flag_Sound];
+            FlagArray[i].Flag_Sound.Play();
             FlagArray[i].Flag_Num = i;
         }
 
