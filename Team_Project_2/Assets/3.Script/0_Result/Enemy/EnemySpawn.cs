@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,12 @@ public class EnemySpawn : MonoBehaviour
     private bool isRespawning;
     // ���� ��� ���̾�
     private LayerMask TeamLayer;
-    
+
+    // Action 은 return이 없는 메소드만 추가한다
+    public event Action OnEnemySpawn;
+    // Function 은 return이 없는 메소드만 추가한다
+    public event Func<int> OnEnemySpawn2;
+
     private void Awake()
     {
       
@@ -46,7 +52,6 @@ public class EnemySpawn : MonoBehaviour
         }
         SpawnCoolTime += Time.deltaTime;
 
-        //��������Ʈ ���̾ ����� ���̾�� �ٸ��� ��߷��̾�� ������Ʈ.
         if (gameObject.layer != transform.parent.gameObject.layer)
         {
             Debug.Log("레이어바꾸는거 계속들어옴");
@@ -58,6 +63,7 @@ public class EnemySpawn : MonoBehaviour
             }
             else if (gameObject.layer == TeamLayer)
             {
+                Debug.Log("몇번 부르나요");
                 targetLeader = player.gameObject;
             }
             else
@@ -72,15 +78,7 @@ public class EnemySpawn : MonoBehaviour
                     Debug.Log("Ÿ��ã������");
                 }
             }
-
-
-
         }
-       
-       
-
-
-      
         if (targetLeader != null)
         {
 
@@ -192,6 +190,7 @@ public class EnemySpawn : MonoBehaviour
         }
 
     }
+    
     private LeaderAI FindLeader()
     {
         GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTag���� LeaderState ������Ʈ�� �ִ� ������Ʈ�� �±׸� �ֽ��ϴ�.

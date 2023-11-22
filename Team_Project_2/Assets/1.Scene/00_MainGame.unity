@@ -6628,7 +6628,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 127991
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: b2b25f9944deb2246a029e008d89db83, type: 2}
   m_TargetDisplay: 0
@@ -8639,6 +8639,8 @@ MonoBehaviour:
   EndTime: 1800
   Occupied_Area: 1
   Result: {fileID: 0}
+  MainBgm: {fileID: 0}
+  WeatherSFX: {fileID: 0}
   total_Gold: 1000
   Gold: 1000
   Upgrade_GoldValue: 1
@@ -23015,6 +23017,7 @@ MonoBehaviour:
   light_: {fileID: 0}
   Background_img: {fileID: 0}
   audioMixer: {fileID: 24100000, guid: 9f13e184e489da04fb017a183914a246, type: 2}
+  cameraControl: {fileID: 0}
 --- !u!114 &4384688999991217291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35155,7 +35158,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32759
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 5a769f17263b34445b14ba92561c108c, type: 2}
   m_TargetDisplay: 0
