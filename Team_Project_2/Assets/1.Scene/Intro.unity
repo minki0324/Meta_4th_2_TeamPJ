@@ -510,11 +510,13 @@ MonoBehaviour:
   isCanUse_Halberdier: 0
   isCanUse_Prist: 0
   currentTime: 0
-  EndTime: 1800
+  EndTime: 10
   Occupied_Area: 1
   Result: {fileID: 0}
+  txt: {fileID: 0}
   MainBgm: {fileID: 1525718488}
   WeatherSFX: {fileID: 1525718489}
+  isGameEnd: 0
   total_Gold: 1000
   Gold: 1000
   Upgrade_GoldValue: 1
@@ -528,7 +530,7 @@ MonoBehaviour:
   respawnTime: 10
   killCount: 0
   DeathCount: 0
-  Ply_hasFlag: 0
+  Ply_hasFlag: 1
   Teampoint: 0
   Hire: 0
   Max_MinionCount: 19
@@ -547,6 +549,7 @@ MonoBehaviour:
   unit1: {fileID: 0}
   unit2: {fileID: 0}
   leaders: []
+  Flags: []
   Color_Index: 0
   T1_Color: 0
   T2_Color: 0

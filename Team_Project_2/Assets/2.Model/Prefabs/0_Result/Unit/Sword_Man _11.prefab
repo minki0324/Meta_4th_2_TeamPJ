@@ -11570,6 +11570,7 @@ MonoBehaviour:
     ishealer: 0
   target: {fileID: 0}
   aipath: {fileID: 0}
+  isdetecting: 0
   ani: {fileID: 0}
   leaderState: {fileID: 0}
   leader: {fileID: 0}
@@ -11700,7 +11701,7 @@ MonoBehaviour:
   version: 5
   radius: 0.5
   height: 2
-  canMove: 1
+  canMove: 0
   maxSpeed: 5
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:

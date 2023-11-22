@@ -107,10 +107,11 @@ public class LeaderAI : LeaderState
                 case BattleState.Attack:
                     ResetPosition();
                     holdingShield = false;
-                    isMove = true;
+                    isMove = false;
+                    aipath.isStopped = true;
                     //느려졌던 이동속도 초기화
                     aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
-                    AttackOrder();
+                    Invoke("AttackOrder", 2f);
                     break;
                 case BattleState.Detect:
 

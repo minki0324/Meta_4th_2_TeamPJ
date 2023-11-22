@@ -11,6 +11,8 @@ public class DrawLine : Graphic
     
 
     public List<Vector2> points;
+    public Vector2 graphPoint;
+  
 
     float width;
     float height;
@@ -24,7 +26,7 @@ public class DrawLine : Graphic
     int cell_y = 0;
     protected override void Start()
     {
-        //points.Clear();
+        points.Clear();
         points.Add(new Vector2(0, 0));
         //points.Add(new Vector2(cell_x + 1, 3));
         SetVerticesDirty();
@@ -157,8 +159,29 @@ public class DrawLine : Graphic
 
         if (current_Time +2 <= GameManager.instance.currentTime)
         {
+            current_Time += 2;
+            
             //시간(x), 팀포인트(y)추가
-           
+            if (gameObject.name.ToString() == "Line_Team1")
+            {
+                graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.Teampoint);
+                points.Add(graphPoint);
+            }
+            else if (gameObject.name.ToString() == "Line_Enemy1")
+            {
+                graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.leaders[0].Teampoint);
+                points.Add(graphPoint);
+            }
+            else if (gameObject.name.ToString() == "Line_Enemy2")
+            {
+                graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.leaders[1].Teampoint);
+                points.Add(graphPoint);
+            }
+            else if (gameObject.name.ToString() == "Line_Enemy3")
+            {
+                graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.leaders[2].Teampoint);
+                points.Add(graphPoint);
+            }
             SetVerticesDirty();
         }
     }

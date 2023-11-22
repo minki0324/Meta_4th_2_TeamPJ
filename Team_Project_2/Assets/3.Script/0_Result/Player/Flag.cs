@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public class Flag : MonoBehaviour
     public bool isOccupating = false; // 점령 중인지
     public bool isOccupied = false; // 점령이 끝났는지
 
+    private EnemySpawn Spawn;
     public int Flag_Num;
     RaycastHit[] allHits;
     int Totalcount;
@@ -38,10 +40,13 @@ public class Flag : MonoBehaviour
     public int Team4Count;
 
     public AudioSource Flag_Sound;
+    public List<GameObject> Leaders = new List<GameObject>();
 
+    public event Action isOccuDone;
 
     private void Start()
     {
+        GameManager.instance.Flags.Add(gameObject.GetComponent<Flag>());
         OccuHUD = FindObjectOfType<OccupationHUD>();
         gameObject.layer = (transform.parent == null) ? 0 : ParentLayer();
     }
@@ -52,7 +57,7 @@ public class Flag : MonoBehaviour
         {
             return;
         }
- 
+
         allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0);
 
         Totalcount = allHits.Length;
@@ -63,11 +68,11 @@ public class Flag : MonoBehaviour
 
         foreach (RaycastHit hit in allHits)
         {
-            if (hit.transform.gameObject.CompareTag("SpawnPoint") || hit.transform.CompareTag("Flag") || hit.transform.CompareTag("Base"))
+            if (hit.transform.gameObject.CompareTag("SpawnPoint") || hit.transform.CompareTag("Flag") || hit.transform.CompareTag("Base") || hit.transform.gameObject.CompareTag("Weapon"))
             {
                 continue;
             }
-         
+            
             int layer = hit.transform.gameObject.layer;
          
             switch (layer)
@@ -155,8 +160,19 @@ public class Flag : MonoBehaviour
     public void Change_Flag_Color(int TeamNum)
     {
         skinnedmesh.material = ColorManager.instance.Flag_Color[TeamNum];
+
+       
+       
+        if(GameManager.instance.currentTime > 3f)
+        {
+           
+            GameManager.instance.IsAllFlagOccupied();
+
+        }
+        
+       
     }
-    
+
     private int ParentLayer()
     {
         return this.transform.parent.gameObject.layer;
@@ -204,6 +220,7 @@ public class Flag : MonoBehaviour
             OccuHUD.Change_Color((int)ColorIdx.White, Flag_Num);
 
             gameObject.layer = 0;
+            GameManager.instance.Set_FlagCount();
         }
 
         // 중립지역을 점령할 때
@@ -220,6 +237,8 @@ public class Flag : MonoBehaviour
             TeamColor_Temp = TeamColor;
             gameObject.layer = Teamlayer;
             OccuHUD.Change_Color(TeamColor, Flag_Num);
+            ColorManager.instance.Change_SolidColor(transform.GetChild(1).GetComponent<SpriteRenderer>(), TeamColor);
+            GameManager.instance.Set_FlagCount();
         }
 
         isOccupating = false;

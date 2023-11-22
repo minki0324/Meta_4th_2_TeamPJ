@@ -27,7 +27,7 @@ public class Soilder_Controller : Unit
     public bool isArrive = false;
     public bool isSetPosition = false;
     public bool isNear = false;
-
+    public float LeaderDistance;
     Healer healer;
 
 
@@ -86,8 +86,8 @@ public class Soilder_Controller : Unit
         {
             return;
         }
-
-        if (Vector3.Distance(leader.transform.position, transform.position) < formationRange)
+        LeaderDistance = Vector3.Distance(leader.transform.position, transform.position);
+        if (LeaderDistance < formationRange)
         {
             isArrive = true;
         }
@@ -173,8 +173,15 @@ public class Soilder_Controller : Unit
 
                         break;
                     case LeaderState.BattleState.Move:
-                        FollowOrder();
-                        holdingShield = false;
+                        if (LeaderDistance > 20 && nearestTarget != null)
+                        {
+                            AttackOrder();
+                        }
+                        else if (nearestTarget == null)
+                        {
+                            FollowOrder();
+                        }
+                            holdingShield = false;
                         aipath.isStopped = false;
                         break;
 
@@ -203,13 +210,14 @@ public class Soilder_Controller : Unit
                 switch (player.CurrentMode)
                 {
                     case Ply_Controller.Mode.Follow:
-                        Formation_Process();
-                        if (player.playerMovement.isPlayerMove && player.playerMovement.speed >0.7f && !    player.playerMovement.holdingShield)
-                        {
-                            isSetPosition = false; //배치받은 위치 초기화
-                            FollowOrder();
-                        }
-
+                      
+                            Formation_Process();
+                            if (player.playerMovement.isPlayerMove && player.playerMovement.speed > 0.7f && !player.playerMovement.holdingShield)
+                            {
+                                isSetPosition = false; //배치받은 위치 초기화
+                                FollowOrder();
+                            }
+                       
                         break;
                     case Ply_Controller.Mode.Attack:
                         AttackOrder();
@@ -478,7 +486,16 @@ public class Soilder_Controller : Unit
         switch (formationState)
         {
             case FormationState.Following:
-                FollowOrder();
+                if(LeaderDistance>20 && nearestTarget != null)
+                {
+                    AttackOrder();
+                }
+                else if(nearestTarget ==null)
+                {
+                    FollowOrder();
+                }
+              
+                
                 break;
             case FormationState.Formation:
                 break;
@@ -488,7 +505,7 @@ public class Soilder_Controller : Unit
                 break;
             case FormationState.Shield:
                 holdingShield = true;
-                aipath.canMove = false;
+                //aipath.canMove = false;
                 if (leader.layer == player.gameObject.layer)
                 {
                     if (player.playerMovement.isPlayerMove) { 
