@@ -53,6 +53,32 @@ public class EnemySpawn : MonoBehaviour
         }
         SpawnCoolTime += Time.deltaTime;
 
+        if (myLayer != transform.parent.gameObject.layer)
+        {
+            gameObject.layer = transform.parent.gameObject.layer;
+
+            if (gameObject.layer == 0)
+            {
+                return;
+            }
+            else if (gameObject.layer == TeamLayer)
+            {
+                Debug.Log("몇번 부르나요");
+                targetLeader = player.gameObject;
+            }
+            else
+            {
+                try
+                {
+                    targetLeader = SetLeader();
+                    targetLeader.TryGetComponent(out leaderAI);
+                }
+                catch
+                {
+                    Debug.Log("Ÿ��ã������");
+                }
+            }
+        }
         if (targetLeader != null)
         {
 
@@ -164,43 +190,7 @@ public class EnemySpawn : MonoBehaviour
         }
 
     }
-
-    public void Occupation_Done()
-    {
-        /*
-            1. 스포너의 레이어를 플래그와 동기화 해줌
-            2. 소환 해야할 리더를 셋팅을 해줌
-            3. 각 리더의 has_Flag 값을 올리고 빼줌
-        */
-
-
-        if (myLayer != transform.parent.gameObject.layer)
-        {
-            gameObject.layer = transform.parent.gameObject.layer;
-
-            if (gameObject.layer == 0)
-            {
-                return;
-            }
-            else if (gameObject.layer == TeamLayer)
-            {
-                Debug.Log("몇번 부르나요");
-                targetLeader = player.gameObject;
-            }
-            else
-            {
-                try
-                {
-                    targetLeader = SetLeader();
-                    targetLeader.TryGetComponent(out leaderAI);
-                }
-                catch
-                {
-                    Debug.Log("Ÿ��ã������");
-                }
-            }
-        }
-    }
+    
     private LeaderAI FindLeader()
     {
         GameObject[] objectsWithSameLayer = GameObject.FindGameObjectsWithTag("Leader"); // YourTag���� LeaderState ������Ʈ�� �ִ� ������Ʈ�� �±׸� �ֽ��ϴ�.

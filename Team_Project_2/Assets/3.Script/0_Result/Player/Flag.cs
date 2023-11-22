@@ -45,19 +45,9 @@ public class Flag : MonoBehaviour
 
     private void Start()
     {
-        Spawn = GetComponent<EnemySpawn>();
+        GameManager.instance.Flags.Add(gameObject.GetComponent<Flag>());
         OccuHUD = FindObjectOfType<OccupationHUD>();
         gameObject.layer = (transform.parent == null) ? 0 : ParentLayer();
-    }
-
-    private void OnEnable()
-    {
-        isOccuDone += Spawn.Occupation_Done;
-    }
-
-    private void OnDisable()
-    {
-        isOccuDone -= Spawn.Occupation_Done;
     }
 
     private void Update()
@@ -66,7 +56,7 @@ public class Flag : MonoBehaviour
         {
             return;
         }
- 
+
         allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0);
 
         Totalcount = allHits.Length;
@@ -77,18 +67,11 @@ public class Flag : MonoBehaviour
 
         foreach (RaycastHit hit in allHits)
         {
-            if (hit.transform.gameObject.CompareTag("SpawnPoint") || hit.transform.CompareTag("Flag") || hit.transform.CompareTag("Base"))
+            if (hit.transform.gameObject.CompareTag("SpawnPoint") || hit.transform.CompareTag("Flag") || hit.transform.CompareTag("Base") || hit.transform.gameObject.CompareTag("Weapon"))
             {
                 continue;
             }
-         
-            if(hit.transform.CompareTag("Leader") || hit.transform.CompareTag("Player"))
-            {
-                if(hit.transform.gameObject != hit.transform.gameObject)
-                {
-                    Leaders.Add(hit.transform.gameObject);
-                }
-            }
+            
             int layer = hit.transform.gameObject.layer;
          
             switch (layer)
@@ -225,6 +208,7 @@ public class Flag : MonoBehaviour
             OccuHUD.Change_Color((int)ColorIdx.White, Flag_Num);
 
             gameObject.layer = 0;
+            GameManager.instance.Set_FlagCount();
         }
 
         // 중립지역을 점령할 때
@@ -242,8 +226,7 @@ public class Flag : MonoBehaviour
             gameObject.layer = Teamlayer;
             OccuHUD.Change_Color(TeamColor, Flag_Num);
             ColorManager.instance.Change_SolidColor(transform.GetChild(1).GetComponent<SpriteRenderer>(), TeamColor);
-            isOccuDone?.Invoke();
-
+            GameManager.instance.Set_FlagCount();
         }
 
         isOccupating = false;

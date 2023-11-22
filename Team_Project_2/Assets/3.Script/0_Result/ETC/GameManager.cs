@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
     public Unit_Information unit2;
 
     public List<LeaderState> leaders;
+    public List<Flag> Flags;
 
     [Header("컬러인덱스")]
     public int Color_Index;         // 플레이어 컬러 인덱스
@@ -191,6 +192,35 @@ public class GameManager : MonoBehaviour
         Stop();
         PlayerCoin = PlayerCoin + (int)Teampoint / 1000;
         Result.SetActive(true);
+    }
 
+    public void Set_FlagCount()
+    {
+        int flagCount1 = 0;
+        int flagCount2 = 0;
+        int flagCount3 = 0;
+        int flagCount4 = 0;
+        for(int i = 0; i < Flags.Count; i++)
+        {
+            switch(Flags[i].gameObject.layer)
+            {
+                case 6:
+                    flagCount1++;
+                    break;
+                case 7:
+                    flagCount2++;
+                    break;
+                case 8:
+                    flagCount3++;
+                    break;
+                case 9:
+                    flagCount4++;
+                    break;
+            }
+        }
+        Ply_hasFlag = flagCount1;
+        leaders[0].has_Flag = flagCount2;
+        leaders[1].has_Flag = flagCount3;
+        leaders[2].has_Flag = flagCount4;
     }
 }
