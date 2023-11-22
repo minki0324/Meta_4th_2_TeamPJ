@@ -516,7 +516,6 @@ MonoBehaviour:
   txt: {fileID: 0}
   MainBgm: {fileID: 1525718488}
   WeatherSFX: {fileID: 1525718489}
-  Flags: []
   isGameEnd: 0
   total_Gold: 1000
   Gold: 1000
@@ -550,6 +549,7 @@ MonoBehaviour:
   unit1: {fileID: 0}
   unit2: {fileID: 0}
   leaders: []
+  Flags: []
   Color_Index: 0
   T1_Color: 0
   T2_Color: 0

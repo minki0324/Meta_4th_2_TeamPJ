@@ -48,8 +48,6 @@ public class GameManager : MonoBehaviour
     public AudioSource MainBgm;
     public AudioSource WeatherSFX;
 
-
-    public List<Flag> Flags;
     bool isColorSame = false;
     public bool isGameEnd = false;
     
@@ -279,7 +277,7 @@ public class GameManager : MonoBehaviour
     //승리팀 판단
     public void GetwinnerTeam()
     {
-        if(isGameEnd)
+        if (isGameEnd)
         {
             Debug.Log("gg");
             for (int i = 0; i < leaders.Count; i++)
@@ -295,37 +293,10 @@ public class GameManager : MonoBehaviour
             }
 
         }
-
-
-    public void Set_FlagCount()
-    {
-        int flagCount1 = 0;
-        int flagCount2 = 0;
-        int flagCount3 = 0;
-        int flagCount4 = 0;
-        for(int i = 0; i < Flags.Count; i++)
-        {
-            switch(Flags[i].gameObject.layer)
-            {
-                case 6:
-                    flagCount1++;
-                    break;
-                case 7:
-                    flagCount2++;
-                    break;
-                case 8:
-                    flagCount3++;
-                    break;
-                case 9:
-                    flagCount4++;
-                    break;
-            }
-        }
-        Ply_hasFlag = flagCount1;
-        leaders[0].has_Flag = flagCount2;
-        leaders[1].has_Flag = flagCount3;
-        leaders[2].has_Flag = flagCount4;
     }
+
+
+    
 
 
 }
