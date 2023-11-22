@@ -220,6 +220,7 @@ public class Flag : MonoBehaviour
             OccuHUD.Change_Color((int)ColorIdx.White, Flag_Num);
 
             gameObject.layer = 0;
+            ColorManager.instance.Change_SolidColor(gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>(), 11);
             GameManager.instance.Set_FlagCount();
         }
 
@@ -240,6 +241,7 @@ public class Flag : MonoBehaviour
             {
                 ColorManager.instance.RecursiveSearchAndSetBuilding(transform.root.transform, TeamColor);
             }
+            ColorManager.instance.Change_SolidColor(gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>(), TeamColor);
             OccuHUD.Change_Color(TeamColor, Flag_Num);
         }
 
