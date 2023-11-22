@@ -121,7 +121,7 @@ public class Soilder_Controller : Unit
 
 
         // 방패 들때안들때 이속,방패들기 메소드
-        if (holdingShield)
+        if (holdingShield && player.playerMovement.isPlayerMove)
         {
             speed -= 1f * Time.deltaTime;
             speed = Mathf.Clamp(speed, 0.3f, 1f);
@@ -513,14 +513,11 @@ public class Soilder_Controller : Unit
                 //aipath.canMove = false;
                 if (leader.layer == player.gameObject.layer)
                 {
-                    if (player.playerMovement.isPlayerMove) { 
                     speed = player.playerMovement.speed;
+                    if (!player.playerMovement.isPlayerMove && player.playerMovement.holdingShield) {
+                        speed = 0f;
                     }
-                    else
-                    {
-                        speed = 0;
-                    }
-
+                 
 
                     //코드개더럽네 시발 되면 고침
                     Vector3 cameraForward = Camera.main.transform.forward;

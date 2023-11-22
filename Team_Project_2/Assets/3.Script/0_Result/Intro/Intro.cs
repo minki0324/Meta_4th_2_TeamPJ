@@ -418,7 +418,6 @@ public class Intro : MonoBehaviour
     {
         Setup_Panel.SetActive(false);
         Upgrade_Panel.gameObject.SetActive(true);
-        Option_Panel.gameObject.SetActive(false);
         SignUp_Panel.SetActive(false);
         Warning_Panel.SetActive(false);
 

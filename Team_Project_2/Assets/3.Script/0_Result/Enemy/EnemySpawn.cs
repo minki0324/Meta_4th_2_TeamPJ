@@ -144,7 +144,7 @@ public class EnemySpawn : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && gameObject.layer == other.gameObject.layer)
         {
             GameManager.instance.inRange = false;
         }

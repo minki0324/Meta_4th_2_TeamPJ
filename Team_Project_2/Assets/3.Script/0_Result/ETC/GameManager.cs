@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     [Header("플레이어 관련")]
     public bool isLive = false;
     public bool isDead;
-    public bool inRange;
+    public bool inRange =true;
     private bool isFastMode;
     public float Current_HP = 150f;
     public float Max_Hp = 150f;
