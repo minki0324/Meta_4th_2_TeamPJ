@@ -31,6 +31,11 @@ public class CameraControl : MonoBehaviour
 
     private void Update()
     {
+        if (!GameManager.instance.isLive)
+        {
+            return;
+        }
+
         if(Player == null)
         {
             Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Ply_Controller>().transform;

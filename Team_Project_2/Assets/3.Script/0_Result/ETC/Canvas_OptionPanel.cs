@@ -18,4 +18,6 @@ public class Canvas_OptionPanel : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
 }

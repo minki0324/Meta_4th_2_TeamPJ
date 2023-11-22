@@ -86,7 +86,7 @@ public class EnemySpawn : MonoBehaviour
             {
                 if (leaderAI.data.isDie && !isRespawning)
                 {
-                    StartCoroutine(RespawnAfterDelay(5f));
+                    StartCoroutine(RespawnAfterDelay(5f, gameObject.layer));
                 }
             }
             if (targetLeader.gameObject.layer == TeamLayer)
@@ -116,18 +116,15 @@ public class EnemySpawn : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && gameObject.layer ==other.gameObject.layer)
+        if (other.CompareTag("Player") && gameObject.layer == other.gameObject.layer)
         {
             GameManager.instance.inRange = true;
             Ply_Controller ply = other.GetComponent<Ply_Controller>();
             ply.spawnPoint = gameObject.GetComponent<EnemySpawn>();
         }
-    }
 
-    private void OnTriggerStay(Collider other)
-    {
         if (isAI && SpawnCoolTime >= 0.4f)
         {
             if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderAI.canSpawn)
@@ -273,7 +270,7 @@ public class EnemySpawn : MonoBehaviour
         }
     }
 
-    IEnumerator RespawnAfterDelay(float delay)
+    IEnumerator RespawnAfterDelay(float delay, int layer)
     {
         isRespawning = true;
 
@@ -283,7 +280,7 @@ public class EnemySpawn : MonoBehaviour
         // ���� ���, �׾��� ������ �ٽ� �����ϴ� ���� ������ ����
 
         // ��Ȱ�� �Ϸ�Ǹ� �ٽ� ��Ƴ� ������ �÷��׸� ����
-        leaderAI.       Respawn(targetLeader);
+        leaderAI.Respawn(targetLeader, layer);
 
         // ���� ��Ȱ�� ���� �÷��׸� �ʱ�ȭ
         isRespawning = false;

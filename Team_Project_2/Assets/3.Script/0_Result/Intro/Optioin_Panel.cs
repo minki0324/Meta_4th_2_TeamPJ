@@ -8,8 +8,7 @@ public class Optioin_Panel : MonoBehaviour
 {
     public static Optioin_Panel instance = null;
 
-
-
+    
     #region 옵션 패널
     [Header("Option Panel")]
 

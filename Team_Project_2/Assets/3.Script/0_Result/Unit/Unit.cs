@@ -186,11 +186,14 @@ public abstract class Unit : MonoBehaviour
     //적을감지했을때 적을바라보는 메소드
     protected void LookatTarget(Transform target)
     {
-
-        Vector3 AttackDir = target.position - transform.position;
-        AttackDir.y = 0; // Y 축 이동을 무시하여 기울이지 않음
-        Quaternion rotation = Quaternion.LookRotation(AttackDir);
-        transform.rotation = rotation;
+        if (!data.isDie)
+        {
+            Vector3 AttackDir = target.position - transform.position;
+            AttackDir.y = 0; // Y 축 이동을 무시하여 기울이지 않음
+            Quaternion rotation = Quaternion.LookRotation(AttackDir);
+            transform.rotation = rotation;
+        }
+      
     }
     //적을감지했을때 공격하기위해 적에게 이동하는메소드
 

@@ -194,7 +194,7 @@ public class LineUpSet : MonoBehaviour
         //이시점에서 resultPanel 초기화
         GameManager.instance.Result = FindObjectOfType<ToggleMenu>().transform.GetChild(4).gameObject;
         GameManager.instance.Result.SetActive(false);
-        GameManager.instance.txt = GameManager.instance.Result.transform.GetChild(9).GetComponent<Text>();
+        GameManager.instance.txt = GameManager.instance.Result.transform.GetChild(10).GetComponent<Text>();
     }
 
     public void Normal_Mode()

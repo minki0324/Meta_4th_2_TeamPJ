@@ -221,7 +221,7 @@ public class LeaderAI : LeaderState
 
 
 
-                if (data.currentHP <= 0)
+                if (data.currentHP <= 0 && !data.isDie)
                 {
                     //적이 나를 죽였을때 -> 플레이어 컨트롤 다이에서 따로 설정
                     //enemy ==null  -> 플레이어
@@ -229,11 +229,8 @@ public class LeaderAI : LeaderState
                     //우리팀을 적팀이 죽였을때 
 
                     //공격정지 ,이동정지 
-                    if (!data.isDie)
-                    {
-                        data.isDie = true;
-                        Die(gameObject.layer, ob.layer);
-                    }
+                    data.isDie = true;
+                    Die(gameObject.layer, ob.layer);
 
 
                 }
@@ -275,7 +272,7 @@ public class LeaderAI : LeaderState
         leaderState.bat_State = LeaderState.BattleState.Move;
     }
 
-    public void Respawn(GameObject leader)
+    public void Respawn(GameObject leader, int layer)
     {
         //애니메이션초기화
         //HP , 콜라이더 , isDead ,레이어 다시설정
@@ -284,8 +281,7 @@ public class LeaderAI : LeaderState
         data.isDie = false;
         aipath.isStopped = false;
         aipath.canMove = true;
-        Debug.Log(respawnPoint.parent.gameObject.layer);
-        leader.layer = respawnPoint.parent.gameObject.layer;
+        leader.layer = layer;
         leader.transform.position = respawnPoint.position;
         ani.SetTrigger("Reset");
         ani.SetLayerWeight(1, 1);

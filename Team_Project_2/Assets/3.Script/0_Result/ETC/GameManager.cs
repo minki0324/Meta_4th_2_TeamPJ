@@ -153,7 +153,10 @@ public class GameManager : MonoBehaviour
         {
             isGameEnd = true;
         }
-
+        if (Ply_hasFlag <= 0)
+        {
+            isGameEnd = true;
+        }
         EndGame();
 
       
@@ -280,7 +283,6 @@ public class GameManager : MonoBehaviour
     {
         if (isGameEnd)
         {
-            Debug.Log("gg");
             for (int i = 0; i < leaders.Count; i++)
             {
                 if (Teampoint < leaders[i].Teampoint)
@@ -289,7 +291,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    txt.text = "Plaeyr WIN!!!";
+                    txt.text = "Player WIN!!!";
                 }
             }
 

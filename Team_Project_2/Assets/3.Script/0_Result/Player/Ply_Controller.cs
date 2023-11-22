@@ -248,9 +248,12 @@ public class Ply_Controller : MonoBehaviour
                             Debug.Log("2눌림");
                             Human_num = 1;
                             // 나중에 if문에 앤드게이트로 isPossible_HeavyInfantry 업글 유무 확인
-                            if (GameManager.instance.Gold > GameManager.instance.unit1.cost && GameManager.instance.isPossible_Upgrade_1)
+                            if (GameManager.instance.Gold > GameManager.instance.unit1.cost)
                             {
-                                Init_Solider(GameManager.instance.unit1);
+                                if(GameManager.instance.isPossible_Upgrade_1)
+                                {
+                                    Init_Solider(GameManager.instance.unit1);
+                                }
                             }
                             else
                             {
@@ -264,7 +267,10 @@ public class Ply_Controller : MonoBehaviour
                             // 나중에 if문에 앤드게이트로 isPossible_Archer 업글 유무 확인
                             if (GameManager.instance.Gold > GameManager.instance.unit2.cost)
                             {
-                                Init_Solider(GameManager.instance.unit2);
+                                if (GameManager.instance.isPossible_Upgrade_2)
+                                {
+                                    Init_Solider(GameManager.instance.unit2);
+                                }
                             }
                             else
                             {

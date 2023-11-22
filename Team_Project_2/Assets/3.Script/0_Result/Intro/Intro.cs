@@ -168,6 +168,7 @@ public class Intro : MonoBehaviour
 
     //로그인 관련
     public bool isLogined = false;
+    public bool isSignupPanelOn = false;
 
     //소리 관련
     public AudioMixer audioMixer;
@@ -202,9 +203,11 @@ public class Intro : MonoBehaviour
 
     private void Awake()
     {
+        //string path = Application.streamingAssetsPath;
+        //Debug.Log(path);
 
-        dataManager = new DataManager();
-        playerData = dataManager.Load_playerData("playerData");
+        dataManager = FindObjectOfType<DataManager>();
+        playerData = dataManager.Load_playerData("playerData.json");
     }
 
     private void Start()
@@ -221,9 +224,19 @@ public class Intro : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            Login();
+            if (!isSignupPanelOn)
+            {
+                Login();
+            }
+            else
+            {
+                //회원가입 확인버튼
+                Check_SignUp();
+
+            }
+
         }
     }
 
@@ -239,13 +252,13 @@ public class Intro : MonoBehaviour
         Setup_Panel = transform.GetChild(2).gameObject;
         Upgrade_Panel = transform.GetChild(3).GetComponent<ScrollRect>();
         Option_Panel = FindObjectOfType<Optioin_Panel>();
-       // Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
+        // Option_Panel = transform.GetChild(4).GetComponent<Optioin_Panel>();
         SignUp_Panel = transform.GetChild(4).gameObject;
         Warning_Panel = transform.GetChild(5).gameObject;
 
 
 
-        
+
         ////구조체 배열 초기화
         //for (int i = 0; i < GetColor.instance.TeamColors.Length; i++)
         //{
@@ -256,7 +269,7 @@ public class Intro : MonoBehaviour
         //}
 
 
-       
+
     }
 
     private void SetSound_AllButtons()
@@ -291,7 +304,7 @@ public class Intro : MonoBehaviour
         Warning_Panel.SetActive(false);
 
         Title_Panel.GetComponent<Image>().raycastTarget = false;
-      
+
         BackButton.gameObject.SetActive(false);
         BackButton.enabled = false;
 
@@ -305,14 +318,14 @@ public class Intro : MonoBehaviour
         Exit_Btn = Btn_Panel.transform.GetChild(3).GetComponent<Button>();
 
 
-        
+
 
         Ready_Btn.onClick.AddListener(SetupPanel_On);
         Upgrade_Btn.onClick.AddListener(UpgradePanel_On);
         Option_Btn.onClick.AddListener(OptionPanel_On);
         Exit_Btn.onClick.AddListener(Exit);
 
-       
+
         CheckLogin();
     }
 
@@ -320,7 +333,7 @@ public class Intro : MonoBehaviour
     {
         Setup_Panel.SetActive(true);
         Upgrade_Panel.gameObject.SetActive(false);
-        /*Option_Panel.gameObject.SetActive(false);*/
+        Option_Panel.gameObject.SetActive(false);
         SignUp_Panel.SetActive(false);
         Warning_Panel.SetActive(false);
 
@@ -344,7 +357,7 @@ public class Intro : MonoBehaviour
         Team1_Text = TeamColor1_Btn.transform.GetChild(0).GetComponent<Text>();
         Team2_Text = TeamColor2_Btn.transform.GetChild(0).GetComponent<Text>();
         Team3_Text = TeamColor3_Btn.transform.GetChild(0).GetComponent<Text>();
-        Team4_Text = TeamColor4_Btn.transform.GetChild(0).GetComponent<Text>(); 
+        Team4_Text = TeamColor4_Btn.transform.GetChild(0).GetComponent<Text>();
 
         ID1_Text = TeamColor1_Btn.transform.GetChild(1).GetComponent<Text>();
         ID2_Text = TeamColor2_Btn.transform.GetChild(1).GetComponent<Text>();
@@ -390,7 +403,7 @@ public class Intro : MonoBehaviour
     public void Change_Team_Color(Button button, ref int teamNum)
     {
         Debug.Log("컬러체인지");
-      
+
         for (int i = teamNum; i < GetColor.instance.teamColors.Length; i++)
         {
             if (button.image.color == GetColor.instance.teamColors[i].color_c)
@@ -456,7 +469,7 @@ public class Intro : MonoBehaviour
             Upgrade_Items.Add(a);
         }
 
-        for(int i = 0; i<Upgrade_Items.Count; i++)
+        for (int i = 0; i < Upgrade_Items.Count; i++)
         {
             Upgrade_Items[i].transform.GetChild(1).GetComponent<Text>().text = GameManager.instance.units[i].unitName;
             if (i == 3)
@@ -489,9 +502,9 @@ public class Intro : MonoBehaviour
                     Coin_Text.text = $"COIN : {GameManager.instance.PlayerCoin.ToString()}c";
                     Upgrade_Items[0].GetComponent<Button>().enabled = false;
                     Upgrade_Items[0].GetComponent<Image>().color = Color.gray;
-                    
+
                 }
-            });    
+            });
         }
 
         if (GameManager.instance.isCanUse_Knight)
@@ -606,7 +619,7 @@ public class Intro : MonoBehaviour
 
     public void BuyBtn_Clicked(Button button, bool isHave, int solidernum)
     {
-        if(isHave)
+        if (isHave)
         {
             button.enabled = false;
             button.GetComponent<Image>().color = Color.gray;
@@ -624,12 +637,12 @@ public class Intro : MonoBehaviour
 
             });
         }
-      
+
     }
 
     public void OptionPanel_On()
     {
-        
+
         Setup_Panel.SetActive(false);
         Upgrade_Panel.gameObject.SetActive(false);
         //Option_Panel.SetActive(true);
@@ -653,6 +666,7 @@ public class Intro : MonoBehaviour
 
         //버튼 이벤트
         SignUp_Confirm_Btn.onClick.AddListener(Check_SignUp);
+
         SignUp_Cancel_Btn.onClick.AddListener(() => {
             SignUp_Panel.SetActive(false);
             inputField.enabled = true;
@@ -660,6 +674,8 @@ public class Intro : MonoBehaviour
             SignUp_inputField.text = "";
         });
 
+
+        isSignupPanelOn = true;
         inputField.enabled = false;
         SignUp_inputField.ActivateInputField();
     }
@@ -676,27 +692,33 @@ public class Intro : MonoBehaviour
     public void Check_SignUp()
     {
 
-       
-        for(int i = 0; i< playerData.playerData.Count; i++)
+        playerData = dataManager.Load_playerData("playerData.json");
+        for (int i = 0; i < playerData.playerData.Count; i++)
         {
             if (playerData.playerData[i].ID != SignUp_inputField.text)
             {
-                dataManager.Save_playerData(SignUp_inputField.text, 0, true, true, true, false, false, false);
+                dataManager.Save_playerData(SignUp_inputField.text, 10, true, true, true, false, false, false);
+
+                SignUp_Panel.SetActive(false);
+                SignUp_Confirm_Btn.onClick.RemoveListener(Check_SignUp);
+                SignUp_inputField.text = "";
+                inputField.ActivateInputField();
+                break;
             }
             else
             {
-                
                 Warning_Panel.SetActive(true);
+
             }
         }
 
-      
+
 
     }
 
     public void CheckLogin()
     {
-        
+
         //로그인 확인
         if (!isLogined)
         {
@@ -719,15 +741,15 @@ public class Intro : MonoBehaviour
             Login_Panel.SetActive(false);
         }
 
-       
+
     }
 
     public void Login()
     {
-        
+        playerData = dataManager.Load_playerData("playerData.json");
         for (int i = 0; i < playerData.playerData.Count; i++)
         {
-            if(playerData.playerData[i].ID == inputField.text)
+            if (playerData.playerData[i].ID == inputField.text)
             {
                 GameManager.instance.PlayerID = playerData.playerData[i].ID;
                 GameManager.instance.PlayerCoin = playerData.playerData[i].Coin;
@@ -744,7 +766,7 @@ public class Intro : MonoBehaviour
 
                 isLogined = true;
             }
-      
+
         }
 
         //if(inputField.text == id)
@@ -783,7 +805,7 @@ public class Intro : MonoBehaviour
         Original_Map.gameObject.SetActive(false);
     }
 
-    
+
     public void BackBtn_Clicked()
     {
         TitlePanel_On();
