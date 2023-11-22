@@ -57,7 +57,7 @@ public class LeaderAI : LeaderState
             EnemyDitect();
 
 
-            if (holdingShield && player.playerMovement.isPlayerMove)
+            if (holdingShield )
             {
                 speed -= 1f * Time.deltaTime;
                 speed = Mathf.Clamp(speed, 0.3f, 1f);
@@ -104,7 +104,7 @@ public class LeaderAI : LeaderState
                     aipath.isStopped = true;
                     //느려졌던 이동속도 초기화
                     aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
-                    Invoke("AttackOrder", 2f);
+                    AttackOrder();
                     break;
                 case BattleState.Detect:
 
