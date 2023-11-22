@@ -339,8 +339,8 @@ public abstract class Unit : MonoBehaviour
         isAttacking = true;
 
         isSuccessAtk = false;
-        Soldier_Sound.clip = AudioManager.instance.clip_SFX[(int)SFXList.Sword_Swing1];
-        Soldier_Sound.Play();
+        int Temp = Random.Range((int)SFXList.Sword_Swing1, (int)SFXList.Sword_Swing3 + 1);
+        Soldier_Sound.PlayOneShot(AudioManager.instance.clip_SFX[Temp]);
         yield return new WaitForSeconds(0.17f);
         ani.SetTrigger("Attack");
         yield return attackDelay;

@@ -364,6 +364,8 @@ public class Soilder_Controller : Unit
 
         //ani.SetBool("Die", true);  // 죽는모션재생
         ani.SetLayerWeight(1, 0);
+        int Temp = Random.Range((int)SFXList.Human_Die1, (int)SFXList.Human_Die3 + 1);
+        Soldier_Sound.PlayOneShot(AudioManager.instance.clip_SFX[Temp]);
         ani.SetTrigger("Dead"); // 죽는모션재생
                                 //HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
         isMove = false;
