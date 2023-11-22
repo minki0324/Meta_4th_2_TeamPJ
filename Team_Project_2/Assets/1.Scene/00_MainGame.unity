@@ -6533,7 +6533,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 127991
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: b2b25f9944deb2246a029e008d89db83, type: 2}
   m_TargetDisplay: 0
@@ -22764,6 +22764,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4335036682309530053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7347414954326490702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08b844d3984f031449cc2036ebea6228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masterVolume_Slider: {fileID: 0}
+  bgmVolume_Slider: {fileID: 0}
+  sfxVolume_Slider: {fileID: 0}
+  mouseSensitive_Slider: {fileID: 0}
+  Brightness_Slider: {fileID: 0}
+  windowScreen_Btn: {fileID: 0}
+  fullScreen_Btn: {fileID: 0}
+  light_: {fileID: 0}
+  Background_img: {fileID: 0}
+  audioMixer: {fileID: 24100000, guid: 9f13e184e489da04fb017a183914a246, type: 2}
+  cameraControl: {fileID: 0}
 --- !u!114 &4384688999991217291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31249,7 +31272,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32759
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 5a769f17263b34445b14ba92561c108c, type: 2}
   m_TargetDisplay: 0

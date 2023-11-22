@@ -86,7 +86,7 @@ Material:
     m_Floats:
     - <noninit>: 0
     - _AlphaClip: 0
-    - _Blend: 1.1899992
+    - _Blend: 0.03
     - _Exposure1: 1
     - _Exposure2: 1
     - _ImageType: 0

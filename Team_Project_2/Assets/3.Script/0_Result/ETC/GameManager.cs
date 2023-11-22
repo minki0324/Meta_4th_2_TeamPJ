@@ -15,21 +15,21 @@ public enum TeamLayerIdx
 public class GameManager : MonoBehaviour
 {
     /*
-        °ÔÀÓ ¸Å´ÏÀú¿¡¼­ °ü¸®ÇØ¾ß ÇÒ º¯¼ö ¸ñ·Ï
-        1. °ñµå
-        2. ÇÃ·¹ÀÌ¾î Ã¼·Â
-        3. Á¡·ÉÁö (°ñµå¿Í ¿¬µ¿)
+        ê²Œì„ ë§¤ë‹ˆì €ì—ì„œ ê´€ë¦¬í•´ì•¼ í•  ë³€ìˆ˜ ëª©ë¡
+        1. ê³¨ë“œ
+        2. í”Œë ˆì´ì–´ ì²´ë ¥
+        3. ì ë ¹ì§€ (ê³¨ë“œì™€ ì—°ë™)
     */
     public static GameManager instance = null;
     public DataManager Json;
     public PlayerData Ply_Data;
 
-    [Header("°ÔÀÓ ¸ğµå")]
+    [Header("ê²Œì„ ëª¨ë“œ")]
     public int GameMode = 0;
     public int GameSpeed = 0;
 
     [SerializeField] private GameObject Option;
-    [Header("°èÁ¤ °ü·Ã")]
+    [Header("ê³„ì • ê´€ë ¨")]
     public string PlayerID;
     public int PlayerCoin;
     public bool isCanUse_SwordMan;
@@ -39,10 +39,10 @@ public class GameManager : MonoBehaviour
     public bool isCanUse_Halberdier;
     public bool isCanUse_Prist;
 
-    [Header("°ÔÀÓ ÇÃ·¹ÀÌ")]
-    public float currentTime = 0f;  // °ÔÀÓÀÌ ½ÃÀÛÇÏ°í Áö³­ ½Ã°£
-    public float EndTime = 20f;   // °ÔÀÓ ½Ã°£Àº 30ºĞ
-    public int Occupied_Area = 1;   // Á¡·ÉÇÑ Áö¿ª Default°ª 1
+    [Header("ê²Œì„ í”Œë ˆì´")]
+    public float currentTime = 0f;  // ê²Œì„ì´ ì‹œì‘í•˜ê³  ì§€ë‚œ ì‹œê°„
+    public float EndTime = 20f;   // ê²Œì„ ì‹œê°„ì€ 30ë¶„
+    public int Occupied_Area = 1;   // ì ë ¹í•œ ì§€ì—­ Defaultê°’ 1
     public GameObject Result;
     public Text txt;
     public AudioSource MainBgm;
@@ -54,13 +54,13 @@ public class GameManager : MonoBehaviour
     public bool isGameEnd = false;
     
 
-    [Header("°ñµå °ü·Ã")]
+    [Header("ê³¨ë“œ ê´€ë ¨")]
     public float total_Gold = 1000;
-    public float Gold = 1000;       // °ñµå·®
-    private float Magnifi = 2f;     // ±âº» °ñµå ¹èÀ² (¾÷µ¥ÀÌÆ®¹® ÇÁ·¹ÀÓ 60 x 2f·Î ±âº» È¹µæ °ñµå·®Àº ºĞ´ç 120)
+    public float Gold = 1000;       // ê³¨ë“œëŸ‰
+    private float Magnifi = 2f;     // ê¸°ë³¸ ê³¨ë“œ ë°°ìœ¨ (ì—…ë°ì´íŠ¸ë¬¸ í”„ë ˆì„ 60 x 2fë¡œ ê¸°ë³¸ íšë“ ê³¨ë“œëŸ‰ì€ ë¶„ë‹¹ 120)
     public float Upgrade_GoldValue = 1f;
     
-    [Header("ÇÃ·¹ÀÌ¾î °ü·Ã")]
+    [Header("í”Œë ˆì´ì–´ ê´€ë ¨")]
     public bool isLive = false;
     public bool isDead;
     public bool inRange;
@@ -72,19 +72,19 @@ public class GameManager : MonoBehaviour
     public float respawnTime = 10f;
     public int killCount;
     public int DeathCount;
-    public int Ply_hasFlag = 0;
+    public int Ply_hasFlag = 1;
     public float Teampoint = 0;
     public int Hire = 0;
 
-    //º´»çÀÎ±¸ 
+    //ë³‘ì‚¬ì¸êµ¬ 
     public int Max_MinionCount = 19;
     public int Current_MinionCount;
-    //º´Á¾ ¾÷±×·¹ÀÌµå
+    //ë³‘ì¢… ì—…ê·¸ë ˆì´ë“œ
     public bool isPossible_Upgrade_1 = false;
     public bool isPossible_Upgrade_2 = false;
     public List<int> Upgrade_List = new List<int>();
 
-    //½ºÅ©¸³ÅÍºí ¹è¿­
+    //ìŠ¤í¬ë¦½í„°ë¸” ë°°ì—´
     [Header("Sword > Heavy > Archer > Priest > Spear > Halberdier ")]
     public Unit_Information[] units;
     public Unit_Information unit0;
@@ -92,9 +92,10 @@ public class GameManager : MonoBehaviour
     public Unit_Information unit2;
 
     public List<LeaderState> leaders;
+    public List<Flag> Flags;
 
-    [Header("ÄÃ·¯ÀÎµ¦½º")]
-    public int Color_Index;         // ÇÃ·¹ÀÌ¾î ÄÃ·¯ ÀÎµ¦½º
+    [Header("ì»¬ëŸ¬ì¸ë±ìŠ¤")]
+    public int Color_Index;         // í”Œë ˆì´ì–´ ì»¬ëŸ¬ ì¸ë±ìŠ¤
     public int T1_Color;
     public int T2_Color;
     public int T3_Color;
@@ -121,9 +122,9 @@ public class GameManager : MonoBehaviour
         
     }
 
-    // ±âÁ¸ °ñµå »ó½Â·®
-    // Á¡·É ¾îµåº¥Æ¼Áö
-    // °ñµå »ó½Â·® ¾÷±×·¹ÀÌµå
+    // ê¸°ì¡´ ê³¨ë“œ ìƒìŠ¹ëŸ‰
+    // ì ë ¹ ì–´ë“œë²¤í‹°ì§€
+    // ê³¨ë“œ ìƒìŠ¹ëŸ‰ ì—…ê·¸ë ˆì´ë“œ
 
     private void Update()
     {
@@ -136,13 +137,13 @@ public class GameManager : MonoBehaviour
         currentTime += Time.deltaTime;
 
         total_Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue;
-        Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue; // °ñµå¼ö±Ş = ºĞ´ç 120 * Á¡·ÉÇÑ Áö¿ª °³¼ö
+        Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue; // ê³¨ë“œìˆ˜ê¸‰ = ë¶„ë‹¹ 120 * ì ë ¹í•œ ì§€ì—­ ê°œìˆ˜
 
         if(Input.GetKeyDown(KeyCode.K))
         {
             isFastMode = !isFastMode;
             if (isFastMode) { 
-            Time.timeScale = 2.5f;
+            Time.timeScale = 3.5f;
             }
             else
             {
@@ -246,11 +247,11 @@ public class GameManager : MonoBehaviour
     }
 
 
-    //¸ğµç ±ê¹ßÀÌ ÇÑÆÀ¿¡ Á¡·É ´çÇßÀ» °æ¿ì
+    //ëª¨ë“  ê¹ƒë°œì´ í•œíŒ€ì— ì ë ¹ ë‹¹í–ˆì„ ê²½ìš°
     public void IsAllFlagOccupied()
     {
         
-        //¸ğµç ±ê¹ß»öÀÌ ¸Â³ª °Ë»ç
+        //ëª¨ë“  ê¹ƒë°œìƒ‰ì´ ë§ë‚˜ ê²€ì‚¬
         for (int i = 0; i < Flags.Count - 1; i++)
         {
             if (Flags[i].gameObject.layer == Flags[i + 1].gameObject.layer)
@@ -265,17 +266,17 @@ public class GameManager : MonoBehaviour
 
         if(isColorSame)
         {
-            Debug.Log("¸ğµç ±ê¹ßÀÌ Á¡·ÉµÊ");
+            Debug.Log("ëª¨ë“  ê¹ƒë°œì´ ì ë ¹ë¨");
             isGameEnd = true;
         }
         else
         {
-            Debug.Log("¾ÆÁ÷ ±ê¹ß ³²À½");
+            Debug.Log("ì•„ì§ ê¹ƒë°œ ë‚¨ìŒ");
         }
         GetwinnerTeam();
     }
 
-    //½Â¸®ÆÀ ÆÇ´Ü
+    //ìŠ¹ë¦¬íŒ€ íŒë‹¨
     public void GetwinnerTeam()
     {
         if(isGameEnd)
@@ -296,6 +297,34 @@ public class GameManager : MonoBehaviour
         }
 
 
+    public void Set_FlagCount()
+    {
+        int flagCount1 = 0;
+        int flagCount2 = 0;
+        int flagCount3 = 0;
+        int flagCount4 = 0;
+        for(int i = 0; i < Flags.Count; i++)
+        {
+            switch(Flags[i].gameObject.layer)
+            {
+                case 6:
+                    flagCount1++;
+                    break;
+                case 7:
+                    flagCount2++;
+                    break;
+                case 8:
+                    flagCount3++;
+                    break;
+                case 9:
+                    flagCount4++;
+                    break;
+            }
+        }
+        Ply_hasFlag = flagCount1;
+        leaders[0].has_Flag = flagCount2;
+        leaders[1].has_Flag = flagCount3;
+        leaders[2].has_Flag = flagCount4;
     }
 
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public class Flag : MonoBehaviour
     public bool isOccupating = false; // 점령 중인지
     public bool isOccupied = false; // 점령이 끝났는지
 
+    private EnemySpawn Spawn;
     public int Flag_Num;
     RaycastHit[] allHits;
     int Totalcount;
@@ -37,14 +39,15 @@ public class Flag : MonoBehaviour
     public int Team3Count;
     public int Team4Count;
 
-   
+    public List<GameObject> Leaders = new List<GameObject>();
+
+    public event Action isOccuDone;
 
     private void Start()
     {
         GameManager.instance.Flags.Add(gameObject.GetComponent<Flag>());
         OccuHUD = FindObjectOfType<OccupationHUD>();
         gameObject.layer = (transform.parent == null) ? 0 : ParentLayer();
-        
     }
 
     private void Update()
@@ -53,7 +56,7 @@ public class Flag : MonoBehaviour
         {
             return;
         }
- 
+
         allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0);
 
         Totalcount = allHits.Length;
@@ -64,11 +67,11 @@ public class Flag : MonoBehaviour
 
         foreach (RaycastHit hit in allHits)
         {
-            if (hit.transform.gameObject.CompareTag("SpawnPoint") || hit.transform.CompareTag("Flag") || hit.transform.CompareTag("Base"))
+            if (hit.transform.gameObject.CompareTag("SpawnPoint") || hit.transform.CompareTag("Flag") || hit.transform.CompareTag("Base") || hit.transform.gameObject.CompareTag("Weapon"))
             {
                 continue;
             }
-         
+            
             int layer = hit.transform.gameObject.layer;
          
             switch (layer)
@@ -233,6 +236,7 @@ public class Flag : MonoBehaviour
             TeamColor_Temp = TeamColor;
             gameObject.layer = Teamlayer;
             OccuHUD.Change_Color(TeamColor, Flag_Num);
+            ColorManager.instance.Change_SolidColor(transform.GetChild(1).GetComponent<SpriteRenderer>(), TeamColor);
             GameManager.instance.Set_FlagCount();
         }
 

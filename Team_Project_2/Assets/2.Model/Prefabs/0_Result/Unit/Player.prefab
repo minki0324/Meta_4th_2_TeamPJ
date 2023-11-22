@@ -70,13 +70,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4749096092644640711}
   - component: {fileID: 3487795809203446159}
-  m_Layer: 6
+  m_Layer: 15
   m_Name: WorldmapColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4749096092644640711
 Transform:
   m_ObjectHideFlags: 0
@@ -6196,13 +6196,13 @@ GameObject:
   m_Component:
   - component: {fileID: 6837579281591170185}
   - component: {fileID: 6837579281591170184}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: MinimapColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6837579281591170185
 Transform:
   m_ObjectHideFlags: 0
