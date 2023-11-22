@@ -13089,11 +13089,11 @@ MonoBehaviour:
     ishealer: 0
   target: {fileID: 0}
   aipath: {fileID: 0}
+  isdetecting: 0
   ani: {fileID: 0}
   leaderState: {fileID: 0}
   leader: {fileID: 0}
   scanRange: 30
-  AttackRange: 1.5
   HitBox_col: {fileID: 1803586442092828233}
   Ob_Weapon_col: {fileID: 8132295210802871309}
   speed: 0
@@ -13101,8 +13101,8 @@ MonoBehaviour:
   Soldier_Sound: {fileID: -4995931744879286845}
   HealerPos: {x: 0, y: 0, z: 0}
   Teampoint: 0
-  total_Gold: 500
-  Gold: 500
+  total_Gold: 900
+  Gold: 900
   Magnifi: 2
   Upgrade_GoldValue: 1
   Regeneration: 0.5

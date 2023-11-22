@@ -98,6 +98,10 @@ public class GameManager : MonoBehaviour
     public int T2_Color;
     public int T3_Color;
 
+    [Header("업그레이드")]
+    [SerializeField] private Enemy_Upgrade upgrade;
+    private float Upgrade_Time;
+
     private void Awake()
     {
         if(instance == null)
@@ -133,7 +137,7 @@ public class GameManager : MonoBehaviour
         }
         
         currentTime += Time.deltaTime;
-
+        Upgrade_Time += Time.deltaTime;
         total_Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue;
         Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue; // 골드수급 = 분당 120 * 점령한 지역 개수
 
@@ -158,7 +162,7 @@ public class GameManager : MonoBehaviour
             isGameEnd = true;
         }
         EndGame();
-
+        Upgrade();
       
     }
 
@@ -298,7 +302,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    public void Upgrade()
+    {
+        if(Upgrade_Time > 180)
+        {
+            for(int i = 0; i < leaders.Count; i++)
+            {
+                while(true)
+                {
+                    try
+                    {
+                        upgrade.Upgradeall(i, Random.Range(0, 9));
+                        break;
+                    }
+                    catch
+                    {
+                        //upgrade.Upgradeall(i, Random.Range(0, 9));
+                    }
+                }
+                Debug.Log(i + "번째 업글");
+            }
+            Upgrade_Time = 0;
+        }
+    }
     
 
 

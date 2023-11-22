@@ -16,6 +16,8 @@ public class LeaderAI : LeaderState
     public Vector3 leaderAIDirection;
     public List<Position> positions = new List<Position>();
     private int nextIndex = 0;
+   
+
     protected override void Awake()
     {
         base.Awake();
@@ -50,6 +52,7 @@ public class LeaderAI : LeaderState
         }
         total_Gold += Time.deltaTime * Magnifi * has_Flag * Upgrade_GoldValue;
         Gold += Time.deltaTime * Magnifi * has_Flag * Upgrade_GoldValue; // 골드수급 = 분당 120 * 점령한 지역 개수
+      
 
         // 항상 주변에 적이있는지 탐지
         if (!data.isDie)
@@ -57,7 +60,7 @@ public class LeaderAI : LeaderState
             EnemyDitect();
 
 
-            if (holdingShield )
+            if (holdingShield)
             {
                 speed -= 1f * Time.deltaTime;
                 speed = Mathf.Clamp(speed, 0.3f, 1f);
@@ -85,7 +88,7 @@ public class LeaderAI : LeaderState
 
                 case BattleState.Move:
                     ResetPosition();
-                 
+
                     holdingShield = false;
                     isMove = true;
                     aipath.isStopped = false;
@@ -156,17 +159,18 @@ public class LeaderAI : LeaderState
         ani.SetTrigger("Dead"); // 죽는모션재생
         col.enabled = false;
         aipath.isStopped = true;
-        SetRespawnPoint();
         gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
         //HitBox_col.enabled = false;
         data.isDie = true;
         target.target = null;
         KillCount_Set(teamLayer, enemyLayer);
     }
-    private void SetRespawnPoint()
+    private int SetRespawnPoint()
     {
         EnemySpawn ES = GameManager.instance.FindSpawnPoint(gameObject);
         respawnPoint = ES.transform.GetChild(0);
+
+        return ES.gameObject.layer;
     }
     private void SetLeaderState()
     {
@@ -261,7 +265,7 @@ public class LeaderAI : LeaderState
         //범위내에 적콜라이더가 있을시 Ditect 상태로 변경
     }
 
-   
+
     public override void HitDamage(float damage)
     {
         data.currentHP -= damage;
@@ -272,7 +276,7 @@ public class LeaderAI : LeaderState
         leaderState.bat_State = LeaderState.BattleState.Move;
     }
 
-    public void Respawn(GameObject leader, int layer)
+    public void Respawn(GameObject leader)
     {
         //애니메이션초기화
         //HP , 콜라이더 , isDead ,레이어 다시설정
@@ -281,7 +285,7 @@ public class LeaderAI : LeaderState
         data.isDie = false;
         aipath.isStopped = false;
         aipath.canMove = true;
-        leader.layer = layer;
+        leader.layer = SetRespawnPoint();
         leader.transform.position = respawnPoint.position;
         ani.SetTrigger("Reset");
         ani.SetLayerWeight(1, 1);
@@ -309,7 +313,7 @@ public class LeaderAI : LeaderState
                     float distance = Vector3.Distance(transform.position, hit.transform.position);
 
 
-                    if (distance  < closestDistance)
+                    if (distance < closestDistance)
                     {
                         closestDistance = distance;
                         nearest = hit.transform;
@@ -329,7 +333,7 @@ public class LeaderAI : LeaderState
     }
     private void FormationOrder(float scanRange)
     {
-       
+
         //같은팀 레이어들 모두 담기
         RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, 1 << gameObject.layer);
 
@@ -362,8 +366,8 @@ public class LeaderAI : LeaderState
             float positionSocre = positions[i].weight / Vector3.Distance(transform.position, positions[i].position.position); // 포지션과 리더와 거리비례 점수 (멀면멀수록 weight점수 감소)
             float distanceScore = Vector3.Distance(Soilder.position, positions[i].position.position); // 병사가 포지션까지 가는 거리 (
             currentScore = positionSocre / distanceScore;   //포지션점수 / 병사가 포지션까지 가는 거리 ( 병사가 거리가멀면 점수가 더낮아짐)  ----> 최종 병사입장에서의 그자리의 점수
-            
-            if(currentScore > maxScore)
+
+            if (currentScore > maxScore)
             {
                 maxScore = currentScore;
                 destination = positions[i];
@@ -386,5 +390,4 @@ public class LeaderAI : LeaderState
             positions[i].isSuccess = false;
         }
     }
-
 }

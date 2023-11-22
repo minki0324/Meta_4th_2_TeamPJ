@@ -482,6 +482,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1525718487}
   - component: {fileID: 1525718486}
+  - component: {fileID: 1525718490}
   - component: {fileID: 1525718488}
   - component: {fileID: 1525718489}
   m_Layer: 0
@@ -525,7 +526,7 @@ MonoBehaviour:
   isCanUse_Halberdier: 0
   isCanUse_Prist: 0
   currentTime: 0
-  EndTime: 1800
+  EndTime: 900
   Occupied_Area: 1
   Result: {fileID: 0}
   txt: {fileID: 0}
@@ -569,6 +570,7 @@ MonoBehaviour:
   T1_Color: 0
   T2_Color: 0
   T3_Color: 0
+  upgrade: {fileID: 1525718490}
 --- !u!4 &1525718487
 Transform:
   m_ObjectHideFlags: 0
@@ -775,6 +777,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1525718490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525718485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 055476badb748984e80ba898eaec3529, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Data:
+  - {fileID: 11400000, guid: d274ef761fe3fe143811793020c4ade5, type: 2}
+  - {fileID: 11400000, guid: da7a60743ab77cf4d9a34c685c866f26, type: 2}
+  - {fileID: 11400000, guid: 4c81f9a2236760c42b71d1770e6eba3c, type: 2}
+  - {fileID: 11400000, guid: 4af821c440f414242a08c7143958a2dc, type: 2}
+  - {fileID: 11400000, guid: ce931a7d83e1ef9458a7cf1a509c17ea, type: 2}
+  - {fileID: 11400000, guid: 58752e7869dcd754b8aca04e5d3cd8f9, type: 2}
+  - {fileID: 11400000, guid: e9089c4b5f86c874f969203e69bb334e, type: 2}
+  - {fileID: 11400000, guid: b0deffec931240a4da5db011f025e452, type: 2}
+  - {fileID: 11400000, guid: 48ef077bbb621034394d064bcea8ffa0, type: 2}
+  - {fileID: 11400000, guid: 5b67945f07e6e5b4d9f8f3b7074078bf, type: 2}
 --- !u!1 &1767629523
 GameObject:
   m_ObjectHideFlags: 0

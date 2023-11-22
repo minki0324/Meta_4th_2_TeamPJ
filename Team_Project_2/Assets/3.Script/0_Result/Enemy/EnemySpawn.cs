@@ -125,7 +125,7 @@ public class EnemySpawn : MonoBehaviour
             ply.spawnPoint = gameObject.GetComponent<EnemySpawn>();
         }
 
-        if (isAI && SpawnCoolTime >= 0.4f)
+        if (isAI && SpawnCoolTime >= 0.4f && leaderAI.Gold >= 350)
         {
             if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderAI.canSpawn)
             {
@@ -280,7 +280,7 @@ public class EnemySpawn : MonoBehaviour
         // ���� ���, �׾��� ������ �ٽ� �����ϴ� ���� ������ ����
 
         // ��Ȱ�� �Ϸ�Ǹ� �ٽ� ��Ƴ� ������ �÷��׸� ����
-        leaderAI.Respawn(targetLeader, layer);
+        leaderAI.Respawn(targetLeader);
 
         // ���� ��Ȱ�� ���� �÷��׸� �ʱ�ȭ
         isRespawning = false;
