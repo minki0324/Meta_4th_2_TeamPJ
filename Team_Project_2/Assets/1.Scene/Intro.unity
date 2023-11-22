@@ -510,7 +510,7 @@ MonoBehaviour:
   isCanUse_Halberdier: 0
   isCanUse_Prist: 0
   currentTime: 0
-  EndTime: 10
+  EndTime: 1800
   Occupied_Area: 1
   Result: {fileID: 0}
   txt: {fileID: 0}

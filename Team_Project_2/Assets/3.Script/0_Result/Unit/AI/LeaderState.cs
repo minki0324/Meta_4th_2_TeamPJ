@@ -72,7 +72,7 @@ public class LeaderState : Unit
         }
     }
 
-    public override void Die()
+    public override void Die(int teamLayer, int enemyLayer)
     {
      
     }

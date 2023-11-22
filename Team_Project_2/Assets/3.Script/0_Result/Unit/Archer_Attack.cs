@@ -27,7 +27,7 @@ public class Archer_Attack : MonoBehaviour
     }
     private void Update()
     {
-        if (soilder.GetNearestTarget() != null && !isAttack) // 타겟이 있고 공격중이 아닐 때 화살발사
+        if (soilder.GetNearestTarget() != null && !isAttack && !soilder.data.isDie) // 타겟이 있고 공격중이 아닐 때 화살발사
         {
             StartCoroutine(Archer_atc());
         }

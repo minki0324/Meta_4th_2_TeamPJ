@@ -35,7 +35,6 @@ public abstract class Unit : MonoBehaviour
     public GameObject leader;
     protected Soilder_Controller enemy;
    [SerializeField] protected float scanRange = 30;
-    [SerializeField] protected float AttackRange = 1.5f;
     protected float formationRange = 8;
     protected int myLayer;
     protected int combinedMask;
@@ -104,33 +103,9 @@ public abstract class Unit : MonoBehaviour
             LookatTarget(nearestTarget);
 
             target.target = nearestTarget;
-
-            //if (gameObject.GetComponent<Soilder_Controller>().isHealer)    //힐러일 때
-
-            //{
-            //    if (Vector3.Distance(transform.position, nearestTarget.transform.position) < 5f)
-            //    {
-            //        target.target = transform;
-            //    }
-            //}
-
-            //if (gameObject.GetComponent<Soilder_Controller>().isHealer)    //힐러일 때
-            //{
-            //    float healDistance = Vector3.Distance(transform.position, nearestTarget.position);
-            //    if (healDistance <= healRange)
-            //    {
-            //        isdetecting = true;
-            //    }
-            //    else
-            //    {
-            //        isdetecting = false;
-            //    }
-            //}
-            //else
-            //{
                 //힐러가 아닐 떄
                 float attackDistance = Vector3.Distance(transform.position, nearestTarget.position); //목표 타겟과 자기자신 거리 비교
-                if (attackDistance <= AttackRange)
+                if (attackDistance <= data.attackRange)
                 {
                     isdetecting = true;     //공격범위
                 }
@@ -138,9 +113,6 @@ public abstract class Unit : MonoBehaviour
                 {
                     isdetecting = false;
                 }
-            //}
-
-
             if (!isdetecting) //탐지된적이 멀리있으면 적한테 이동
             {
 
@@ -357,7 +329,40 @@ public abstract class Unit : MonoBehaviour
     //}
     
     public abstract void Lostleader();
-    public abstract void Die();
+    public abstract void Die(int teamLayer, int enemyLayer);
     public abstract void HitDamage(float damage);
-    
+
+    public void KillCount_Set(int teamLayer, int enemyLayer)
+    {
+        switch (teamLayer)
+        {
+            case 6:
+                GameManager.instance.DeathCount++;
+                break;
+            case 7:
+                GameManager.instance.leaders[0].deathCount++;
+                break;
+            case 8:
+                GameManager.instance.leaders[1].deathCount++;
+                break;
+            case 9:
+                GameManager.instance.leaders[2].deathCount++;
+                break;
+        }
+        switch (enemyLayer)
+        {
+            case 6:
+                GameManager.instance.killCount++;
+                break;
+            case 7:
+                GameManager.instance.leaders[0].killCount++;
+                break;
+            case 8:
+                GameManager.instance.leaders[1].killCount++;
+                break;
+            case 9:
+                GameManager.instance.leaders[2].killCount++;
+                break;
+        }
+    }
 }

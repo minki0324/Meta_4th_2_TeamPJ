@@ -297,12 +297,12 @@ public class Ply_Controller : MonoBehaviour
         Soilder_Con.infodata = unit;
         Soilder_Con.Setunit();
         UpgradeSet(Soilder_Con);
-
         spawnPoint.SetLayerRecursively(newUnit, gameObject.layer);
 
         GameManager.instance.Gold -= unit.cost;
         //Minion.transform.SetParent(transform);
         UnitList_List.Add(newUnit);
+        GameManager.instance.Hire++;
         GameManager.instance.Current_MinionCount++;
 
 

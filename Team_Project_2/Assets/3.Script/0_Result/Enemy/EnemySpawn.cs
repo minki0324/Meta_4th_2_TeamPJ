@@ -164,14 +164,17 @@ public class EnemySpawn : MonoBehaviour
         {
             case 7:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T1_Color);
+                GameManager.instance.leaders[0].Hire++;
                 Upgrade_Set(0, soilder_Con);
                 break;
             case 8:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T2_Color);
+                GameManager.instance.leaders[1].Hire++;
                 Upgrade_Set(1, soilder_Con);
                 break;
             case 9:
                 ColorManager.instance.RecursiveSearchAndSetUnit(newUnit.transform, GameManager.instance.T3_Color);
+                GameManager.instance.leaders[2].Hire++;
                 Upgrade_Set(2, soilder_Con);
                 break;
 
