@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public enum TeamLayerIdx
@@ -43,14 +44,13 @@ public class GameManager : MonoBehaviour
     public float EndTime = 20f;   // 게임 시간은 30분
     public int Occupied_Area = 1;   // 점령한 지역 Default값 1
     public GameObject Result;
+    public Text txt;
     public AudioSource MainBgm;
     public AudioSource WeatherSFX;
 
 
-    public Flag[] FlagState;
+    public List<Flag> Flags;
     bool isColorSame = false;
-    public int WinnerTeam;
-
     public bool isGameEnd = false;
     
 
@@ -203,6 +203,37 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    public void Set_FlagCount()
+    {
+        int flagCount1 = 0;
+        int flagCount2 = 0;
+        int flagCount3 = 0;
+        int flagCount4 = 0;
+        for (int i = 0; i < Flags.Count; i++)
+        {
+            switch (Flags[i].gameObject.layer)
+            {
+                case 6:
+                    flagCount1++;
+                    break;
+                case 7:
+                    flagCount2++;
+                    break;
+                case 8:
+                    flagCount3++;
+                    break;
+                case 9:
+                    flagCount4++;
+                    break;
+            }
+        }
+        Ply_hasFlag = flagCount1;
+        leaders[0].has_Flag = flagCount2;
+        leaders[1].has_Flag = flagCount3;
+        leaders[2].has_Flag = flagCount4;
+    }
+
+
     public void EndGame()
     {
         if (isGameEnd)
@@ -218,15 +249,13 @@ public class GameManager : MonoBehaviour
     //모든 깃발이 한팀에 점령 당했을 경우
     public void IsAllFlagOccupied()
     {
-        FlagState = Resources.FindObjectsOfTypeAll<Flag>();
-
+        
         //모든 깃발색이 맞나 검사
-        for (int i = 0; i < FlagState.Length - 1; i++)
+        for (int i = 0; i < Flags.Count - 1; i++)
         {
-            if (FlagState[i].CurrentColor == FlagState[i + 1].CurrentColor)
+            if (Flags[i].gameObject.layer == Flags[i + 1].gameObject.layer)
             {
                 isColorSame = true;
-                
             }
             else
             {
@@ -237,44 +266,36 @@ public class GameManager : MonoBehaviour
         if(isColorSame)
         {
             Debug.Log("모든 깃발이 점령됨");
+            isGameEnd = true;
         }
         else
         {
             Debug.Log("아직 깃발 남음");
         }
-        //GetwinnerTeam();
+        GetwinnerTeam();
     }
 
     //승리팀 판단
     public void GetwinnerTeam()
     {
-        if (isColorSame)
+        if(isGameEnd)
         {
-            Debug.Log("모든 깃발이 점령됨");
-            if (FlagState[0].CurrentColor != 11) //흰색 깃발이 아닌경우
+            Debug.Log("gg");
+            for (int i = 0; i < leaders.Count; i++)
             {
-                isGameEnd = true;  
-                if (FlagState[0].CurrentColor == Color_Index)
+                if (Teampoint < leaders[i].Teampoint)
                 {
-                    WinnerTeam = 0;
+                    txt.text = "Player Lose..";
                 }
-                else if (FlagState[0].CurrentColor == T1_Color)
+                else
                 {
-
-                }
-                else if (FlagState[0].CurrentColor == T1_Color)
-                {
-
-                }
-                else if (FlagState[0].CurrentColor == T1_Color)
-                {
-
-
+                    txt.text = "Plaeyr WIN!!!";
                 }
             }
 
-
         }
+
+
     }
 
 

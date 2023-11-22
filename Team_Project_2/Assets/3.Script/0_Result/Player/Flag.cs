@@ -37,10 +37,11 @@ public class Flag : MonoBehaviour
     public int Team3Count;
     public int Team4Count;
 
-    public int CurrentColor;    //깃발을 점령한 팀 번호
+   
 
     private void Start()
     {
+        GameManager.instance.Flags.Add(gameObject.GetComponent<Flag>());
         OccuHUD = FindObjectOfType<OccupationHUD>();
         gameObject.layer = (transform.parent == null) ? 0 : ParentLayer();
         
@@ -160,7 +161,7 @@ public class Flag : MonoBehaviour
        
         if(GameManager.instance.currentTime > 3f)
         {
-            CurrentColor = TeamNum;
+           
             GameManager.instance.IsAllFlagOccupied();
 
         }
@@ -215,6 +216,7 @@ public class Flag : MonoBehaviour
             OccuHUD.Change_Color((int)ColorIdx.White, Flag_Num);
 
             gameObject.layer = 0;
+            GameManager.instance.Set_FlagCount();
         }
 
         // 중립지역을 점령할 때
@@ -231,6 +233,7 @@ public class Flag : MonoBehaviour
             TeamColor_Temp = TeamColor;
             gameObject.layer = Teamlayer;
             OccuHUD.Change_Color(TeamColor, Flag_Num);
+            GameManager.instance.Set_FlagCount();
         }
 
         isOccupating = false;

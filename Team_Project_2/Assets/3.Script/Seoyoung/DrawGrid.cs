@@ -17,7 +17,7 @@ public class DrawGrid : Graphic
     protected override void Start()
     {
         gridSize.x = 1;
-        gridSize.y = 200;
+        gridSize.y = 1000;
     }
 
     private void Update()
