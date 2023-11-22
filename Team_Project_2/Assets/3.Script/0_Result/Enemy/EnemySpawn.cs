@@ -30,9 +30,8 @@ public class EnemySpawn : MonoBehaviour
 
     private void Awake()
     {
-        myLayer = gameObject.layer;
+      
         TeamLayer = LayerMask.NameToLayer("Team");
-        myLayer = transform.parent.gameObject.layer;
         targetLeader = null;
 
 
@@ -53,8 +52,9 @@ public class EnemySpawn : MonoBehaviour
         }
         SpawnCoolTime += Time.deltaTime;
 
-        if (myLayer != transform.parent.gameObject.layer)
+        if (gameObject.layer != transform.parent.gameObject.layer)
         {
+            Debug.Log("레이어바꾸는거 계속들어옴");
             gameObject.layer = transform.parent.gameObject.layer;
 
             if (gameObject.layer == 0)
@@ -118,7 +118,7 @@ public class EnemySpawn : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && gameObject.layer ==other.gameObject.layer)
         {
             GameManager.instance.inRange = true;
             Ply_Controller ply = other.GetComponent<Ply_Controller>();
