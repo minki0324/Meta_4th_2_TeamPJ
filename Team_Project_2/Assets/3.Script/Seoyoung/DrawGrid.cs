@@ -36,7 +36,10 @@ public class DrawGrid : Graphic
 
             SetVerticesDirty();
         }
-
+        if(gridSize.y <= GameManager.instance.Teampoint + 100 || gridSize.y <= GameManager.instance.leaders[0].Teampoint + 100 || gridSize.y <= GameManager.instance.leaders[1].Teampoint + 100 || gridSize.y <= GameManager.instance.leaders[2].Teampoint + 100)
+        {
+            gridSize.y += 100;
+        }
     }
 
     //보이지 않는 영역 그래픽 터치 처리하고싶을때 사용되는 함수

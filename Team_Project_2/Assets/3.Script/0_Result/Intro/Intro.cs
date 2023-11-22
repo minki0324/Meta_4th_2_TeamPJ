@@ -168,6 +168,7 @@ public class Intro : MonoBehaviour
 
     //로그인 관련
     public bool isLogined = false;
+    public bool isSignupPanelOn = false;
 
     //소리 관련
     public AudioMixer audioMixer;
@@ -202,9 +203,10 @@ public class Intro : MonoBehaviour
 
     private void Awake()
     {
-
-        dataManager = new DataManager();
-        playerData = dataManager.Load_playerData("playerData");
+        //string path = Application.streamingAssetsPath;
+        //Debug.Log(path);
+        dataManager = FindObjectOfType<DataManager>();
+        playerData = dataManager.Load_playerData("playerData.json");
     }
 
     private void Start()
@@ -223,7 +225,17 @@ public class Intro : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Return))
         {
-            Login();
+            if(!isSignupPanelOn)
+            {
+                Login();
+            }
+            else
+            {
+                //회원가입 확인버튼
+                Check_SignUp();
+                inputField.ActivateInputField();
+            }
+            
         }
     }
 
@@ -653,13 +665,16 @@ public class Intro : MonoBehaviour
 
         //버튼 이벤트
         SignUp_Confirm_Btn.onClick.AddListener(Check_SignUp);
+       
         SignUp_Cancel_Btn.onClick.AddListener(() => {
             SignUp_Panel.SetActive(false);
             inputField.enabled = true;
             inputField.ActivateInputField();
             SignUp_inputField.text = "";
         });
+       
 
+        isSignupPanelOn = true;
         inputField.enabled = false;
         SignUp_inputField.ActivateInputField();
     }
@@ -675,17 +690,18 @@ public class Intro : MonoBehaviour
 
     public void Check_SignUp()
     {
-
-       
-        for(int i = 0; i< playerData.playerData.Count; i++)
+        SignUp_Confirm_Btn.onClick.RemoveListener(Check_SignUp);
+        playerData = dataManager.Load_playerData("playerData.json");
+        for (int i = 0; i< playerData.playerData.Count; i++)
         {
             if (playerData.playerData[i].ID != SignUp_inputField.text)
-            {
-                dataManager.Save_playerData(SignUp_inputField.text, 0, true, true, true, false, false, false);
+            {            
+                dataManager.Save_playerData(SignUp_inputField.text, 10, true, true, true, false, false, false);
+                SignUp_Panel.SetActive(false);
+               
             }
             else
-            {
-                
+            {        
                 Warning_Panel.SetActive(true);
             }
         }

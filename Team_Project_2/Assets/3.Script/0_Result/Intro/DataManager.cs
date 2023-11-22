@@ -50,8 +50,9 @@ public class DataManager : MonoBehaviour
     #endregion
 
 
+
     //public string path = "C:/Users/KGA/Documents/GitHub/Meta_4th_2_TeamPJ/Team_Project_2/JsonFiles/";
-    public string filename = "playerData.Json";
+    public string filename = "playerData.json";
     Player_Data player_Data = new Player_Data();
 
     public void Save_playerData(string id, int coin, bool swordman, bool knight, bool archer, bool spearMan, bool halberdier, bool priest)
@@ -66,26 +67,21 @@ public class DataManager : MonoBehaviour
         player.SpearMan = spearMan;
         player.Halberdier = halberdier;
         player.Prist = priest;
+      
+        string path = Application.streamingAssetsPath;
+        filename = Path.Combine(path, filename);
+       
 
-        filename = Path.Combine("JsonFiles", filename);
+
         string loadJson = File.ReadAllText(filename);    //json파일의 내용 불러오고
 
         player_Data = JsonConvert.DeserializeObject<Player_Data>(loadJson); //풀고~
-        //Debug.Log(path);
+        Debug.Log(path);
 
         player_Data.playerData.Add(player); //원소 추가하고~
 
-
-
-
         string data = JsonUtility.ToJson(player_Data);  //다시 넣고~
         File.WriteAllText(filename, data);
-
-
-
-        //playerData.Add(player);
-
-        // string data = JsonUtility.ToJson(playerData);
     }
 
 
@@ -95,21 +91,16 @@ public class DataManager : MonoBehaviour
 
     public Player_Data Load_playerData(string filename)
     {
-        //PlayerData player = new PlayerData();
-        //string data = File.ReadAllText(path + filename);
-        //player = JsonUtility.FromJson<PlayerData>(data);
+        //if (!filename.Contains(".json"))
+        //{
+        //    filename += ".json";
+        //}
 
+        string path = Application.streamingAssetsPath;
+        string _filename = path + "/" + filename;
+       
+        string ReadData = File.ReadAllText(_filename);
 
-        if (!filename.Contains(".json"))
-        {
-            filename += ".json";
-        }
-
-        filename = Path.Combine("JsonFiles", filename);
-        string ReadData = File.ReadAllText(filename);
-
-
-        //string ReadData = File.ReadAllText(path + filename);
 
         Player_Data playerdata = new Player_Data();
 
@@ -118,8 +109,5 @@ public class DataManager : MonoBehaviour
         return playerdata;
     }
 
-    public void printPath()
-    {
-        //Debug.Log(path);
-    }
+
 }

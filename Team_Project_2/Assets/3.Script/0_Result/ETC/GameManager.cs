@@ -241,6 +241,7 @@ public class GameManager : MonoBehaviour
             PlayerCoin = PlayerCoin + (int)Teampoint / 1000;
            
             Result.SetActive(true);
+            GetwinnerTeam();
         }
     }
 
@@ -271,7 +272,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("아직 깃발 남음");
         }
-        GetwinnerTeam();
+        
     }
 
     //승리팀 판단
