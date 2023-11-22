@@ -192,7 +192,7 @@ public abstract class Unit : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
-            if (hit.transform.CompareTag("SpawnPoint") || (hit.transform.CompareTag("Flag")))
+            if (hit.transform.CompareTag("SpawnPoint") || (hit.transform.CompareTag("Flag")) || (hit.transform.CompareTag("Base")))
             {
                 continue;
             }
