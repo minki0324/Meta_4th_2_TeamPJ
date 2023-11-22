@@ -128,6 +128,13 @@ public class EnemySpawn : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        if (other.CompareTag("Player") && gameObject.layer == other.gameObject.layer)
+        {
+            GameManager.instance.inRange = true;
+            Ply_Controller ply = other.GetComponent<Ply_Controller>();
+            ply.spawnPoint = gameObject.GetComponent<EnemySpawn>();
+        }
+
         if (isAI && SpawnCoolTime >= 0.4f)
         {
             if (other.CompareTag("Leader") && other.gameObject.layer == gameObject.layer && leaderAI.canSpawn)

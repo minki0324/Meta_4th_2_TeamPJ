@@ -51,12 +51,12 @@ public class LeaderAI : LeaderState
         total_Gold += Time.deltaTime * Magnifi * has_Flag * Upgrade_GoldValue;
         Gold += Time.deltaTime * Magnifi * has_Flag * Upgrade_GoldValue; // 골드수급 = 분당 120 * 점령한 지역 개수
 
-        if (data.currentHP <= 0)
+        if (data.currentHP <= 0 && !data.isDie)
         {
-            if (!data.isDie)
-            {
+           
+          
                 Die();
-            }
+            
         }
         // 항상 주변에 적이있는지 탐지
         if (!data.isDie)

@@ -11588,6 +11588,7 @@ MonoBehaviour:
   isArrive: 0
   isSetPosition: 0
   isNear: 0
+  LeaderDistance: 0
   currentScore: 0
 --- !u!136 &3077217372575218644
 CapsuleCollider:
@@ -11701,7 +11702,7 @@ MonoBehaviour:
   version: 5
   radius: 0.5
   height: 2
-  canMove: 0
+  canMove: 1
   maxSpeed: 5
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:

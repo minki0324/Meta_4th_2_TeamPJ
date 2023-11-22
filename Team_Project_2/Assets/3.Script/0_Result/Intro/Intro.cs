@@ -205,6 +205,7 @@ public class Intro : MonoBehaviour
     {
         //string path = Application.streamingAssetsPath;
         //Debug.Log(path);
+       
         dataManager = FindObjectOfType<DataManager>();
         playerData = dataManager.Load_playerData("playerData.json");
     }
@@ -233,7 +234,7 @@ public class Intro : MonoBehaviour
             {
                 //회원가입 확인버튼
                 Check_SignUp();
-                inputField.ActivateInputField();
+                
             }
             
         }
@@ -690,19 +691,24 @@ public class Intro : MonoBehaviour
 
     public void Check_SignUp()
     {
-        SignUp_Confirm_Btn.onClick.RemoveListener(Check_SignUp);
+     
         playerData = dataManager.Load_playerData("playerData.json");
         for (int i = 0; i< playerData.playerData.Count; i++)
         {
             if (playerData.playerData[i].ID != SignUp_inputField.text)
             {            
                 dataManager.Save_playerData(SignUp_inputField.text, 10, true, true, true, false, false, false);
+                
                 SignUp_Panel.SetActive(false);
-               
+                SignUp_Confirm_Btn.onClick.RemoveListener(Check_SignUp);
+                SignUp_inputField.text = "";
+                inputField.ActivateInputField();
+                break;
             }
             else
             {        
                 Warning_Panel.SetActive(true);
+
             }
         }
 
@@ -740,7 +746,7 @@ public class Intro : MonoBehaviour
 
     public void Login()
     {
-        
+        playerData = dataManager.Load_playerData("playerData.json");
         for (int i = 0; i < playerData.playerData.Count; i++)
         {
             if(playerData.playerData[i].ID == inputField.text)

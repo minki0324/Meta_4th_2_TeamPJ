@@ -82,6 +82,8 @@ public class DataManager : MonoBehaviour
 
         string data = JsonUtility.ToJson(player_Data);  //다시 넣고~
         File.WriteAllText(filename, data);
+      
+  
     }
 
 

@@ -154,6 +154,11 @@ public class GameManager : MonoBehaviour
             isGameEnd = true;
         }
 
+        if(Ply_hasFlag <= 0)
+        {
+            isGameEnd = true;
+        }
+
         EndGame();
 
       
