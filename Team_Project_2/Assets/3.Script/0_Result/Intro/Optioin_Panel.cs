@@ -47,8 +47,8 @@ public class Optioin_Panel : MonoBehaviour
     private float MouseY;
     private float MouseX;
 
-    [SerializeField]
-    CameraControl cameraControl;
+        [SerializeField]
+        CameraControl cameraControl;
 
     #endregion
 
@@ -191,12 +191,13 @@ public class Optioin_Panel : MonoBehaviour
         {
             case "Window":
                 Debug.Log("Window Screen");
-                Screen.SetResolution(1024, 768, true);
+               
+                Screen.SetResolution(1024, 768, false);
                 break;
 
             case "Full":
                 Debug.Log("Full Screen");
-
+               
                 Screen.SetResolution(1920, 1080, true);
                 break;
         }
