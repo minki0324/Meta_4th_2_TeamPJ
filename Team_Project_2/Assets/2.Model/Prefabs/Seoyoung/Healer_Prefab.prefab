@@ -8259,6 +8259,7 @@ GameObject:
   - component: {fileID: 3998764035206485360}
   - component: {fileID: 1933211657277199240}
   - component: {fileID: 7385769135805898960}
+  - component: {fileID: -3793817230217036427}
   m_Layer: 6
   m_Name: Healer_Prefab
   m_TagString: Soldier
@@ -8379,25 +8380,27 @@ MonoBehaviour:
     damage: 0
     isDie: 0
     attackRange: 0
+    ishealer: 0
   target: {fileID: 0}
   aipath: {fileID: 0}
+  isdetecting: 0
   ani: {fileID: 0}
   leaderState: {fileID: 0}
   leader: {fileID: 0}
   scanRange: 30
-  AttackRange: 1.5
   HitBox_col: {fileID: 0}
   Ob_Weapon_col: {fileID: 0}
   speed: 0
   nearestTarget: {fileID: 0}
+  Soldier_Sound: {fileID: 0}
   HealerPos: {x: 0, y: 0, z: 0}
   formationState: 0
   formationTransmform: {fileID: 0}
   infodata: {fileID: 0}
-  isHealer: 0
   isArrive: 0
   isSetPosition: 0
   isNear: 0
+  LeaderDistance: 0
   currentScore: 0
 --- !u!114 &3998764035206485372
 MonoBehaviour:
@@ -8560,6 +8563,48 @@ MonoBehaviour:
   autoRepath:
     mode: 2
     interval: 0.5
+    sensitivity: 10
+    maximumInterval: 2
+    visualizeSensitivity: 0
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: 30
+  rotationSpeed: 360
+  slowdownDistance: 1.5
+  pickNextWaypointDist: 2
+  endReachedDistance: 0.4
+  alwaysDrawGizmos: 1
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 0
+  constrainInsideGraph: 1
+--- !u!114 &-3793817230217036427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3998764035206485368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa549f94eece57b40b580bcf5ad6572b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
+  radius: 0.5
+  height: 2
+  canMove: 1
+  maxSpeed: 5
+  gravity: {x: NaN, y: NaN, z: NaN}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  repathRateCompatibility: NaN
+  canSearchCompability: 0
+  orientation: 0
+  enableRotation: 1
+  autoRepath:
+    mode: 2
+    interval: NaN
     sensitivity: 10
     maximumInterval: 2
     visualizeSensitivity: 0

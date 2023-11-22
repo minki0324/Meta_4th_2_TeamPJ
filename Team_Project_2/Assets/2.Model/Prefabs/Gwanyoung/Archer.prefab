@@ -9275,6 +9275,7 @@ GameObject:
   - component: {fileID: 5177891973146813926}
   - component: {fileID: 8126766598145584794}
   - component: {fileID: 3023095113256829615}
+  - component: {fileID: -3930181394840873756}
   m_Layer: 0
   m_Name: Archer
   m_TagString: Soldier
@@ -9511,11 +9512,11 @@ MonoBehaviour:
     ishealer: 0
   target: {fileID: 0}
   aipath: {fileID: 0}
+  isdetecting: 0
   ani: {fileID: 0}
   leaderState: {fileID: 0}
   leader: {fileID: 0}
   scanRange: 18
-  AttackRange: 1.5
   HitBox_col: {fileID: 7632062523974968463}
   Ob_Weapon_col: {fileID: 0}
   speed: 0
@@ -9528,6 +9529,7 @@ MonoBehaviour:
   isArrive: 0
   isSetPosition: 0
   isNear: 0
+  LeaderDistance: 0
   currentScore: 0
 --- !u!114 &8126766598145584794
 MonoBehaviour:
@@ -9642,6 +9644,48 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-3930181394840873756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528131510608018179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa549f94eece57b40b580bcf5ad6572b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
+  radius: 0.5
+  height: 2
+  canMove: 1
+  maxSpeed: 5
+  gravity: {x: NaN, y: NaN, z: NaN}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  repathRateCompatibility: NaN
+  canSearchCompability: 0
+  orientation: 0
+  enableRotation: 1
+  autoRepath:
+    mode: 2
+    interval: NaN
+    sensitivity: 10
+    maximumInterval: 2
+    visualizeSensitivity: 0
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: 30
+  rotationSpeed: 360
+  slowdownDistance: 1.5
+  pickNextWaypointDist: 2
+  endReachedDistance: 0.4
+  alwaysDrawGizmos: 1
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 0
+  constrainInsideGraph: 1
 --- !u!1 &528131510608018271
 GameObject:
   m_ObjectHideFlags: 0

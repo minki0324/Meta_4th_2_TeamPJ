@@ -190,7 +190,7 @@ public class Optioin_Panel : MonoBehaviour
         {
             case "Window":
                 Debug.Log("Window Screen");
-                Screen.SetResolution(1024, 768, true);
+                Screen.SetResolution(1024, 768, false);
                 break;
 
             case "Full":

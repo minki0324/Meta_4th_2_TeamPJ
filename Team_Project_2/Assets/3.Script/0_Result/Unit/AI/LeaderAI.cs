@@ -57,7 +57,7 @@ public class LeaderAI : LeaderState
             EnemyDitect();
 
 
-            if (holdingShield)
+            if (holdingShield && player.playerMovement.isPlayerMove)
             {
                 speed -= 1f * Time.deltaTime;
                 speed = Mathf.Clamp(speed, 0.3f, 1f);
