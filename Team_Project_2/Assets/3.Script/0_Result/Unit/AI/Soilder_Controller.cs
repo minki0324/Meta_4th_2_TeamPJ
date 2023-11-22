@@ -121,7 +121,7 @@ public class Soilder_Controller : Unit
 
 
         // 방패 들때안들때 이속,방패들기 메소드
-        if (holdingShield)
+        if (holdingShield && player.playerMovement.isPlayerMove)
         {
             speed -= 1f * Time.deltaTime;
             speed = Mathf.Clamp(speed, 0.3f, 1f);
@@ -150,48 +150,51 @@ public class Soilder_Controller : Unit
             //적리더가 죽지않았을때
             if (!leaderState.data.isDie)
             {
-                switch (leaderState.bat_State)
+                if (!data.isDie)
                 {
-                    case LeaderState.BattleState.Detect:
-                    case LeaderState.BattleState.Wait:
-                        Formation_Process();
-                        break;
-                    case LeaderState.BattleState.Attack:
-                        holdingShield = false;
-                        if (!data.ishealer)
-                        {
-                            AttackOrder();
-                        }
-                        //else
-                        //{
-                        //    //힐러 메소드 넣기                         
-                        //    healer = GetComponent<Healer>();
-                        //    healer.GetHeal_Target();
-                        //}
-
-
-
-                        break;
-                    case LeaderState.BattleState.Move:
-                        if (LeaderDistance > 20 && nearestTarget != null)
-                        {
-                            AttackOrder();
-                        }
-                        else if (nearestTarget == null)
-                        {
-                            FollowOrder();
-                        }
+                    switch (leaderState.bat_State)
+                    {
+                        case LeaderState.BattleState.Detect:
+                        case LeaderState.BattleState.Wait:
+                            Formation_Process();
+                            break;
+                        case LeaderState.BattleState.Attack:
                             holdingShield = false;
-                        aipath.isStopped = false;
-                        break;
+                            if (!data.ishealer)
+                            {
+                                AttackOrder();
+                            }
+                            //else
+                            //{
+                            //    //힐러 메소드 넣기                         
+                            //    healer = GetComponent<Healer>();
+                            //    healer.GetHeal_Target();
+                            //}
 
 
-                    default:
-                        //holdingShield = false;
-                        //isMove = true;
 
-                        //FollowOrder();
-                        break;
+                            break;
+                        case LeaderState.BattleState.Move:
+                            if (LeaderDistance > 20 && nearestTarget != null)
+                            {
+                                AttackOrder();
+                            }
+                            else if (nearestTarget == null)
+                            {
+                                FollowOrder();
+                            }
+                            holdingShield = false;
+                            aipath.isStopped = false;
+                            break;
+
+
+                        default:
+                            //holdingShield = false;
+                            //isMove = true;
+
+                            //FollowOrder();
+                            break;
+                    }
                 }
             }
             else
