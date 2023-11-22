@@ -236,9 +236,11 @@ public class Flag : MonoBehaviour
             isOccupied = true;   // 중립 -> 본인진영
             TeamColor_Temp = TeamColor;
             gameObject.layer = Teamlayer;
+            if (transform.root.gameObject.CompareTag("Base"))
+            {
+                ColorManager.instance.RecursiveSearchAndSetBuilding(transform.root.transform, TeamColor);
+            }
             OccuHUD.Change_Color(TeamColor, Flag_Num);
-            ColorManager.instance.Change_SolidColor(transform.GetChild(1).GetComponent<SpriteRenderer>(), TeamColor);
-            GameManager.instance.Set_FlagCount();
         }
 
         isOccupating = false;

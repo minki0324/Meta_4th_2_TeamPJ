@@ -93,7 +93,7 @@ namespace SimpleProceduralTerrainProject
 
         //Private
         private FractalNoise m_groundNoise, m_mountainNoise, m_treeNoise, m_detailNoise;
-        [SerializeField]private Terrain[,] m_terrain;
+        [SerializeField] private Terrain[,] m_terrain;
         private SplatPrototype[] m_splatPrototypes;
         private TreePrototype[] m_treeProtoTypes;
         private DetailPrototype[] m_detailProtoTypes;
@@ -157,7 +157,7 @@ namespace SimpleProceduralTerrainProject
                     //int j = (i + 1) % flagPositions_List.Count;
                     Vector3 startFlag = flagPositions_List[i].transform.position + Vector3.forward;
                     Vector3 endFlag = flagPositions_List[j].transform.position + Vector3.forward;
-                    
+
                     string pathKey = i.ToString() + "-" + j.ToString();  // 경로를 식별하는 고유한 키 생성
 
                     // 이미 탐색한 경로인지 확인
@@ -178,7 +178,7 @@ namespace SimpleProceduralTerrainProject
                     }
                 }
             }
-            
+
         }
 
         private void DrawRoad(List<Vector3> pathPositions)
@@ -250,7 +250,7 @@ namespace SimpleProceduralTerrainProject
             GameManager.instance.isLive = true;
             hud.Occu_Set();
             start_Btn.SetActive(false);
-            
+
         }
         #endregion
         #region 길찾기 알고리즘
@@ -258,7 +258,7 @@ namespace SimpleProceduralTerrainProject
         {
             NNInfo startNode = AstarPath.active.GetNearest(start);
             NNInfo endNode = AstarPath.active.GetNearest(end);
-            
+
             ABPath path = ABPath.Construct(startNode.position, endNode.position);
 
             // 경로 계산 시작
@@ -279,7 +279,7 @@ namespace SimpleProceduralTerrainProject
         void InitializeTerrain()
         {
             m_groundNoise = new FractalNoise(new PerlinNoise(m_seed, m_groundFrq), 6, 1.0f, 0.1f);
-            m_treeNoise = new FractalNoise(new PerlinNoise(m_seed + 1, m_treeFrq), 6, 1.0f);
+            /*m_treeNoise = new FractalNoise(new PerlinNoise(m_seed + 1, m_treeFrq), 6, 1.0f);*/
             m_detailNoise = new FractalNoise(new PerlinNoise(m_seed + 2, m_detailFrq), 6, 1.0f);
 
             m_heightMapSize = Mathf.ClosestPowerOfTwo(m_heightMapSize) + 1;
@@ -304,7 +304,7 @@ namespace SimpleProceduralTerrainProject
             }*/
             for (int j = 0; j < 4; j++)
             {
-                m_terrain[j/2, j%2] = Terra.transform.GetChild(j).GetComponent<Terrain>();
+                m_terrain[j / 2, j % 2] = Terra.transform.GetChild(j).GetComponent<Terrain>();
             }
             m_offset = new Vector2(-m_terrainSize * m_tilesX * 0.5f, -m_terrainSize * m_tilesZ * 0.5f);
 
@@ -356,42 +356,43 @@ namespace SimpleProceduralTerrainProject
 
             for (int i = 0; i < 4; i++)
             {
-                    FillHeights(htmap, (i / 2), (i % 2));
+                FillHeights(htmap, (i / 2), (i % 2));
 
                 //TerrainData terrainData = new TerrainData();
                 TerrainData terrainData = m_terrain[(i / 2), (i % 2)].terrainData;
 
-                    //terrains
+                /*InitializeTerrainData(terrainData);*/
+                //terrains
 
                 terrainData.heightmapResolution = m_heightMapSize;
-                    terrainData.SetHeights(0, 0, htmap);
-                    terrainData.size = new Vector3(m_terrainSize, m_terrainHeight, m_terrainSize);
+                terrainData.SetHeights(0, 0, htmap);
+                terrainData.size = new Vector3(m_terrainSize, m_terrainHeight, m_terrainSize);
 #pragma warning disable CS0618 // 형식 또는 멤버는 사용되지 않습니다.
-                    terrainData.splatPrototypes = m_splatPrototypes;
+                terrainData.splatPrototypes = m_splatPrototypes;
 #pragma warning restore CS0618 // 형식 또는 멤버는 사용되지 않습니다.
-                    terrainData.treePrototypes = m_treeProtoTypes;
-                    terrainData.detailPrototypes = m_detailProtoTypes;
-                    FillAlphaMap(terrainData);
+                /*terrainData.treePrototypes = m_treeProtoTypes;*/
+                terrainData.detailPrototypes = m_detailProtoTypes;
+                FillAlphaMap(terrainData);
 
 
-                    //m_terrain[x, z].terrainData = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
-                    //m_terrain[(i / 2), (i % 2)].terrainData = terrainData;
+                //m_terrain[x, z].terrainData = Terrain.CreateTerrainGameObject(terrainData).GetComponent<Terrain>();
+                //m_terrain[(i / 2), (i % 2)].terrainData = terrainData;
 
-                    //m_terrain[x, z].transform.SetParent(Terra.transform);
-                    m_terrain[(i / 2),  ( i% 2)].transform.position = new Vector3(m_terrainSize * (i / 2) + m_offset.x, 0, m_terrainSize * (i % 2) + m_offset.y);
-                    m_terrain[(i / 2),  ( i% 2)].heightmapPixelError = m_pixelMapError;
-                    m_terrain[(i / 2),  ( i% 2)].basemapDistance = m_baseMapDist;
-                    m_terrain[(i / 2), (i % 2)].gameObject.tag = "Ground";
+                //m_terrain[x, z].transform.SetParent(Terra.transform);
+                m_terrain[(i / 2), (i % 2)].transform.position = new Vector3(m_terrainSize * (i / 2) + m_offset.x, 0, m_terrainSize * (i % 2) + m_offset.y);
+                m_terrain[(i / 2), (i % 2)].heightmapPixelError = m_pixelMapError;
+                m_terrain[(i / 2), (i % 2)].basemapDistance = m_baseMapDist;
+                m_terrain[(i / 2), (i % 2)].gameObject.tag = "Ground";
 #pragma warning disable CS0618 // 형식 또는 멤버는 사용되지 않습니다.
-                    m_terrain[(i / 2), (i % 2)].castShadows = false;
+                m_terrain[(i / 2), (i % 2)].castShadows = false;
 #pragma warning restore CS0618 // 형식 또는 멤버는 사용되지 않습니다.
 
 
 
-                    FillTreeInstances(m_terrain[(i / 2), (i % 2)], (i / 2), (i % 2));
-                    FillDetailMap(m_terrain[(i / 2), (i % 2)], (i / 2), (i % 2));
-                    terrainList.Add(m_terrain[(i / 2), (i % 2)]);
-                }
+                /*FillTreeInstances(m_terrain[(i / 2), (i % 2)], (i / 2), (i % 2));*/
+                FillDetailMap(m_terrain[(i / 2), (i % 2)], (i / 2), (i % 2));
+                terrainList.Add(m_terrain[(i / 2), (i % 2)]);
+            }
 
 
             //-----------------------------
@@ -638,6 +639,57 @@ namespace SimpleProceduralTerrainProject
             terrain.terrainData.SetDetailLayer(0, 0, 1, detailMap1);
             terrain.terrainData.SetDetailLayer(0, 0, 2, detailMap2);
         }
+
+        void InitializeTerrainData(TerrainData terrainData)
+        {
+            // 1. 높이맵 초기화
+            float[,] heights = new float[terrainData.heightmapResolution, terrainData.heightmapResolution];
+            for (int x = 0; x < terrainData.heightmapResolution; x++)
+            {
+                for (int z = 0; z < terrainData.heightmapResolution; z++)
+                {
+                    // 여기에서 높이맵을 적절히 초기화하면 됩니다.
+                    heights[x, z] = CalculateHeight(x, z);
+                }
+            }
+            terrainData.SetHeights(0, 0, heights);
+
+            // 2. 텍스처 초기화
+            SplatPrototype[] splatPrototypes = new SplatPrototype[m_splat.Length];
+            for (int i = 0; i < m_splat.Length; i++)
+            {
+                splatPrototypes[i] = new SplatPrototype();
+                splatPrototypes[i].texture = m_splat[i];
+                splatPrototypes[i].tileSize = new Vector2(m_splatTileSizes[i], m_splatTileSizes[i]);
+            }
+            terrainData.splatPrototypes = splatPrototypes;
+
+            // 3. 트리 초기화
+            TreePrototype[] treePrototypes = new TreePrototype[m_tree.Length];
+            for (int i = 0; i < m_tree.Length; i++)
+            {
+                treePrototypes[i] = new TreePrototype();
+                treePrototypes[i].prefab = m_tree[i];
+            }
+            terrainData.treePrototypes = treePrototypes;
+
+            // 4. 디테일 초기화
+            DetailPrototype[] detailPrototypes = new DetailPrototype[m_detail.Length];
+            for (int i = 0; i < m_detail.Length; i++)
+            {
+                detailPrototypes[i] = new DetailPrototype();
+                detailPrototypes[i].prototypeTexture = m_detail[i];
+                detailPrototypes[i].renderMode = DetailRenderMode.GrassBillboard;
+            }
+            terrainData.detailPrototypes = detailPrototypes;
+        }
+
+        private float CalculateHeight(int x, int z)
+        {
+            // 여기에서 적절한 높이를 계산하면 됩니다.
+            // 예시로 단순히 평면을 만들어 봅시다.
+            return 0.0f;
+        }
         #endregion
         #region 깃발, 베이스 생성 메소드
         private List<Vector3> SpawnFlags(int numberOfFlags, float range, float minDistanceBetweenFlags)
@@ -748,7 +800,7 @@ namespace SimpleProceduralTerrainProject
                     // 베이스 캠프 소환
                     GameObject baseCamp = Instantiate(Base_PreFabs[i % Base_PreFabs.Length], baseCampPosition, Quaternion.identity);
 
-                    
+
                     baseCamps.Add(baseCamp);
                     baseCampPositions.Add(baseCamp);
                     // 베이스 캠프를 원점을 바라보도록 회전 설정
@@ -793,15 +845,15 @@ namespace SimpleProceduralTerrainProject
 
         void ColorSetting(List<GameObject> baseCamps)
         {
-            for(int i = 0; i < baseCamps.Count; i++)
+            for (int i = 0; i < baseCamps.Count; i++)
             {
-                if(baseCamps[i].gameObject.layer == 0)
+                if (baseCamps[i].gameObject.layer == 0)
                 {
                     baseCamps[i].gameObject.layer = i + 6;
                 }
             }
 
-            for(int i = 0; i < baseCamps.Count; i++)
+            for (int i = 0; i < baseCamps.Count; i++)
             {
                 switch (baseCamps[i].gameObject.layer)
                 {
@@ -850,7 +902,7 @@ namespace SimpleProceduralTerrainProject
                         Leader = Instantiate(Leader_Prefabs[0], baseCamps[i].transform.position, Quaternion.identity);
                         ColorManager.instance.RecursiveSearchAndSetUnit(Leader.transform, GameManager.instance.Color_Index);
                         MapCircle = Leader.GetComponentsInChildren<SpriteRenderer>();
-                        for(int j = 0; j < MapCircle.Length; j++)
+                        for (int j = 0; j < MapCircle.Length; j++)
                         {
                             ColorManager.instance.Change_SolidColor(MapCircle[j], GameManager.instance.Color_Index);
                         }
@@ -864,7 +916,7 @@ namespace SimpleProceduralTerrainProject
                         {
                             ColorManager.instance.Change_SolidColor(MapCircle[j], GameManager.instance.T1_Color);
                         }
-                        
+
                         Leader.gameObject.layer = 7;
                         break;
                     case 8:
