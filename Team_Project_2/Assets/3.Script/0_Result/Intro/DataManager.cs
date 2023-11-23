@@ -76,6 +76,7 @@ public class DataManager : MonoBehaviour
         string loadJson = File.ReadAllText(filename);    //json파일의 내용 불러오고
 
         player_Data = JsonConvert.DeserializeObject<Player_Data>(loadJson); //풀고~
+        Debug.Log(path);
 
         player_Data.playerData.Add(player); //원소 추가하고~
 

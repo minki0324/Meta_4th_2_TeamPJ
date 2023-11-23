@@ -66,7 +66,7 @@ public class Result_Screen : MonoBehaviour
                 }
                 break;
             case InfoType.Time:
-                Texts[0].text = string.Format("{0}:{1:00}", ((int)GameManager.instance.EndTime / 60), ((int)GameManager.instance.EndTime) % 60); // 게임 종료 시간
+                Texts[0].text = string.Format("{0}:{1:00}", ((int)GameManager.instance.currentTime / 60), ((int)GameManager.instance.currentTime) % 60); // 게임 종료 시간
                 break;
             case InfoType.TeamPoint:
                 Texts[0].text = $"{(int)GameManager.instance.Teampoint}";

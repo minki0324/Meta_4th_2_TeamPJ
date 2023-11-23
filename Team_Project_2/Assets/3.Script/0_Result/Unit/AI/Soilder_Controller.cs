@@ -86,7 +86,16 @@ public class Soilder_Controller : Unit
         {
             return;
         }
-        LeaderDistance = Vector3.Distance(leader.transform.position, transform.position);
+
+        if(leader == null)
+        {
+            return;
+        }
+        else if(leader != null)
+        {
+            LeaderDistance = Vector3.Distance(leader.transform.position, transform.position);
+        }
+
         if (LeaderDistance < formationRange)
         {
             isArrive = true;

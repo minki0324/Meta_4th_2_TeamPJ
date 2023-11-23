@@ -173,6 +173,10 @@ public class LeaderAI : LeaderState
     private int SetRespawnPoint()
     {
         EnemySpawn ES = GameManager.instance.FindSpawnPoint(gameObject, layer);
+        if(ES == null)
+        {
+            return 12;
+        }
         respawnPoint = ES.transform.GetChild(0);
 
         return ES.gameObject.layer;
@@ -239,7 +243,12 @@ public class LeaderAI : LeaderState
 
                     //공격정지 ,이동정지 
                     data.isDie = true;
+                    if (has_Flag == 0)
+                    {
+                        Destroy(gameObject);
+                    }
                     Die(gameObject.layer, ob.layer);
+
                     StartCoroutine(RespawnAfterDelay(10f));
 
                 }

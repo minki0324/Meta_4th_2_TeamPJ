@@ -12,6 +12,7 @@ public class Arrow : MonoBehaviour
     private float ArrowSpeed = 12f;  // 화살 속도
     private float destroyTime = 10f; // 발사 후 사라질 시간
     private bool isHit = false;  // 맞았는지
+    private Vector3 targetp;
 
 
     private void Start()
@@ -22,9 +23,15 @@ public class Arrow : MonoBehaviour
 
     IEnumerator Arrow_rot()
     {
-        archer_attack = GetComponentInParent<Archer_Attack>(); 
-        Vector3 targetp = archer_attack.soilder.GetNearestTarget().position - archer_attack.Bow.position;  // 날아갈 방향 구하기
-
+        archer_attack = GetComponentInParent<Archer_Attack>();
+        if (archer_attack.soilder.GetNearestTarget() != null)
+        {
+            targetp = archer_attack.soilder.GetNearestTarget().position - archer_attack.Bow.position;  // 날아갈 방향 구하기
+        }
+        else
+        {
+            yield return null;
+        }
         // 타겟 포지션을 향해서 쏘면 바닥으로 쏴서 보정값 으로 y좀 올려줬습니당..
         transform.forward = targetp + new Vector3(0, 0.7f, 0); 
 
