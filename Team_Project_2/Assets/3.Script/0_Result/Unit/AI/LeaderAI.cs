@@ -80,6 +80,7 @@ public class LeaderAI : LeaderState
                 speed = Mathf.Clamp01(speed);
             }
             aipath.maxSpeed = 5 * speed;
+            aipath1.maxSpeed = 5 * speed;
             ani.SetBool("Shield", holdingShield);
             ani.SetFloat("Speed", speed);
             ani.SetBool("Move", isMove);
@@ -94,6 +95,7 @@ public class LeaderAI : LeaderState
                     holdingShield = false;
                     isMove = true;
                     aipath.isStopped = false;
+                    aipath1.isStopped = false;
                     nextIndex = 0;
                     for (int i = 0; i < UnitList.Count; i++)
                     {
@@ -107,8 +109,10 @@ public class LeaderAI : LeaderState
                     holdingShield = false;
                     isMove = false;
                     aipath.isStopped = true;
+                    aipath1.isStopped = true;
                     //느려졌던 이동속도 초기화
                     aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
+                    aipath1.maxSpeed = Mathf.Lerp(aipath1.maxSpeed, defaultSpeed, Time.deltaTime * 1);
                     AttackOrder();
                     break;
                 case BattleState.Detect:
@@ -117,6 +121,7 @@ public class LeaderAI : LeaderState
 
                     holdingShield = true;
                     aipath.maxSpeed = 1.5f; // 이동속도줄이기
+                    aipath1.maxSpeed = 1.5f; // 이동속도줄이기
                     leaderAIDirection = transform.TransformDirection(Vector3.forward);
                     FormationOrder(formationRange);
                     //formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
@@ -126,6 +131,7 @@ public class LeaderAI : LeaderState
 
                     holdingShield = true;
                     aipath.maxSpeed = 1.5f; // 이동속도줄이기
+                    aipath1.maxSpeed = 1.5f; // 이동속도줄이기
                     leaderAIDirection = transform.TransformDirection(Vector3.forward);
                     FormationOrder(formationRange);
                     //formation.Following_Shield(aipath.maxSpeed, leaderAIDirection);
@@ -164,6 +170,7 @@ public class LeaderAI : LeaderState
         ani.SetTrigger("Dead"); // 죽는모션재생
         col.enabled = false;
         aipath.isStopped = true;
+        aipath1.isStopped = true;
         gameObject.layer = 12;   // 레이어 DIe로 변경해서 타겟으로 안되게
         //HitBox_col.enabled = false;
         data.isDie = true;
@@ -299,6 +306,8 @@ public class LeaderAI : LeaderState
         data.isDie = false;
         aipath.isStopped = false;
         aipath.canMove = true;
+        aipath1.isStopped = false;
+        aipath1.canMove = true;
         gameObject.layer = SetRespawnPoint();
         gameObject.transform.position = respawnPoint.position;
         ani.SetTrigger("Reset");

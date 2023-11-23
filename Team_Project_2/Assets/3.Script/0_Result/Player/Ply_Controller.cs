@@ -141,7 +141,7 @@ public class Ply_Controller : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if (EnemyScan(25) != null)
+            if (EnemyScan(15) != null)
             {
                 CurrentMode = Mode.Attack;
                 if (!isPlay_AttackOrder)

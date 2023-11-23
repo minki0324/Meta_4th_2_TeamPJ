@@ -17,6 +17,7 @@ public class Leader_Control : MonoBehaviour
     public AIState state;
     private LeaderAI ai;
     private AIPath aiPath;
+    private AIpathoverride aiPath1;
     public AIDestinationSetter Main_target;
     public Targetsetting targetsetting;
     public Transform Target;
@@ -35,6 +36,7 @@ public class Leader_Control : MonoBehaviour
         ai = GetComponent<LeaderAI>();
         aiPath = GetComponent<AIPath>();
         Main_target = GetComponent<AIDestinationSetter>();
+        aiPath1 = GetComponent<AIpathoverride>();
     }
 
     private void Update()
@@ -329,7 +331,9 @@ public class Leader_Control : MonoBehaviour
     private void Return_SpawnPoint(Transform StartPos, ref Transform Target)
     {
         aiPath.canMove = true;
+        aiPath1.canMove = true;
         aiPath.canSearch = true;  
+        aiPath1.canSearch = true;  
         targetsetting = GetComponent<TargetMyBase>();
         Target = targetsetting.Target(StartPos);
         ToTarget(Target);
@@ -338,7 +342,9 @@ public class Leader_Control : MonoBehaviour
     private void Move_Flag(Transform StartPos, ref Transform Target)
     {
         aiPath.canMove = true;
+        aiPath1.canMove = true;
         aiPath.canSearch = true;  
+        aiPath1.canSearch = true;  
         targetsetting = GetComponent<TargetFlag>();
         Target = targetsetting.Target(StartPos);
         ToTarget(Target);
@@ -347,7 +353,9 @@ public class Leader_Control : MonoBehaviour
     private void Move_Gate(Transform StartPos, ref Transform Target)
     {
         aiPath.canMove = true;
+        aiPath1.canMove = true;
         aiPath.canSearch = true; 
+        aiPath1.canSearch = true; 
         targetsetting = GetComponent<TargetGate>();
         Target = targetsetting.Target(StartPos);
         ToTarget(Target);
