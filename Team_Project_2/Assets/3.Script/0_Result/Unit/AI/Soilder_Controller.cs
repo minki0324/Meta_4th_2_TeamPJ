@@ -464,7 +464,7 @@ public class Soilder_Controller : Unit
                 //aipath.canMove = false;
                 if (leader.layer == player.gameObject.layer)
                 {
-                    if (!player.playerMovement.isPlayerMove && player.playerMovement.holdingShield)
+                    if (!player.playerMovement.isPlayerMove)
                     {
                         speed = 0f;
                     }

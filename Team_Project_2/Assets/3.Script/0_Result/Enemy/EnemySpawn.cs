@@ -23,11 +23,6 @@ public class EnemySpawn : MonoBehaviour
     // ���� ��� ���̾�
     private LayerMask TeamLayer;
 
-    // Action 은 return이 없는 메소드만 추가한다
-    public event Action OnEnemySpawn;
-    // Function 은 return이 없는 메소드만 추가한다
-    public event Func<int> OnEnemySpawn2;
-
     private void Awake()
     {
       
@@ -54,7 +49,6 @@ public class EnemySpawn : MonoBehaviour
 
         if (gameObject.layer != transform.parent.gameObject.layer)
         {
-            Debug.Log("레이어바꾸는거 계속들어옴");
             gameObject.layer = transform.parent.gameObject.layer;
 
             if (gameObject.layer == 0)
@@ -63,7 +57,6 @@ public class EnemySpawn : MonoBehaviour
             }
             else if (gameObject.layer == TeamLayer)
             {
-                Debug.Log("몇번 부르나요");
                 targetLeader = player.gameObject;
             }
             else
