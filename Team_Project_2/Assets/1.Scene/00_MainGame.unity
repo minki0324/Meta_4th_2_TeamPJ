@@ -9077,6 +9077,12 @@ MonoBehaviour:
   T1_Color: 0
   T2_Color: 0
   T3_Color: 0
+  upgrade: {fileID: 0}
+  TeamPoint_graph: []
+  EnemyPoint_graph_1: []
+  EnemyPoint_graph_2: []
+  EnemyPoint_graph_3: []
+  current_Time: 0
 --- !u!4 &1503504437
 Transform:
   m_ObjectHideFlags: 0
@@ -21539,15 +21545,10 @@ MonoBehaviour:
   m_Color: {r: 1, g: 0.73324853, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 6, y: 1000}
+  gridSize: {x: 1, y: 1000}
   grid: {fileID: 2723602894191572911}
   points:
   - {x: 0, y: 0}
-  - {x: 2, y: 59.95082}
-  - {x: 3, y: 59.95082}
-  - {x: 4, y: 59.95082}
-  - {x: 5, y: 59.95082}
-  - {x: 6, y: 59.95082}
   graphPoint: {x: 6, y: 59.95082}
   thickness: 10
 --- !u!224 &2723602892452893475
@@ -21691,15 +21692,10 @@ MonoBehaviour:
   m_Color: {r: 0, g: 0.5377358, b: 0.032397453, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 6, y: 1000}
+  gridSize: {x: 1, y: 1000}
   grid: {fileID: 2723602894191572911}
   points:
   - {x: 0, y: 0}
-  - {x: 2, y: 59.95082}
-  - {x: 3, y: 59.95082}
-  - {x: 4, y: 59.95082}
-  - {x: 5, y: 59.95082}
-  - {x: 6, y: 59.95082}
   graphPoint: {x: 6, y: 59.95082}
   thickness: 10
 --- !u!224 &2723602892852064075
@@ -21763,15 +21759,10 @@ MonoBehaviour:
   m_Color: {r: 0.12518473, g: 0, b: 0.6886792, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 6, y: 1000}
+  gridSize: {x: 1, y: 1000}
   grid: {fileID: 2723602894191572911}
   points:
   - {x: 0, y: 0}
-  - {x: 2, y: 59.95082}
-  - {x: 3, y: 59.95082}
-  - {x: 4, y: 59.95082}
-  - {x: 5, y: 59.95082}
-  - {x: 6, y: 59.95082}
   graphPoint: {x: 6, y: 59.95082}
   thickness: 10
 --- !u!224 &2723602893992838899
@@ -21872,7 +21863,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 0.14117648}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 6, y: 1000}
+  gridSize: {x: 1, y: 1000}
   thickness: 2.55
 --- !u!222 &2723602894353176353
 CanvasRenderer:
@@ -21898,15 +21889,10 @@ MonoBehaviour:
   m_Color: {r: 0.3679245, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 6, y: 1000}
+  gridSize: {x: 1, y: 1000}
   grid: {fileID: 2723602894191572911}
   points:
   - {x: 0, y: 0}
-  - {x: 1, y: 59.95082}
-  - {x: 2, y: 59.95082}
-  - {x: 3, y: 59.95082}
-  - {x: 4, y: 59.95082}
-  - {x: 5, y: 59.95082}
   graphPoint: {x: 5, y: 59.95082}
   thickness: 10.56
 --- !u!224 &2723602894353176355

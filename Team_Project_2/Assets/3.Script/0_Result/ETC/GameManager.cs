@@ -102,6 +102,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Enemy_Upgrade upgrade;
     private float Upgrade_Time;
 
+    //그래프 관련
+    public List<float> TeamPoint_graph;
+    public List<float> EnemyPoint_graph_1;
+    public List<float> EnemyPoint_graph_2;
+    public List<float> EnemyPoint_graph_3;
+    public float current_Time = 0;
+
+
     private void Awake()
     {
         if(instance == null)
@@ -138,8 +146,8 @@ public class GameManager : MonoBehaviour
         
         currentTime += Time.deltaTime;
         Upgrade_Time += Time.deltaTime;
-        total_Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue;
-        Gold += Time.deltaTime * Magnifi * Occupied_Area * Upgrade_GoldValue; // 골드수급 = 분당 120 * 점령한 지역 개수
+        total_Gold += Time.deltaTime * Magnifi * Ply_hasFlag * Upgrade_GoldValue;
+        Gold += Time.deltaTime * Magnifi * Ply_hasFlag * Upgrade_GoldValue; // 골드수급 = 분당 120 * 점령한 지역 개수
 
         if(Input.GetKeyDown(KeyCode.K))
         {
@@ -153,7 +161,24 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (currentTime >= EndTime) 
+
+
+        if (current_Time + (EndTime / 20) <= currentTime)
+        {
+            current_Time += (EndTime / 20);
+            TeamPoint_graph.Add(Teampoint);
+            EnemyPoint_graph_1.Add(leaders[0].Teampoint);
+            EnemyPoint_graph_2.Add(leaders[1].Teampoint);
+            EnemyPoint_graph_3.Add(leaders[2].Teampoint);
+            
+        }
+
+
+
+
+
+        //게임 종료 관련
+        if (currentTime >= EndTime)
         {
             isGameEnd = true;
         }
@@ -163,7 +188,7 @@ public class GameManager : MonoBehaviour
         }
         EndGame();
         Upgrade();
-      
+
     }
 
     public void Stop()
@@ -198,6 +223,10 @@ public class GameManager : MonoBehaviour
 
                 }
             }
+        }
+        if(spawnPoint == null)
+        {
+            Debug.Log("스폰포인트 없음");
         }
 
         return spawnPoint;
@@ -237,6 +266,7 @@ public class GameManager : MonoBehaviour
         leaders[0].has_Flag = flagCount2;
         leaders[1].has_Flag = flagCount3;
         leaders[2].has_Flag = flagCount4;
+
     }
 
 
@@ -272,13 +302,9 @@ public class GameManager : MonoBehaviour
 
         if(isColorSame)
         {
-            Debug.Log("모든 깃발이 점령됨");
             isGameEnd = true;
         }
-        else
-        {
-            Debug.Log("아직 깃발 남음");
-        }
+        
       
     }
 

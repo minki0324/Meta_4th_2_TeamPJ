@@ -142,8 +142,7 @@ public class Ply_Controller : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log("돌격하라~~");
-            if (EnemyScan(15) != null)
+            if (EnemyScan(25) != null)
             {
                 CurrentMode = Mode.Attack;
                 if (!isPlay_AttackOrder)
@@ -152,7 +151,10 @@ public class Ply_Controller : MonoBehaviour
                     isPlay_AttackOrder = true;
                 }
             }
-       
+            else
+            {
+                CurrentMode = Mode.Follow;
+            }
 
         }
 

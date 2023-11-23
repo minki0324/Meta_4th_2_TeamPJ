@@ -16,7 +16,7 @@ public class LeaderAI : LeaderState
     public Vector3 leaderAIDirection;
     public List<Position> positions = new List<Position>();
     private int nextIndex = 0;
-
+    private bool isRespawning;
     public int layer;
 
     protected override void Awake()
@@ -141,10 +141,8 @@ public class LeaderAI : LeaderState
             }
             #endregion
         }
-
-
-
     }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -237,7 +235,7 @@ public class LeaderAI : LeaderState
                     //공격정지 ,이동정지 
                     data.isDie = true;
                     Die(gameObject.layer, ob.layer);
-
+                    StartCoroutine(RespawnAfterDelay(10f));
 
                 }
             }
@@ -278,7 +276,7 @@ public class LeaderAI : LeaderState
         leaderState.bat_State = LeaderState.BattleState.Move;
     }
 
-    public void Respawn(GameObject leader)
+    public void Respawn()
     {
         //애니메이션초기화
         //HP , 콜라이더 , isDead ,레이어 다시설정
@@ -287,8 +285,8 @@ public class LeaderAI : LeaderState
         data.isDie = false;
         aipath.isStopped = false;
         aipath.canMove = true;
-        leader.layer = SetRespawnPoint();
-        leader.transform.position = respawnPoint.position;
+        gameObject.layer = SetRespawnPoint();
+        gameObject.transform.position = respawnPoint.position;
         ani.SetTrigger("Reset");
         ani.SetLayerWeight(1, 1);
         col.enabled = true;
@@ -297,7 +295,22 @@ public class LeaderAI : LeaderState
 
 
     }
+    public IEnumerator RespawnAfterDelay(float delay)
+    {
+        isRespawning = true;
 
+        yield return new WaitForSeconds(delay);
+
+        // ��Ȱ ������ ���⿡ ����
+        // ���� ���, �׾��� ������ �ٽ� �����ϴ� ���� ������ ����
+
+        // ��Ȱ�� �Ϸ�Ǹ� �ٽ� ��Ƴ� ������ �÷��׸� ����
+        Debug.Log("dd");
+        Respawn();
+
+        // ���� ��Ȱ�� ���� �÷��׸� �ʱ�ȭ
+        isRespawning = false;
+    }
 
     //리더에게 가장가까운 병사 추출
     private Transform GetSoilder(RaycastHit[] hits)

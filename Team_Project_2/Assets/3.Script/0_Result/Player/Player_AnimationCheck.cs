@@ -53,7 +53,6 @@ public class Player_AnimationCheck : MonoBehaviour
 
     public void Attack_Order()
     {
-        Debug.Log("¸ð¼Ç attack ³¡");
         pc.isPlay_AttackOrder = false;
     }
 

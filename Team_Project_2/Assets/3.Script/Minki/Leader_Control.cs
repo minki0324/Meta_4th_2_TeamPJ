@@ -48,8 +48,6 @@ public class Leader_Control : MonoBehaviour
         Change_State();
         State_CoolTime += Time.deltaTime;
 
-        Debug.Log($"{gameObject.name} : {state} : {ai.bat_State} ");
-
         if (State_CoolTime > 0.2f)
         {
             switch (state)
@@ -258,12 +256,10 @@ public class Leader_Control : MonoBehaviour
                     {
                         if(!isOccuDone())
                         {
-                            Debug.Log("불리니?");
                             ai.bat_State = LeaderState.BattleState.Wait;
                         }
                         else if(isOccuDone())
                         {
-                            Debug.Log("다음거 안감 ?");
                             Move_Flag(transform, ref Target);
                         }
                     }

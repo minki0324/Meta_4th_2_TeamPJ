@@ -19,7 +19,7 @@ public class EnemySpawn : MonoBehaviour
     //��ȯ�Ǵ� ����
     private int myLayer;
     private bool isAI;
-    private bool isRespawning;
+    
     // ���� ��� ���̾�
     private LayerMask TeamLayer;
 
@@ -74,14 +74,6 @@ public class EnemySpawn : MonoBehaviour
         }
         if (targetLeader != null)
         {
-
-            if (targetLeader.layer == LayerMask.NameToLayer("Die"))
-            {
-                if (leaderAI.data.isDie && !isRespawning)
-                {
-                    StartCoroutine(RespawnAfterDelay(5f, gameObject.layer));
-                }
-            }
             if (targetLeader.gameObject.layer == TeamLayer)
             {
                 isAI = false;
@@ -263,21 +255,7 @@ public class EnemySpawn : MonoBehaviour
         }
     }
 
-    IEnumerator RespawnAfterDelay(float delay, int layer)
-    {
-        isRespawning = true;
-
-        yield return new WaitForSeconds(delay);
-
-        // ��Ȱ ������ ���⿡ ����
-        // ���� ���, �׾��� ������ �ٽ� �����ϴ� ���� ������ ����
-
-        // ��Ȱ�� �Ϸ�Ǹ� �ٽ� ��Ƴ� ������ �÷��׸� ����
-        leaderAI.Respawn(targetLeader);
-
-        // ���� ��Ȱ�� ���� �÷��׸� �ʱ�ȭ
-        isRespawning = false;
-    }
+   
     private void Upgrade_Set(int Team, Soilder_Controller soilder_Controller)
     {
         if (GameManager.instance.leaders[Team].isUpgrade_SolDam)

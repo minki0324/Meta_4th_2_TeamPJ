@@ -8,11 +8,11 @@ public class DrawLine : Graphic
     public Vector2Int gridSize;
 
     public DrawGrid grid;
-    
+
 
     public List<Vector2> points;
     public Vector2 graphPoint;
-  
+
 
     float width;
     float height;
@@ -29,6 +29,37 @@ public class DrawLine : Graphic
         points.Clear();
         points.Add(new Vector2(0, 0));
         //points.Add(new Vector2(cell_x + 1, 3));
+        for(int i = 0; i< GameManager.instance.TeamPoint_graph.Count; i++)
+        {
+            UIVertex vertex = UIVertex.simpleVert;
+            if (gameObject.name.ToString() == "Line_Team1")
+            {
+                graphPoint = new Vector2(grid.gridSize.x + i, GameManager.instance.TeamPoint_graph[i] / 10f);
+                points.Add(graphPoint);
+
+            }
+            else if (gameObject.name.ToString() == "Line_Enemy1")
+            {
+                graphPoint = new Vector2(grid.gridSize.x + i, GameManager.instance.EnemyPoint_graph_1[i] / 10f);
+                points.Add(graphPoint);
+
+            }
+            else if (gameObject.name.ToString() == "Line_Enemy2")
+            {
+
+                graphPoint = new Vector2(grid.gridSize.x + i, GameManager.instance.EnemyPoint_graph_2[i] / 10f);
+                points.Add(graphPoint);
+
+            }
+            else if (gameObject.name.ToString() == "Line_Enemy3")
+            {
+                graphPoint = new Vector2(grid.gridSize.x + i, GameManager.instance.EnemyPoint_graph_3[i] / 100f);
+                points.Add(graphPoint);
+            }
+
+           
+        }
+
         SetVerticesDirty();
     }
     protected override void OnPopulateMesh(VertexHelper vh)
@@ -41,8 +72,8 @@ public class DrawLine : Graphic
         unitWidth = width / (float)gridSize.x;
         unitHeight = height / (float)gridSize.y;
 
-      
-        if(points[0].x !=0 || points[0].y != 0 )
+
+        if (points[0].x != 0 || points[0].y != 0)
         {
             points[0] = new Vector2(0, 0f);
         }
@@ -53,12 +84,12 @@ public class DrawLine : Graphic
         }
 
         float angle = 0;
-        for (int i = 0; i < points.Count;  i++)
+        for (int i = 0; i < points.Count; i++)
         {
             Vector2 point = points[i];
 
             //굵기조절
-            if (i < points.Count - 1) 
+            if (i < points.Count - 1)
             {
                 angle = GetAngle(points[i], points[i + 1]) + 20;
             }
@@ -84,9 +115,9 @@ public class DrawLine : Graphic
 
     public void Getcolor(int num, ref UIVertex v)
     {
-        for(int i =0; i< GetColor.instance.teamColors.Length; i++)
+        for (int i = 0; i < GetColor.instance.teamColors.Length; i++)
         {
-            if(num == GetColor.instance.teamColors[i].ColorNum)
+            if (num == GetColor.instance.teamColors[i].ColorNum)
             {
                 v.color = GetColor.instance.teamColors[i].color_c;
             }
@@ -100,9 +131,9 @@ public class DrawLine : Graphic
         {
             if (num == GetColor.instance.teamColors[i].ColorNum)
             {
-               return GetColor.instance.teamColors[i].color_c;
+                return GetColor.instance.teamColors[i].color_c;
             }
-           
+
         }
         return Color.black;
     }
@@ -115,26 +146,25 @@ public class DrawLine : Graphic
         if (gameObject.name.ToString() == "Line_Team1")
         {
             vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.Color_Index];
-            //Getcolor(GameManager.instance.Color_Index, ref vertex);
-            //vertex.color = Get_color(GameManager.instance.Color_Index);
+
         }
         else if (gameObject.name.ToString() == "Line_Enemy1")
         {
             vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.T1_Color];
-            //Getcolor(GameManager.instance.T1_Color, ref vertex);
+
         }
         else if (gameObject.name.ToString() == "Line_Enemy2")
         {
 
             vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.T2_Color];
-            //   Getcolor(GameManager.instance.T2_Color, ref vertex);
+
         }
         else if (gameObject.name.ToString() == "Line_Enemy3")
         {
             vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.T3_Color];
-            //Getcolor(GameManager.instance.T3_Color, ref vertex);
+
         }
-        //vertex.color = color;
+
 
         vertex.position = Quaternion.Euler(0, 0, angle) * new Vector3(-thickness / 2, 0);
         vertex.position += new Vector3(unitWidth * point.x, unitHeight * point.y);
@@ -148,41 +178,42 @@ public class DrawLine : Graphic
 
     private void Update()
     {
-        if(grid != null)
+        if (grid != null)
         {
-            if(gridSize != grid.gridSize)
+            if (gridSize != grid.gridSize)
             {
                 gridSize = grid.gridSize;
                 SetVerticesDirty();
             }
         }
 
-        if (current_Time +2 <= GameManager.instance.currentTime)
-        {
-            current_Time += 2;
-            
-            //시간(x), 팀포인트(y)추가
-            if (gameObject.name.ToString() == "Line_Team1")
-            {
-                graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.Teampoint);
-                points.Add(graphPoint);
-            }
-            else if (gameObject.name.ToString() == "Line_Enemy1")
-            {
-                graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.leaders[0].Teampoint);
-                points.Add(graphPoint);
-            }
-            else if (gameObject.name.ToString() == "Line_Enemy2")
-            {
-                graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.leaders[1].Teampoint);
-                points.Add(graphPoint);
-            }
-            else if (gameObject.name.ToString() == "Line_Enemy3")
-            {
-                graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.leaders[2].Teampoint);
-                points.Add(graphPoint);
-            }
-            SetVerticesDirty();
-        }
+        //if (current_Time + (GameManager.instance.EndTime / 20) <= GameManager.instance.currentTime)
+        //{
+        //    current_Time += (GameManager.instance.EndTime / 20);
+
+        //    //시간(x), 팀포인트(y)추가
+        //    if (gameObject.name.ToString() == "Line_Team1")
+        //    {
+        //        graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.Teampoint / 100f);
+        //        points.Add(graphPoint);
+
+        //    }
+        //    else if (gameObject.name.ToString() == "Line_Enemy1")
+        //    {
+        //        graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.leaders[0].Teampoint / 100f);
+        //        points.Add(graphPoint);
+        //    }
+        //    else if (gameObject.name.ToString() == "Line_Enemy2")
+        //    {
+        //        graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.leaders[1].Teampoint / 100f);
+        //        points.Add(graphPoint);
+        //    }
+        //    else if (gameObject.name.ToString() == "Line_Enemy3")
+        //    {
+        //        graphPoint = new Vector2(grid.gridSize.x, GameManager.instance.leaders[2].Teampoint / 100f);
+        //        points.Add(graphPoint);
+        //    }
+        //    SetVerticesDirty();
+        //}
     }
 }

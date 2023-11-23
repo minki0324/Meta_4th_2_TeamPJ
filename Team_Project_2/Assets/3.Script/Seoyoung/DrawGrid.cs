@@ -28,10 +28,10 @@ public class DrawGrid : Graphic
         //{
          
         //}
-        if (current_Time + 2 <= GameManager.instance.currentTime)
+        if (current_Time + (GameManager.instance.EndTime / 20) <= GameManager.instance.currentTime)
         {
             Debug.Log("Áõ°¡");
-            current_Time += 2;
+            current_Time += (GameManager.instance.EndTime / 20);
             gridSize.x += 1;
 
             SetVerticesDirty();

@@ -762,7 +762,6 @@ public class Intro : MonoBehaviour
 
 
 
-                Debug.Log("로그인됨ㅎㅎ");
 
                 isLogined = true;
             }
