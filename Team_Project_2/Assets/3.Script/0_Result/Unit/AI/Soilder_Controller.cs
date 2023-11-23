@@ -141,6 +141,7 @@ public class Soilder_Controller : Unit
             speed = Mathf.Clamp01(speed);
         }
         aipath.maxSpeed = 5 * speed;
+        aipath1.maxSpeed = 5 * speed;
 
 
         #region  플레이어,AI 명령로직
@@ -185,6 +186,7 @@ public class Soilder_Controller : Unit
                             }
                             holdingShield = false;
                             aipath.isStopped = false;
+                            aipath1.isStopped = false;
                             break;
 
 
@@ -335,7 +337,12 @@ public class Soilder_Controller : Unit
         aipath.isStopped = true;
         aipath.canMove = false;
 
-        aipath.canSearch = false;
+        aipath.canSearch = false; 
+        
+        aipath1.isStopped = true;
+        aipath1.canMove = false;
+
+        aipath1.canSearch = false;
 
         KillCount_Set(teamLayer, enemyLayer);
 
@@ -421,6 +428,7 @@ public class Soilder_Controller : Unit
         {
             isMove = false;
             aipath.isStopped = true;
+            aipath1.isStopped = true;
             return;
         }
         else // 리더가 있으면 리더한테 이동
@@ -434,6 +442,8 @@ public class Soilder_Controller : Unit
         isMove = true;
         aipath.canMove = true;
         aipath.canSearch = true;
+        aipath1.canMove = true;
+        aipath1.canSearch = true;
         target.target = leader.transform;
         holdingShield = false;
     }

@@ -9659,7 +9659,7 @@ MonoBehaviour:
   version: 5
   radius: 0.5
   height: 2
-  canMove: 1
+  canMove: 0
   maxSpeed: 5
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:

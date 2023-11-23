@@ -118,7 +118,6 @@ public class Ply_Controller : MonoBehaviour
         //상태 변경
         if (Input.GetKeyDown(KeyCode.F))
         {
-            Debug.Log("나를 따르라~~");
             if (!isPlay_FollowOrder)
             {
               
@@ -247,7 +246,6 @@ public class Ply_Controller : MonoBehaviour
                             }
                             break;
                         case 2:
-                            Debug.Log("2눌림");
                             Human_num = 1;
                             // 나중에 if문에 앤드게이트로 isPossible_HeavyInfantry 업글 유무 확인
                             if (GameManager.instance.Gold > GameManager.instance.unit1.cost)

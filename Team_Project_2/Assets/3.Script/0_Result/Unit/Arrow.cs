@@ -50,7 +50,6 @@ public class Arrow : MonoBehaviour
             if (!other.gameObject.layer.Equals(gameObject.layer))
             {
                 isHit = true;
-                Debug.Log("¸ÂÀ½");
 
                 Destroy(gameObject);
             }

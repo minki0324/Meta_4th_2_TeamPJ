@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
     public DataManager Json;
     public PlayerData Ply_Data;
+    public bool isFreeze = false;
 
     [Header("게임 모드")]
     public int GameMode = 0;
@@ -138,8 +139,25 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-       
-        if(!isLive)
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (!isFreeze)
+            {
+                Stop();
+                isFreeze = !isFreeze;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else if (isFreeze)
+            {
+                Resume();
+                isFreeze = !isFreeze;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+        }
+
+        if (!isLive)
         {
             return;
         }
@@ -160,8 +178,6 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1;
             }
         }
-
-
 
         if (current_Time + (EndTime / 20) <= currentTime)
         {

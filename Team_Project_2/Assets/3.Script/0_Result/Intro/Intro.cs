@@ -146,11 +146,16 @@ public class Intro : MonoBehaviour
 
     [SerializeField]
     private Button SignUp_Cancel_Btn;
+
+    public bool isSignup_ConfirmClicked = false;
+
     #endregion
+
     #region 경고 패널
     [SerializeField]
     private GameObject Warning_Panel;
     #endregion
+
     #region 기타
     [Header("기타")]
 
@@ -236,6 +241,8 @@ public class Intro : MonoBehaviour
                 Check_SignUp();
 
             }
+
+
 
         }
     }
@@ -333,7 +340,7 @@ public class Intro : MonoBehaviour
     {
         Setup_Panel.SetActive(true);
         Upgrade_Panel.gameObject.SetActive(false);
-        Option_Panel.gameObject.SetActive(false);
+        /*Option_Panel.gameObject.SetActive(false);*/
         SignUp_Panel.SetActive(false);
         Warning_Panel.SetActive(false);
 
@@ -670,7 +677,7 @@ public class Intro : MonoBehaviour
         SignUp_Cancel_Btn.onClick.AddListener(() => {
             SignUp_Panel.SetActive(false);
             inputField.enabled = true;
-            inputField.ActivateInputField();
+
             SignUp_inputField.text = "";
         });
 
@@ -684,34 +691,51 @@ public class Intro : MonoBehaviour
     {
 
         Warning_Panel.SetActive(false);
-
+        isSignupPanelOn = false;
+        isSignup_ConfirmClicked = false;
     }
 
 
 
     public void Check_SignUp()
     {
-
+        inputField.enabled = false;
+        isSignup_ConfirmClicked = false;
         playerData = dataManager.Load_playerData("playerData.json");
+
         for (int i = 0; i < playerData.playerData.Count; i++)
         {
             if (playerData.playerData[i].ID != SignUp_inputField.text)
             {
-                dataManager.Save_playerData(SignUp_inputField.text, 10, true, true, true, false, false, false);
+                if (SignUp_inputField.text != "")
+                {
+                    if (!isSignup_ConfirmClicked)
+                    {
+                        dataManager.Save_playerData(SignUp_inputField.text, 10, true, true, true, false, false, false);
+                        isSignup_ConfirmClicked = true;
+                        SignUp_Confirm_Btn.onClick.RemoveListener(Check_SignUp);
+                    }
 
-                SignUp_Panel.SetActive(false);
-                SignUp_Confirm_Btn.onClick.RemoveListener(Check_SignUp);
-                SignUp_inputField.text = "";
-                inputField.ActivateInputField();
-                break;
+                    SignUp_Panel.SetActive(false);
+
+                    SignUp_Confirm_Btn.onClick.AddListener(() => {
+
+                        isSignupPanelOn = false;
+                    });
+                }
+                else
+                {
+                    Warning_Panel.SetActive(true);
+                }
             }
             else
             {
                 Warning_Panel.SetActive(true);
-
             }
         }
 
+        inputField.enabled = true;
+        inputField.ActivateInputField();
 
 
     }
@@ -762,6 +786,7 @@ public class Intro : MonoBehaviour
 
 
 
+                Debug.Log("로그인됨ㅎㅎ");
 
                 isLogined = true;
             }

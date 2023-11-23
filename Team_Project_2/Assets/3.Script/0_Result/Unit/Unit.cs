@@ -21,6 +21,7 @@ public abstract class Unit : MonoBehaviour
     protected Ply_Controller player;
     public AIDestinationSetter target;
     public AIPath aipath;
+    public AIpathoverride aipath1;
     //팀의 리더가 누군지
 
     //공격중인가?
@@ -74,7 +75,9 @@ public abstract class Unit : MonoBehaviour
         ani = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Ply_Controller>();
         aipath = GetComponent<AIPath>();
+        aipath1 = GetComponent<AIpathoverride>();
         defaultSpeed = aipath.maxSpeed;
+        defaultSpeed = aipath1.maxSpeed;
     }
 
     protected virtual void Start()
@@ -120,7 +123,10 @@ public abstract class Unit : MonoBehaviour
 
                 aipath.isStopped = false;
                 aipath.canMove = true;
-                aipath.canSearch = true;
+                aipath.canSearch = true; 
+                aipath1.isStopped = false;
+                aipath1.canMove = true;
+                aipath1.canSearch = true;
             }
             else // 탐지된 적이 접근하면 이동을 멈추고 공격
             {
@@ -129,6 +135,9 @@ public abstract class Unit : MonoBehaviour
                 aipath.isStopped = true;
                 aipath.canMove = false;
                 aipath.canSearch = false;
+                aipath1.isStopped = true;
+                aipath1.canMove = false;
+                aipath1.canSearch = false;
 
                 if (!data.ishealer)
                 {

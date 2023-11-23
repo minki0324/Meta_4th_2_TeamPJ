@@ -11,7 +11,11 @@ public class AIpathoverride : AIPath
     }       
     public override void OnTargetReached()
     {
-        if (soilder_con.formationState == Soilder_Controller.FormationState.GoingFormation)
+        if(soilder_con == null)
+        {
+            return;
+        }
+        else if(soilder_con.formationState == Soilder_Controller.FormationState.GoingFormation)
         {
             soilder_con.formationState = Soilder_Controller.FormationState.Shield;
             

@@ -150,6 +150,11 @@ public class LeaderAI : LeaderState
     }
     public override void Die(int teamLayer, int enemyLayer)
     {
+        if (has_Flag == 0)
+        {
+            Destroy(gameObject);
+        }
+
         //죽는애니메이션
         //레이어변하기
         //콜라이더 끄기

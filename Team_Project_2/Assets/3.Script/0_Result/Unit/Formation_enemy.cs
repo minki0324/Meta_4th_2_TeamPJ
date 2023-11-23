@@ -158,7 +158,9 @@ public class Formation_enemy : MonoBehaviour
 
 
                 unit_con.aipath.canSearch = false;
-                unit_con.aipath.canMove = false;
+                unit_con.aipath.canMove = false;  
+                unit_con.aipath1.canSearch = false;
+                unit_con.aipath1.canMove = false;
             }
         }
         //unit_con.target.target = leaderAI.transform;

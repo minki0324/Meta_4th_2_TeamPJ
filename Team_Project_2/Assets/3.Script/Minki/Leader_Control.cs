@@ -176,7 +176,6 @@ public class Leader_Control : MonoBehaviour
                     1. 현재 본인의 병사 수를 체크하여 병사 숫자가 15마리 이하라면 대기
                     2. 병사 숫자가 충분히 채워졌으면 게이트로 이동
                 */
-                Debug.Log($"{gameObject.name} : {Check_Soldier()}");
                 if(!Check_Soldier())
                 {
                     break;
@@ -330,7 +329,7 @@ public class Leader_Control : MonoBehaviour
     private void Return_SpawnPoint(Transform StartPos, ref Transform Target)
     {
         aiPath.canMove = true;
-        aiPath.canSearch = true;
+        aiPath.canSearch = true;  
         targetsetting = GetComponent<TargetMyBase>();
         Target = targetsetting.Target(StartPos);
         ToTarget(Target);
@@ -339,7 +338,7 @@ public class Leader_Control : MonoBehaviour
     private void Move_Flag(Transform StartPos, ref Transform Target)
     {
         aiPath.canMove = true;
-        aiPath.canSearch = true;
+        aiPath.canSearch = true;  
         targetsetting = GetComponent<TargetFlag>();
         Target = targetsetting.Target(StartPos);
         ToTarget(Target);
@@ -348,7 +347,7 @@ public class Leader_Control : MonoBehaviour
     private void Move_Gate(Transform StartPos, ref Transform Target)
     {
         aiPath.canMove = true;
-        aiPath.canSearch = true;
+        aiPath.canSearch = true; 
         targetsetting = GetComponent<TargetGate>();
         Target = targetsetting.Target(StartPos);
         ToTarget(Target);

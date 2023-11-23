@@ -241,6 +241,7 @@ public class Flag : MonoBehaviour
             {
                 ColorManager.instance.RecursiveSearchAndSetBuilding(transform.root.transform, TeamColor);
             }
+            GameManager.instance.Set_FlagCount();
             ColorManager.instance.Change_SolidColor(gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>(), TeamColor);
             OccuHUD.Change_Color(TeamColor, Flag_Num);
         }
