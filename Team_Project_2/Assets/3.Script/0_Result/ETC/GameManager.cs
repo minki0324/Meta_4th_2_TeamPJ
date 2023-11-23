@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         3. 점령지 (골드와 연동)
     */
     public static GameManager instance = null;
-    public DataManager Json;
+
     public PlayerData Ply_Data;
 
     [Header("게임 모드")]
@@ -109,6 +109,11 @@ public class GameManager : MonoBehaviour
     public List<float> EnemyPoint_graph_3;
     public float current_Time = 0;
 
+    //데이터 매니저
+    public DataManager dataManager;
+    private Player_Data playerData;
+
+    [SerializeField] public Button Main_Btn;
 
     private void Awake()
     {
@@ -121,7 +126,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        Json = GetComponent<DataManager>();
+        dataManager = GetComponent<DataManager>();
+        playerData = dataManager.Load_playerData("playerData.json");
+
     }
     private void Start()
     {
@@ -189,6 +196,9 @@ public class GameManager : MonoBehaviour
         EndGame();
         Upgrade();
 
+
+        
+
     }
 
     public void Stop()
@@ -234,8 +244,27 @@ public class GameManager : MonoBehaviour
 
     public void Save_N_BackToMain()
     {
-        Json.Save_playerData(PlayerID, PlayerCoin, isCanUse_SwordMan, isCanUse_Knight, isCanUse_Archer, isCanUse_SpearMan, isCanUse_Halberdier, isCanUse_Prist);
-        SceneManager.LoadScene(0);
+        if(isGameEnd)
+        {
+            playerData = dataManager.Load_playerData("playerData.json");
+            for (int i = 0; i < playerData.playerData.Count; i++)
+            {
+                if (PlayerID == playerData.playerData[i].ID)
+                {
+                    PlayerCoin += 10;
+                    
+                    dataManager.Remove_Data(PlayerID);
+                    dataManager.Save_playerData(playerData.playerData[i].ID, PlayerCoin, isCanUse_SwordMan, isCanUse_Knight, isCanUse_Archer, isCanUse_SpearMan, isCanUse_Halberdier, isCanUse_Prist);
+                }
+            }
+            isGameEnd = false;
+            SceneManager.LoadScene(0);
+            playerData = dataManager.Load_playerData("playerData.json");
+        }
+
+
+       
+       
     }
 
     public void Set_FlagCount()
@@ -277,7 +306,10 @@ public class GameManager : MonoBehaviour
             Stop();
             PlayerCoin = PlayerCoin + (int)Teampoint / 1000;
            
+
             Result.SetActive(true);
+            Main_Btn = Result.transform.GetChild(1).GetComponent<Button>();
+            Main_Btn.onClick.AddListener(Save_N_BackToMain);
             GetwinnerTeam();
         }
     }
@@ -352,6 +384,7 @@ public class GameManager : MonoBehaviour
         }
     }
     
+
 
 
 }

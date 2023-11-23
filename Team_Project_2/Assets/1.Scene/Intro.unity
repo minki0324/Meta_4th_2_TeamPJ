@@ -485,6 +485,7 @@ GameObject:
   - component: {fileID: 1525718490}
   - component: {fileID: 1525718488}
   - component: {fileID: 1525718489}
+  - component: {fileID: 1525718491}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -571,6 +572,12 @@ MonoBehaviour:
   T2_Color: 0
   T3_Color: 0
   upgrade: {fileID: 1525718490}
+  TeamPoint_graph: []
+  EnemyPoint_graph_1: []
+  EnemyPoint_graph_2: []
+  EnemyPoint_graph_3: []
+  current_Time: 0
+  dataManager: {fileID: 0}
 --- !u!4 &1525718487
 Transform:
   m_ObjectHideFlags: 0
@@ -800,6 +807,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b0deffec931240a4da5db011f025e452, type: 2}
   - {fileID: 11400000, guid: 48ef077bbb621034394d064bcea8ffa0, type: 2}
   - {fileID: 11400000, guid: 5b67945f07e6e5b4d9f8f3b7074078bf, type: 2}
+--- !u!114 &1525718491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525718485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1a7552116e700f4c8eeb25a487e5299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  filename: playerData.json
 --- !u!1 &1767629523
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,50 +895,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1773259741
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1773259743}
-  - component: {fileID: 1773259742}
-  m_Layer: 0
-  m_Name: DataManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1773259742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773259741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1a7552116e700f4c8eeb25a487e5299, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  filename: playerData.Json
---- !u!4 &1773259743
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773259741}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -38.372856, y: -0.16742077, z: -21.203382}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1795985740
 GameObject:
@@ -1981,6 +1957,7 @@ MonoBehaviour:
   SignUp_inputField: {fileID: 0}
   SignUp_Confirm_Btn: {fileID: 0}
   SignUp_Cancel_Btn: {fileID: 0}
+  isSignup_ConfirmClicked: 0
   Warning_Panel: {fileID: 0}
   Leader_A: {fileID: 0}
   Leader_B: {fileID: 0}

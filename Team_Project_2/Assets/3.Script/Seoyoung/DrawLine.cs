@@ -34,26 +34,26 @@ public class DrawLine : Graphic
             UIVertex vertex = UIVertex.simpleVert;
             if (gameObject.name.ToString() == "Line_Team1")
             {
-                graphPoint = new Vector2(grid.gridSize.x + i, GameManager.instance.TeamPoint_graph[i] / 10f);
+                graphPoint = new Vector2(grid.gridSize.x + (i + 1), GameManager.instance.TeamPoint_graph[i] / 10f);
                 points.Add(graphPoint);
 
             }
             else if (gameObject.name.ToString() == "Line_Enemy1")
             {
-                graphPoint = new Vector2(grid.gridSize.x + i, GameManager.instance.EnemyPoint_graph_1[i] / 10f);
+                graphPoint = new Vector2(grid.gridSize.x + (i + 1), GameManager.instance.EnemyPoint_graph_1[i] / 10f);
                 points.Add(graphPoint);
 
             }
             else if (gameObject.name.ToString() == "Line_Enemy2")
             {
 
-                graphPoint = new Vector2(grid.gridSize.x + i, GameManager.instance.EnemyPoint_graph_2[i] / 10f);
+                graphPoint = new Vector2(grid.gridSize.x + (i + 1), GameManager.instance.EnemyPoint_graph_2[i] / 10f);
                 points.Add(graphPoint);
 
             }
             else if (gameObject.name.ToString() == "Line_Enemy3")
             {
-                graphPoint = new Vector2(grid.gridSize.x + i, GameManager.instance.EnemyPoint_graph_3[i] / 100f);
+                graphPoint = new Vector2(grid.gridSize.x + (i + 1), GameManager.instance.EnemyPoint_graph_3[i] / 10f);
                 points.Add(graphPoint);
             }
 
@@ -146,23 +146,22 @@ public class DrawLine : Graphic
         if (gameObject.name.ToString() == "Line_Team1")
         {
             vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.Color_Index];
-
+            vertex.color.a = 150;
         }
         else if (gameObject.name.ToString() == "Line_Enemy1")
         {
             vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.T1_Color];
-
+            vertex.color.a = 150;
         }
         else if (gameObject.name.ToString() == "Line_Enemy2")
         {
-
             vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.T2_Color];
-
+            vertex.color.a = 150;
         }
         else if (gameObject.name.ToString() == "Line_Enemy3")
         {
             vertex.color = ColorManager.instance.Teamcolor[GameManager.instance.T3_Color];
-
+            vertex.color.a = 150;   
         }
 
 

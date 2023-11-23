@@ -146,11 +146,16 @@ public class Intro : MonoBehaviour
 
     [SerializeField]
     private Button SignUp_Cancel_Btn;
+
+    public bool isSignup_ConfirmClicked = false;
+
     #endregion
+
     #region 경고 패널
     [SerializeField]
     private GameObject Warning_Panel;
     #endregion
+
     #region 기타
     [Header("기타")]
 
@@ -206,8 +211,8 @@ public class Intro : MonoBehaviour
         //string path = Application.streamingAssetsPath;
         //Debug.Log(path);
 
-        dataManager = FindObjectOfType<DataManager>();
-        playerData = dataManager.Load_playerData("playerData.json");
+        //dataManager = FindObjectOfType<DataManager>();
+        playerData = GameManager.instance.dataManager.Load_playerData("playerData.json");
     }
 
     private void Start()
@@ -237,6 +242,8 @@ public class Intro : MonoBehaviour
 
             }
 
+
+          
         }
     }
 
@@ -291,6 +298,8 @@ public class Intro : MonoBehaviour
         GameManager.instance.T3_Color = Team4_Color;
 
         SceneManager.LoadScene(1);
+        SetSound_AllButtons();
+
     }
 
     public void TitlePanel_On()
@@ -333,7 +342,7 @@ public class Intro : MonoBehaviour
     {
         Setup_Panel.SetActive(true);
         Upgrade_Panel.gameObject.SetActive(false);
-        Option_Panel.gameObject.SetActive(false);
+        /*Option_Panel.gameObject.SetActive(false);*/
         SignUp_Panel.SetActive(false);
         Warning_Panel.SetActive(false);
 
@@ -669,8 +678,8 @@ public class Intro : MonoBehaviour
 
         SignUp_Cancel_Btn.onClick.AddListener(() => {
             SignUp_Panel.SetActive(false);
-            inputField.enabled = true;
-            inputField.ActivateInputField();
+            inputField.enabled = true ;
+          
             SignUp_inputField.text = "";
         });
 
@@ -684,34 +693,51 @@ public class Intro : MonoBehaviour
     {
 
         Warning_Panel.SetActive(false);
-
+        isSignupPanelOn = false;
+        isSignup_ConfirmClicked = false;
     }
 
 
 
     public void Check_SignUp()
     {
+        inputField.enabled = false;
+        isSignup_ConfirmClicked = false;
+        playerData = GameManager.instance.dataManager.Load_playerData("playerData.json");
 
-        playerData = dataManager.Load_playerData("playerData.json");
         for (int i = 0; i < playerData.playerData.Count; i++)
         {
             if (playerData.playerData[i].ID != SignUp_inputField.text)
             {
-                dataManager.Save_playerData(SignUp_inputField.text, 10, true, true, true, false, false, false);
+                if(SignUp_inputField.text != "")
+                {
+                    if(!isSignup_ConfirmClicked)
+                    {
+                        GameManager.instance.dataManager.Save_playerData(SignUp_inputField.text, 10, true, true, true, false, false, false);
+                        isSignup_ConfirmClicked = true;
+                        SignUp_Confirm_Btn.onClick.RemoveListener(Check_SignUp);   
+                    }        
 
-                SignUp_Panel.SetActive(false);
-                SignUp_Confirm_Btn.onClick.RemoveListener(Check_SignUp);
-                SignUp_inputField.text = "";
-                inputField.ActivateInputField();
-                break;
+                    SignUp_Panel.SetActive(false);
+
+                    SignUp_Confirm_Btn.onClick.AddListener(() => {
+                       
+                        isSignupPanelOn = false;
+                    });
+                }
+                else
+                {
+                    Warning_Panel.SetActive(true);
+                }     
             }
             else
             {
                 Warning_Panel.SetActive(true);
-
             }
         }
 
+        inputField.enabled = true;
+        inputField.ActivateInputField();
 
 
     }
@@ -746,7 +772,7 @@ public class Intro : MonoBehaviour
 
     public void Login()
     {
-        playerData = dataManager.Load_playerData("playerData.json");
+        playerData = GameManager.instance.dataManager.Load_playerData("playerData.json");
         for (int i = 0; i < playerData.playerData.Count; i++)
         {
             if (playerData.playerData[i].ID == inputField.text)
@@ -762,6 +788,7 @@ public class Intro : MonoBehaviour
 
 
 
+                Debug.Log("로그인됨ㅎㅎ");
 
                 isLogined = true;
             }

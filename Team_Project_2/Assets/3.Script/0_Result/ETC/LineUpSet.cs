@@ -195,6 +195,7 @@ public class LineUpSet : MonoBehaviour
         GameManager.instance.Result = FindObjectOfType<ToggleMenu>().transform.GetChild(4).gameObject;
         GameManager.instance.Result.SetActive(false);
         GameManager.instance.txt = GameManager.instance.Result.transform.GetChild(10).GetComponent<Text>();
+       
     }
 
     public void Normal_Mode()

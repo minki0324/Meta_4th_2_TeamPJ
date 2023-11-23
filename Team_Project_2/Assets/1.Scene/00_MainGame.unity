@@ -9017,7 +9017,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e176319604f4a44cae4462dcf726fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Json: {fileID: 0}
   Ply_Data:
     ID: 
     Coin: 0
@@ -9083,6 +9082,8 @@ MonoBehaviour:
   EnemyPoint_graph_2: []
   EnemyPoint_graph_3: []
   current_Time: 0
+  dataManager: {fileID: 0}
+  Main_Btn: {fileID: 0}
 --- !u!4 &1503504437
 Transform:
   m_ObjectHideFlags: 0
@@ -21545,11 +21546,11 @@ MonoBehaviour:
   m_Color: {r: 1, g: 0.73324853, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 1, y: 1000}
+  gridSize: {x: 1, y: 50}
   grid: {fileID: 2723602894191572911}
   points:
   - {x: 0, y: 0}
-  graphPoint: {x: 6, y: 59.95082}
+  graphPoint: {x: 9, y: 215.97073}
   thickness: 10
 --- !u!224 &2723602892452893475
 RectTransform:
@@ -21692,11 +21693,11 @@ MonoBehaviour:
   m_Color: {r: 0, g: 0.5377358, b: 0.032397453, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 1, y: 1000}
+  gridSize: {x: 1, y: 50}
   grid: {fileID: 2723602894191572911}
   points:
   - {x: 0, y: 0}
-  graphPoint: {x: 6, y: 59.95082}
+  graphPoint: {x: 9, y: 197.81303}
   thickness: 10
 --- !u!224 &2723602892852064075
 RectTransform:
@@ -21759,11 +21760,11 @@ MonoBehaviour:
   m_Color: {r: 0.12518473, g: 0, b: 0.6886792, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 1, y: 1000}
+  gridSize: {x: 1, y: 50}
   grid: {fileID: 2723602894191572911}
   points:
   - {x: 0, y: 0}
-  graphPoint: {x: 6, y: 59.95082}
+  graphPoint: {x: 9, y: 109.53313}
   thickness: 10
 --- !u!224 &2723602893992838899
 RectTransform:
@@ -21863,7 +21864,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 0.14117648}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 1, y: 1000}
+  gridSize: {x: 1, y: 50}
   thickness: 2.55
 --- !u!222 &2723602894353176353
 CanvasRenderer:
@@ -21889,11 +21890,11 @@ MonoBehaviour:
   m_Color: {r: 0.3679245, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  gridSize: {x: 1, y: 1000}
+  gridSize: {x: 1, y: 50}
   grid: {fileID: 2723602894191572911}
   points:
   - {x: 0, y: 0}
-  graphPoint: {x: 5, y: 59.95082}
+  graphPoint: {x: 9, y: 384.70917}
   thickness: 10.56
 --- !u!224 &2723602894353176355
 RectTransform:
@@ -24008,20 +24009,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4723780445368014452}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SimpleProceduralTerrainProject.TerrainGenerator,
-          Assembly-CSharp
-        m_MethodName: initRoad
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!222 &4723780445467795376
 CanvasRenderer:
   m_ObjectHideFlags: 0

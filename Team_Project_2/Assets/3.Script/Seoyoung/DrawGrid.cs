@@ -17,7 +17,31 @@ public class DrawGrid : Graphic
     protected override void Start()
     {
         gridSize.x = 1;
-        gridSize.y = 1000;
+
+        float MaxY = 0;
+
+        for(int i = 0; i <GameManager.instance.TeamPoint_graph.Count; i++)
+        {
+            if(GameManager.instance.TeamPoint_graph[i] >= MaxY)
+            {
+                MaxY = GameManager.instance.TeamPoint_graph[i];
+            }
+            if (GameManager.instance.EnemyPoint_graph_1[i] >= MaxY)
+            {
+                MaxY = GameManager.instance.EnemyPoint_graph_1[i];
+            }
+            if (GameManager.instance.EnemyPoint_graph_2[i] >= MaxY)
+            {
+                MaxY = GameManager.instance.EnemyPoint_graph_1[i];
+            }
+            if (GameManager.instance.EnemyPoint_graph_3[i] >= MaxY)
+            {
+                MaxY = GameManager.instance.EnemyPoint_graph_1[i];
+            }
+        }
+
+
+        gridSize.y = ((int)MaxY / 10) + 50;
     }
 
     private void Update()
