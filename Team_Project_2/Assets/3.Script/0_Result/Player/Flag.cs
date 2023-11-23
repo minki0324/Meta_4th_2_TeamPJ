@@ -14,7 +14,7 @@ public class Flag : MonoBehaviour
     private int TeamColor_Temp;
 
     public float Soldier_Multi = 1.03f; // 사람 수에 따른 배율
-    public float occu_Speed = 12f; // 점령 속도
+    private float occu_Speed = 50f; // 점령 속도
 
     public bool isOccupating = false; // 점령 중인지
     public bool isOccupied = false; // 점령이 끝났는지
@@ -149,7 +149,7 @@ public class Flag : MonoBehaviour
                     }
                     break;
                 default:
-                    return;
+                    break;
             }
         }
     }

@@ -31,21 +31,21 @@ public class PlayerData
 public class DataManager : MonoBehaviour
 {
     #region ΩÃ±€≈Ê..?
-    //public static DataManager instance;
+    public static DataManager instance;
 
-    //private void Awake()
-    //{
-    //    if (instance == null)
-    //    {
-    //        instance = this;
-    //    }
-    //    else
-    //    {
-    //        Destroy(instance.gameObject);
-    //    }
-    //    DontDestroyOnLoad(this.gameObject);
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(instance.gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
 
-    //}
+    }
 
     #endregion
 
@@ -86,9 +86,23 @@ public class DataManager : MonoBehaviour
 
     }
 
+    public void Remove_Data(string id)
+    {
+        string path = Application.streamingAssetsPath;
+        filename = Path.Combine(path, filename);
+        Player_Data playerData = Load_playerData("playerData.json");
 
+        for (int i = 0; i < playerData.playerData.Count; i++)
+        {
+            if (id == playerData.playerData[i].ID)
+            {
+                playerData.playerData.Remove(playerData.playerData[i]);
+            }
+        }
 
-
+        string data = JsonUtility.ToJson(playerData);  //¥ŸΩ√ ≥÷∞Ì~
+        File.WriteAllText(filename, data);
+    }
 
 
     public Player_Data Load_playerData(string filename)

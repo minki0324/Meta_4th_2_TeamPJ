@@ -211,8 +211,8 @@ public class Intro : MonoBehaviour
         //string path = Application.streamingAssetsPath;
         //Debug.Log(path);
 
-        dataManager = FindObjectOfType<DataManager>();
-        playerData = dataManager.Load_playerData("playerData.json");
+        //dataManager = FindObjectOfType<DataManager>();
+        playerData = GameManager.instance.dataManager.Load_playerData("playerData.json");
     }
 
     private void Start()
@@ -298,6 +298,8 @@ public class Intro : MonoBehaviour
         GameManager.instance.T3_Color = Team4_Color;
 
         SceneManager.LoadScene(1);
+        SetSound_AllButtons();
+
     }
 
     public void TitlePanel_On()
@@ -701,7 +703,7 @@ public class Intro : MonoBehaviour
     {
         inputField.enabled = false;
         isSignup_ConfirmClicked = false;
-        playerData = dataManager.Load_playerData("playerData.json");
+        playerData = GameManager.instance.dataManager.Load_playerData("playerData.json");
 
         for (int i = 0; i < playerData.playerData.Count; i++)
         {
@@ -711,7 +713,7 @@ public class Intro : MonoBehaviour
                 {
                     if (!isSignup_ConfirmClicked)
                     {
-                        dataManager.Save_playerData(SignUp_inputField.text, 10, true, true, true, false, false, false);
+                        GameManager.instance.dataManager.Save_playerData(SignUp_inputField.text, 10, true, true, true, false, false, false);
                         isSignup_ConfirmClicked = true;
                         SignUp_Confirm_Btn.onClick.RemoveListener(Check_SignUp);
                     }
@@ -770,7 +772,7 @@ public class Intro : MonoBehaviour
 
     public void Login()
     {
-        playerData = dataManager.Load_playerData("playerData.json");
+        playerData = GameManager.instance.dataManager.Load_playerData("playerData.json");
         for (int i = 0; i < playerData.playerData.Count; i++)
         {
             if (playerData.playerData[i].ID == inputField.text)

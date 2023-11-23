@@ -21,9 +21,8 @@ public class GameManager : MonoBehaviour
         3. 점령지 (골드와 연동)
     */
     public static GameManager instance = null;
-    public DataManager Json;
+
     public PlayerData Ply_Data;
-    public bool isFreeze = false;
 
     [Header("게임 모드")]
     public int GameMode = 0;
@@ -51,14 +50,14 @@ public class GameManager : MonoBehaviour
 
     bool isColorSame = false;
     public bool isGameEnd = false;
-    
+
 
     [Header("골드 관련")]
     public float total_Gold = 1000;
     public float Gold = 1000;       // 골드량
     private float Magnifi = 2f;     // 기본 골드 배율 (업데이트문 프레임 60 x 2f로 기본 획득 골드량은 분당 120)
     public float Upgrade_GoldValue = 1f;
-    
+
     [Header("플레이어 관련")]
     public bool isLive = false;
     public bool isDead;
@@ -66,7 +65,7 @@ public class GameManager : MonoBehaviour
     private bool isFastMode;
     public float Current_HP = 150f;
     public float Max_Hp = 150f;
-    public float Damage = 20f; 
+    public float Damage = 20f;
     public float Regeneration = 0.5f;
     public float respawnTime = 10f;
     public int killCount;
@@ -110,10 +109,15 @@ public class GameManager : MonoBehaviour
     public List<float> EnemyPoint_graph_3;
     public float current_Time = 0;
 
+    //데이터 매니저
+    public DataManager dataManager;
+    private Player_Data playerData;
+
+    [SerializeField] public Button Main_Btn;
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -122,7 +126,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        Json = GetComponent<DataManager>();
+        dataManager = GetComponent<DataManager>();
+        playerData = dataManager.Load_playerData("playerData.json");
+
     }
     private void Start()
     {
@@ -130,7 +136,7 @@ public class GameManager : MonoBehaviour
         MainBgm.Play();
         WeatherSFX.clip = AudioManager.instance.clip_SFX[(int)SFXList.Wind_Storm];
         WeatherSFX.Play();
-        
+
     }
 
     // 기존 골드 상승량
@@ -139,45 +145,31 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (!isFreeze)
-            {
-                Stop();
-                isFreeze = !isFreeze;
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
-            else if (isFreeze)
-            {
-                Resume();
-                isFreeze = !isFreeze;
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Confined;
-            }
-        }
 
         if (!isLive)
         {
             return;
         }
-        
+
         currentTime += Time.deltaTime;
         Upgrade_Time += Time.deltaTime;
         total_Gold += Time.deltaTime * Magnifi * Ply_hasFlag * Upgrade_GoldValue;
         Gold += Time.deltaTime * Magnifi * Ply_hasFlag * Upgrade_GoldValue; // 골드수급 = 분당 120 * 점령한 지역 개수
 
-        if(Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             isFastMode = !isFastMode;
-            if (isFastMode) { 
-            Time.timeScale = 4.5f;
+            if (isFastMode)
+            {
+                Time.timeScale = 4.5f;
             }
             else
             {
                 Time.timeScale = 1;
             }
         }
+
+
 
         if (current_Time + (EndTime / 20) <= currentTime)
         {
@@ -186,7 +178,7 @@ public class GameManager : MonoBehaviour
             EnemyPoint_graph_1.Add(leaders[0].Teampoint);
             EnemyPoint_graph_2.Add(leaders[1].Teampoint);
             EnemyPoint_graph_3.Add(leaders[2].Teampoint);
-            
+
         }
 
 
@@ -205,6 +197,9 @@ public class GameManager : MonoBehaviour
         EndGame();
         Upgrade();
 
+
+
+
     }
 
     public void Stop()
@@ -212,7 +207,7 @@ public class GameManager : MonoBehaviour
         isLive = false;
         Time.timeScale = 0;
     }
-    
+
     public void Resume()
     {
         isLive = true;
@@ -222,7 +217,7 @@ public class GameManager : MonoBehaviour
 
     public EnemySpawn FindSpawnPoint(GameObject leader, int layer)
     {
-        EnemySpawn spawnPoint =null;
+        EnemySpawn spawnPoint = null;
         GameObject[] spawns;
         spawns = GameObject.FindGameObjectsWithTag("SpawnPoint");
         float mindistance = float.MaxValue;
@@ -240,7 +235,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        if(spawnPoint == null)
+        if (spawnPoint == null)
         {
             Debug.Log("스폰포인트 없음");
         }
@@ -250,8 +245,27 @@ public class GameManager : MonoBehaviour
 
     public void Save_N_BackToMain()
     {
-        Json.Save_playerData(PlayerID, PlayerCoin, isCanUse_SwordMan, isCanUse_Knight, isCanUse_Archer, isCanUse_SpearMan, isCanUse_Halberdier, isCanUse_Prist);
-        SceneManager.LoadScene(0);
+        if (isGameEnd)
+        {
+            playerData = dataManager.Load_playerData("playerData.json");
+            for (int i = 0; i < playerData.playerData.Count; i++)
+            {
+                if (PlayerID == playerData.playerData[i].ID)
+                {
+                    PlayerCoin += 10;
+
+                    dataManager.Remove_Data(PlayerID);
+                    dataManager.Save_playerData(playerData.playerData[i].ID, PlayerCoin, isCanUse_SwordMan, isCanUse_Knight, isCanUse_Archer, isCanUse_SpearMan, isCanUse_Halberdier, isCanUse_Prist);
+                }
+            }
+            isGameEnd = false;
+            SceneManager.LoadScene(0);
+            playerData = dataManager.Load_playerData("playerData.json");
+        }
+
+
+
+
     }
 
     public void Set_FlagCount()
@@ -292,8 +306,11 @@ public class GameManager : MonoBehaviour
         {
             Stop();
             PlayerCoin = PlayerCoin + (int)Teampoint / 1000;
-           
+
+
             Result.SetActive(true);
+            Main_Btn = Result.transform.GetChild(1).GetComponent<Button>();
+            Main_Btn.onClick.AddListener(Save_N_BackToMain);
             GetwinnerTeam();
         }
     }
@@ -302,7 +319,7 @@ public class GameManager : MonoBehaviour
     //모든 깃발이 한팀에 점령 당했을 경우
     public void IsAllFlagOccupied()
     {
-        
+
         //모든 깃발색이 맞나 검사
         for (int i = 0; i < Flags.Count - 1; i++)
         {
@@ -316,12 +333,12 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if(isColorSame)
+        if (isColorSame)
         {
             isGameEnd = true;
         }
-        
-      
+
+
     }
 
     //승리팀 판단
@@ -346,11 +363,11 @@ public class GameManager : MonoBehaviour
 
     public void Upgrade()
     {
-        if(Upgrade_Time > 180)
+        if (Upgrade_Time > 180)
         {
-            for(int i = 0; i < leaders.Count; i++)
+            for (int i = 0; i < leaders.Count; i++)
             {
-                while(true)
+                while (true)
                 {
                     try
                     {
@@ -367,7 +384,8 @@ public class GameManager : MonoBehaviour
             Upgrade_Time = 0;
         }
     }
-    
+
+
 
 
 }

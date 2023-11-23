@@ -449,6 +449,8 @@ public class Soilder_Controller : Unit
     private void FollowOrder()
     {
         isMove = true;
+        aipath.isStopped = false;
+        aipath1.isStopped = false;
         aipath.canMove = true;
         aipath.canSearch = true;
         aipath1.canMove = true;
