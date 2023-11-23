@@ -179,7 +179,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public EnemySpawn FindSpawnPoint(GameObject leader)
+    public EnemySpawn FindSpawnPoint(GameObject leader, int layer)
     {
         EnemySpawn spawnPoint =null;
         GameObject[] spawns;
@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
         float mindistance = float.MaxValue;
         foreach (GameObject ob in spawns)
         {
-            if (leader.layer == ob.gameObject.layer)
+            if (layer == ob.gameObject.layer)
             {
 
                 float distance = Vector3.Distance(leader.transform.position, ob.transform.position);

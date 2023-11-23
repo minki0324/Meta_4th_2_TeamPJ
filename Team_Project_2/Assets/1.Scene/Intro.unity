@@ -1992,8 +1992,8 @@ MonoBehaviour:
   Team2_Color: 0
   Team3_Color: 0
   Team4_Color: 0
-  Original_Map: {fileID: 0}
-  TimeAttack_Map: {fileID: 0}
+  Original_Map: {fileID: 2723136144542028174}
+  TimeAttack_Map: {fileID: 2723136144559737216}
   AllButtons: []
 --- !u!222 &2723136143411852858
 CanvasRenderer:
@@ -6967,7 +6967,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &2723136144545798242
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7153,7 +7153,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2723136144559737471
 RectTransform:
   m_ObjectHideFlags: 0
