@@ -505,6 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e176319604f4a44cae4462dcf726fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFreeze: 0
   Ply_Data:
     ID: 
     Coin: 0
@@ -576,7 +577,7 @@ MonoBehaviour:
   EnemyPoint_graph_2: []
   EnemyPoint_graph_3: []
   current_Time: 0
-  dataManager: {fileID: 0}
+  dataManager: {fileID: 1525718491}
   Main_Btn: {fileID: 0}
 --- !u!4 &1525718487
 Transform:

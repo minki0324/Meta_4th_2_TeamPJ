@@ -785,7 +785,7 @@ Transform:
   - {fileID: 1321923340}
   - {fileID: 1461131186}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &52081758
 GameObject:
@@ -2575,7 +2575,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &318059756
 GameObject:
@@ -3688,7 +3688,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &528966896
 GameObject:
@@ -6903,7 +6903,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1110207146
 GameObject:
@@ -7198,7 +7198,7 @@ Transform:
   - {fileID: 853156381}
   - {fileID: 1861821667}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1212285351
 GameObject:
@@ -8988,115 +8988,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1493463210}
   m_CullTransparentMesh: 1
---- !u!1 &1503504435
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1503504437}
-  - component: {fileID: 1503504436}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1503504436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1503504435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e176319604f4a44cae4462dcf726fce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Json: {fileID: 0}
-  Ply_Data:
-    ID: 
-    Coin: 0
-    SwordMan: 0
-    Knight: 0
-    Archer: 0
-    SpearMan: 0
-    Halberdier: 0
-    Prist: 0
-  GameMode: 0
-  GameSpeed: 0
-  Option: {fileID: 0}
-  PlayerID: 
-  PlayerCoin: 0
-  isCanUse_SwordMan: 0
-  isCanUse_Knight: 0
-  isCanUse_Archer: 0
-  isCanUse_SpearMan: 0
-  isCanUse_Halberdier: 0
-  isCanUse_Prist: 0
-  currentTime: 0
-  EndTime: 1800
-  Occupied_Area: 1
-  Result: {fileID: 0}
-  txt: {fileID: 0}
-  MainBgm: {fileID: 0}
-  WeatherSFX: {fileID: 0}
-  isGameEnd: 0
-  total_Gold: 1000
-  Gold: 1000
-  Upgrade_GoldValue: 1
-  isLive: 1
-  isDead: 0
-  inRange: 0
-  Current_HP: 150
-  Max_Hp: 150
-  Damage: 20
-  Regeneration: 0.5
-  respawnTime: 10
-  killCount: 0
-  DeathCount: 0
-  Ply_hasFlag: 0
-  Teampoint: 0
-  Hire: 0
-  Max_MinionCount: 19
-  Current_MinionCount: 0
-  isPossible_Upgrade_1: 0
-  isPossible_Upgrade_2: 0
-  Upgrade_List: 
-  units: []
-  unit0: {fileID: 0}
-  unit1: {fileID: 0}
-  unit2: {fileID: 0}
-  leaders: []
-  Flags: []
-  Color_Index: 4
-  T1_Color: 0
-  T2_Color: 0
-  T3_Color: 0
-  upgrade: {fileID: 0}
-  TeamPoint_graph: []
-  EnemyPoint_graph_1: []
-  EnemyPoint_graph_2: []
-  EnemyPoint_graph_3: []
-  current_Time: 0
---- !u!4 &1503504437
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1503504435}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1024.2284, y: 537.6264, z: -40.27636}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1514458642
 GameObject:
   m_ObjectHideFlags: 0
@@ -11517,7 +11408,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1861821666
 GameObject:
@@ -35535,7 +35426,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!20 &7977001362446210569
 Camera:

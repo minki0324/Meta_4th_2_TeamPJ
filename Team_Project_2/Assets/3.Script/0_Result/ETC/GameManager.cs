@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         3. 점령지 (골드와 연동)
     */
     public static GameManager instance = null;
-
+    public bool isFreeze = false;
     public PlayerData Ply_Data;
 
     [Header("게임 모드")]
@@ -145,6 +145,23 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            if (!isFreeze)
+            {
+                Stop();
+                isFreeze = !isFreeze;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else if (isFreeze)
+            {
+                Resume();
+                isFreeze = !isFreeze;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+        }
 
         if (!isLive)
         {
@@ -161,7 +178,7 @@ public class GameManager : MonoBehaviour
             isFastMode = !isFastMode;
             if (isFastMode)
             {
-                Time.timeScale = 4.5f;
+                Time.timeScale = 5f;
             }
             else
             {
