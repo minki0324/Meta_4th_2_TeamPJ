@@ -50,8 +50,6 @@ public class Ply_Controller : MonoBehaviour
     public string[] targetLayers = { "Enemy1", "Enemy2", "Enemy3" };
     private UnityEngine.AI.NavMeshAgent[] agents;
 
-   
-
     //변수추가 이서영
 
     public bool isOperateStop = false;
@@ -120,23 +118,11 @@ public class Ply_Controller : MonoBehaviour
         {
             if (!isPlay_FollowOrder)
             {
-              
                 animator.SetTrigger("FollowOrder");
                 isPlay_FollowOrder = true;
-             
-
-
             }
-
-
             isOperateFollow = true;
             CurrentMode = Mode.Follow;
-
-           
-
-
-
-
         }
 
         if (Input.GetKeyDown(KeyCode.R))

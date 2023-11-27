@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour
             isFastMode = !isFastMode;
             if (isFastMode)
             {
-                Time.timeScale = 5f;
+                Time.timeScale = 7f;
             }
             else
             {
@@ -322,7 +322,9 @@ public class GameManager : MonoBehaviour
         if (isGameEnd)
         {
             Stop();
-            PlayerCoin = PlayerCoin + (int)Teampoint / 1000;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            PlayerCoin = PlayerCoin + (int)Teampoint / 500;
 
 
             Result.SetActive(true);
