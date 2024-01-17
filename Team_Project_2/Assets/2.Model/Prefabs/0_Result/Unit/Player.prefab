@@ -70,13 +70,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4749096092644640711}
   - component: {fileID: 3487795809203446159}
-  m_Layer: 6
+  m_Layer: 15
   m_Name: WorldmapColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4749096092644640711
 Transform:
   m_ObjectHideFlags: 0
@@ -2301,6 +2301,7 @@ GameObject:
   - component: {fileID: 69519892793353230}
   - component: {fileID: 8434415811587268936}
   - component: {fileID: 1453432657425720156}
+  - component: {fileID: -5752972855412532161}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -2536,6 +2537,14 @@ MonoBehaviour:
   Count: []
   Parents_index: 0
   succeCount: 0
+--- !u!81 &-5752972855412532161
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837579281057326324}
+  m_Enabled: 1
 --- !u!1 &6837579281064533956
 GameObject:
   m_ObjectHideFlags: 0
@@ -6187,13 +6196,13 @@ GameObject:
   m_Component:
   - component: {fileID: 6837579281591170185}
   - component: {fileID: 6837579281591170184}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: MinimapColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6837579281591170185
 Transform:
   m_ObjectHideFlags: 0

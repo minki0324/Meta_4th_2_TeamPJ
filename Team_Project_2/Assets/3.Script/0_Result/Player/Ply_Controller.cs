@@ -47,7 +47,7 @@ public class Ply_Controller : MonoBehaviour
     private int spawnIndex;
     private int nextIndex;
     public LayerMask TargetLayer;
-
+    public string[] targetLayers = { "Enemy1", "Enemy2", "Enemy3" };
     private UnityEngine.AI.NavMeshAgent[] agents;
 
    
@@ -87,6 +87,7 @@ public class Ply_Controller : MonoBehaviour
     }
     private void Start()
     {
+        TargetLayer = LayerMask.GetMask(targetLayers);
         playerMovement = GetComponent<Ply_Movement>();
         formation_enemy = GetComponent<Formation_enemy>();
 
@@ -103,7 +104,7 @@ public class Ply_Controller : MonoBehaviour
         {
             Spawn_Solider();
         }
-
+        
 
 
         //if(playerMovement.speed > 0.9)
@@ -115,7 +116,7 @@ public class Ply_Controller : MonoBehaviour
         //    CurrentMode = Mode.FollowShield;
         //}
         //상태 변경
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             Debug.Log("나를 따르라~~");
             if (!isPlay_FollowOrder)
@@ -139,21 +140,25 @@ public class Ply_Controller : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             Debug.Log("돌격하라~~");
-            CurrentMode = Mode.Attack;
-            if (!isPlay_AttackOrder)
+            if (EnemyScan(15) != null)
             {
-                animator.SetTrigger("AttackOrder");
-                isPlay_AttackOrder = true;
+                CurrentMode = Mode.Attack;
+                if (!isPlay_AttackOrder)
+                {
+                    animator.SetTrigger("AttackOrder");
+                    isPlay_AttackOrder = true;
+                }
             }
+       
 
         }
 
 
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.G))
         {
             Debug.Log("멈춰라~~");
             CurrentMode = Mode.Stop;
@@ -292,12 +297,12 @@ public class Ply_Controller : MonoBehaviour
         Soilder_Con.infodata = unit;
         Soilder_Con.Setunit();
         UpgradeSet(Soilder_Con);
-
         spawnPoint.SetLayerRecursively(newUnit, gameObject.layer);
 
         GameManager.instance.Gold -= unit.cost;
         //Minion.transform.SetParent(transform);
         UnitList_List.Add(newUnit);
+        GameManager.instance.Hire++;
         GameManager.instance.Current_MinionCount++;
 
 
@@ -386,6 +391,19 @@ public class Ply_Controller : MonoBehaviour
 
 
 
+    }
+    private Transform EnemyScan(float scanRange)
+    {
+        RaycastHit[] allHits = Physics.SphereCastAll(transform.position, scanRange, Vector3.forward, 0, TargetLayer);
+
+        foreach (RaycastHit hit in allHits)
+        {
+            if (hit.transform.CompareTag("Soldier"))
+            {
+                return hit.transform;
+            }
+        }
+        return null;
     }
     private Transform CarculateScore(Transform Soilder)
     {

@@ -27,7 +27,7 @@ public class Soilder_Controller : Unit
     public bool isArrive = false;
     public bool isSetPosition = false;
     public bool isNear = false;
-
+    public float LeaderDistance;
     Healer healer;
 
 
@@ -86,8 +86,8 @@ public class Soilder_Controller : Unit
         {
             return;
         }
-
-        if (Vector3.Distance(leader.transform.position, transform.position) < formationRange)
+        LeaderDistance = Vector3.Distance(leader.transform.position, transform.position);
+        if (LeaderDistance < formationRange)
         {
             isArrive = true;
         }
@@ -158,15 +158,8 @@ public class Soilder_Controller : Unit
                         break;
                     case LeaderState.BattleState.Attack:
                         holdingShield = false;
-                        //aipath.canSearch = true;
-                        //aipath.canMove = true;
-                        //aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
-
-
                         if (!data.ishealer)
                         {
-                            //느려졌던 이동속도 초기화
-                            //Debug.Log("attack~~~" + gameObject.name.ToString());
                             AttackOrder();
                         }
                         //else
@@ -180,8 +173,15 @@ public class Soilder_Controller : Unit
 
                         break;
                     case LeaderState.BattleState.Move:
-                        FollowOrder();
-                        holdingShield = false;
+                        if (LeaderDistance > 20 && nearestTarget != null)
+                        {
+                            AttackOrder();
+                        }
+                        else if (nearestTarget == null)
+                        {
+                            FollowOrder();
+                        }
+                            holdingShield = false;
                         aipath.isStopped = false;
                         break;
 
@@ -210,13 +210,14 @@ public class Soilder_Controller : Unit
                 switch (player.CurrentMode)
                 {
                     case Ply_Controller.Mode.Follow:
-                        Formation_Process();
-                        if (player.playerMovement.isPlayerMove && player.playerMovement.speed >0.7f && !    player.playerMovement.holdingShield)
-                        {
-                            isSetPosition = false; //배치받은 위치 초기화
-                            FollowOrder();
-                        }
-
+                      
+                            Formation_Process();
+                            if (player.playerMovement.isPlayerMove && player.playerMovement.speed > 0.7f && !player.playerMovement.holdingShield)
+                            {
+                                isSetPosition = false; //배치받은 위치 초기화
+                                FollowOrder();
+                            }
+                       
                         break;
                     case Ply_Controller.Mode.Attack:
                         AttackOrder();
@@ -240,12 +241,7 @@ public class Soilder_Controller : Unit
         #region 다이 메소드
         if (data.currentHP <= 0)
         {
-            //공격정지 ,이동정지 
-            if (!data.isDie)
-            {
-                data.isDie = true;
-                Die();
-            }
+            
 
         }
         #endregion
@@ -268,17 +264,13 @@ public class Soilder_Controller : Unit
 
     private void OnTriggerEnter(Collider other)
     {
-
-
         if (other.CompareTag("Weapon") && !isHitting)
         {
             ob = FindParentGameObject(other.gameObject);   //칼을들고있는 오브젝트
-
+                
             if (gameObject.layer != ob.layer) //공격하는 오브젝트가 적일때 
             {
-
                 enemy = FindParentComponent(other.gameObject);
-
 
                 //병사들
                 if (enemy != null)
@@ -286,8 +278,6 @@ public class Soilder_Controller : Unit
                     if (enemy.gameObject.layer != gameObject.layer)
                     {
                         StartCoroutine(Hit_co(enemy.data.damage));
-
-
                     }
                 }
                 else//null : 리더들 , 플레이어 
@@ -304,53 +294,16 @@ public class Soilder_Controller : Unit
                     }
                 }
 
-
-
                 if (data.currentHP <= 0)
                 {
                     //적이 나를 죽였을때 -> 플레이어 컨트롤 다이에서 따로 설정
                     //enemy ==null  -> 플레이어
 
-                    //우리팀을 적팀이 죽였을때 
-                    if (leader == player.gameObject)
+                    //공격정지 ,이동정지 
+                    if (!data.isDie)
                     {
-                        GameManager.instance.DeathCount++;
-                        enemy.leaderState.killCount++;
-                    }
-                    else
-                    {
-                        //병사끼리의 킬계산
-                        if (enemy != null)
-                        {
-                            //적팀을 우리팀이 죽였을때
-                            if (enemy.leader == player.gameObject)
-                            {
-                                GameManager.instance.killCount++;
-                                leaderState.deathCount++;
-                            }
-                            //적팀끼리 죽였을때
-                            else
-                            {
-                                enemy.leaderState.killCount++;
-                                leaderState.deathCount++;
-                            }
-                        }
-                        else//리더가죽였을때 킬계산
-                        {  //적팀을 내가 죽였을때 (enemy ==null)
-                            if (ob.gameObject == player.gameObject)
-                            {
-                                GameManager.instance.killCount++;
-                                leaderState.deathCount++;
-                            }
-                            else
-                            {
-                                LeaderAI _leader = ob.GetComponent<LeaderAI>();
-                                _leader.killCount++;
-                                leaderState.deathCount++;
-                            }
-
-                        }
-
+                        data.isDie = true;
+                        Die(gameObject.layer, ob.layer);
                     }
                 }
             }
@@ -366,19 +319,22 @@ public class Soilder_Controller : Unit
     //이벤트에서 무기 껏다키는 메소드
 
     //죽을때 메소드
-    public override void Die()
+    public override void Die(int teamLayer, int enemyLayer)
     {
 
         //ani.SetBool("Die", true);  // 죽는모션재생
         ani.SetLayerWeight(1, 0);
+        int Temp = Random.Range((int)SFXList.Human_Die1, (int)SFXList.Human_Die3 + 1);
+        Soldier_Sound.PlayOneShot(AudioManager.instance.clip_SFX[Temp]);
         ani.SetTrigger("Dead"); // 죽는모션재생
                                 //HitBox_col.enabled = false;    //부딪히지않게 콜라이더 false
         isMove = false;
         aipath.isStopped = true;
         aipath.canMove = false;
 
-        aipath.canSearch = false;   
-        
+        aipath.canSearch = false;
+
+        KillCount_Set(teamLayer, enemyLayer);
 
         if (gameObject.layer == TeamLayer)
         {
@@ -399,7 +355,7 @@ public class Soilder_Controller : Unit
 
     }
 
-
+    
 
     //자신의 레이어와 같은 리더를 찾는 메소드
     private LeaderState FindLeader()
@@ -483,7 +439,16 @@ public class Soilder_Controller : Unit
         switch (formationState)
         {
             case FormationState.Following:
-                FollowOrder();
+                if(LeaderDistance>20 && nearestTarget != null)
+                {
+                    AttackOrder();
+                }
+                else if(nearestTarget ==null)
+                {
+                    FollowOrder();
+                }
+              
+                
                 break;
             case FormationState.Formation:
                 break;
@@ -493,7 +458,7 @@ public class Soilder_Controller : Unit
                 break;
             case FormationState.Shield:
                 holdingShield = true;
-                aipath.canMove = false;
+                //aipath.canMove = false;
                 if (leader.layer == player.gameObject.layer)
                 {
                     if (player.playerMovement.isPlayerMove) { 

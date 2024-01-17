@@ -51,13 +51,6 @@ public class LeaderAI : LeaderState
         total_Gold += Time.deltaTime * Magnifi * has_Flag * Upgrade_GoldValue;
         Gold += Time.deltaTime * Magnifi * has_Flag * Upgrade_GoldValue; // 골드수급 = 분당 120 * 점령한 지역 개수
 
-        if (data.currentHP <= 0)
-        {
-            if (!data.isDie)
-            {
-                Die();
-            }
-        }
         // 항상 주변에 적이있는지 탐지
         if (!data.isDie)
         {
@@ -107,10 +100,11 @@ public class LeaderAI : LeaderState
                 case BattleState.Attack:
                     ResetPosition();
                     holdingShield = false;
-                    isMove = true;
+                    isMove = false;
+                    aipath.isStopped = true;
                     //느려졌던 이동속도 초기화
                     aipath.maxSpeed = Mathf.Lerp(aipath.maxSpeed, defaultSpeed, Time.deltaTime * 1);
-                    AttackOrder();
+                    Invoke("AttackOrder", 2f);
                     break;
                 case BattleState.Detect:
 
@@ -141,18 +135,6 @@ public class LeaderAI : LeaderState
 
             }
             #endregion
-            if (data.currentHP <= 0)
-            {
-
-                //공격정지 ,이동정지 
-                if (!data.isDie)
-                {
-                    data.isDie = true;
-                    Die();
-                }
-
-            }
-
         }
 
 
@@ -163,7 +145,7 @@ public class LeaderAI : LeaderState
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, scanRange);
     }
-    public override void Die()
+    public override void Die(int teamLayer, int enemyLayer)
     {
         //죽는애니메이션
         //레이어변하기
@@ -179,7 +161,7 @@ public class LeaderAI : LeaderState
         //HitBox_col.enabled = false;
         data.isDie = true;
         target.target = null;
-
+        KillCount_Set(teamLayer, enemyLayer);
     }
     private void SetRespawnPoint()
     {
@@ -246,36 +228,11 @@ public class LeaderAI : LeaderState
 
                     //우리팀을 적팀이 죽였을때 
 
-                    //병사끼리의 킬계산
-                    if (enemy != null)
+                    //공격정지 ,이동정지 
+                    if (!data.isDie)
                     {
-                        //적팀을 우리팀이 죽였을때
-                        if (enemy.leader == player.gameObject)
-                        {
-                            GameManager.instance.killCount++;
-                            leaderState.deathCount++;
-                        }
-                        //적팀끼리 죽였을때
-                        else
-                        {
-                            enemy.leaderState.killCount++;
-                            deathCount++;
-                        }
-                    }
-                    else//리더가죽였을때 킬계산
-                    {  //적팀을 내가 죽였을때 (enemy ==null)
-                        if (other.gameObject.layer == player.gameObject.layer)
-                        {
-                            GameManager.instance.killCount++;
-                            deathCount++;
-                        }
-                        else
-                        {
-                            LeaderAI _leader = ob.GetComponent<LeaderAI>();
-                            _leader.killCount++;
-                            deathCount++;
-                        }
-
+                        data.isDie = true;
+                        Die(gameObject.layer, ob.layer);
                     }
 
 

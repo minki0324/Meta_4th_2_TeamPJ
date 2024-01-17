@@ -24,13 +24,13 @@ TagManager:
   - Enemy1
   - Enemy2
   - Enemy3
-  - TeamTarget
-  - EnemyTarget
+  - Minimap_Team
+  - Minimap_Enemy
   - Die
   - Obstacle
   - IgnoreCollision
-  - 
-  - 
+  - World_Team
+  - World_Enemy
   - 
   - 
   - 

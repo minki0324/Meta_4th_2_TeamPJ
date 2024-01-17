@@ -26,7 +26,7 @@ public abstract class Unit : MonoBehaviour
     //공격중인가?
     protected bool isHitting;
     protected bool isAttacking;
-    protected bool isdetecting;
+    [SerializeField]protected bool isdetecting;
     protected bool holdingShield;
     protected bool isMove;
     public Animator ani;
@@ -35,7 +35,6 @@ public abstract class Unit : MonoBehaviour
     public GameObject leader;
     protected Soilder_Controller enemy;
    [SerializeField] protected float scanRange = 30;
-    [SerializeField] protected float AttackRange = 1.5f;
     protected float formationRange = 8;
     protected int myLayer;
     protected int combinedMask;
@@ -52,6 +51,7 @@ public abstract class Unit : MonoBehaviour
     [Header("현재타겟 Transform")]
     [SerializeField] protected Transform nearestTarget;
 
+    public AudioSource Soldier_Sound;
 
     //힐러용
     Healer healer;
@@ -60,6 +60,7 @@ public abstract class Unit : MonoBehaviour
     Vector3 HealerPos = new Vector3();
 
     float healRange = 5f;
+    
 
     public Transform GetNearestTarget()
     {
@@ -102,33 +103,9 @@ public abstract class Unit : MonoBehaviour
             LookatTarget(nearestTarget);
 
             target.target = nearestTarget;
-
-            //if (gameObject.GetComponent<Soilder_Controller>().isHealer)    //힐러일 때
-
-            //{
-            //    if (Vector3.Distance(transform.position, nearestTarget.transform.position) < 5f)
-            //    {
-            //        target.target = transform;
-            //    }
-            //}
-
-            //if (gameObject.GetComponent<Soilder_Controller>().isHealer)    //힐러일 때
-            //{
-            //    float healDistance = Vector3.Distance(transform.position, nearestTarget.position);
-            //    if (healDistance <= healRange)
-            //    {
-            //        isdetecting = true;
-            //    }
-            //    else
-            //    {
-            //        isdetecting = false;
-            //    }
-            //}
-            //else
-            //{
                 //힐러가 아닐 떄
                 float attackDistance = Vector3.Distance(transform.position, nearestTarget.position); //목표 타겟과 자기자신 거리 비교
-                if (attackDistance <= AttackRange)
+                if (attackDistance <= data.attackRange)
                 {
                     isdetecting = true;     //공격범위
                 }
@@ -136,17 +113,14 @@ public abstract class Unit : MonoBehaviour
                 {
                     isdetecting = false;
                 }
-            //}
-           
-
             if (!isdetecting) //탐지된적이 멀리있으면 적한테 이동
             {
-              
-                    isMove = true;
-              
-                    aipath.isStopped = false;
-                    aipath.canMove = true;
-                    aipath.canSearch = true;
+
+                isMove = true;
+
+                aipath.isStopped = false;
+                aipath.canMove = true;
+                aipath.canSearch = true;
             }
             else // 탐지된 적이 접근하면 이동을 멈추고 공격
             {
@@ -156,13 +130,14 @@ public abstract class Unit : MonoBehaviour
                 aipath.canMove = false;
                 aipath.canSearch = false;
 
-                if (!data.ishealer) { 
-
-                if (!isAttacking)
+                if (!data.ishealer)
                 {
-                    attackCoroutine = StartCoroutine(Attack_co());
-                    //StartCoroutine(Attack_co());
-                }
+
+                    if (!isAttacking)
+                    {
+                        attackCoroutine = StartCoroutine(Attack_co());
+                        //StartCoroutine(Attack_co());
+                    }
                 }
                 else
                 {
@@ -192,7 +167,7 @@ public abstract class Unit : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
-            if (hit.transform.CompareTag("SpawnPoint") || (hit.transform.CompareTag("Flag")))
+            if (hit.transform.CompareTag("SpawnPoint") || (hit.transform.CompareTag("Flag")) || (hit.transform.CompareTag("Base")))
             {
                 continue;
             }
@@ -318,30 +293,34 @@ public abstract class Unit : MonoBehaviour
             isAttacking = false;
         }
         ani.SetTrigger("Hit");
+
         yield return hitDelay;
         isHitting = false;
 
 
     }
     protected IEnumerator Attack_co()
-   
+
     {
-    
-            //공격쿨타임
-            float d = Random.Range(2f, 2.1f);
-            attackDelay = new WaitForSeconds(d);
 
-            //상태 공격중으로 변경
-            isAttacking = true;
+        //공격쿨타임
+        float d = Random.Range(2f, 2.1f);
+        attackDelay = new WaitForSeconds(d);
 
-            isSuccessAtk = false;
-            ani.SetTrigger("Attack");
-            yield return attackDelay;
+        //상태 공격중으로 변경
+        isAttacking = true;
+
+        isSuccessAtk = false;
+        int Temp = Random.Range((int)SFXList.Sword_Swing1, (int)SFXList.Sword_Swing3 + 1);
+        Soldier_Sound.PlayOneShot(AudioManager.instance.clip_SFX[Temp]);
+        yield return new WaitForSeconds(0.17f);
+        ani.SetTrigger("Attack");
+        yield return attackDelay;
 
 
-            isAttacking = false;
-        
-     
+        isAttacking = false;
+
+
     }
     //protected void FollowOrder()
     //{
@@ -350,7 +329,40 @@ public abstract class Unit : MonoBehaviour
     //}
     
     public abstract void Lostleader();
-    public abstract void Die();
+    public abstract void Die(int teamLayer, int enemyLayer);
     public abstract void HitDamage(float damage);
-    
+
+    public void KillCount_Set(int teamLayer, int enemyLayer)
+    {
+        switch (teamLayer)
+        {
+            case 6:
+                GameManager.instance.DeathCount++;
+                break;
+            case 7:
+                GameManager.instance.leaders[0].deathCount++;
+                break;
+            case 8:
+                GameManager.instance.leaders[1].deathCount++;
+                break;
+            case 9:
+                GameManager.instance.leaders[2].deathCount++;
+                break;
+        }
+        switch (enemyLayer)
+        {
+            case 6:
+                GameManager.instance.killCount++;
+                break;
+            case 7:
+                GameManager.instance.leaders[0].killCount++;
+                break;
+            case 8:
+                GameManager.instance.leaders[1].killCount++;
+                break;
+            case 9:
+                GameManager.instance.leaders[2].killCount++;
+                break;
+        }
+    }
 }

@@ -58,7 +58,6 @@ public class Ply_Movement : MonoBehaviour
     private float Max = 210f;
     Vector3 playerRotate;
 
-
     public Quaternion playerRotation { get; private set; }   //added
 
 
@@ -106,30 +105,15 @@ public class Ply_Movement : MonoBehaviour
 
             if (isPossible_Attack_1)
             {
-                //모션 1 실행 시작
-
-                ani.SetTrigger("Attack");
-                //ani.SetBool("Attack1", true);
-
-                isAttacking_1 = true;   //실행중
-
-                isAttacking_2 = false;
-                isPossible_Attack_1 = false;
-                isPossible_Attack_2 = false;
+                // 모션 1 실행
+                StartCoroutine(Attack1_Co());
 
             }
 
             if (isPossible_Attack_2)
             {
-
-                //ani.SetBool("ContinualAttack", true);
-                ani.SetTrigger("Continual_Attack");
-
-                isAttacking_2 = true;
-                isPossible_Attack_2 = false;
-
-                isAttacking_1 = false;
-                isPossible_Attack_1 = false;
+                // 모션 2 실행
+                StartCoroutine(Attack2_Co());
 
             }
             // isLive = false;
@@ -155,6 +139,43 @@ public class Ply_Movement : MonoBehaviour
 
     }
 
+    IEnumerator Attack1_Co()
+    {
+
+        ani.SetTrigger("Attack");
+        
+        //ani.SetBool("Attack1", true);
+
+        isAttacking_1 = true;   //실행중
+
+        isAttacking_2 = false;
+        isPossible_Attack_1 = false;
+        isPossible_Attack_2 = false;
+        int Temp = Random.Range((int)SFXList.Human_Attack1, (int)SFXList.Human_Attack2 + 1);
+        AudioManager.instance.SFXPlay(Temp);
+
+        Temp = Random.Range((int)SFXList.Sword_Swing1, (int)SFXList.Sword_Swing3 + 1);
+        yield return new WaitForSeconds(0.17f);
+        AudioManager.instance.SFXPlay(Temp);
+
+        yield return null;
+    }
+    IEnumerator Attack2_Co()
+    {
+        ani.SetTrigger("Continual_Attack");
+
+        isAttacking_2 = true;
+        isPossible_Attack_2 = false;
+
+        isAttacking_1 = false;
+        isPossible_Attack_1 = false;
+        int Temp = Random.Range((int)SFXList.Human_Attack1, (int)SFXList.Human_Attack2 + 1);
+        AudioManager.instance.SFXPlay(Temp);
+
+        Temp = Random.Range((int)SFXList.Sword_Swing1, (int)SFXList.Sword_Swing3 + 1);
+        AudioManager.instance.SFXPlay(Temp);
+        yield return null;
+    }
 
 
 
